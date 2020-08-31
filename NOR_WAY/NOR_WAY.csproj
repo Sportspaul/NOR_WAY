@@ -4,11 +4,4 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="DAL\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Model\" />
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
 </Project>

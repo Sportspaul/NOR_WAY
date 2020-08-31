@@ -1,4 +1,4 @@
-# NOR_WAY
+# NOR_WAY webapplikasjoner
 
 Funksjonalitet
 Løsningen bør blant annet inneholde:

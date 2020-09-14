@@ -10,7 +10,35 @@
 <body>
     <div class="container">
         <h1>NOR-WAY</h1>
-        <h2>Alle Stopp:</h2>
+        <h2>Bestill reise:</h2>
+        <br />
+        <form>
+            <input type="text" id="StartStopp" placeholder="Fra" class="form-control" />
+            <br />
+            <input type="text" id="SluttStopp" placeholder="Til" class="form-control" />
+            <label>Avreise etter</label>
+            <input type="radio" id="avreiseEtter" name="avreiseEtter" value="1" checked />
+            <br />
+            <label>Ankomst før</label>
+            <input type="radio" id="ankomst Før" name="avreiseEtter" value="0" />
+            <br />
+            <input type="date" id="dato" />
+            <input type="time" id="tidspunkt" />
+            <br />
+            <br />
+            <select id="Billettype"></select>
+            <select id="Billettype2"></select>
+            <select id="Billettype3"></select>
+            <br />
+            <br />
+            <input type="button" id="bestill" value="Bestill" />
+        </form>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
         <div id="alleStopp"></div>
     </div>
 </body>

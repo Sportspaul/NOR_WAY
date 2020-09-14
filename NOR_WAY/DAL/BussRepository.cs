@@ -16,7 +16,7 @@ namespace NOR_WAY.DAL
             _db = db;
         }
 
-        public async Task<List<Avgang>> FinnAktuelleAvganger(AvgangParam param)
+        public async Task<Avgang> FinnNesteAvgang(AvgangParam param)
         {
             throw new NotImplementedException();
         }

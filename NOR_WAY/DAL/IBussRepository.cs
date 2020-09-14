@@ -9,7 +9,7 @@ namespace NOR_WAY.DAL
     {
         Task<List<Stopp>> HentAlleStopp();
         Task<List<Billettyper>> HentAlleBillettyper();
-        Task<List<Avgang>> FinnAktuelleAvganger(AvgangParam param);
+        Task<Avgang> FinnNesteAvgang(AvgangParam param);
         Task<bool> FullforOrdre(KundeOrdre ordre);
     }
 }

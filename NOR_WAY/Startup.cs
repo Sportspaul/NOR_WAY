@@ -1,21 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NOR_WAY.DAL;
 
 namespace NOR_WAY
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // Controllers
+            services.AddControllers();
+
+            // SQLite DB
+            services.AddDbContext<BussContext>(options =>
+                            options.UseSqlite("Data Source=Buss.db"));
+
+            // Scoped Services
+            services.AddScoped<IBussRepository, BussRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -24,16 +28,20 @@ namespace NOR_WAY
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                // Scoped Services
+                //DBInit.SeedDB(app); // denne må fjernes dersom vi vil beholde dataene i databasen og ikke initialisere 
             }
 
             app.UseRouting();
 
+            // HTML (wwwroot)
+            app.UseStaticFiles();
+
+            // Controllers
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllers();
             });
         }
     }

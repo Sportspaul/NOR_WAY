@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -57,7 +58,15 @@ namespace NOR_WAY.DAL
         // Foreign Keys
         virtual public Ruter Linjekode { get; set; } // FK
         virtual public Avganger Avganger { get; set; } // FK
+    }
+
+    public class Ordrelinjer
+    {
+        public string Id { get; set; }
+
+        // Foreign Keys
         virtual public Billettyper Billettype { get; set; } // FK
+        virtual public Ordre OrdreId { get; set; } // FK
     }
 
     public class Billettyper
@@ -80,6 +89,7 @@ namespace NOR_WAY.DAL
         public DbSet<RuteStopp> RuteStopp { get; set; }
         public DbSet<Avganger> Avganger { get; set; }
         public DbSet<Ordre> Ordre { get; set; }
+        public DbSet<Ordrelinjer> Ordrelinjer { get; set; }
         public DbSet<Billettyper> Billettyper { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

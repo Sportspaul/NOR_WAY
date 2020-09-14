@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using NOR_WAY.Model;
 
 namespace NOR_WAY.DAL
@@ -31,7 +33,12 @@ namespace NOR_WAY.DAL
 
         public async Task<List<Stopp>> HentAlleStopp()
         {
-            throw new NotImplementedException();
+            List<Stopp> alleStopp = await _db.Stopp.Select(s => new Stopp
+            {
+                Navn = s.Navn
+            }).ToListAsync();
+
+            return alleStopp;
         }
     }
 }

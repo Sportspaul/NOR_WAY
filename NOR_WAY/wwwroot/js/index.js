@@ -13,6 +13,15 @@ function hentAlleStopp() {
 function hentAlleBillettyper() {
     $.get("Buss/HentAlleBillettyper", function (alleBillettyper) {
         console.table(alleBillettyper)
+
+        var $dropdown = $("#Billettype");
+        var $dropdown1 = $("#Billettype2");
+        var $dropdown2 = $("#Billettype3");
+        $.each(alleBillettyper, function () {
+            $dropdown.append($("<option />").val(this.billettype).text(this.billettype + ", -" + this.rabattsats + "%"));
+            $dropdown1.append($("<option />").val(this.billettype).text(this.billettype + ", -" + this.rabattsats + "%"));
+            $dropdown2.append($("<option />").val(this.billettype).text(this.billettype + ", -" + this.rabattsats + "%"));
+        });
     });
 }
 

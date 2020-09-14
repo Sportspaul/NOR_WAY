@@ -46,6 +46,17 @@ namespace NOR_WAY.DAL
                 Injiser(NW192Rute, NW192Stopp, context);
                 context.SaveChanges();
 
+
+                // Injiserer Billettypene
+                Billettyper barn = new Billettyper() { Billettype = "Barn", Rabattsats = 50 };
+                Billettyper voksne = new Billettyper() { Billettype = "Voksne", Rabattsats = 0 };
+                Billettyper student = new Billettyper() { Billettype = "Student", Rabattsats = 25 };
+                Billettyper honnor = new Billettyper() { Billettype = "Honnør", Rabattsats = 25 };
+                context.Billettyper.Add(barn);
+                context.Billettyper.Add(voksne);
+                context.Billettyper.Add(student);
+                context.Billettyper.Add(honnor);
+                context.SaveChanges();
             }
         }
 

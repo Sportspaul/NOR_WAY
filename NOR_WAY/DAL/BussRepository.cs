@@ -26,9 +26,15 @@ namespace NOR_WAY.DAL
             throw new NotImplementedException();
         }
 
-        public async Task<Billettyper> HentAlleBillettyper()
+        public async Task<List<Billettyper>> HentAlleBillettyper()
         {
-            throw new NotImplementedException();
+            List<Billettyper> alleBillettyper = await _db.Billettyper.Select(b => new Billettyper
+            {
+                Billettype = b.Billettype,
+                Rabattsats = b.Rabattsats
+            }).ToListAsync();
+
+            return alleBillettyper;
         }
 
         public async Task<List<Stopp>> HentAlleStopp()

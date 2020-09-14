@@ -22,7 +22,7 @@ namespace NOR_WAY.Controllers
             return await _db.HentAlleStopp();
         }
 
-        public async Task<Billettyper> HentAlleBillettyper()
+        public async Task<List<Billettyper>> HentAlleBillettyper()
         {
             return await _db.HentAlleBillettyper();
         }

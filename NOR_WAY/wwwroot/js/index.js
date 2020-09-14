@@ -1,13 +1,20 @@
 ﻿$(function () {
     hentAlleStopp();
+    hentAlleBillettyper();
 });
 
 function hentAlleStopp() {
     $.get("Buss/HentAlleStopp", function (alleStopp) {
+        console.table(alleStopp)
         printStopp(alleStopp);
     });
 }
 
+function hentAlleBillettyper() {
+    $.get("Buss/HentAlleBillettyper", function (alleBillettyper) {
+        console.table(alleBillettyper)
+    });
+}
 
 // Kun for testing
 

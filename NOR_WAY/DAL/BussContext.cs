@@ -31,8 +31,8 @@ namespace NOR_WAY.DAL
         public int MinutterTilNesteStopp { get; set; }
 
         // Foreign Keys
-        virtual public Stopp Navn { get; set; } // FK
-        virtual public Ruter Linjekode { get; set; } // FK
+        virtual public Stopp Stopp { get; set; } // FK
+        virtual public Ruter Rute { get; set; } // FK
     }
 
     public class Avganger
@@ -44,7 +44,7 @@ namespace NOR_WAY.DAL
         public int SolgteBilletter { get; set; }
 
         // Foreign Key
-        virtual public Ruter Linjekode { get; set; } // FK
+        virtual public Ruter Rute { get; set; } // FK
     }
 
     public class Ordre
@@ -56,8 +56,8 @@ namespace NOR_WAY.DAL
         public int Sum { get; set; }
 
         // Foreign Keys
-        virtual public Ruter Linjekode { get; set; } // FK
-        virtual public Avganger Avganger { get; set; } // FK
+        virtual public Ruter Rute { get; set; } // FK
+        virtual public Avganger Avgang { get; set; } // FK
     }
 
     public class Ordrelinjer
@@ -66,7 +66,7 @@ namespace NOR_WAY.DAL
 
         // Foreign Keys
         virtual public Billettyper Billettype { get; set; } // FK
-        virtual public Ordre OrdreId { get; set; } // FK
+        virtual public Ordre Ordre { get; set; } // FK
     }
 
     public class Billettyper

@@ -30,7 +30,7 @@ namespace NOR_WAY
                 app.UseDeveloperExceptionPage();
 
                 // Scoped Services
-                DBInit.SeedDB(app); // denne må fjernes dersom vi vil beholde dataene i databasen og ikke initialisere 
+                //DBInit.SeedDB(app); // denne må fjernes dersom vi vil beholde dataene i databasen og ikke initialisere 
             }
 
             app.UseRouting();

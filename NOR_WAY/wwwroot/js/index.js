@@ -1,6 +1,7 @@
 ﻿$(function () {
     hentAlleStopp();
     hentAlleBillettyper();
+    
 });
 
 function hentAlleStopp() {
@@ -9,6 +10,7 @@ function hentAlleStopp() {
         printStopp(alleStopp);
     });
 }
+
 
 function hentAlleBillettyper() {
     $.get("Buss/HentAlleBillettyper", function (alleBillettyper) {

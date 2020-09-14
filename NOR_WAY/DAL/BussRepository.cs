@@ -21,6 +21,7 @@ namespace NOR_WAY.DAL
             throw new NotImplementedException();
         }
 
+        
         public async Task<bool> FullforOrdre(KundeOrdre ordre)
         {
             throw new NotImplementedException();

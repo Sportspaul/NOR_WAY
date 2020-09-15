@@ -91,8 +91,8 @@ namespace NOR_WAY.DAL
                 {
                     StoppNummer = stoppNummer,
                     MinutterTilNesteStopp = 20,
-                    Navn = stopp,
-                    Linjekode = rute
+                    Stopp = stopp,
+                    Rute = rute
                 };
 
                 // Nytt instans av RuteStopp i datbasen

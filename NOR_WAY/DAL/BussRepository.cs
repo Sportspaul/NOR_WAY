@@ -20,22 +20,22 @@ namespace NOR_WAY.DAL
         public async Task<Avgang> FinnNesteAvgang(AvgangParam param)
         {
 
-            Stopp startStopp = _db.Stopp.FirstOrDefault(s => s.Navn == param.StartStopp);
-            Stopp sluttStopp = _db.Stopp.FirstOrDefault(s => s.Navn == param.StartStopp);
+            Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == param.StartStopp);
+            Stopp sluttStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == param.StartStopp);
 
             // Finner alle Rutene som inkluderer påstigning og som inkluderer avstigning
-            List<Ruter> startStoppRuter = FinnRuter(startStopp);
-            List<Ruter> sluttStoppRuter = FinnRuter(sluttStopp);
+            List<Ruter> startStoppRuter = await FinnRuter(startStopp);
+            List<Ruter> sluttStoppRuter = await FinnRuter(sluttStopp);
 
             // Finner alle rutene påstigning og avstigning har til felles
-            Ruter fellesRute = FinnFellesRute(startStoppRuter, sluttStoppRuter);
+            Ruter fellesRute = await FinnFellesRute(startStoppRuter, sluttStoppRuter);
 
             // Finne ut hvilket stoppNummer påstigning og avstigning har i den felles ruten
-            int stoppNummer1 = FinnStoppNummer(startStopp, fellesRute);
-            int stoppNummer2 = FinnStoppNummer(sluttStopp, fellesRute);
+            int stoppNummer1 = await FinnStoppNummer(startStopp, fellesRute);
+            int stoppNummer2 = await FinnStoppNummer(sluttStopp, fellesRute);
 
             // Beregner reisetiden fra stopp 1 til stopp 2
-            int reisetid = BeregnReisetid(stoppNummer1, stoppNummer2);
+            int reisetid = await BeregnReisetid(stoppNummer1, stoppNummer2);
 
             // Finne neste avgang ved å søke i databasen to ulike måter basert på brukerinput: 
             // Finne ut hvordan å håndtere dato og tidspunkter mtp sammenligning av verdier fra brukerinput og i databasen
@@ -45,16 +45,16 @@ namespace NOR_WAY.DAL
             Avganger nesteAvgang = new Avganger();
             if (param.AvreiseEtter == true) // Hvis Avreise Etter:
             {
-                nesteAvgang = _db.Avganger
+                nesteAvgang = await _db.Avganger
                     .Where(a => a.Rute == fellesRute)
-                    .SingleOrDefault(a => a.Avreise >= avreise);
+                    .SingleOrDefaultAsync(a => a.Avreise >= avreise);
             }
             else  // Hvis Ankomst Før:
             {
                 DateTime ankomst = avreise.AddMinutes(-reisetid);
-                nesteAvgang = _db.Avganger
+                nesteAvgang = await _db.Avganger
                     .Where(a => a.Rute == fellesRute)
-                    .SingleOrDefault(a => a.Avreise <= ankomst);
+                    .SingleOrDefaultAsync(a => a.Avreise <= ankomst);
             }
 
             // Opretter Avgang-objektet som skal sendes til klienten
@@ -78,13 +78,13 @@ namespace NOR_WAY.DAL
 
         /* Hjelpemetode som tar inn et stopp object og returnerer en
         liste med ruter som innholder stoppet */
-        private List<Ruter> FinnRuter(Stopp stopp)
+        private async Task<List<Ruter>> FinnRuter(Stopp stopp)
         {
-            return _db.RuteStopp.Where(rs => rs.Stopp == stopp).Select(rs => rs.Rute).ToList();
+            return await _db.RuteStopp.Where(rs => rs.Stopp == stopp).Select(rs => rs.Rute).ToListAsync();
         }
 
         // Hjelpemetode som finner Rutern to lister med Ruter har til felles
-        private Ruter FinnFellesRute(List<Ruter> startStoppRuter, List<Ruter> sluttStoppRuter)
+        private async Task<Ruter> FinnFellesRute(List<Ruter> startStoppRuter, List<Ruter> sluttStoppRuter)
         {
             Ruter fellesRute = new Ruter();
             foreach (Ruter startStoppRute in startStoppRuter)
@@ -102,21 +102,21 @@ namespace NOR_WAY.DAL
         }
 
         // Hjelpemetode som finner stoppnummeret til et spesifikt stopp i en spesifikk rute
-        private int FinnStoppNummer(Stopp startStopp, Ruter fellesRute)
+        private async Task<int> FinnStoppNummer(Stopp startStopp, Ruter fellesRute)
         {
-            RuteStopp ruteStopp = _db.RuteStopp.FirstOrDefault(
+            RuteStopp ruteStopp = await _db.RuteStopp.FirstOrDefaultAsync(
                         rs => rs.Stopp == startStopp && rs.Rute == fellesRute);
 
             return ruteStopp.StoppNummer;
         }
 
         // Hjelpemetode som beregner reisetiden fra startStopp til sluttStopp
-        private int BeregnReisetid(int startStopp, int sluttStopp)
+        private async Task<int> BeregnReisetid(int startStopp, int sluttStopp)
         {
             // Beregner reisetid
-            List<int> minTilNesteStoppList = _db.RuteStopp
+            List<int> minTilNesteStoppList = await _db.RuteStopp
                 .Where(rs => rs.StoppNummer > startStopp && rs.StoppNummer < sluttStopp)
-                .Select(rs => rs.MinutterTilNesteStopp).ToList();
+                .Select(rs => rs.MinutterTilNesteStopp).ToListAsync();
 
             int reisetid = 0;
             foreach (int minutter in minTilNesteStoppList)

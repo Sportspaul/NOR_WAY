@@ -1,7 +1,7 @@
 ﻿$(function () {
     hentAlleStopp();
     hentAlleBillettyper();
-    
+    FinnNesteAvgang();
 });
 
 function hentAlleStopp() {
@@ -24,6 +24,20 @@ function hentAlleBillettyper() {
             $dropdown1.append($("<option />").val(this.billettype).text(this.billettype + ", -" + this.rabattsats + "%"));
             $dropdown2.append($("<option />").val(this.billettype).text(this.billettype + ", -" + this.rabattsats + "%"));
         });
+    });
+}
+
+function FinnNesteAvgang() {
+    const avgangParam = {
+        StartStopp: "Bergen",
+        SluttStopp: "Vadheim",
+        Dato: "2020-11-20",
+        Tidspunkt: "17:00",
+        AvreiseEtter: true
+    }
+
+    $.post("Buss/FinnNesteAvgang", avgangParam, function (avgang) {
+        console.table(avgang);
     });
 }
 

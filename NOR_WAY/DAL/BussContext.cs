@@ -38,9 +38,7 @@ namespace NOR_WAY.DAL
     public class Avganger
     {
         public int Id { get; set; } // PK
-        public string Dato { get; set; }
-        public string Avreise { get; set; }
-        public string Ankomst { get; set; }
+        public DateTime Avreise { get; set; }
         public int SolgteBilletter { get; set; }
 
         // Foreign Key

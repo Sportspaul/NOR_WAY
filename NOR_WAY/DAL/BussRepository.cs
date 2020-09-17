@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using NOR_WAY.Model;
 
 namespace NOR_WAY.DAL
@@ -12,9 +13,12 @@ namespace NOR_WAY.DAL
     {
         private readonly BussContext _db;
 
-        public BussRepository(BussContext db)
+        private ILogger<BussRepository> _log;
+
+        public BussRepository(BussContext db, ILogger<BussRepository> log )
         {
             _db = db;
+            _log = log;
         }
 
         public async Task<Avgang> FinnNesteAvgang(AvgangParam param)
@@ -72,7 +76,7 @@ namespace NOR_WAY.DAL
             };
 
             return utAvgang;
-        }
+        } 
 
         /* Hjelpemetode som tar inn et stopp object og returnerer en
         liste med ruter som innholder stoppet */

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL;
 using NOR_WAY.Model;
 
@@ -12,9 +13,12 @@ namespace NOR_WAY.Controllers
     public class BussController : ControllerBase
     {
         private readonly IBussRepository _db;
-        public BussController(IBussRepository db)
+        private ILogger<BussController> _log;
+
+        public BussController(IBussRepository db, ILogger<BussController> log)
         {
             _db = db;
+            _log = log;
         }
 
         public async Task<List<Stopp>> HentAlleStopp()

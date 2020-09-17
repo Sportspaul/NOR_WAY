@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL;
 
 namespace NOR_WAY
@@ -23,12 +24,12 @@ namespace NOR_WAY
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
+                loggerFactory.AddFile("Logs/BussLog.txt");
                 // Scoped Services
                 //DBInit.SeedDB(app); // denne må fjernes dersom vi vil beholde dataene i databasen og ikke initialisere 
             }

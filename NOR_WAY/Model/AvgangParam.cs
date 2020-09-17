@@ -9,6 +9,5 @@ namespace NOR_WAY.Model
         public string Dato { get; set; }
         public string Tidspunkt { get; set; }
         public bool AvreiseEtter { get; set; } // TODO: Se på mulighet for navnendring
-
     }
 }

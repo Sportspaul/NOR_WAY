@@ -58,9 +58,9 @@ namespace NOR_WAY.DAL
                 context.Billettyper.Add(honnor);
 
                 DateTime dato1 = new DateTime(2020, 10, 25, 8, 30, 00);
-                Avganger avgang1 = new Avganger() { Avreise = dato1, SolgteBilletter = 0 };
+                Avganger avgang1 = new Avganger() { Avreise = dato1, SolgteBilletter = 0, Rute = NW431Rute };
                 DateTime dato2 = new DateTime(2020, 11, 20, 17, 00, 00);
-                Avganger avgang2 = new Avganger() { Avreise = dato2, SolgteBilletter = 0 };
+                Avganger avgang2 = new Avganger() { Avreise = dato2, SolgteBilletter = 0, Rute = NW431Rute };
                 context.Avganger.Add(avgang1);
                 context.Avganger.Add(avgang2);
                 context.SaveChanges();

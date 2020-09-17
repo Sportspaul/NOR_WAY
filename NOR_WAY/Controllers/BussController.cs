@@ -31,9 +31,9 @@ namespace NOR_WAY.Controllers
             return await _db.HentAlleBillettyper();
         }
 
-        public async Task<Avgang> FinnNesteAvgang(AvgangParam param)
+        public async Task<Avgang> FinnNesteAvgang(AvgangParam input)
         {
-            return await _db.FinnNesteAvgang(param);
+            return await _db.FinnNesteAvgang(input);
         }
 
         public async Task<bool> FullforOrdre(KundeOrdre ordre)

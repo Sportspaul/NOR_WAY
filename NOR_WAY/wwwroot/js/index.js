@@ -1,8 +1,9 @@
 ﻿$(function () {
     hentAlleStopp();
     hentAlleBillettyper();
-    FinnNesteAvgang();
 });
+
+let billettyper;
 
 function hentAlleStopp() {
     $.get("Buss/HentAlleStopp", function (alleStopp) {
@@ -14,30 +15,61 @@ function hentAlleStopp() {
 
 function hentAlleBillettyper() {
     $.get("Buss/HentAlleBillettyper", function (alleBillettyper) {
-        console.table(alleBillettyper)
 
-        var $dropdown = $("#Billettype");
-        var $dropdown1 = $("#Billettype2");
-        var $dropdown2 = $("#Billettype3");
+        var $dropdown = $("#billettype1");
+        billettyper = alleBillettyper;
         $.each(alleBillettyper, function () {
             $dropdown.append($("<option />").val(this.billettype).text(this.billettype + ", -" + this.rabattsats + "%"));
-            $dropdown1.append($("<option />").val(this.billettype).text(this.billettype + ", -" + this.rabattsats + "%"));
-            $dropdown2.append($("<option />").val(this.billettype).text(this.billettype + ", -" + this.rabattsats + "%"));
         });
     });
 }
 
-function FinnNesteAvgang() {
-    const avgangParam = {
-        StartStopp: "Bergen",
-        SluttStopp: "Vadheim",
-        Dato: "2020-11-20",
-        Tidspunkt: "17:00",
-        AvreiseEtter: true
+function finnNesteAvgang() {
+    const startStopp = $("#startStopp").val();
+    const sluttStopp = $("#sluttStopp").val();
+    const dato = $("#dato").val();
+    const tidspunkt = $("#tidspunkt").val();
+    let avreiseEtter = $('input[name="avreiseEtter"]:checked').val();
+    if (avreiseEtter == "true") {
+        avreiseEtter = true
+    } else {
+        avreiseEtter = false;
     }
 
+    const avgangParam = {
+        StartStopp: startStopp,
+        SluttStopp: sluttStopp,
+        Dato: dato,
+        Tidspunkt: tidspunkt,
+        AvreiseEtter: avreiseEtter
+    }
+
+    console.table(avgangParam);
+
     $.post("Buss/FinnNesteAvgang", avgangParam, function (avgang) {
-        console.table(avgang);
+        ut = `<p>
+                Rutenavn: ${avgang.rutenavn}<br>
+                Linjekode: ${avgang.linjekode}<br>
+                Pris: ${avgang.pris}<br>
+                Avreise: ${avgang.avreise}<br>
+                Ankomst: ${avgang.avreise}<br>
+                Reisetid: ${avgang.reisetid}<br>
+            </p>`;
+
+        $("#avgang").html(ut)
+    });
+}
+
+// Legger til en ny select og fyller den med billettyer-data
+function leggTilBillett() {
+    const antall = $('.billettype').length;
+    const id = `billettype${antall+1}`;
+
+    $('#billetter').append(`<select id="${id}" class="form-control billettype"></select>`);
+    console.log(billettyper);
+    var $dropdown = $(`#${id}`);
+    $.each(billettyper, function () {
+        $dropdown.append($("<option />").val(this.billettype).text(this.billettype + ", -" + this.rabattsats + "%"));
     });
 }
 

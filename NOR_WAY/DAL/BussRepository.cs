@@ -97,7 +97,7 @@ namespace NOR_WAY.DAL
                     }
                 }
             }
-            return null;
+            return fellesRute;
         }
 
         // Hjelpemetode som finner stoppnummeret til et spesifikt stopp i en spesifikk rute
@@ -134,23 +134,34 @@ namespace NOR_WAY.DAL
             DateTime avreise = DateTime.ParseExact(innAvreise, "yyyy-MM-dd HH:mm",
                 CultureInfo.InvariantCulture);
 
-            Avganger nesteAvgang = new Avganger();
+            List<Avganger> kommendeAvganger = new List<Avganger>();
             if (avreiseEtter == true) // Hvis Avreise Etter:
             {
-                nesteAvgang = await _db.Avganger
-                    .Where(a => a.Rute == fellesRute)
-                    .SingleOrDefaultAsync(a => a.Avreise >= avreise);
+                kommendeAvganger = await _db.Avganger
+                    .Where(a => a.Rute == fellesRute && a.Avreise >= avreise).ToListAsync();
             }
             else  // Hvis Ankomst Før:
             {
                 DateTime ankomst = avreise.AddMinutes(-reisetid);
-                nesteAvgang = await _db.Avganger
-                    .Where(a => a.Rute == fellesRute)
-                    .SingleOrDefaultAsync(a => a.Avreise <= ankomst);
+                kommendeAvganger = await _db.Avganger
+                    .Where(a => a.Rute == fellesRute && a.Avreise <= ankomst)
+                    .ToListAsync();
+            }
+
+            Avganger nesteAvgang = kommendeAvganger[0];
+            TimeSpan lavesteDiff = avreise.Subtract(kommendeAvganger[0].Avreise).Duration();
+            for (int i = 1; i < kommendeAvganger.Count; i++)
+            {
+                TimeSpan diff = avreise.Subtract(kommendeAvganger[i].Avreise).Duration();
+                if (diff < lavesteDiff)
+                {
+                    nesteAvgang = kommendeAvganger[i];
+                }
             }
 
             return nesteAvgang;
         }
+
 
         private int BeregnPris(Ruter fellesRute, int antallStopp)
         {

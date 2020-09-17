@@ -1,6 +1,7 @@
 ﻿$(function () {
     hentAlleStopp();
     hentAlleBillettyper();
+    leggTilDato();
 });
 
 let billettyper;
@@ -65,12 +66,20 @@ function leggTilBillett() {
     const antall = $('.billettype').length;
     const id = `billettype${antall+1}`;
 
-    $('#billetter').append(`<select id="${id}" class="form-control billettype"></select>`);
+    $('#billetter').append(`<select id="${id}" class="form-control billettype mb-1"></select>`);
     console.log(billettyper);
     var $dropdown = $(`#${id}`);
     $.each(billettyper, function () {
         $dropdown.append($("<option />").val(this.billettype).text(this.billettype + ", -" + this.rabattsats + "%"));
     });
+}
+
+function leggTilDato() {
+    (function () {
+        var date = new Date().toISOString().substring(0, 10),
+            field = document.querySelector('#dato');
+        field.value = date;
+    })()
 }
 
 // Kun for testing

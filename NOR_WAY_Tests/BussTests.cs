@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NOR_WAY.Controllers;
 using NOR_WAY.DAL;
@@ -12,6 +13,11 @@ namespace NOR_WAY_Tests
 {
     public class BussTests
     {
+
+        private readonly Mock<IBussRepository> mockRepo = new Mock<IBussRepository>();
+        private readonly Mock<ILogger<BussController>> mockLog = new Mock<ILogger<BussController>>();
+
+
         [Fact]
         public async Task FinnNesteAvgangTest()
         {
@@ -35,9 +41,9 @@ namespace NOR_WAY_Tests
                 Reisetid = 80
             };
 
-            var mock = new Mock<IBussRepository>();
-            mock.Setup(b => b.FinnNesteAvgang(param)).ReturnsAsync(forventetAvgang);
-            var bussController = new BussController(mock.Object);
+            
+            mockRepo.Setup(b => b.FinnNesteAvgang(param)).ReturnsAsync(forventetAvgang);
+            var bussController = new BussController(mockRepo.Object, mockLog.Object);
             Avgang resultat = await bussController.FinnNesteAvgang(param);
 
             Console.WriteLine("AvgangId " + resultat.AvgangId);

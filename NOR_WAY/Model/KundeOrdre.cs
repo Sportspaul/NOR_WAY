@@ -18,7 +18,7 @@ namespace NOR_WAY.Model
         // Foreign Keys
         [RegularExpression(@"(NW)[0-9]{1,4}")] //Linjekoden starter med NW for Norway
         public string Linjekode { get; set; } // Ruter FK
-        public string Avganger { get; set; } // Avgang FK
+        public string Avganger { get; set; } // Avgang FK //TODO: legge til RegEx når det er klart hva gyldig format er
         public List<string> Billettype { get; set; } // Til Ordrelinjer
     }
 }

@@ -21,28 +21,31 @@ namespace NOR_WAY.Controllers
             _log = log;
         }
 
-        public async Task<List<Stopp>> HentAlleStopp()
+        public async Task<ActionResult> HentAlleStopp()
         {
-                return await _db.HentAlleStopp();
+               List<Stopp> alleStopp = await _db.HentAlleStopp();
+               return Ok(alleStopp); // returnerer alltid OK, null ved tom DB
         }
 
-        public async Task<List<Billettyper>> HentAlleBillettyper()
+        public async Task<ActionResult> HentAlleBillettyper()
         {
-            return await _db.HentAlleBillettyper();
+            List<Billettyper> billettypene = await _db.HentAlleBillettyper();
+            return Ok(billettypene); // returnerer alltid OK, null ved tom DB
         }
 
-        public async Task<Avgang> FinnNesteAvgang(AvgangParam input)
+        public async Task<ActionResult> FinnNesteAvgang(AvgangParam input)
         {
             if(ModelState.IsValid)
             {
-                return await _db.FinnNesteAvgang(input);
+                Avgang nesteAvgang = await _db.FinnNesteAvgang(input);
+                return Ok(nesteAvgang);
             }
             _log.LogInformation("Feil i inputvalideringen på server");
-            return null;
+            return BadRequest("Feil i inputvalideringen på server");
             
         }
 
-        public async Task<bool> FullforOrdre(KundeOrdre ordre)
+        public async Task<ActionResult> FullforOrdre(KundeOrdre ordre)
         {
             if(ModelState.IsValid)
             {
@@ -50,12 +53,12 @@ namespace NOR_WAY.Controllers
                 if(! returOK)
                 {
                     _log.LogInformation("Ordren kunne ikke lagres!");
-                    return false;
+                    return BadRequest("Ordren kunne ikke lagres!");
                 }
-                return true;
+                return Ok("Ordren ble lagret!");
             }
             _log.LogInformation("Feil i inputvalideringen på server");
-            return false;
+            return BadRequest("Feil i inputvalidering på server");
         }
     }
 }

@@ -64,7 +64,8 @@ namespace NOR_WAY.DAL
                 Rutenavn = fellesRute.Rutenavn,
                 Linjekode = fellesRute.Linjekode,
                 Pris = pris,
-                Avreise = utAvreise,
+                // TODO: Beregne avreise og ankomst basert på start og sluttStopp
+                Avreise = utAvreise, 
                 Ankomst = utAnkomst,
                 Reisetid = reisetid
             };

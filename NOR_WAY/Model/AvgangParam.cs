@@ -12,7 +12,7 @@ namespace NOR_WAY.Model
         public string SluttStopp { get; set; }
         [RegularExpression(@"([0-9]{4})[-]([0-9]{2})[-]([0-9]{2})")]
         public string Dato { get; set; }
-        [RegularExpression(@"([0-9]{2})[:]([0-9]{2})[:](00)")]
+        [RegularExpression(@"([0-9]{2})[:]([0-9]{2})")]
         public string Tidspunkt { get; set; }
         public bool AvreiseEtter { get; set; } // TODO: Se på mulighet for navnendring
     }

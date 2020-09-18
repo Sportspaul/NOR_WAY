@@ -53,7 +53,7 @@ function finnNesteAvgang() {
                 Linjekode: ${avgang.linjekode}<br>
                 Pris: ${avgang.pris}<br>
                 Avreise: ${avgang.avreise}<br>
-                Ankomst: ${avgang.avreise}<br>
+                Ankomst: ${avgang.ankomst}<br>
                 Reisetid: ${avgang.reisetid}<br>
             </p>`;
 

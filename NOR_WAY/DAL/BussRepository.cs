@@ -45,13 +45,13 @@ namespace NOR_WAY.DAL
             Avganger nesteAvgang = await NesteAvgang(fellesRute, reisetid,
             input.AvreiseEtter, input.Dato, input.Tidspunkt);
 
-            // Konverterer Avreise (DateTime) til en stringvariabel for å 
-            string utAvreise = nesteAvgang.Avreise.ToString("yyyy-MM-dd HH:mm");
+            // Beregner avreise og ankomst
+            DateTime avreise = await BeregnAvreisetid(nesteAvgang.Avreise, stoppNummer1, fellesRute);
+            DateTime ankomst = avreise.AddMinutes(reisetid);
 
-            // Beregner ankomst ved å legge til reisetiden på avreisetidspunktet
-            string utAnkomst = nesteAvgang.Avreise
-                .AddMinutes(reisetid)
-                .ToString("yyyy-MM-dd HH:mm");
+            // Konverterer avreise og ankomst fra DateTime til en strings
+            string utAvreise = avreise.ToString("yyyy-MM-dd HH:mm");
+            string utAnkomst = ankomst.ToString("yyyy-MM-dd HH:mm"); 
 
             // Beregner prisen basert på startpris og antall stopp
             int antallStopp = stoppNummer2 - stoppNummer1;
@@ -64,7 +64,6 @@ namespace NOR_WAY.DAL
                 Rutenavn = fellesRute.Rutenavn,
                 Linjekode = fellesRute.Linjekode,
                 Pris = pris,
-                // TODO: Beregne avreise og ankomst basert på start og sluttStopp
                 Avreise = utAvreise, 
                 Ankomst = utAnkomst,
                 Reisetid = reisetid
@@ -163,7 +162,7 @@ namespace NOR_WAY.DAL
             return nesteAvgang;
         }
 
-
+        // Bregener fullpris av hva en billett vil koste 
         private int BeregnPris(Ruter fellesRute, int antallStopp)
         {
             int startpris = fellesRute.Startpris;
@@ -171,6 +170,31 @@ namespace NOR_WAY.DAL
             int totalpris = startpris + tilleggPerStopp * antallStopp;
 
             return totalpris;
+        }
+
+        // Endrer avreisetiden hvis påstigning ikke er første stopp i ruten
+        private async Task<DateTime> BeregnAvreisetid(DateTime avreise, int stoppNummer, Ruter fellesRute)
+        {
+
+            // Hvis påstigning er første stopp i ruten endres ikke avreise
+            if (stoppNummer == 1)
+            {
+                return avreise;
+            }
+            else {
+                List<int> minTilNesteStoppList = await _db.RuteStopp
+                    .Where(rs => rs.StoppNummer < stoppNummer && rs.Rute == fellesRute)
+                    .Select(rs => rs.MinutterTilNesteStopp)
+                    .ToListAsync();
+
+                int totalTid = 0;
+                foreach (int minutter in minTilNesteStoppList)
+                {
+                    totalTid += minutter;
+                }
+
+                return avreise.AddMinutes(totalTid);
+            }
         }
 
         

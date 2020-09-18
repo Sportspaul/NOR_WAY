@@ -42,7 +42,6 @@ namespace NOR_WAY.Controllers
             }
             _log.LogInformation("Feil i inputvalideringen på server");
             return BadRequest("Feil i inputvalideringen på server");
-            
         }
 
         public async Task<ActionResult> FullforOrdre(KundeOrdre ordre)

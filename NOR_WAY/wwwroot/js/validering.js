@@ -5,7 +5,7 @@ function validerStoppnavn(inId, utId) {
 
     const ok = regexp.test(stoppnavn);
     const stoppFins = StoppListe.includes(stoppnavn);
-    console.log("#" + inId);
+
     if (!ok || !stoppFins) {
         let preposisjon;
             if (inId == "startStopp") {

@@ -23,7 +23,7 @@ namespace NOR_WAY.Controllers
 
         public async Task<List<Stopp>> HentAlleStopp()
         {
-            return await _db.HentAlleStopp();
+                return await _db.HentAlleStopp();
         }
 
         public async Task<List<Billettyper>> HentAlleBillettyper()
@@ -33,12 +33,29 @@ namespace NOR_WAY.Controllers
 
         public async Task<Avgang> FinnNesteAvgang(AvgangParam input)
         {
-            return await _db.FinnNesteAvgang(input);
+            if(ModelState.IsValid)
+            {
+                return await _db.FinnNesteAvgang(input);
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return null;
+            
         }
 
         public async Task<bool> FullforOrdre(KundeOrdre ordre)
         {
-            return await _db.FullforOrdre(ordre);
+            if(ModelState.IsValid)
+            {
+                bool returOK = await _db.FullforOrdre(ordre);
+                if(! returOK)
+                {
+                    _log.LogInformation("Ordren kunne ikke lagres!");
+                    return false;
+                }
+                return true;
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return false;
         }
     }
 }

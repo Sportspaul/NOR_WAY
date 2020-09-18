@@ -164,7 +164,7 @@ function stoppforslag(inputfelt, utskrift, stoppArray) {
     });
 
     inputfelt.on("keydown", function (e) {
-        var emnt = document.getElementById(this.id + "stoppListe");
+        var elmt = document.getElementById(this.id + "stoppListe");
         if (elmt) elmt = elmt.getElementsByTagName("div");
 
         // Hvis brukeren trykker piltast ned
@@ -196,7 +196,7 @@ function stoppforslag(inputfelt, utskrift, stoppArray) {
         if (fokusert >= elmt.length) fokusert = 0;
         if (fokusert < 0) fokusert = (elmt.length - 1);
 
-        // Legger til style-klasse for aktivt element
+        // Legger til style-klasse for aktivt element 
         elmt[fokusert].classList.add("forslag-active");
     }
 
@@ -207,12 +207,12 @@ function stoppforslag(inputfelt, utskrift, stoppArray) {
         }
     }
 
-    // Lukker listen med forslag til stopp
-    function lukkAlleLister(elmnt) {
+    // Lukker listen med forslag til stopp 
+    function lukkAlleLister(elmt) {
         var elmt = document.getElementsByClassName("stoppListe");
         for (var i = 0; i < elmt.length; i++) {
-            if (elmnt != x[i] && elmnt != inputfelt) {
-                elmt[i].parentNode.removeChild(x[i]);
+            if (elmt != elmt[i] && elmt != inputfelt) {
+                elmt[i].parentNode.removeChild(elmt[i]);
             }
         }
     }

@@ -5,7 +5,8 @@
     <title></title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="js/index.js?n=8"></script>
+    <script src="js/index.js?n=9"></script>
+    <script src="js/validering.js"></script>
     <link rel="stylesheet" href="Style/index.css">
 </head>
 <body>
@@ -14,10 +15,12 @@
         <form class="mt-4">
             <h5>Jeg skal reise fra</h5>
             <input type="text" id="startStopp" placeholder="Skriv inn stoppnavn" class="form-control" />
+            <span id="feilStartStopp" class="rodTekst"></span>
             <div id="auto1"></div>
             <h5 class="mt-4">Jeg skal reise til</h5>
             <input type="text" id="sluttStopp" placeholder="Skriv inn stoppnavn" class="form-control" />
             <div id="auto2"></div>
+            <span id="feilSluttStopp" class="rodTekst"></span>
             <h5 class="mt-4">Tidspunkt for min reise</h5>
             <input type="radio" id="avreiseEtter" name="avreiseEtter" value="true" checked />
             <label>Avreise etter</label>
@@ -25,8 +28,9 @@
             <input type="radio" id="ankomstFør" name="avreiseEtter" value="false" />
             <label>Ankomst før</label>
             <br />
-            <input type="date" id="dato" class="form-control" />
+            <input type="date" id="dato" class="form-control" onfocusout="validerDato(this.value)" />
             <input type="time" id="tidspunkt" class="form-control mt-1" value="12:00" />
+            <span id="feilDato" class="rodTekst"></span>
             <h5 class="mt-4">Billettype</h5>
             <div id="billetter">
                 <select id="billettype1" class="form-control billettype mb-1"></select>

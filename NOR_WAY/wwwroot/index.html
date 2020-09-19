@@ -7,39 +7,43 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="js/index.js?n=9"></script>
     <script src="js/validering.js"></script>
-    <link rel="stylesheet" href="Style/index.css">
+    <link rel="stylesheet" href="Style/index.css?n=1">
 </head>
 <body>
+    <nav>
+        <img src="https://www.nor-way.no/media/1171/nor-way_rgb_hovedlogo-01-4526.svg" class="mt-2 mb-2" />
+    </nav>
     <div class="content">
-        <img src="https://www.nor-way.no/media/1171/nor-way_rgb_hovedlogo-01-4526.svg" height="40" class="mt-4 mb-2"/>
-        <form class="mt-4">
-            <h5>Jeg skal reise fra</h5>
-            <input type="text" id="startStopp" placeholder="Skriv inn stoppnavn" class="form-control" />
-            <span id="feilStartStopp" class="rodTekst"></span>
-            <div id="auto1"></div>
-            <h5 class="mt-4">Jeg skal reise til</h5>
-            <input type="text" id="sluttStopp" placeholder="Skriv inn stoppnavn" class="form-control" />
-            <div id="auto2"></div>
-            <span id="feilSluttStopp" class="rodTekst"></span>
-            <h5 class="mt-4">Tidspunkt for min reise</h5>
-            <input type="radio" id="avreiseEtter" name="avreiseEtter" value="true" checked />
-            <label>Avreise etter</label>
-            &nbsp;|&nbsp;
-            <input type="radio" id="ankomstFør" name="avreiseEtter" value="false" />
-            <label>Ankomst før</label>
-            <br />
-            <input type="date" id="dato" class="form-control" onfocusout="validerDato(this.value)" />
-            <input type="time" id="tidspunkt" class="form-control mt-1" value="12:00" />
-            <span id="feilDato" class="rodTekst"></span>
-            <h5 class="mt-4">Billettype</h5>
-            <div id="billetter">
-                <select id="billettype1" class="form-control billettype mb-1"></select>
-            </div>
-            <input type="button" value="Legg til en billett" class="btn btn-sm btn-dark" onclick="leggTilBillett()" />
-            <input type="button" id="bestill" class="btn btn-md btn-primary mt-4 form-control" value="Finn reise" onclick="finnNesteAvgang()" />
-        </form>
-        <br />
-        <div id="avgang"></div>
+        <div class="shadowBox mt-3 mb-3">
+            <form>
+                <h5>Jeg skal reise fra</h5>
+                <input type="text" id="startStopp" placeholder="Skriv inn stoppnavn" class="form-control" />
+                <span id="feilStartStopp" class="rodTekst"></span>
+                <div id="auto1"></div>
+                <h5 class="mt-4">Jeg skal reise til</h5>
+                <input type="text" id="sluttStopp" placeholder="Skriv inn stoppnavn" class="form-control" />
+                <div id="auto2"></div>
+                <span id="feilSluttStopp" class="rodTekst"></span>
+                <h5 class="mt-4">Tidspunkt for min reise</h5>
+                <input type="radio" id="avreiseEtter" name="avreiseEtter" value="true" checked />
+                <label>Avreise etter</label>
+                &nbsp;|&nbsp;
+                <input type="radio" id="ankomstFør" name="avreiseEtter" value="false" />
+                <label>Ankomst før</label>
+                <br />
+                <input type="date" id="dato" class="form-control" onfocusout="validerDato(this.value)" />
+                <input type="time" id="tidspunkt" class="form-control mt-2" value="12:00" />
+                <span id="feilDato" class="rodTekst"></span>
+                <h5 class="mt-4">Billettype</h5>
+                <div id="billetter">
+                    <select id="billettype1" class="form-control billettype mb-2"></select>
+                </div>
+                <input type="button" value="Legg til en billett" class="btn btn-sm btn-dark font-weight-bold" onclick="leggTilBillett()" />
+                <input type="button" id="bestill" class="btn btn-md btn-primary mt-4 form-control font-weight-bold" value="Finn reise" onclick="finnNesteAvgang()" />
+            </form>
+            <div id="feilAvgang" class="rodTekst"></div>
+        </div>
+        <div id="avgang" class="mb-5 mt-5 shadowBox" style="display: none;"></div>
     </div>
 </body>
 </html>

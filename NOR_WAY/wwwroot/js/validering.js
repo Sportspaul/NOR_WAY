@@ -15,12 +15,10 @@ function validerStoppnavn(inId, utId) {
             }
             if (stoppnavn != "")
             {
-                $("#" + inId).css("border", "1px solid #f94e4f !important");
                 $(utId).html(`Vi tilbyr desverre ikke reiser ${preposisjon} "${stoppnavn}"`);
             }
             return false;
     } else {
-            $("#" + inId).css("border", "1px solid #ced4da !important");
             $(utId).html("");
             return true;
     }

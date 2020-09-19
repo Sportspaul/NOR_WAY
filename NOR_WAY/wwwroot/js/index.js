@@ -52,16 +52,24 @@ function finnNesteAvgang() {
     console.table(avgangParam);
 
     $.post("Buss/FinnNesteAvgang", avgangParam, function (avgang) {
-        ut = `<p>
-                Rutenavn: ${avgang.rutenavn}<br>
-                Linjekode: ${avgang.linjekode}<br>
-                Pris: ${avgang.pris}<br>
-                Avreise: ${avgang.avreise}<br>
-                Ankomst: ${avgang.ankomst}<br>
-                Reisetid: ${avgang.reisetid}<br>
-            </p>`;
+        ut = `<h5 class="mb-3">${avgang.rutenavn}, ${avgang.linjekode}</h5>
+              <h6 class="mt-3">20. November &nbsp;|&nbsp; ${startStopp}, 09:30 &nbsp;→&nbsp; ${sluttStopp}, 10:50</h6>
+              <h6 class="mt-3">Reisetid: ${avgang.reisetid} min</h6>
+              <h6 class="mt-3">Pris: ${avgang.pris} kr </h6>
+              <h5 class="mt-5">Epostadresse</h5>
+              <input type="text" id="epost" placeholder="Skriv inn epostadresse" class="form-control" />
+              <h5 class="mt-4">Kortdetaljer</h5>
+              <input type="text" id="kortdetaljer" placeholder="Skriv inn kortdetaljer" class="form-control" />
+              <input type="button" id="bestill" class="btn btn-md btn-success mt-5 form-control font-weight-bold" value="Bestill reise" />`;
 
-        $("#avgang").html(ut)
+        $("#feilAvgang").html("");
+        $("#avgang").css("display", "block");
+        $("#avgang").html(ut);
+        document.getElementById('avgang').scrollIntoView();
+    }).fail(function () {
+        $("#avgang").css("display", "none");
+        $("#avgang").html("");
+        $("#feilAvgang").html("Vi tilbyr deverre ikke reisen du ønsker");
     });
 }
 
@@ -70,7 +78,7 @@ function leggTilBillett() {
     const antall = $('.billettype').length;
     const id = `billettype${antall+1}`;
 
-    $('#billetter').append(`<select id="${id}" class="form-control billettype mb-1"></select>`);
+    $('#billetter').append(`<select id="${id}" class="form-control billettype mb-2"></select>`);
     console.log(billettyper);
     var $dropdown = $(`#${id}`);
     $.each(billettyper, function () {
@@ -181,14 +189,24 @@ function stoppforslag(inputfelt, utskrift, stoppArray) {
             leggTilAktiv(elmt);
 
         // Hvis brukeren trykker piltast opp
-        } else if (e.keyCode == 38) { 
+        } else if (e.keyCode == 38) {
 
             // Flytter pekeren til aktivt element en tilbake i listen 
             fokusert--;
 
             // Endrer style på aktivt element
             leggTilAktiv(elmt);
-        } 
+
+        // Hvis bruker trykker ENTER på en fokusert stopp i listen
+        } else if (e.keyCode == 13) {
+
+            e.preventDefault();
+            if (fokusert > -1) {
+                if (elmt) {
+                    elmt[fokusert].click();
+                }
+            }
+        }
     });
 
     // Setter et element til å være aktivt

@@ -2,6 +2,10 @@
     scroll-behavior: smooth;
 }
 
+body {
+    background-color: #f5f7ff;
+}
+
 * {
     box-sizing: border-box;
 }

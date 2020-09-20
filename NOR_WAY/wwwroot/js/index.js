@@ -2,6 +2,7 @@
     hentAlleStopp();
     hentAlleBillettyper();
     leggTilDato();
+    bakgrunnOverlay();
 });
 
 let StoppListe = new Array();
@@ -66,6 +67,7 @@ function finnNesteAvgang() {
         $("#avgang").css("display", "block");
         $("#avgang").html(ut);
         document.getElementById('avgang').scrollIntoView();
+        bakgrunnOverlay();
     }).fail(function () {
         $("#avgang").css("display", "none");
         $("#avgang").html("");
@@ -245,4 +247,10 @@ function stoppforslag(inputfelt, utskrift, stoppArray) {
         validerStoppnavn("startStopp", "#feilStartStopp");
         validerStoppnavn("sluttStopp", "#feilSluttStopp");
     });
+}
+
+function bakgrunnOverlay() {
+    var h = $(document).height();
+    $("#overlay").css('height', h);
+    console.log(h);
 }

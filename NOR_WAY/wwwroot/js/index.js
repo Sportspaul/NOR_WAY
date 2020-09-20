@@ -14,8 +14,8 @@ function hentAlleStopp() {
             stoppListe.push(alleStopp[i].navn)
         }
         StoppListe = stoppListe;
-        stoppforslag($("#startStopp"), $("#auto1"), stoppListe);
-        stoppforslag($("#sluttStopp"), $("#auto2"), stoppListe);
+        stoppforslag($("#startStopp"), $("#auto1"), stoppListe, $("#feilStartStopp"));
+        stoppforslag($("#sluttStopp"), $("#auto2"), stoppListe, $("#feilSluttStopp"));
     });
 }
 
@@ -126,7 +126,7 @@ function titleCase(str) {
 }
 
 // function for å gi brukeren live-stoppforslag,
-function stoppforslag(inputfelt, utskrift, stoppArray) {
+function stoppforslag(inputfelt, utskrift, stoppArray, feilmelding) {
     var fokusert;
 
     // Eventlisner på intput feltet 
@@ -149,6 +149,7 @@ function stoppforslag(inputfelt, utskrift, stoppArray) {
 
             // Sjekker om stopp i listen starter med de samme bokstavene som input
             if (stoppArray[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                feilmelding.html("");
 
                 // Opretter en div for hvert stopp som marcher
                 stoppElement = document.createElement("DIV");

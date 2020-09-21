@@ -296,23 +296,40 @@ namespace NOR_WAY.DAL
 
         public async Task<List<Billettyper>> HentAlleBillettyper()
         {
-            List<Billettyper> alleBillettyper = await _db.Billettyper.Select(b => new Billettyper
+            try
             {
-                Billettype = b.Billettype,
-                Rabattsats = b.Rabattsats
-            }).ToListAsync();
+                List<Billettyper> alleBillettyper = await _db.Billettyper.Select(b => new Billettyper
+                {
+                    Billettype = b.Billettype,
+                    Rabattsats = b.Rabattsats
+                }).ToListAsync();
 
-            return alleBillettyper;
+                return alleBillettyper;
+            } catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return null;
+            }
+            
         }
 
         public async Task<List<Stopp>> HentAlleStopp()
         {
-            List<Stopp> alleStopp = await _db.Stopp.Select(s => new Stopp
-            {
-                Navn = s.Navn
-            }).ToListAsync();
+            try {
+                List<Stopp> alleStopp = await _db.Stopp.Select(s => new Stopp
+                {
+                    Navn = s.Navn
+                }).ToListAsync();
 
-            return alleStopp;
+                return alleStopp;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return null;
+            }
+
+            
         }
     }
 }

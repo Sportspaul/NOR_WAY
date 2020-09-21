@@ -11,7 +11,7 @@
 *.sln.docstates
 
 #Loggfiler skal ignoreres
-~/NOR_WAY/Logs
+NOR_WAY/Logs/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

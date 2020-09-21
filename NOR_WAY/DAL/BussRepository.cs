@@ -59,10 +59,10 @@ namespace NOR_WAY.DAL
             // Beregner prisen basert på startpris og antall stopp
             int antallStopp = stoppNummer2 - stoppNummer1;
 
-            //TODO: Fikse billettyper listen via frontend
+            // TODO: Fikse billettyper listen via frontend
             List<string> billettyper = new List<string>();
             billettyper.Add("Student");
-            billettyper.Add("Voksen");
+            billettyper.Add("Honnør");
             int pris = await BeregnPris(fellesRute, antallStopp, billettyper);
 
             // Opretter Avgang-objektet som skal sendes til klienten
@@ -198,14 +198,14 @@ namespace NOR_WAY.DAL
             }
 
             // Finne totalpris
-            int totalpris = 0;
+            double totalpris = 0;
             foreach(int rabbattsats in rabbattsatser)
             {
-                int billettPris = maxPris * (rabbattsats / 100 + 1); // +1 (0.5 -> 1.5)
+                double billettPris = ((double)maxPris) * (1 - (double)rabbattsats / 100); // 1 - 0.25 = 0.75
                 totalpris += billettPris;
             }
 
-            return totalpris;
+            return (int)Math.Round(totalpris);
         }
 
         // Endrer avreisetiden hvis påstigning ikke er første stopp i ruten

@@ -82,9 +82,8 @@ namespace NOR_WAY_Tests
                 Epost = "hvrustad@gmail.com",
                 StartStopp = "Bergen",
                 SluttStopp = "Trondheim",
-                Sum = 379,
                 Linjekode = "NW431",
-                Avganger = "2",
+                AvgangId = 2,
                 Billettype = billettype
             };
 
@@ -92,36 +91,15 @@ namespace NOR_WAY_Tests
             var bussController = new BussController(mockRepo.Object, mockLog.Object);
 
         // Act
-            bool resultat = await bussController.FullforOrdre(kundeOrdre);
+            var resultat = await bussController.FullforOrdre(kundeOrdre) as OkObjectResult;
+
 
         // Assert
-            Assert.True(resultat);
+            Assert.Equal("Ordren ble lagret!", resultat.Value);
 
 
 
-        /*
-            var ordre = new Ordre()
-            {
-                Epost = "hvrustad@gmail.com",
-                StartStopp = "Bergen",
-                SluttStopp = "Trondheim",
-                Sum = 379,
-                Rute = NW431
-                {
-                    Linjekode = "NW431",
-                    Rutenavn = "Fjordekspressen",
-                    Startpris = 79,
-                    TilleggPerStopp = 30,
-                    Kapasitet = 55
-                },
-                Avgang = 1
-                {
-                    Id = 1,
-                    Avreise = date1,
-                    SolgteBilletter = 0,
-                    Rute = NW431Rute
-                };
-        */
+        
         }
     }
 }

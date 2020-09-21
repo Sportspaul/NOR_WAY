@@ -39,7 +39,9 @@ namespace NOR_WAY.Controllers
             if(ModelState.IsValid)
             {
                 Avgang nesteAvgang = await _db.FinnNesteAvgang(input);
-                if (nesteAvgang == null) { return BadRequest("Feil i inputvalideringen på server"); }
+                if (nesteAvgang == null) {
+                    _log.LogInformation("Feil i inputvalideringen på server");
+                    return BadRequest("Feil i inputvalideringen på server"); }
                 return Ok(nesteAvgang);
             }
                 

@@ -8,7 +8,6 @@ using NOR_WAY.DAL;
 using NOR_WAY.Model;
 
 
-//Dette er en test
 namespace NOR_WAY.Controllers
 {
     [Route("[controller]/[action]")]

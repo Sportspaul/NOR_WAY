@@ -35,7 +35,6 @@ namespace NOR_WAY.Controllers
         {
             return await _db.FinnNesteAvgang(input);
         }
-
         public async Task<bool> FullforOrdre(KundeOrdre ordre)
         {
             return await _db.FullforOrdre(ordre);

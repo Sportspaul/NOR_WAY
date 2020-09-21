@@ -49,13 +49,13 @@ namespace NOR_WAY.DAL
 
                 // Injiserer Billettypene
                 Billettyper barn = new Billettyper() { Billettype = "Barn", Rabattsats = 50 };
-                Billettyper voksne = new Billettyper() { Billettype = "Voksne", Rabattsats = 0 };
                 Billettyper student = new Billettyper() { Billettype = "Student", Rabattsats = 25 };
                 Billettyper honnor = new Billettyper() { Billettype = "Honnør", Rabattsats = 25 };
+                Billettyper voksne = new Billettyper() { Billettype = "Voksne", Rabattsats = 0 };
                 context.Billettyper.Add(barn);
-                context.Billettyper.Add(voksne);
                 context.Billettyper.Add(student);
                 context.Billettyper.Add(honnor);
+                context.Billettyper.Add(voksne);
 
                 DateTime dato1 = new DateTime(2020, 10, 25, 8, 30, 00);
                 Avganger avgang1 = new Avganger() { Avreise = dato1, SolgteBilletter = 0, Rute = NW431Rute };

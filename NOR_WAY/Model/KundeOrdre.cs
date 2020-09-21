@@ -13,12 +13,13 @@ namespace NOR_WAY.Model
         public string StartStopp { get; set; }
         [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,20}")]
         public string SluttStopp { get; set; }
-        public int Sum { get; set; }
+        
 
         // Foreign Keys
         [RegularExpression(@"(NW)[0-9]{1,4}")] //Linjekoden starter med NW for Norway
         public string Linjekode { get; set; } // Ruter FK
-        public string Avganger { get; set; } // Avgang FK //TODO: legge til RegEx når det er klart hva gyldig format er
+        // TODO: Oppklare om dette skal være en int
+        public int AvgangId { get; set; } // Avgang FK //TODO: legge til RegEx når det er klart hva gyldig format er
         public List<string> Billettype { get; set; } // Til Ordrelinjer
     }
 }

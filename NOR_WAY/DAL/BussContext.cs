@@ -49,8 +49,8 @@ namespace NOR_WAY.DAL
     {
         public int Id { get; set; } // PK
         public string Epost { get; set; }
-        public string StartStopp { get; set; }
-        public string SluttStopp { get; set; }
+        virtual public Stopp StartStopp { get; set; }
+        virtual public Stopp SluttStopp { get; set; }
         public int Sum { get; set; }
 
         // Foreign Keys
@@ -60,7 +60,7 @@ namespace NOR_WAY.DAL
 
     public class Ordrelinjer
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         // Foreign Keys
         virtual public Billettyper Billettype { get; set; } // FK

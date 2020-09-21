@@ -58,5 +58,61 @@ namespace NOR_WAY_Tests
             Assert.Equal(forventetAvgang.Ankomst, resultat.Ankomst);
             Assert.Equal(forventetAvgang.Reisetid, resultat.Reisetid);
         }
+
+        [Fact]
+        public async Task FullforOrdreTest()
+        {
+
+        // Arrange
+            var billettype = new List<string>();
+            billettype.Add("Student");
+            billettype.Add("Barn");
+
+            var kundeOrdre = new KundeOrdre
+            {
+                Epost = "hvrustad@gmail.com",
+                StartStopp = "Bergen",
+                SluttStopp = "Trondheim",
+                Sum = 379,
+                Linjekode = "NW431",
+                Avganger = "2",
+                Billettype = billettype
+            };
+
+            mockRepo.Setup(br => br.FullforOrdre(kundeOrdre)).ReturnsAsync(true);
+            var bussController = new BussController(mockRepo.Object, mockLog.Object);
+
+        // Act
+            bool resultat = await bussController.FullforOrdre(kundeOrdre);
+
+        // Assert
+            Assert.True(resultat);
+
+
+
+        /*
+            var ordre = new Ordre()
+            {
+                Epost = "hvrustad@gmail.com",
+                StartStopp = "Bergen",
+                SluttStopp = "Trondheim",
+                Sum = 379,
+                Rute = NW431
+                {
+                    Linjekode = "NW431",
+                    Rutenavn = "Fjordekspressen",
+                    Startpris = 79,
+                    TilleggPerStopp = 30,
+                    Kapasitet = 55
+                },
+                Avgang = 1
+                {
+                    Id = 1,
+                    Avreise = date1,
+                    SolgteBilletter = 0,
+                    Rute = NW431Rute
+                };
+        */
+        }
     }
 }

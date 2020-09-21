@@ -55,7 +55,12 @@ namespace NOR_WAY.DAL
 
             // Beregner prisen basert på startpris og antall stopp
             int antallStopp = stoppNummer2 - stoppNummer1;
-            int pris = BeregnPris(fellesRute, antallStopp);
+
+            //TODO: Fikse billettyper listen via frontend
+            List<string> billettyper = new List<string>();
+            billettyper.Add("Student");
+            billettyper.Add("Voksen");
+            int pris = await BeregnPris(fellesRute, antallStopp, billettyper);
 
             // Opretter Avgang-objektet som skal sendes til klienten
             Avgang utAvgang = new Avgang
@@ -163,19 +168,104 @@ namespace NOR_WAY.DAL
         }
 
 
-        private int BeregnPris(Ruter fellesRute, int antallStopp)
+        private async Task<int> BeregnPris(Ruter rute, int antallStopp, List<string> billettyper)
         {
-            int startpris = fellesRute.Startpris;
-            int tilleggPerStopp = fellesRute.TilleggPerStopp;
-            int totalpris = startpris + tilleggPerStopp * antallStopp;
+            // Finner den voksenbillett pris for en reise
+            int startpris = rute.Startpris;
+            int tilleggPerStopp = rute.TilleggPerStopp;
+            int maxPris = startpris + tilleggPerStopp * antallStopp;
+
+            // Henter liste med alle billettyper i DB
+            List<Billettyper> billettypeListe = await _db.Billettyper.Select(b => new Billettyper
+            {
+                Billettype = b.Billettype,
+                Rabattsats = b.Rabattsats
+            }).ToListAsync();
+
+            // Finner rabattsatsen for en billett
+            var rabbattsatser = new List<int>();
+            foreach (string billettype in billettyper)
+            {
+                int i = 0;
+                while (billettypeListe[i].Billettype != billettyper[i])
+                {
+                    i++;
+                }
+                rabbattsatser.Add(billettypeListe[i].Rabattsats);
+            }
+
+            // Finne totalpris
+            int totalpris = 0;
+            foreach(int rabbattsats in rabbattsatser)
+            {
+                int billettPris = maxPris * (rabbattsats / 100 + 1); // +1 (0.5 -> 1.5)
+                totalpris += billettPris;
+            }
 
             return totalpris;
         }
 
-        
-        public async Task<bool> FullforOrdre(KundeOrdre ordre)
+        // Fullfør ordre
+        public async Task<bool> FullforOrdre(KundeOrdre kundeOrdreParam)
         {
-            throw new NotImplementedException();
+            // Henter ut ruten som tilhører kundeOrdreParam
+            Ruter rute = await _db.Ruter.FirstOrDefaultAsync(r => r.Linjekode == kundeOrdreParam.Linjekode);
+            
+            // Henter Avgangens Id
+            Avganger avgang = await _db.Avganger.FirstOrDefaultAsync(a => a.Id == kundeOrdreParam.AvgangId);
+
+            // Finner startStopp, og finner stoppnummeret i ruten
+            Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(a => a.Navn == kundeOrdreParam.StartStopp);
+            int stoppNummer1 = await FinnStoppNummer(startStopp, rute);
+
+            // Finner sluttStopp, og finner stoppnummeret i ruten
+            Stopp sluttStopp = await _db.Stopp.FirstOrDefaultAsync(a => a.Navn == kundeOrdreParam.SluttStopp);
+            int stoppNummer2 = await FinnStoppNummer(sluttStopp, rute);
+
+            // Regner ut antall stopp
+            int antallStopp = stoppNummer2 - stoppNummer1;
+
+            // Finner summen for reisen
+            // antallStopp, rute, liste med billettype
+            int sum = await BeregnPris(rute, antallStopp, kundeOrdreParam.Billettype);
+
+
+
+            // Lager en ordre basert på kundeOrdreParam, rute og avgang
+            var ordre = new Ordre
+            {
+                Epost = kundeOrdreParam.Epost,
+                StartStopp = startStopp,
+                SluttStopp = startStopp,
+                Sum = sum,
+                Rute = rute,
+                Avgang = avgang
+            };
+
+            // Legger ordren til i databasen
+            _db.Ordre.Add(ordre);
+
+            // Går gjennom listen med billettyper
+            foreach (string billettype in kundeOrdreParam.Billettype)
+            {
+                // Henter ut en billettype i listen
+                Billettyper billettypeObjekt = await _db.Billettyper.FirstOrDefaultAsync(a => a.Billettype == billettype);
+
+                // Lager en ordrelinje
+                var ordrelinje = new Ordrelinjer
+                {
+                    Billettype = billettypeObjekt,
+                    Ordre = ordre
+                };
+
+                // Legger denne ordrelinjen til databasen
+                _db.Ordrelinjer.Add(ordrelinje);
+            }
+
+            //Lagrer alt som er blitt lagt til i databasen
+            _db.SaveChanges();
+
+            return true;
         }
 
         public async Task<List<Billettyper>> HentAlleBillettyper()

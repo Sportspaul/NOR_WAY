@@ -10,6 +10,9 @@
 *.userosscache
 *.sln.docstates
 
+#Loggfiler skal ignoreres
+NOR_WAY/Logs/
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
@@ -337,5 +340,6 @@ ASALocalRun/
 .localhistory/
 
 # BeatPulse healthcheck temp database
+healthchecksdb
 healthchecksdb
 /NOR_WAY/MetodePlanlegging

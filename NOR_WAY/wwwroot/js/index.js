@@ -1,17 +1,23 @@
 ﻿$(function () {
     hentAlleStopp();
     hentAlleBillettyper();
+    leggTilDato();
+    bakgrunnOverlay();
 });
 
-let billettyper;
+let StoppListe = new Array();
 
 function hentAlleStopp() {
     $.get("Buss/HentAlleStopp", function (alleStopp) {
-        console.table(alleStopp)
-        printStopp(alleStopp);
+        let stoppListe = new Array();
+        for (let i = 0; i < alleStopp.length; i++) {
+            stoppListe.push(alleStopp[i].navn)
+        }
+        StoppListe = stoppListe;
+        stoppforslag($("#startStopp"), $("#auto1"), stoppListe, $("#feilStartStopp"));
+        stoppforslag($("#sluttStopp"), $("#auto2"), stoppListe, $("#feilSluttStopp"));
     });
 }
-
 
 function hentAlleBillettyper() {
     $.get("Buss/HentAlleBillettyper", function (alleBillettyper) {
@@ -19,7 +25,7 @@ function hentAlleBillettyper() {
         var $dropdown = $("#billettype1");
         billettyper = alleBillettyper;
         $.each(alleBillettyper, function () {
-            $dropdown.append($("<option />").val(this.billettype).text(this.billettype + ", -" + this.rabattsats + "%"));
+            $dropdown.append($("<option />").val(this.billettype).text(this.billettype));
         });
     });
 }
@@ -47,16 +53,25 @@ function finnNesteAvgang() {
     console.table(avgangParam);
 
     $.post("Buss/FinnNesteAvgang", avgangParam, function (avgang) {
-        ut = `<p>
-                Rutenavn: ${avgang.rutenavn}<br>
-                Linjekode: ${avgang.linjekode}<br>
-                Pris: ${avgang.pris}<br>
-                Avreise: ${avgang.avreise}<br>
-                Ankomst: ${avgang.avreise}<br>
-                Reisetid: ${avgang.reisetid}<br>
-            </p>`;
+        ut = `<h5 class="mb-3">${avgang.rutenavn}, ${avgang.linjekode}</h5>
+              <h6 class="mt-3">20. November &nbsp;|&nbsp; ${startStopp}, 09:30 &nbsp;→&nbsp; ${sluttStopp}, 10:50</h6>
+              <h6 class="mt-3">Reisetid: ${avgang.reisetid} min</h6>
+              <h6 class="mt-3">Pris: ${avgang.pris} kr </h6>
+              <h5 class="mt-5">Epostadresse</h5>
+              <input type="text" id="epost" placeholder="Skriv inn epostadresse" class="form-control" />
+              <h5 class="mt-4">Kortdetaljer</h5>
+              <input type="text" id="kortdetaljer" placeholder="Skriv inn kortdetaljer" class="form-control" />
+              <input type="button" id="bestill" class="btn btn-md btn-success mt-5 form-control font-weight-bold" value="Bestill reise" />`;
 
-        $("#avgang").html(ut)
+        $("#feilAvgang").html("");
+        $("#avgang").css("display", "block");
+        $("#avgang").html(ut);
+        document.getElementById('avgang').scrollIntoView();
+        bakgrunnOverlay();
+    }).fail(function () {
+        $("#avgang").css("display", "none");
+        $("#avgang").html("");
+        $("#feilAvgang").html("Vi tilbyr deverre ikke reisen du ønsker");
     });
 }
 
@@ -65,21 +80,29 @@ function leggTilBillett() {
     const antall = $('.billettype').length;
     const id = `billettype${antall+1}`;
 
-    $('#billetter').append(`<select id="${id}" class="form-control billettype"></select>`);
+    $('#billetter').append(`<select id="${id}" class="form-control billettype mb-2"></select>`);
     console.log(billettyper);
     var $dropdown = $(`#${id}`);
     $.each(billettyper, function () {
-        $dropdown.append($("<option />").val(this.billettype).text(this.billettype + ", -" + this.rabattsats + "%"));
+        $dropdown.append($("<option />").val(this.billettype).text(this.billettype));
     });
+}
+
+function leggTilDato() {
+    (function () {
+        var date = new Date().toISOString().substring(0, 10),
+            field = document.querySelector('#dato');
+        field.value = date;
+    })()
 }
 
 // Kun for testing
 
 function printStopp(alleStopp) {
-    let stoppListe = new Array();
+    let stoppListe = new stoppListeay();
 
     for (stopp of alleStopp) {
-        stoppListe.push(stopp.navn.toLowerCase());
+        stoppListe.push(stopp.toLowerCase());
     }
 
     let input = "O"
@@ -100,4 +123,135 @@ function titleCase(str) {
         splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
     }
     return splitStr.join(' ');
+}
+
+// function for å gi brukeren live-stoppforslag,
+function stoppforslag(inputfelt, utskrift, stoppArray, feilmelding) {
+    var fokusert;
+
+    // Eventlisner på intput feltet 
+    inputfelt.on("input", function (e) {
+        let stoppListe, stoppElement, i
+        let val = this.value;
+
+        // Lukker eksiterende liste
+        lukkAlleLister();
+        if (!val) { return false; }
+        fokusert = -1;
+
+        // Lager en div som vil inneholde stoppene
+        stoppListe = document.createElement("div");
+        stoppListe.setAttribute("id", this.id + "stoppListe");
+        stoppListe.setAttribute("class", "stoppListe");
+        this.append(stoppListe);
+
+        for (i = 0; i < stoppArray.length; i++) {
+
+            // Sjekker om stopp i listen starter med de samme bokstavene som input
+            if (stoppArray[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                feilmelding.html("");
+
+                // Opretter en div for hvert stopp som marcher
+                stoppElement = document.createElement("DIV");
+
+                // Gjør bokstavene som matcher bold
+                stoppElement.innerHTML = "<strong>" + stoppArray[i].substr(0, val.length) + "</strong>";
+                stoppElement.innerHTML += stoppArray[i].substr(val.length);
+
+                // Tar vare på verdien til stoppene som matcher i et input feltet
+                stoppElement.innerHTML += "<input type='hidden' value='" + stoppArray[i] + "'>";
+
+                // Event listner for om noen trykker på et av de foreslåtte stoppene
+                stoppElement.addEventListener("click", function (e) {
+
+                    // Fyller input feltet med stoppet som brukeren trykker på 
+                    inputfelt.val(this.getElementsByTagName("input")[0].value);
+
+                    // Lukker listen med forslag til stopp
+                    lukkAlleLister();
+                });
+
+                // Legger stopp elementet til stoppListe elementet og skriver listen ut til brukeren
+                stoppListe.appendChild(stoppElement);
+                utskrift.append(stoppListe);
+            }
+        }
+    });
+
+    inputfelt.on("keydown", function (e) {
+        var elmt = document.getElementById(this.id + "stoppListe");
+        if (elmt) elmt = elmt.getElementsByTagName("div");
+
+        // Hvis brukeren trykker piltast ned
+        if (e.keyCode == 40) {
+
+            // Flytter pekeren til aktivt element en videre i listen
+            fokusert++;
+
+            // Endrer style på aktivt element
+            leggTilAktiv(elmt);
+
+        // Hvis brukeren trykker piltast opp
+        } else if (e.keyCode == 38) {
+
+            // Flytter pekeren til aktivt element en tilbake i listen 
+            fokusert--;
+
+            // Endrer style på aktivt element
+            leggTilAktiv(elmt);
+
+        // Hvis bruker trykker ENTER på en fokusert stopp i listen
+        } else if (e.keyCode == 13) {
+
+            e.preventDefault();
+            if (fokusert > -1) {
+                if (elmt) {
+                    elmt[fokusert].click();
+                }
+            }
+        }
+    });
+
+    // Setter et element til å være aktivt
+    function leggTilAktiv(elmt) {
+        if (!elmt) return false;
+
+        // Fjerner style for aktivt element fra alle elementene
+        fjernAktiv(elmt);
+        if (fokusert >= elmt.length) fokusert = 0;
+        if (fokusert < 0) fokusert = (elmt.length - 1);
+
+        // Legger til style-klasse for aktivt element 
+        elmt[fokusert].classList.add("forslag-active");
+    }
+
+    // Fjerner style-klassen for aktivt element fra alle elementer
+    function fjernAktiv(elmt) {
+        for (var i = 0; i < elmt.length; i++) {
+            elmt[i].classList.remove("forslag-active");
+        }
+    }
+
+    // Lukker listen med forslag til stopp 
+    function lukkAlleLister(elmt) {
+        var elmt = document.getElementsByClassName("stoppListe");
+        for (var i = 0; i < elmt.length; i++) {
+            if (elmt != elmt[i] && elmt != inputfelt) {
+                elmt[i].parentNode.removeChild(elmt[i]);
+            }
+        }
+    }
+
+    // Lukker listen med stopp hvis bruker trykker utenfor listen
+    $(document).on("click", function (e) {
+        lukkAlleLister(e.target);
+        validerStoppnavn("startStopp", "#feilStartStopp");
+        validerStoppnavn("sluttStopp", "#feilSluttStopp");
+    });
+}
+
+function bakgrunnOverlay() {
+    var h = $(document).height();
+    $("#overlay").css('height', h);
+    console.log(h);
 }

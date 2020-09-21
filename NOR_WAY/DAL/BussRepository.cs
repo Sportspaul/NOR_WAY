@@ -26,6 +26,7 @@ namespace NOR_WAY.DAL
             // Henter avgang- og påstignings-stoppet fra DB
             Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == input.StartStopp);
             Stopp sluttStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == input.SluttStopp);
+            if (startStopp.Equals(sluttStopp)) { return null; }
 
             // Finner alle Rutene som inkluderer påstigning og som inkluderer avstigning
             List<Ruter> startStoppRuter = await FinnRuter(startStopp);
@@ -33,10 +34,12 @@ namespace NOR_WAY.DAL
 
             // Finner ruten påstigning og avstigning har til felles
             Ruter fellesRute = FinnFellesRute(startStoppRuter, sluttStoppRuter);
+            if (fellesRute == null) { return null; }
 
             // Finne ut hvilket stoppNummer påstigning og avstigning har i den felles ruten
             int stoppNummer1 = await FinnStoppNummer(startStopp, fellesRute);
             int stoppNummer2 = await FinnStoppNummer(sluttStopp, fellesRute);
+            if (stoppNummer1 > stoppNummer2) { return null; }
 
             // Beregner reisetiden fra stopp påstigning til avstigning
             int reisetid = await BeregnReisetid(stoppNummer1, stoppNummer2, fellesRute);
@@ -45,13 +48,13 @@ namespace NOR_WAY.DAL
             Avganger nesteAvgang = await NesteAvgang(fellesRute, reisetid,
             input.AvreiseEtter, input.Dato, input.Tidspunkt);
 
-            // Konverterer Avreise (DateTime) til en stringvariabel for å 
-            string utAvreise = nesteAvgang.Avreise.ToString("yyyy-MM-dd HH:mm");
+            // Beregner avreise og ankomst
+            DateTime avreise = await BeregnAvreisetid(nesteAvgang.Avreise, stoppNummer1, fellesRute);
+            DateTime ankomst = avreise.AddMinutes(reisetid);
 
-            // Beregner ankomst ved å legge til reisetiden på avreisetidspunktet
-            string utAnkomst = nesteAvgang.Avreise
-                .AddMinutes(reisetid)
-                .ToString("yyyy-MM-dd HH:mm");
+            // Konverterer avreise og ankomst fra DateTime til en strings
+            string utAvreise = avreise.ToString("yyyy-MM-dd HH:mm");
+            string utAnkomst = ankomst.ToString("yyyy-MM-dd HH:mm"); 
 
             // Beregner prisen basert på startpris og antall stopp
             int antallStopp = stoppNummer2 - stoppNummer1;
@@ -69,7 +72,7 @@ namespace NOR_WAY.DAL
                 Rutenavn = fellesRute.Rutenavn,
                 Linjekode = fellesRute.Linjekode,
                 Pris = pris,
-                Avreise = utAvreise,
+                Avreise = utAvreise, 
                 Ankomst = utAnkomst,
                 Reisetid = reisetid
             };

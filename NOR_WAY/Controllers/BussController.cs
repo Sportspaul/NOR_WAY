@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL;
 using NOR_WAY.Model;
 
+
 namespace NOR_WAY.Controllers
 {
     [Route("[controller]/[action]")]
@@ -21,23 +22,45 @@ namespace NOR_WAY.Controllers
             _log = log;
         }
 
-        public async Task<List<Stopp>> HentAlleStopp()
+        public async Task<ActionResult> HentAlleStopp()
         {
-            return await _db.HentAlleStopp();
+               List<Stopp> alleStopp = await _db.HentAlleStopp();
+               return Ok(alleStopp); // returnerer alltid OK, null ved tom DB
         }
 
-        public async Task<List<Billettyper>> HentAlleBillettyper()
+        public async Task<ActionResult> HentAlleBillettyper()
         {
-            return await _db.HentAlleBillettyper();
+            List<Billettyper> billettypene = await _db.HentAlleBillettyper();
+            return Ok(billettypene); // returnerer alltid OK, null ved tom DB
         }
 
-        public async Task<Avgang> FinnNesteAvgang(AvgangParam input)
+        public async Task<ActionResult> FinnNesteAvgang(AvgangParam input)
         {
-            return await _db.FinnNesteAvgang(input);
+            if(ModelState.IsValid)
+            {
+                Avgang nesteAvgang = await _db.FinnNesteAvgang(input);
+                if (nesteAvgang == null) { return BadRequest("Feil i inputvalideringen på server"); }
+                return Ok(nesteAvgang);
+            }
+                
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalideringen på server");
         }
-        public async Task<bool> FullforOrdre(KundeOrdre ordre)
+
+        public async Task<ActionResult> FullforOrdre(KundeOrdre ordre)
         {
-            return await _db.FullforOrdre(ordre);
+            if(ModelState.IsValid)
+            {
+                bool returOK = await _db.FullforOrdre(ordre);
+                if(! returOK)
+                {
+                    _log.LogInformation("Ordren kunne ikke lagres!");
+                    return BadRequest("Ordren kunne ikke lagres!");
+                }
+                return Ok("Ordren ble lagret!");
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalidering på server");
         }
     }
 }

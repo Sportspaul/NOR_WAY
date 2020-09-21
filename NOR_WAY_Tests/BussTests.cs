@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NOR_WAY.Controllers;
@@ -16,6 +17,12 @@ namespace NOR_WAY_Tests
 
         private readonly Mock<IBussRepository> mockRepo = new Mock<IBussRepository>();
         private readonly Mock<ILogger<BussController>> mockLog = new Mock<ILogger<BussController>>();
+        private readonly ITestOutputHelper output;
+
+        public BussTests(ITestOutputHelper output)
+        {
+            this.output = output;
+        }
 
 
         [Fact]
@@ -44,19 +51,21 @@ namespace NOR_WAY_Tests
             
             mockRepo.Setup(b => b.FinnNesteAvgang(param)).ReturnsAsync(forventetAvgang);
             var bussController = new BussController(mockRepo.Object, mockLog.Object);
-            Avgang resultat = await bussController.FinnNesteAvgang(param);
+            var resultat = await bussController.FinnNesteAvgang(param) as OkObjectResult;
+            Avgang avgang = (Avgang)resultat.Value;
 
-            Console.WriteLine("AvgangId " + resultat.AvgangId);
-            Console.WriteLine("Rutenavn " + resultat.Rutenavn);
-            Console.WriteLine("Reisetid " + resultat.Reisetid);
 
-            Assert.Equal(forventetAvgang.AvgangId, resultat.AvgangId);
-            Assert.Equal(forventetAvgang.Rutenavn, resultat.Rutenavn);
-            Assert.Equal(forventetAvgang.Linjekode, resultat.Linjekode);
-            Assert.Equal(forventetAvgang.Pris, resultat.Pris);
-            Assert.Equal(forventetAvgang.Avreise, resultat.Avreise);
-            Assert.Equal(forventetAvgang.Ankomst, resultat.Ankomst);
-            Assert.Equal(forventetAvgang.Reisetid, resultat.Reisetid);
+            output.WriteLine("AvgangId " + avgang.AvgangId );
+            output.WriteLine("Rutenavn " + avgang.Rutenavn);
+            output.WriteLine("Reisetid " + avgang.Reisetid);
+
+            Assert.Equal(forventetAvgang.AvgangId, avgang.AvgangId);
+            Assert.Equal(forventetAvgang.Rutenavn, avgang.Rutenavn);
+            Assert.Equal(forventetAvgang.Linjekode, avgang.Linjekode);
+            Assert.Equal(forventetAvgang.Pris, avgang.Pris);
+            Assert.Equal(forventetAvgang.Avreise, avgang.Avreise);
+            Assert.Equal(forventetAvgang.Ankomst, avgang.Ankomst);
+            Assert.Equal(forventetAvgang.Reisetid, avgang.Reisetid);
         }
 
         [Fact]

@@ -26,7 +26,9 @@ namespace NOR_WAY.DAL
             // Henter avgang- og påstignings-stoppet fra DB
             Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == input.StartStopp);
             Stopp sluttStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == input.SluttStopp);
-            if (startStopp.Equals(sluttStopp)) { return null; }
+            if (startStopp.Equals(sluttStopp)) {
+                _log.LogInformation("Sluttstopp kan ikke være lik startstopp!");
+                return null; }
 
             // Finner alle Rutene som inkluderer påstigning og som inkluderer avstigning
             List<Ruter> startStoppRuter = await FinnRuter(startStopp);
@@ -34,12 +36,16 @@ namespace NOR_WAY.DAL
 
             // Finner ruten påstigning og avstigning har til felles
             Ruter fellesRute = FinnFellesRute(startStoppRuter, sluttStoppRuter);
-            if (fellesRute == null) { return null; }
+            if (fellesRute == null) {
+                _log.LogInformation("Vi fant ingen rute med disse stoppene!");
+                return null; }
 
             // Finne ut hvilket stoppNummer påstigning og avstigning har i den felles ruten
             int stoppNummer1 = await FinnStoppNummer(startStopp, fellesRute);
             int stoppNummer2 = await FinnStoppNummer(sluttStopp, fellesRute);
-            if (stoppNummer1 > stoppNummer2) { return null; }
+            if (stoppNummer1 > stoppNummer2) {
+                _log.LogInformation("Seneste stopp har ikke lavere stoppnummer enn tidligste stopp!");
+                return null; }
 
             // Beregner reisetiden fra stopp påstigning til avstigning
             int reisetid = await BeregnReisetid(stoppNummer1, stoppNummer2, fellesRute);

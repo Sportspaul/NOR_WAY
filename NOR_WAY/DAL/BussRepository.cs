@@ -190,7 +190,7 @@ namespace NOR_WAY.DAL
             foreach (string billettype in billettyper)
             {
                 int i = 0;
-                while (billettypeListe[i].Billettype != billettyper[i])
+                while (billettypeListe[i].Billettype != billettype)
                 {
                     i++;
                 }
@@ -206,6 +206,29 @@ namespace NOR_WAY.DAL
             }
 
             return totalpris;
+        }
+
+        // Endrer avreisetiden hvis påstigning ikke er første stopp i ruten
+        private async Task<DateTime> BeregnAvreisetid(DateTime avreise, int stoppNummer, Ruter fellesRute)
+        {
+            // Hvis påstigning er første stopp i ruten endres ikke avreise
+            if (stoppNummer == 1)
+            {
+                return avreise;
+            }
+            else
+            {
+                List<int> minTilNesteStoppList = await _db.RuteStopp
+                    .Where(rs => rs.StoppNummer < stoppNummer && rs.Rute == fellesRute)
+                    .Select(rs => rs.MinutterTilNesteStopp)
+                    .ToListAsync();
+                int totalTid = 0;
+                foreach (int minutter in minTilNesteStoppList)
+                {
+                    totalTid += minutter;
+                }
+                return avreise.AddMinutes(totalTid);
+            }
         }
 
         // Fullfør ordre

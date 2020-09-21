@@ -3,6 +3,7 @@
     hentAlleBillettyper();
     leggTilDato();
     bakgrunnOverlay();
+    $('[data-toggle="tooltip"]').tooltip();
 });
 
 let StoppListe = new Array();
@@ -50,18 +51,63 @@ function finnNesteAvgang() {
         AvreiseEtter: avreiseEtter
     }
 
-    console.table(avgangParam);
-
     $.post("Buss/FinnNesteAvgang", avgangParam, function (avgang) {
         ut = `<h5 class="mb-3">${avgang.rutenavn}, ${avgang.linjekode}</h5>
-              <h6 class="mt-3">20. November &nbsp;|&nbsp; ${startStopp}, 09:30 &nbsp;→&nbsp; ${sluttStopp}, 10:50</h6>
-              <h6 class="mt-3">Reisetid: ${avgang.reisetid} min</h6>
-              <h6 class="mt-3">Pris: ${avgang.pris} kr </h6>
-              <h5 class="mt-5">Epostadresse</h5>
-              <input type="text" id="epost" placeholder="Skriv inn epostadresse" class="form-control" />
-              <h5 class="mt-4">Kortdetaljer</h5>
-              <input type="text" id="kortdetaljer" placeholder="Skriv inn kortdetaljer" class="form-control" />
-              <input type="button" id="bestill" class="btn btn-md btn-success mt-5 form-control font-weight-bold" value="Bestill reise" />`;
+                <h6 class="mt-3">20. November &nbsp;|&nbsp; ${startStopp}, 09:30 &nbsp;→&nbsp; ${sluttStopp}, 10:50</h6>
+                <h6 class="mt-3">Reisetid - 1 timer og 30 minutter</h6>
+                <h6 class="mt-3">Billetter - 2 Voksen, 1 Student, 2 Hønnør </h6>
+                <h6 class="mt-3">Pris - ${avgang.pris} kr </h6>
+
+                <form role="form" class="mt-5">
+                    <div class="form-group">
+                        <label for="navn">Fullt navn</label>
+                        <input type="text" name="navn" placeholder="Ola Nordmann" class="form-control shadow-sm">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="epost">Epostadresse</label>
+                        <input type="text" id="epost" placeholder="ola@normann.no" class="form-control shadow-sm" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="kortnummer">Kortnummer</label>
+                        <div class="input-group">
+                            <input type="text" name="kortnummer" placeholder="0000 0000 0000 0000"
+                                class="form-control shadow-sm" maxlength="16">
+                            <div class="input-group-append">
+                                <span class="input-group-text text-muted">
+                                    <i class="fa fa-cc-visa mx-1"></i>
+                                    <i class="fa fa-cc-amex mx-1"></i>
+                                    <i class="fa fa-cc-mastercard mx-1"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label>Utløpsdato</label>
+                                <div class="input-group">
+                                    <input type="number" placeholder="MM" name="" class="form-control shadow-sm"
+                                        onKeyPress="if(this.value.length == 2) return false;" >
+                                    <input type="number" placeholder="YY" name="" class="form-control shadow-sm"
+                                        onKeyPress="if(this.value.length == 2) return false;" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group mb-4">
+                                <label>CVC</label>
+                                <input type="number" placeholder="xxx" class="form-control shadow-sm"
+                                    onKeyPress="if(this.value.length==3) return false;">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <input type="submit" class="btn btn-success form-control shadow font-weight-bold" value="Betal">
+                </form>`;
 
         $("#feilAvgang").html("");
         $("#avgang").css("display", "block");

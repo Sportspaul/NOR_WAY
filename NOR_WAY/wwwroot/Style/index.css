@@ -56,12 +56,6 @@ a:hover {
     margin: 0 auto;
 }
 
-input[type=submit] {
-    background-color: DodgerBlue;
-    color: #fff;
-    cursor: pointer;
-}
-
 .stoppListe {
     position: absolute;
     border: 1px solid #d4d4d4;

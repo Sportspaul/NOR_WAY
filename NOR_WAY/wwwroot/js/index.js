@@ -18,29 +18,7 @@ function leggTilDato() {
     })()
 }
 
-/* Legger til et mørkt overlay over bakgrunnsbildet,
-   som matcher høyden på dokumentet */
-function endreBakgrunn() {
-    var h = $(document).height();
-    $("#overlay").css('height', h);
-}
-
-// Henter alle stoppene i databasen og 
-function hentAlleStopp() {
-    $.get("Buss/HentAlleStopp", function (alleStopp) {
-        let stoppListe = new Array();
-        for (let i = 0; i < alleStopp.length; i++) {
-            stoppListe.push(alleStopp[i].navn)
-        }
-        StoppListe = stoppListe; // Legger stoppene i den globalen listen
-
-        // Gir brukeren live-stoppforslag for begge inputfeltene
-        stoppforslag($("#startStopp"), $("#auto1"), stoppListe, $("#feilStartStopp"));
-        stoppforslag($("#sluttStopp"), $("#auto2"), stoppListe, $("#feilSluttStopp"));
-    });
-}
-
-// Henter alle billettypene i databasen
+// Henter alle billettypene i databasen 
 function hentAlleBillettyper() {
     $.get("Buss/HentAlleBillettyper", function (alleBillettyper) {
 
@@ -51,6 +29,43 @@ function hentAlleBillettyper() {
             nedtrekk.append($("<option />").val(this.billettype).text(this.billettype));
         });
     });
+}
+
+
+// Legger til et nytt select-element og fyller den med billettyer-data fra DB
+function leggTilBillett() {
+    console.log("Ja")
+    const antall = $('.billettype').length;
+    const id = `billettype${antall + 1}`;
+
+    $('#billetter').append(`<select id="${id}" class="form-control billettype mb-2"></select>`);
+    var dropdown = $(`#${id}`);
+    $.each(billettyper, function () {
+        dropdown.append($("<option />").val(this.billettype).text(this.billettype));
+    });
+}
+
+/* Henter alle stoppene i databasen, 
+ * og kaller funksjoner for å legge til stoppforslag ved input i stoppnavn-feltene */
+function hentAlleStopp() {
+    $.get("Buss/HentAlleStopp", function (alleStopp) {
+        let stoppListe = new Array();
+        for (let i = 0; i < alleStopp.length; i++) {
+            stoppListe.push(alleStopp[i].navn)
+        }
+        StoppListe = stoppListe; // Legger stoppene i den globalen listen
+
+        // Gir brukeren live-stoppforslag for begge inputfeltene 
+        stoppforslag($("#startStopp"), $("#auto1"), stoppListe, $("#feilStartStopp"));
+        stoppforslag($("#sluttStopp"), $("#auto2"), stoppListe, $("#feilSluttStopp"));
+    });
+}
+
+/* Legger til et mørkt overlay over bakgrunnsbildet,
+   som matcher høyden på dokumentet */
+function endreBakgrunn() {
+    var h = $(document).height();
+    $("#overlay").css('height', h);
 }
 
 // Henter neste avgang fra server og skriver det ut til dokumentet
@@ -184,16 +199,4 @@ function finnNesteAvgang() {
             endreBakgrunn();
         });
     }
-}
-
-// Legger til en ny select og fyller den med billettyer-data
-function leggTilBillett() {
-    const antall = $('.billettype').length;
-    const id = `billettype${antall+1}`;
-
-    $('#billetter').append(`<select id="${id}" class="form-control billettype mb-2"></select>`);
-    var dropdown = $(`#${id}`);
-    $.each(billettyper, function () {
-        dropdown.append($("<option />").val(this.billettype).text(this.billettype));
-    });
 }

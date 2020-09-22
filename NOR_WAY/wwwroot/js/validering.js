@@ -58,7 +58,8 @@ function validerBetalingsInput() {
 function validerStoppnavn(inId, utId) {
     const stoppnavn = $(inId).val();  // Input i inputfeltet 
     const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/; 
-    const stoppFins = StoppListe.includes(stoppnavn); // Sjekker om stoppet fins i listen med stopp 
+    const stoppFins = StoppListe.includes(stoppnavn); // Sjekker om stoppet fins i listen med stopp
+    let melding = "";
 
     let ok = false;
     if (testRegex(inId, regex) && stoppFins) { ok = true; }
@@ -69,8 +70,11 @@ function validerStoppnavn(inId, utId) {
     } else {
         preposisjon = "til"
     }
-    const melding = `Vi tilbyr desverre ikke reiser ${preposisjon} "${stoppnavn}"`;
 
+    if (stoppnavn != "") {
+        melding = `Vi tilbyr desverre ikke reiser ${preposisjon} "${stoppnavn}"`
+    } 
+    
     // Sjekker om input er gyldig formatert i henhold til regexen over 
     return feilmelding(ok, melding, utId);
 }

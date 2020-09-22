@@ -52,11 +52,22 @@ function finnNesteAvgang() {
     }
 
     $.post("Buss/FinnNesteAvgang", avgangParam, function (avgang) {
-        ut = `<h5 class="mb-3">${avgang.rutenavn}, ${avgang.linjekode}</h5>
-                <h6 class="mt-3">20. November &nbsp;|&nbsp; ${startStopp}, 09:30 &nbsp;→&nbsp; ${sluttStopp}, 10:50</h6>
-                <h6 class="mt-3">Reisetid - 1 timer og 30 minutter</h6>
-                <h6 class="mt-3">Billetter - 2 Voksen, 1 Student, 2 Hønnør </h6>
-                <h6 class="mt-3">Pris - ${avgang.pris} kr </h6>
+        ut = `<h4 class="mb-3"><strong>${avgang.rutenavn}, ${avgang.linjekode}</strong></h4>
+                <h6 class="mt-3">
+                    <strong>Avreise:</strong>&nbsp;
+                    20. November &nbsp;|&nbsp; ${startStopp}, 09:30 &nbsp;→&nbsp; ${sluttStopp}, 10:50</h6>
+                <h6 class="mt-3">
+                    <strong>Reisetid:</strong>
+                    1 timer og 30 minutter
+                </h6>
+                <h6 class="mt-3">
+                    <strong>Billetter:</strong>&nbsp;
+                    2 Voksen, 1 Student, 2 Hønnør
+                </h6>
+                <h6 class="mt-3">
+                    <strong>Pris:</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    ${avgang.pris} kr
+                </h6>
 
                 <form role="form" class="mt-5">
                     <div class="form-group">
@@ -65,7 +76,7 @@ function finnNesteAvgang() {
                     </div>
 
                     <div class="form-group">
-                        <label for="epost">Epostadresse</label>
+                        <label for="epost">Epost</label>
                         <input type="text" id="epost" placeholder="ola@normann.no" class="form-control shadow-sm" />
                     </div>
 
@@ -77,7 +88,6 @@ function finnNesteAvgang() {
                             <div class="input-group-append">
                                 <span class="input-group-text text-muted">
                                     <i class="fa fa-cc-visa mx-1"></i>
-                                    <i class="fa fa-cc-amex mx-1"></i>
                                     <i class="fa fa-cc-mastercard mx-1"></i>
                                 </span>
                             </div>
@@ -91,7 +101,7 @@ function finnNesteAvgang() {
                                 <div class="input-group">
                                     <input type="number" placeholder="MM" name="" class="form-control shadow-sm"
                                         onKeyPress="if(this.value.length == 2) return false;" >
-                                    <input type="number" placeholder="YY" name="" class="form-control shadow-sm"
+                                    <input type="number" placeholder="ÅÅ" name="" class="form-control shadow-sm"
                                         onKeyPress="if(this.value.length == 2) return false;" >
                                 </div>
                             </div>

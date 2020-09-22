@@ -9,8 +9,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script src="js/index.js?n=11"></script>
+    <script src="js/validering.js?n=5"></script>
     <script src="js/stoppforslag.js"></script>
-    <script src="js/validering.js?n=3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <link rel="stylesheet" href="Style/index.css?n=5">
 </head>
 <body>
@@ -51,7 +52,7 @@
                         <input type="radio" id="ankomstFør" name="avreiseEtter" value="false" />
                         <label>Ankomst før</label>
                         <br />
-                        <input type="date" id="dato" class="form-control shadow-sm" onfocusout="validerDato(this.value)" />
+                        <input type="date" id="dato" class="form-control shadow-sm" onfocusout="validerDato('#dato', '#feilDato')" />
                         <input type="time" id="tidspunkt" class="form-control mt-2 shadow-sm" value="12:00" />
                         <span id="feilDato" class="mt-1 rodTekst"></span>
                     </div>

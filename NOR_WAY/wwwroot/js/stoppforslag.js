@@ -120,7 +120,7 @@ function stoppforslag(inputfelt, utskrift, stoppArray, feilmelding) {
     // Lukker listen med stopp hvis bruker trykker utenfor listen
     $(document).on("click", function (e) {
         lukkAlleLister(e.target);
-        validerStoppnavn("startStopp", "#feilStartStopp");
-        validerStoppnavn("sluttStopp", "#feilSluttStopp");
+        validerStoppnavn("#startStopp", "#feilStartStopp");
+        validerStoppnavn("#sluttStopp", "#feilSluttStopp");
     });
 }

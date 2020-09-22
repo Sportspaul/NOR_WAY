@@ -131,6 +131,14 @@ function finnNesteAvgang() {
     });
 }
 
+//Henter ut tidspunkt og dato fra strenger
+function hentTidsdata(tidInput) {
+    let dato = tidInput.substr(0, 10).split("-")
+    let tid = tidInput.substr(11, 5).split(":").map(Number) 
+    let tidspunkt = [dato, tid] //todimensjonalt array 
+    return tidspunkt
+}
+.
 // Legger til en ny select og fyller den med billettyer-data
 function leggTilBillett() {
     const antall = $('.billettype').length;

@@ -52,72 +52,71 @@ function finnNesteAvgang() {
     }
 
     $.post("Buss/FinnNesteAvgang", avgangParam, function (avgang) {
-        ut = `<h4 class="mb-3"><strong>${avgang.rutenavn}, ${avgang.linjekode}</strong></h4>
-                <h6 class="mt-3">
-                    <strong>Avreise:</strong>&nbsp;
-                    20. November &nbsp;|&nbsp; ${startStopp}, 09:30 &nbsp;→&nbsp; ${sluttStopp}, 10:50</h6>
-                <h6 class="mt-3">
-                    <strong>Reisetid:</strong>
-                    1 timer og 30 minutter
-                </h6>
-                <h6 class="mt-3">
-                    <strong>Billetter:</strong>&nbsp;
-                    2 Voksen, 1 Student, 2 Hønnør
-                </h6>
-                <h6 class="mt-3">
-                    <strong>Pris:</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    ${avgang.pris} kr
-                </h6>
+        ut = `<div id="billettInfo">
+                <h4 id="billettInfoOverskrift"><strong>${avgang.rutenavn}, ${avgang.linjekode}</strong></h4>
+                <div id="billettInfoBody">
+                    <h6>
+                        Avresise: 20. November &nbsp;|&nbsp; ${startStopp}, 09:30 &nbsp;→&nbsp; ${sluttStopp}, 10:50</h6>
+                    <h6 class="mt-4">
+                        Reisetid: 1 timer og 30 minutter
+                    </h6>
+                    <h6 class="mt-4">
+                        Biletter: 2 Voksen, 1 Student, 2 Hønnør
+                    </h6>
+                    <h6 class="mt-4">
+                        Pris: ${avgang.pris} kr
+                    </h6>
+                </div>
+            </div>
+            <form role="form" id="betaling">
+                <div class="form-group">
+                    <label for="navn">Fullt navn</label>
+                    <input type="text" name="navn" placeholder="Ola Nordmann" class="form-control shadow-sm">
+                </div>
 
-                <form role="form" class="mt-5">
-                    <div class="form-group">
-                        <label for="navn">Fullt navn</label>
-                        <input type="text" name="navn" placeholder="Ola Nordmann" class="form-control shadow-sm">
+                <div class="form-group">
+                    <label for="epost">Epost</label>
+                    <input type="text" id="epost" placeholder="ola@normann.no" class="form-control shadow-sm" />
+                </div>
+
+                <div class="form-group">
+                    <label for="kortnummer">Kortnummer</label>
+                    <div class="input-group">
+                        <input type="text" name="kortnummer" placeholder="0000 0000 0000 0000"
+                            class="form-control shadow-sm" maxlength="16">
+                        <div class="input-group-append">
+                            <span class="input-group-text text-muted">
+                                <i class="fa fa-cc-visa mx-1"></i>
+                                <i class="fa fa-cc-mastercard mx-1"></i>
+                            </span>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <label for="epost">Epost</label>
-                        <input type="text" id="epost" placeholder="ola@normann.no" class="form-control shadow-sm" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="kortnummer">Kortnummer</label>
-                        <div class="input-group">
-                            <input type="text" name="kortnummer" placeholder="0000 0000 0000 0000"
-                                class="form-control shadow-sm" maxlength="16">
-                            <div class="input-group-append">
-                                <span class="input-group-text text-muted">
-                                    <i class="fa fa-cc-visa mx-1"></i>
-                                    <i class="fa fa-cc-mastercard mx-1"></i>
-                                </span>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label>Utløpsdato</label>
+                            <div class="input-group">
+                                <input type="number" placeholder="MM" name="" class="form-control shadow-sm"
+                                    onKeyPress="if(this.value.length == 2) return false;" >
+                                <input type="number" placeholder="ÅÅ" name="" class="form-control shadow-sm"
+                                    onKeyPress="if(this.value.length == 2) return false;" >
                             </div>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <div class="form-group">
-                                <label>Utløpsdato</label>
-                                <div class="input-group">
-                                    <input type="number" placeholder="MM" name="" class="form-control shadow-sm"
-                                        onKeyPress="if(this.value.length == 2) return false;" >
-                                    <input type="number" placeholder="ÅÅ" name="" class="form-control shadow-sm"
-                                        onKeyPress="if(this.value.length == 2) return false;" >
-                                </div>
-                            </div>
+                    <div class="col-sm-4">
+                        <div class="form-group mb-4">
+                            <label>CVC</label>
+                            <input type="number" placeholder="xxx" class="form-control shadow-sm"
+                                onKeyPress="if(this.value.length==3) return false;">
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-group mb-4">
-                                <label>CVC</label>
-                                <input type="number" placeholder="xxx" class="form-control shadow-sm"
-                                    onKeyPress="if(this.value.length==3) return false;">
-                            </div>
-                        </div>
-
                     </div>
 
-                    <input type="submit" class="btn btn-success form-control shadow font-weight-bold" value="Betal">
-                </form>`;
+                </div>
+
+                <input type="submit" class="btn btn-success form-control shadow font-weight-bold" value="Betal">
+            </form>`;
 
         $("#feilAvgang").html("");
         $("#avgang").css("display", "block");

@@ -52,6 +52,7 @@ function finnNesteAvgang() {
     }
 
     $.post("Buss/FinnNesteAvgang", avgangParam, function (avgang) {
+        
         ut = `<h4 class="mb-3"><strong>${avgang.rutenavn}, ${avgang.linjekode}</strong></h4>
                 <h6 class="mt-3">
                     <strong>Avreise:</strong>&nbsp;
@@ -131,13 +132,10 @@ function finnNesteAvgang() {
     });
 }
 
-//Henter ut tidspunkt og dato fra strenger
-function hentTidsdata(tidInput) {
-    let dato = tidInput.substr(0, 10).split("-")
-    let tid = tidInput.substr(11, 5).split(":").map(Number) 
-    let tidspunkt = [dato, tid] //todimensjonalt array 
-    return tidspunkt
+function finnReisetid() {
+
 }
+
 .
 // Legger til en ny select og fyller den med billettyer-data
 function leggTilBillett() {

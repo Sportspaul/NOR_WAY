@@ -11,9 +11,9 @@ namespace NOR_WAY.Model
         [RegularExpression(@"(NW)[0-9]{1,4}")]
         public string Linjekode { get; set; }
         public float Pris { get; set; }
-        [RegularExpression(@"([0-9]{4})[-]([0-9]{2})[-]([0-9]{2})[ ]([0-9]{2}))")]
+        [RegularExpression(@"([0-9]{4})[-]([0-9]{2})[-]([0-9]{2})[ ]([0-9]{2}[:][0-9]{2}))")]
         public string Avreise { get; set; }
-        [RegularExpression(@"([0-9]{4})[-]([0-9]{2})[-]([0-9]{2})[ ]([0-9]{2}))")]
+        [RegularExpression(@"([0-9]{4})[-]([0-9]{2})[-]([0-9]{2})[ ]([0-9]{2}[:][0-9]{2}))")]
         public string Ankomst { get; set; }
         public int Reisetid { get; set; }
     }

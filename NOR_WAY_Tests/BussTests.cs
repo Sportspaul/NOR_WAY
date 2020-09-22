@@ -48,7 +48,7 @@ namespace NOR_WAY_Tests
                 Reisetid = 80
             };
 
-            
+
             mockRepo.Setup(b => b.FinnNesteAvgang(param)).ReturnsAsync(forventetAvgang);
             var bussController = new BussController(mockRepo.Object, mockLog.Object);
             var resultat = await bussController.FinnNesteAvgang(param) as OkObjectResult;
@@ -89,17 +89,11 @@ namespace NOR_WAY_Tests
 
             mockRepo.Setup(br => br.FullforOrdre(kundeOrdre)).ReturnsAsync(true);
             var bussController = new BussController(mockRepo.Object, mockLog.Object);
-
         // Act
             var resultat = await bussController.FullforOrdre(kundeOrdre) as OkObjectResult;
-
-
         // Assert
             Assert.Equal("Ordren ble lagret!", resultat.Value);
 
-
-
-        
         }
     }
 }

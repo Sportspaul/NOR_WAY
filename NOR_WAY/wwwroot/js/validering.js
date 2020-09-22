@@ -95,7 +95,7 @@ function validerDato(inId, utId) {
 
 // Navn-validering
 function validerNavn(inId, utId) {
-    const regex = /^[a-åA-Å-]{2,} [a-åA-Å-]{2,}$/
+    const regex = /^[a-åA-Å]([-']?[a-z]+)*( [a-åA-Å]([-']?[a-åA-Å]+)*)+$/
     const melding = "Ugyldig navn";
     return feilmelding(testRegex(inId, regex), melding, utId);
 }

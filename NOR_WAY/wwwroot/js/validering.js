@@ -1,26 +1,39 @@
-﻿// Sjekker om stoppnavn er gyldig
+﻿
+// Sjekker om stoppnavn er gyldig
 function validerStoppnavn(inId, utId) {
-    const stoppnavn = $("#" + inId).val();
-    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
+    const stoppnavn = $("#" + inId).val();  // Input i inputfeltet
+    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/; // Regex
 
-    const ok = regexp.test(stoppnavn);
-    const stoppFins = StoppListe.includes(stoppnavn);
+    // Sjekker om input er gyldig formatert i henhold til regexen over
+    const ok = regexp.test(stoppnavn); 
 
+    // Sjekker om stoppet fins i listen med stopp
+    const stoppFins = StoppListe.includes(stoppnavn); 
+
+    // Hvis formatering er GYLDIG og stoppet FINST i listen
     if (!ok || !stoppFins) {
-        let preposisjon;
-            if (inId == "startStopp") {
-                preposisjon = "fra"
-            } else {
-                preposisjon = "til"
-            }
-            if (stoppnavn != "")
-            {
-                $(utId).html(`Vi tilbyr desverre ikke reiser ${preposisjon} "${stoppnavn}"`);
-            }
-            return false;
+        $(utId).html("");
+        return true;
+
+    // Hvis formatering er UGYLDIG og stoppet IKKE finst i listen   
     } else {
-            $(utId).html("");
-            return true;
+
+        /* Setter riktig preposisjon basert på om det er s
+           tartStopp eller sluttStopp som valideres */
+        let preposisjon;
+        if (inId == "startStopp") {
+            preposisjon = "fra"
+        } else {
+            preposisjon = "til"
+        }
+
+        // Hvis stoppnanet ikke består validering og det ikke er tomt
+        if (stoppnavn != "") {
+
+            // Tilbakemelding til bruker om at stoppet ikke fins
+            $(utId).html(`Vi tilbyr desverre ikke reiser ${preposisjon} "${stoppnavn}"`);
+        }
+        return false;
     }
 }
 
@@ -35,7 +48,7 @@ function validerDato(inDato) {
     }
 }
 
-// Finner dagens dato og formaterer i yyyy-mm-dd format
+// Finner dagens dato og formaterer i yyyy-mm-dd format, brukes av functionen over
 function idagISO() {
     var idag = new Date();
     var yyyy = idag.getFullYear();

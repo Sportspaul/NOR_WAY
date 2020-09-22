@@ -18,8 +18,8 @@ function validerStoppnavn(inId, utId) {
     // Hvis formatering er UGYLDIG og stoppet IKKE finst i listen   
     } else {
 
-        /* Setter riktig preposisjon basert på om det er s
-           tartStopp eller sluttStopp som valideres */
+        /* Setter riktig preposisjon basert på om det er
+         * startStopp eller sluttStopp som valideres */
         let preposisjon;
         if (inId == "startStopp") {
             preposisjon = "fra"

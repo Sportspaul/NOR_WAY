@@ -91,7 +91,7 @@ function finnNesteAvgang() {
                     <h6>
                         Avresise: 20. November &nbsp;|&nbsp; ${startStopp}, 09:30 &nbsp;→&nbsp; ${sluttStopp}, 10:50</h6>
                     <h6 class="mt-4">
-                        Reisetid: 1 timer og 30 minutter
+                        Reisetid: ${finnReisetid(avgang.reiseTid)}
                     </h6>
                     <h6 class="mt-4">
                         Biletter: 2 Voksen, 1 Student, 2 Hønnør
@@ -174,12 +174,31 @@ function finnNesteAvgang() {
 
 
 
-function finnReisetid(avreise, ankomst) {
-    let tidspunktAvreise = hentTidsdata(avreise)
-    let tidspunktAnkomst = hentTidsdata(ankomst)
+function finnReisetid(reiseTid) {
+    let min = reiseTid % 60;
+    let time = Math.floor(reiseTid / 60);
+    let utReisetid = "Reisetid: " + time;
 
-
-
+    if (time != 1) {
+        utReisetid += " timer";
+        if (min != 1) {
+            utReisetid += min + " minutter";
+            
+        } else {
+            utReisetid += min + " minutt";
+            
+        }
+    } else {
+        utReisetid += " time";
+        if (min != 1) {
+            utReisetid += min + " minutter";
+            
+        } else {
+            utReisetid += min + " minutt";
+            
+        }
+    }
+    return utReisetid;
 }
 
 // Henter ut data ut fra strenger

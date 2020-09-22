@@ -132,8 +132,22 @@ function finnNesteAvgang() {
     });
 }
 
-function finnReisetid() {
 
+
+function finnReisetid(avreise, ankomst) {
+    let tidspunktAvreise = hentTidsdata(avreise)
+    let tidspunktAnkomst = hentTidsdata(ankomst)
+
+
+
+}
+
+// Henter ut data ut fra strenger
+function hentTidsdata(tidInput) {
+    let datoVerdier = tidInput.substr(0, 10).split("-")
+    let tidVerdier = tidInput.substr(11, 5).split(":").map(Number)
+    let tidspunkt = [datoVerdier, tidVerdier] //todimensjonalt array
+    return tidspunkt
 }
 
 .

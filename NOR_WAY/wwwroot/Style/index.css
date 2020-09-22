@@ -87,6 +87,26 @@ a:hover {
     color: #f94e4f;
 }
 
+.btn-primary {
+    background-color: #2a347b !important;
+    color: white;
+}
+
+.btn-primary:active {
+    background-color: #1f296f !important;
+    color: white;
+}
+
+btn-primary:hover {
+    background-color: #1f296f !important;
+    color: white;
+}
+
+btn-primary:focus {
+    background-color: #1f296f !important;
+    color: white;
+}
+
 .shadowBox {
     box-sizing: border-box;
     background-color: #ffffff;
@@ -96,6 +116,34 @@ a:hover {
     box-shadow: 0px 10px 55px 20px rgb(0,0,0);
     width: 60vw;
     border-radius: 7px;
+}
+
+#billettInfo {
+    padding-bottom: 30px;
+}
+
+#billettInfoOverskrift {
+    background-color: #323a40;
+    color: white;
+    padding: 20px 30px;
+    width: 96%;
+    margin: auto;
+    box-shadow: 0px 0px 7px 1px rgba(0,0,0,0.5);
+}
+
+#billettInfoBody {
+    background-color: white;
+    padding: 30px 30px 20px 30px;
+    width: 96%;
+    margin: auto;
+    box-shadow: 0px 3px 7px 1px rgba(0,0,0,0.5);
+}
+
+
+#betaling {
+    width: 95%;
+    margin: auto;
+    margin-top: 10px;
 }
 
 footer {

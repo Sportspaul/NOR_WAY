@@ -47,8 +47,18 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentAlleRuter()
         {
-            List<RuteData> rutene = await _db.HentAlleRuter();
-            return Ok(rutene); // returnerer alltid OK, null ved tom DB
+            if(ModelState.IsValid)
+            {
+                List<RuteData> rutene = await _db.HentAlleRuter();
+                if(rutene == null)
+                {
+                    _log.LogInformation("Rutene ble ikke funnet");
+                    return NotFound("Rutene ble ikke funnet");
+                }
+                return Ok(rutene); // returnerer alltid OK, null ved tom DB
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalideringen på server");
         }
 
 

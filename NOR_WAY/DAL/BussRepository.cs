@@ -138,7 +138,12 @@ namespace NOR_WAY.DAL
             {
                 RuteStopp ruteStopp = await _db.RuteStopp
               .FirstOrDefaultAsync(rs => rs.Stopp == stopp && rs.Rute == fellesRute);
+                if(ruteStopp == null)
+                {
+                    _log.LogInformation("Stoppet er ikke på ruten");
+                    return -1;
 
+                }
                 return ruteStopp.StoppNummer;
             }
             catch (Exception e)

@@ -23,7 +23,7 @@ namespace NOR_WAY.DAL
 
         public async Task<Avgang> FinnNesteAvgang(AvgangParam input)
         {
-            // Henter avgang- og påstignings-stoppet fra DB
+            // Henter avgang- og påstigningsstoppet fra DB
             Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == input.StartStopp);
             Stopp sluttStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == input.SluttStopp);
             if (startStopp.Equals(sluttStopp)) {
@@ -36,9 +36,7 @@ namespace NOR_WAY.DAL
 
             // Finner ruten påstigning og avstigning har til felles
             Ruter fellesRute = FinnFellesRute(startStoppRuter, sluttStoppRuter);
-            if (fellesRute == null) {
-                _log.LogInformation("Vi fant ingen rute med disse stoppene!");
-                return null; }
+            if (fellesRute == null) { return null; }
 
             // Finne ut hvilket stoppNummer påstigning og avstigning har i den felles ruten
             int stoppNummer1 = await FinnStoppNummer(startStopp, fellesRute);
@@ -46,14 +44,11 @@ namespace NOR_WAY.DAL
             if (stoppNummer1 > stoppNummer2) {
                 _log.LogInformation("Seneste stopp har ikke lavere stoppnummer enn tidligste stopp!");
                 return null; 
-            } else if (stoppNummer1 == -1 || stoppNummer2  == -1 )
-            {
-                _log.LogInformation("Ett eller begge stopp har ingen rute");
-                return null;
             }
 
             // Beregner reisetiden fra stopp påstigning til avstigning
             int reisetid = await BeregnReisetid(stoppNummer1, stoppNummer2, fellesRute);
+            
 
             // Finne neste avgang som passer, basert på brukerens input
             Avganger nesteAvgang = await NesteAvgang(fellesRute, reisetid,
@@ -151,92 +146,118 @@ namespace NOR_WAY.DAL
         // Hjelpemetode som beregner reisetiden fra startStopp til sluttStopp
         private async Task<int> BeregnReisetid(int startStopp, int sluttStopp, Ruter fellesRute)
         {
-            List<int> minTilNesteStoppList = await _db.RuteStopp
-                .Where(rs => rs.StoppNummer >= startStopp && rs.StoppNummer < sluttStopp && rs.Rute == fellesRute)
-                .Select(rs => rs.MinutterTilNesteStopp)
-                .ToListAsync();
-
-            int reisetid = 0;
-            foreach (int minutter in minTilNesteStoppList)
+            try
             {
-                reisetid += minutter;
+                List<int> minTilNesteStoppList = await _db.RuteStopp
+               .Where(rs => rs.StoppNummer >= startStopp && rs.StoppNummer < sluttStopp && rs.Rute == fellesRute)
+               .Select(rs => rs.MinutterTilNesteStopp)
+               .ToListAsync();
+
+                int reisetid = 0;
+                foreach (int minutter in minTilNesteStoppList)
+                {
+                    reisetid += minutter;
+                }
+                return reisetid;
+            } catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return -1;
             }
-            return reisetid;
+           
         }
 
         // Hjelpemetode som finner neste avgang som passer for brukeren
         private async Task<Avganger> NesteAvgang(Ruter fellesRute, int reisetid,
             bool avreiseEtter, string dato, string tidspunkt)
         {
-            // Oversetter string verdiene av dato og tidspunkt til et DateTime-objekt
-            string innAvreise = dato + " " + tidspunkt;
-            DateTime avreise = DateTime.ParseExact(innAvreise, "yyyy-MM-dd HH:mm",
-                CultureInfo.InvariantCulture);
+            try
+            {
+                // Oversetter string verdiene av dato og tidspunkt til et DateTime-objekt
+                string innAvreise = dato + " " + tidspunkt;
+                DateTime avreise = DateTime.ParseExact(innAvreise, "yyyy-MM-dd HH:mm",
+                    CultureInfo.InvariantCulture);
 
-            List<Avganger> kommendeAvganger = new List<Avganger>();
-            if (avreiseEtter == true) // Hvis Avreise Etter:
-            {
-                kommendeAvganger = await _db.Avganger
-                    .Where(a => a.Rute == fellesRute && a.Avreise >= avreise).ToListAsync();
-            }
-            else  // Hvis Ankomst Før:
-            {
-                DateTime ankomst = avreise.AddMinutes(-reisetid);
-                kommendeAvganger = await _db.Avganger
-                    .Where(a => a.Rute == fellesRute && a.Avreise <= ankomst)
-                    .ToListAsync();
-            }
-
-            Avganger nesteAvgang = kommendeAvganger[0];
-            TimeSpan lavesteDiff = avreise.Subtract(kommendeAvganger[0].Avreise).Duration();
-            for (int i = 1; i < kommendeAvganger.Count; i++)
-            {
-                TimeSpan diff = avreise.Subtract(kommendeAvganger[i].Avreise).Duration();
-                if (diff < lavesteDiff)
+                List<Avganger> kommendeAvganger = new List<Avganger>();
+                if (avreiseEtter == true) // Hvis Avreise Etter:
                 {
-                    nesteAvgang = kommendeAvganger[i];
+                    kommendeAvganger = await _db.Avganger
+                        .Where(a => a.Rute == fellesRute && a.Avreise >= avreise).ToListAsync();
                 }
-            }
+                else  // Hvis Ankomst Før:
+                {
+                    DateTime ankomst = avreise.AddMinutes(-reisetid);
+                    kommendeAvganger = await _db.Avganger
+                        .Where(a => a.Rute == fellesRute && a.Avreise <= ankomst)
+                        .ToListAsync();
+                }
 
-            return nesteAvgang;
+                Avganger nesteAvgang = kommendeAvganger[0];
+                TimeSpan lavesteDiff = avreise.Subtract(kommendeAvganger[0].Avreise).Duration();
+                for (int i = 1; i < kommendeAvganger.Count; i++)
+                {
+                    TimeSpan diff = avreise.Subtract(kommendeAvganger[i].Avreise).Duration();
+                    if (diff < lavesteDiff)
+                    {
+                        nesteAvgang = kommendeAvganger[i];
+                    }
+                }
+
+                return nesteAvgang;
+            } catch ( Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return null;
+
+            }
+           
         }
 
 
         private async Task<int> BeregnPris(Ruter rute, int antallStopp, List<string> billettyper)
         {
-            // Finner den voksenbillett pris for en reise
-            int startpris = rute.Startpris;
-            int tilleggPerStopp = rute.TilleggPerStopp;
-            int maxPris = startpris + tilleggPerStopp * antallStopp;
-
-            // Henter liste med alle billettyper i DB
-            List<Billettyper> billettypeListe = await _db.Billettyper.Select(b => new Billettyper
+            try
             {
-                Billettype = b.Billettype,
-                Rabattsats = b.Rabattsats
-            }).ToListAsync();
+                // Finner den standard billettpris for en reise
+                int startpris = rute.Startpris;
+                int tilleggPerStopp = rute.TilleggPerStopp;
+                int maxPris = startpris + tilleggPerStopp * antallStopp;
 
-            // Finner rabattsatsen for en billett
-            var rabbattsatser = new List<int>();
-            foreach (string billettype in billettyper)
-            {
-                int i = 0;
-                while (billettypeListe[i].Billettype != billettype)
+                // Henter liste med alle billettyper i DB
+                List<Billettyper> billettypeListe = await _db.Billettyper.Select(b => new Billettyper
                 {
-                    i++;
+                    Billettype = b.Billettype,
+                    Rabattsats = b.Rabattsats
+                }).ToListAsync();
+
+                // Finner rabattsatsen for en billett
+                var rabbattsatser = new List<int>();
+                foreach (string billettype in billettyper)
+                {
+                    int i = 0;
+                    while (billettypeListe[i].Billettype != billettype)
+                    {
+                        i++;
+                    }
+                    rabbattsatser.Add(billettypeListe[i].Rabattsats);
                 }
-                rabbattsatser.Add(billettypeListe[i].Rabattsats);
-            }
 
-            // Finne totalpris
-            double totalpris = 0;
-            foreach(int rabbattsats in rabbattsatser)
+                // Finne totalpris
+                double totalpris = 0;
+                foreach (int rabbattsats in rabbattsatser)
+                {
+                    double billettPris = ((double)maxPris) * (1 - (double)rabbattsats / 100); // 1 - 0.25 = 0.75
+                    totalpris += billettPris;
+                }
+
+                return (int)Math.Round(totalpris);
+            } catch (Exception e)
             {
-                double billettPris = ((double)maxPris) * (1 - (double)rabbattsats / 100); // 1 - 0.25 = 0.75
-                totalpris += billettPris;
-            }
+                _log.LogInformation(e.Message);
+                return -1;
 
-            return (int)Math.Round(totalpris);
+            }
+            
         }
 
         // Endrer avreisetiden hvis påstigning ikke er første stopp i ruten
@@ -249,80 +270,88 @@ namespace NOR_WAY.DAL
             }
             else
             {
-                List<int> minTilNesteStoppList = await _db.RuteStopp
+                    List<int> minTilNesteStoppList = await _db.RuteStopp
                     .Where(rs => rs.StoppNummer < stoppNummer && rs.Rute == fellesRute)
                     .Select(rs => rs.MinutterTilNesteStopp)
                     .ToListAsync();
-                int totalTid = 0;
-                foreach (int minutter in minTilNesteStoppList)
-                {
-                    totalTid += minutter;
-                }
-                return avreise.AddMinutes(totalTid);
+                    int totalTid = 0;
+                    foreach (int minutter in minTilNesteStoppList)
+                    {
+                        totalTid += minutter;
+                    }
+                    return avreise.AddMinutes(totalTid);
             }
         }
 
         // Fullfør ordre
         public async Task<bool> FullforOrdre(KundeOrdre kundeOrdreParam)
         {
-            // Henter ut ruten som tilhører kundeOrdreParam
-            Ruter rute = await _db.Ruter.FirstOrDefaultAsync(r => r.Linjekode == kundeOrdreParam.Linjekode);
-            
-            // Henter Avgangens Id
-            Avganger avgang = await _db.Avganger.FirstOrDefaultAsync(a => a.Id == kundeOrdreParam.AvgangId);
+            try
+            { 
+                // Henter ut ruten som tilhører kundeOrdreParam
+                Ruter rute = await _db.Ruter.FirstOrDefaultAsync(r => r.Linjekode == kundeOrdreParam.Linjekode);
 
-            // Finner startStopp, og finner stoppnummeret i ruten
-            Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(a => a.Navn == kundeOrdreParam.StartStopp);
-            int stoppNummer1 = await FinnStoppNummer(startStopp, rute);
+                // Henter Avgangens Id
+                Avganger avgang = await _db.Avganger.FirstOrDefaultAsync(a => a.Id == kundeOrdreParam.AvgangId);
 
-            // Finner sluttStopp, og finner stoppnummeret i ruten
-            Stopp sluttStopp = await _db.Stopp.FirstOrDefaultAsync(a => a.Navn == kundeOrdreParam.SluttStopp);
-            int stoppNummer2 = await FinnStoppNummer(sluttStopp, rute);
+                // Finner startStopp, og finner stoppnummeret i ruten
+                Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(a => a.Navn == kundeOrdreParam.StartStopp);
+                int stoppNummer1 = await FinnStoppNummer(startStopp, rute);
 
-            // Regner ut antall stopp
-            int antallStopp = stoppNummer2 - stoppNummer1;
+                // Finner sluttStopp, og finner stoppnummeret i ruten
+                Stopp sluttStopp = await _db.Stopp.FirstOrDefaultAsync(a => a.Navn == kundeOrdreParam.SluttStopp);
+                int stoppNummer2 = await FinnStoppNummer(sluttStopp, rute);
 
-            // Finner summen for reisen
-            // antallStopp, rute, liste med billettype
-            int sum = await BeregnPris(rute, antallStopp, kundeOrdreParam.Billettype);
+                // Regner ut antall stopp
+                int antallStopp = stoppNummer2 - stoppNummer1;
+
+                // Finner summen for reisen
+                // antallStopp, rute, liste med billettype
+                int sum = await BeregnPris(rute, antallStopp, kundeOrdreParam.Billettype);
 
 
 
-            // Lager en ordre basert på kundeOrdreParam, rute og avgang
-            var ordre = new Ordre
-            {
-                Epost = kundeOrdreParam.Epost,
-                StartStopp = startStopp,
-                SluttStopp = startStopp,
-                Sum = sum,
-                Rute = rute,
-                Avgang = avgang
-            };
-
-            // Legger ordren til i databasen
-            _db.Ordre.Add(ordre);
-
-            // Går gjennom listen med billettyper
-            foreach (string billettype in kundeOrdreParam.Billettype)
-            {
-                // Henter ut en billettype i listen
-                Billettyper billettypeObjekt = await _db.Billettyper.FirstOrDefaultAsync(a => a.Billettype == billettype);
-
-                // Lager en ordrelinje
-                var ordrelinje = new Ordrelinjer
+                // Lager en ordre basert på kundeOrdreParam, rute og avgang
+                var ordre = new Ordre
                 {
-                    Billettype = billettypeObjekt,
-                    Ordre = ordre
+                    Epost = kundeOrdreParam.Epost,
+                    StartStopp = startStopp,
+                    SluttStopp = startStopp,
+                    Sum = sum,
+                    Rute = rute,
+                    Avgang = avgang
                 };
 
-                // Legger denne ordrelinjen til databasen
-                _db.Ordrelinjer.Add(ordrelinje);
+                // Legger ordren til i databasen
+                _db.Ordre.Add(ordre);
+
+                // Går gjennom listen med billettyper
+                foreach (string billettype in kundeOrdreParam.Billettype)
+                {
+                    // Henter ut en billettype i listen
+                    Billettyper billettypeObjekt = await _db.Billettyper.FirstOrDefaultAsync(a => a.Billettype == billettype);
+
+                    // Lager en ordrelinje
+                    var ordrelinje = new Ordrelinjer
+                    {
+                        Billettype = billettypeObjekt,
+                        Ordre = ordre
+                    };
+
+                    // Legger denne ordrelinjen til databasen
+                    _db.Ordrelinjer.Add(ordrelinje);
+                }
+
+                //Lagrer alt som er blitt lagt til i databasen
+                _db.SaveChanges();
+
+                return true;
+            } catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return false;
             }
-
-            //Lagrer alt som er blitt lagt til i databasen
-            _db.SaveChanges();
-
-            return true;
+            
         }
 
         public async Task<List<Billettyper>> HentAlleBillettyper()
@@ -362,10 +391,6 @@ namespace NOR_WAY.DAL
 
             
         }
-
-       
-
-        
 
         public async Task<List<Stopp>> FinnMuligeStartStopp(InnStopp startStopp)
         {

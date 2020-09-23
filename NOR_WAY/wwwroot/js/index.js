@@ -33,9 +33,11 @@ function hentAlleBillettyper() {
 
 /* Hvis bruker skriver inn gyldig startstopp blir listen for gyldige sluttstopp
  * inskrenket til å kun vise stopp som kommer senere i en felles rute */
+let StartStopp;
 function finnMuligeSluttStopp() {
     input = $("#startStopp").val();
-    if (validerStoppnavnSimple(input)) {
+    if (validerStoppnavnSimple(input) && input != StartStopp) {
+        StartStopp = input;
         const url = "Buss/finnMuligeSluttStopp";
         console.log("yes");
         $.post(url, { Navn: input }, function (stopp) {
@@ -45,14 +47,19 @@ function finnMuligeSluttStopp() {
             }
             stoppforslag($("#sluttStopp"), $("#auto2"), stoppListe, $("#feilSluttStopp"));
         });
-    }
+    } else {
+        stoppforslag($("#sluttStopp"), $("#auto2"), StoppListe, $("#feilSluttStopp"));
+    } 
 }
 
 /* Hvis bruker skriver inn gyldig sluttstopp blir listen for gyldige startstopp
  * inskrenket til å kun vise stopp som kommer tidligere i en felles rute */
+let SluttStopp;
 function finnMuligeStartStopp(input) {
     input = $("#sluttStopp").val();
-    if (validerStoppnavnSimple(input)) {
+
+    if (validerStoppnavnSimple(input) && input != SluttStopp) {
+        SluttStopp = input;
         const url = "Buss/finnMuligeStartStopp";
         $.post(url, { Navn: input }, function (stopp) {
             let stoppListe = new Array();
@@ -61,6 +68,8 @@ function finnMuligeStartStopp(input) {
             }
             stoppforslag($("#startStopp"), $("#auto1"), stoppListe, $("#feilStartStopp"));
         });
+    } else {
+        stoppforslag($("#startStopp"), $("#auto1"), StoppListe, $("#feilStartStopp"));
     }
 }
 

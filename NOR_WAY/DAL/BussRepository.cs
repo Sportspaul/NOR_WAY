@@ -452,5 +452,17 @@ namespace NOR_WAY.DAL
                 return null;
             }
         }
+
+        public async Task<List<Ruter>> HentAlleRuter()
+        {
+            try
+            { 
+           return await _db.RuteStopp.Select(rs => rs.Rute).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return null;
+            }
     }
 }

@@ -46,6 +46,13 @@ namespace NOR_WAY.Controllers
             return Ok(billettypene); // returnerer alltid OK, null ved tom DB
         }
 
+        public async Task<ActionResult> HentAlleRuter()
+        {
+            List<Ruter> rutene = await _db.HentAlleRuter();
+            return Ok(rutene); // returnerer alltid OK, null ved tom DB
+        }
+
+
         public async Task<ActionResult> FinnNesteAvgang(AvgangParam input)
         {
             if(ModelState.IsValid)

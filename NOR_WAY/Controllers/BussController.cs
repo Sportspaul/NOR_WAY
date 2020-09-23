@@ -28,15 +28,15 @@ namespace NOR_WAY.Controllers
                return Ok(alleStopp); // returnerer alltid OK, null ved tom DB
         }
 
-        public async Task<ActionResult> FinnMuligeSluttStopp(InnStopp startStopp)
+        public async Task<ActionResult> FinnMuligeStartStopp(InnStopp startStopp)
         {
-            List<Stopp> stopp = await _db.FinnMuligeSluttStopp(startStopp);
+            List<Stopp> stopp = await _db.FinnMuligeStartStopp(startStopp);
             return Ok(stopp); // returnerer alltid OK, null ved tom DB
         }
 
-        public async Task<ActionResult> FinnMuligeStartStopp(InnStopp sluttStopp)
+        public async Task<ActionResult> FinnMuligeSluttStopp(InnStopp sluttStopp)
         {
-            List<Stopp> alleStopp = await _db.FinnMuligeStartStopp(sluttStopp);
+            List<Stopp> alleStopp = await _db.FinnMuligeSluttStopp(sluttStopp);
             return Ok(alleStopp); // returnerer alltid OK, null ved tom DB
         }
 

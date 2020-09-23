@@ -338,39 +338,59 @@ namespace NOR_WAY.DAL
             
         }
 
-        public async Task<List<Stopp>> FinnMuligeSluttStopp(InnStopp startStopp)
+       
+
+        
+
+        public async Task<List<Stopp>> FinnMuligeStartStopp(InnStopp startStopp)
         {
-            Stopp stopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == startStopp.Navn);
-            List<Ruter> ruter = await FinnRuter(stopp);
+            try
+            {
+                Stopp stopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == startStopp.Navn);
+                List<Ruter> ruter = await FinnRuter(stopp);
 
-            List<Stopp> stoppListe = new List<Stopp>();
-            foreach (Ruter rute in ruter) {
-                int stoppNummer = await FinnStoppNummer(stopp, rute);
-                List<Stopp> tempListe = await _db.RuteStopp
-                    .Where(rs => rs.StoppNummer > stoppNummer && rs.Rute == rute)
-                    .Select(rs => rs.Stopp).ToListAsync();
-                stoppListe.AddRange(tempListe);
+                List<Stopp> stoppListe = new List<Stopp>();
+                foreach (Ruter rute in ruter)
+                {
+                    int stoppNummer = await FinnStoppNummer(stopp, rute);
+                    List<Stopp> tempListe = await _db.RuteStopp
+                        .Where(rs => rs.StoppNummer > stoppNummer && rs.Rute == rute)
+                        .Select(rs => rs.Stopp).ToListAsync();
+                    stoppListe.AddRange(tempListe);
+                }
+
+                return stoppListe;
+            } catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return null;
             }
-
-            return stoppListe;
         }
 
-        public async Task<List<Stopp>> FinnMuligeStartStopp(InnStopp sluttStopp)
+        public async Task<List<Stopp>> FinnMuligeSluttStopp(InnStopp sluttStopp)
         {
-            Stopp stopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == sluttStopp.Navn);
-            List<Ruter> ruter = await FinnRuter(stopp);
-
-            List<Stopp> stoppListe = new List<Stopp>();
-            foreach (Ruter rute in ruter)
+            try
             {
-                int stoppNummer = await FinnStoppNummer(stopp, rute);
-                List<Stopp> tempListe = await _db.RuteStopp
-                    .Where(rs => rs.StoppNummer < stoppNummer && rs.Rute == rute)
-                    .Select(rs => rs.Stopp).ToListAsync();
-                stoppListe.AddRange(tempListe);
-            }
+                Stopp stopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == sluttStopp.Navn);
+                List<Ruter> ruter = await FinnRuter(stopp);
 
-            return stoppListe;
+                List<Stopp> stoppListe = new List<Stopp>();
+                foreach (Ruter rute in ruter)
+                {
+                    int stoppNummer = await FinnStoppNummer(stopp, rute);
+                    List<Stopp> tempListe = await _db.RuteStopp
+                        .Where(rs => rs.StoppNummer < stoppNummer && rs.Rute == rute)
+                        .Select(rs => rs.Stopp).ToListAsync();
+                    stoppListe.AddRange(tempListe);
+                }
+
+                return stoppListe;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return null;
+            }
         }
     }
 }

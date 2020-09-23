@@ -103,6 +103,17 @@ function hentAlleStopp() {
     });
 }
 
+//Til rutedelen
+function hentAlleRuter() {
+    //TODO: gjøre noe med dataene
+    $.get("Buss/HentAlleRuter", function (allerutene) {
+        let rutene = new Array();
+        for (let i = 0; i < allerutene.length; i++) {
+            rutene.push(allerutene[i]);
+        }
+    });
+}
+
 /* Legger til et mørkt overlay over bakgrunnsbildet,
    som matcher høyden på dokumentet */
 function endreBakgrunn() {

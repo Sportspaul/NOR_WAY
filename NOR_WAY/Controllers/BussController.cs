@@ -28,6 +28,18 @@ namespace NOR_WAY.Controllers
                return Ok(alleStopp); // returnerer alltid OK, null ved tom DB
         }
 
+        public async Task<ActionResult> FinnMuligeStartStopp(InnStopp startStopp)
+        {
+            List<Stopp> stopp = await _db.FinnMuligeStartStopp(startStopp);
+            return Ok(stopp); // returnerer alltid OK, null ved tom DB
+        }
+
+        public async Task<ActionResult> FinnMuligeSluttStopp(InnStopp sluttStopp)
+        {
+            List<Stopp> alleStopp = await _db.FinnMuligeSluttStopp(sluttStopp);
+            return Ok(alleStopp); // returnerer alltid OK, null ved tom DB
+        }
+
         public async Task<ActionResult> HentAlleBillettyper()
         {
             List<Billettyper> billettypene = await _db.HentAlleBillettyper();
@@ -40,8 +52,9 @@ namespace NOR_WAY.Controllers
             {
                 Avgang nesteAvgang = await _db.FinnNesteAvgang(input);
                 if (nesteAvgang == null) {
-                    _log.LogInformation("Feil i inputvalideringen på server");
-                    return BadRequest("Feil i inputvalideringen på server"); }
+                    _log.LogInformation("Avgang ikke funnet");
+                    return BadRequest("Se loggfilen for informasjon om feil"); 
+                }
                 return Ok(nesteAvgang);
             }
                 

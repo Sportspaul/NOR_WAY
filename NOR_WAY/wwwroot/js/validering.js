@@ -1,54 +1,150 @@
-﻿
-// Sjekker om stoppnavn er gyldig
+﻿// Tester input mot regex  
+function testRegex(inId, regex) {
+    let input = $(inId).val();
+
+    if (regex.test(input)) { return true; }
+    return false;
+}
+
+// Skriver ut feilmeling til bruker og returnerer en bool
+function feilmelding(ok, melding, utId) {
+    const feilElement = $(utId);
+    if (ok) {
+        feilElement.html("");
+        endreBakgrunn();
+        return true;
+    } else {
+        feilElement.html(melding);
+        endreBakgrunn();
+        return false;
+    }
+}
+
+// Validerer alle feltene knyttet til avngang 
+function validerAvgangInput() {
+    const startStopp = validerStoppnavn("#startStopp", "#feilStartStopp");
+    const sluttStopp = validerStoppnavn("#sluttStopp", "#feilSluttStopp");
+    const dato = validerDato("#dato");
+
+    // Hvis alle valideringene over er GYLDIGE
+    if (startStopp && sluttStopp && dato) { return true; }
+
+    // Hvis et eller flere valideringer over er UGYLDIGE 
+    $("#avgang").css("display", "none"); // Fjerner betalingskomponenten 
+    $("#feilAvgang").html("Vi tilbyr deverre ikke reisen du ønsker"); // Skriver feilmeling til bruker
+    document.querySelector('nav').scrollIntoView(); // scroller til toppen av siden
+    return false;
+}
+
+
+// Validerer alle feltene knyttet til betaling
+function validerBetalingsInput() {
+    const navn = validerNavn("#navn", "#feilNavn");
+    const epost = validerEpost("#epost", "#feilEpost");
+    const kortnummer = validerKortnummer("#kortnummer", "#feilKortnummer");
+    const mm = validerMM("#MM", "#feilMM");
+    const aa = validerAA("#AA", "#feilAA");
+    const cvc = validerCVC("#CVC", "#feilCVC");
+
+    // Hvis alle valideringene over er gyldige
+    if (navn & epost & kortnummer & mm & aa & cvc) {
+        return true;
+    }
+    return false;
+}
+
+// Stoppnavn-validering
 function validerStoppnavn(inId, utId) {
-    const stoppnavn = $("#" + inId).val();  // Input i inputfeltet
-    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/; // Regex
+    const stoppnavn = $(inId).val();  // Input i inputfeltet 
+    const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/; 
+    const stoppFins = StoppListe.includes(stoppnavn); // Sjekker om stoppet fins i listen med stopp
+    let melding = "";
 
-    // Sjekker om input er gyldig formatert i henhold til regexen over
-    const ok = regexp.test(stoppnavn); 
+    let ok = false;
+    if (testRegex(inId, regex) && stoppFins) { ok = true; }
+    
+    let preposisjon;
+    if (inId == "startStopp") {
+        preposisjon = "fra"
+    } else {
+        preposisjon = "til"
+    }
 
-    // Sjekker om stoppet fins i listen med stopp
-    const stoppFins = StoppListe.includes(stoppnavn); 
+    if (stoppnavn != "") {
+        melding = `Vi tilbyr desverre ikke reiser ${preposisjon} "${stoppnavn}"`
+    } 
+    
+    // Sjekker om input er gyldig formatert i henhold til regexen over 
+    return feilmelding(ok, melding, utId);
+}
 
-    // Hvis formatering er GYLDIG og stoppet FINST i listen
-    if (!ok || !stoppFins) {
+// Stoppnavn-validering simple versjon
+function validerStoppnavnSimple(input) {
+    const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
+    const stoppFins = StoppListe.includes(input);
+    const ok = regex.test(input);
+    console.log(ok + " " + stoppFins);
+    if (ok && stoppFins) { return true; }
+    return false;
+}
+
+// Dato-validering
+function validerDato(inId, utId) {
+    const input = $(inId).val();
+    if (idagISO() > input) {
+        $(utId).html("Du kan ikke reise tilbake i tid");
+        endreBakgrunn();
+        return false;
+    } else {
         $(utId).html("");
-        return true;
-
-    // Hvis formatering er UGYLDIG og stoppet IKKE finst i listen   
-    } else {
-
-        /* Setter riktig preposisjon basert på om det er s
-           tartStopp eller sluttStopp som valideres */
-        let preposisjon;
-        if (inId == "startStopp") {
-            preposisjon = "fra"
-        } else {
-            preposisjon = "til"
-        }
-
-        // Hvis stoppnanet ikke består validering og det ikke er tomt
-        if (stoppnavn != "") {
-
-            // Tilbakemelding til bruker om at stoppet ikke fins
-            $(utId).html(`Vi tilbyr desverre ikke reiser ${preposisjon} "${stoppnavn}"`);
-        }
-        return false;
-    }
-}
-
-// Skjekker om dato er gyldig
-function validerDato(inDato) {
-    if (idagISO() > inDato) {
-        $("#feilDato").html("Du kan ikke reise tilbake i tid");
-        return false;
-    } else {
-        $("#feilDato").html("");
+        endreBakgrunn();
         return true;
     }
 }
 
-// Finner dagens dato og formaterer i yyyy-mm-dd format, brukes av functionen over
+// Navn-validering
+function validerNavn(inId, utId) {
+    const regex = /^[a-åA-Å]([-']?[a-z]+)*( [a-åA-Å]([-']?[a-åA-Å]+)*)+$/
+    const melding = "Ugyldig navn";
+    return feilmelding(testRegex(inId, regex), melding, utId);
+}
+
+// Epost-validering
+function validerEpost(inId, utId) {
+    const regex = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-z]{2,4}/;
+    const melding = "Ugyldig epost";
+    return feilmelding(testRegex(inId, regex), melding, utId);
+}
+
+// Kortnummer-validering
+function validerKortnummer(inId, utId) {
+    const regex = /^[0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}$/
+    const melding = "Ugyldig kortnummer";
+    return feilmelding(testRegex(inId, regex), melding, utId);
+}
+
+// MM validering
+function validerMM(inId, utId) {
+    const regex = /^[0-9]{2}$/
+    const melding = "Ugyldig måned";
+    return feilmelding(testRegex(inId, regex), melding, utId);
+}
+
+// ÅÅ-validering
+function validerAA(inId, utId) {
+    const regex = /^[0-9]{2}$/
+    const melding = "Ugyldig årstall";
+    return feilmelding(testRegex(inId, regex), melding, utId);
+}
+
+// CVC-validering
+function validerCVC(inId, utId) {
+    const regex = /^[0-9]{3}$/
+    const melding = "Ugyldig CVC";
+    return feilmelding(testRegex(inId, regex), melding, utId);
+}
+
+// Finner dagens dato og formaterer i yyyy-mm-dd format 
 function idagISO() {
     var idag = new Date();
     var yyyy = idag.getFullYear();
@@ -67,4 +163,11 @@ function idagISO() {
     idag = yyyy + '-' + mm + '-' + dd;
 
     return idag;
+}
+
+/* Legger til et mørkt overlay over bakgrunnsbildet,
+   som matcher høyden på dokumentet */
+function endreBakgrunn() {
+    var h = $(document).height();
+    $("#overlay").css('height', h);
 }

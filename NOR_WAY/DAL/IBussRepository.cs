@@ -8,6 +8,8 @@ namespace NOR_WAY.DAL
     public interface IBussRepository
     {
         Task<List<Stopp>> HentAlleStopp();
+        Task<List<Stopp>> FinnMuligeSluttStopp(InnStopp startStopp);
+        Task<List<Stopp>> FinnMuligeStartStopp(InnStopp sluttStopp);
         Task<List<Billettyper>> HentAlleBillettyper();
         Task<Avgang> FinnNesteAvgang(AvgangParam param);
         Task<bool> FullforOrdre(KundeOrdre ordre);

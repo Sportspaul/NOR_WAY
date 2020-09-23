@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <script src="js/index.js?n=12"></script>
-    <script src="js/validering.js?n=6"></script>
-    <script src="js/stoppforslag.js?n?=1"></script>
+    <script src="js/index.js?n=13"></script>
+    <script src="js/validering.js?n=7"></script>
+    <script src="js/stoppforslag.js?n?=2"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <link rel="stylesheet" href="Style/index.css?n=6">
 </head>
@@ -32,14 +32,16 @@
 
                     <div class="form-group">
                         <h5>Jeg skal reise fra</h5>
-                        <input type="text" id="startStopp" placeholder="Skriv inn stoppnavn" class="form-control shadow-sm" />
+                        <input type="text" id="startStopp" placeholder="Skriv inn stoppnavn" class="form-control shadow-sm"
+                             onfocus="finnMuligeStartStopp()" />
                         <div id="auto1"></div>
                         <div id="feilStartStopp" class="mt-1 rodTekst"></div>
                     </div>
 
                     <div class="form-group">
                         <h5 class="mt-4">Jeg skal reise til</h5>
-                        <input type="text" id="sluttStopp" placeholder="Skriv inn stoppnavn" class="form-control shadow-sm" />
+                        <input type="text" id="sluttStopp" placeholder="Skriv inn stoppnavn" class="form-control shadow-sm"
+                                onfocus="finnMuligeSluttStopp()" />
                         <div id="auto2"></div>
                         <div id="feilSluttStopp" class="mt-1 rodTekst"></div>
                     </div>

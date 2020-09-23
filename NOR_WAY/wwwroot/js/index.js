@@ -7,7 +7,7 @@ $(function () {
 });
 
 // Global liste med alle stoppene hentet i databasen
-let StoppListe = new Array(); 
+let StoppListe = new Array();
 
 // Legger til dagens dato i datofeltet
 function leggTilDato() {
@@ -29,6 +29,39 @@ function hentAlleBillettyper() {
             nedtrekk.append($("<option />").val(this.billettype).text(this.billettype));
         });
     });
+}
+
+/* Hvis bruker skriver inn gyldig startstopp blir listen for gyldige sluttstopp
+ * inskrenket til å kun vise stopp som kommer senere i en felles rute */
+function finnMuligeSluttStopp() {
+    input = $("#startStopp").val();
+    if (validerStoppnavnSimple(input)) {
+        const url = "Buss/finnMuligeSluttStopp";
+        console.log("yes");
+        $.post(url, { Navn: input }, function (stopp) {
+            let stoppListe = new Array();
+            for (let i = 0; i < stopp.length; i++) {
+                stoppListe.push(stopp[i].navn)
+            }
+            stoppforslag($("#sluttStopp"), $("#auto2"), stoppListe, $("#feilSluttStopp"));
+        });
+    }
+}
+
+/* Hvis bruker skriver inn gyldig sluttstopp blir listen for gyldige startstopp
+ * inskrenket til å kun vise stopp som kommer tidligere i en felles rute */
+function finnMuligeStartStopp(input) {
+    input = $("#sluttStopp").val();
+    if (validerStoppnavnSimple(input)) {
+        const url = "Buss/finnMuligeStartStopp";
+        $.post(url, { Navn: input }, function (stopp) {
+            let stoppListe = new Array();
+            for (let i = 0; i < stopp.length; i++) {
+                stoppListe.push(stopp[i].navn)
+            }
+            stoppforslag($("#startStopp"), $("#auto1"), stoppListe, $("#feilStartStopp"));
+        });
+    }
 }
 
 

@@ -1,4 +1,4 @@
-﻿// Gir brukeren live-stoppforslag
+﻿// Gir brukeren live-stoppforslag 
 function stoppforslag(inputfelt, utskrift, stoppArray, feilmelding) {
     var fokusert;
 

@@ -53,7 +53,6 @@ function validerBetalingsInput() {
     return false;
 }
 
-
 // Stoppnavn-validering
 function validerStoppnavn(inId, utId) {
     const stoppnavn = $(inId).val();  // Input i inputfeltet 
@@ -77,6 +76,16 @@ function validerStoppnavn(inId, utId) {
     
     // Sjekker om input er gyldig formatert i henhold til regexen over 
     return feilmelding(ok, melding, utId);
+}
+
+// Stoppnavn-validering simple versjon
+function validerStoppnavnSimple(input) {
+    const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
+    const stoppFins = StoppListe.includes(input);
+    const ok = regex.test(input);
+    console.log(ok + " " + stoppFins);
+    if (ok && stoppFins) { return true; }
+    return false;
 }
 
 // Dato-validering

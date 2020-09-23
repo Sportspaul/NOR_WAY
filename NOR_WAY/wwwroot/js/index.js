@@ -3,7 +3,7 @@
     hentAlleBillettyper();
     leggTilDato();
     bakgrunnOverlay();
-    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="tooltip"]');
 });
 
 let StoppListe = new Array();
@@ -31,9 +31,15 @@ function hentAlleBillettyper() {
     });
 }
 
+let startStopp;
+let sluttStopp;
+let linjekode;
+let avgangId;
+let billettyper;
+
 function finnNesteAvgang() {
-    const startStopp = $("#startStopp").val();
-    const sluttStopp = $("#sluttStopp").val();
+    startStopp = $("#startStopp").val();
+    sluttStopp = $("#sluttStopp").val();
     const dato = $("#dato").val();
     const tidspunkt = $("#tidspunkt").val();
     let avreiseEtter = $('input[name="avreiseEtter"]:checked').val();
@@ -43,6 +49,11 @@ function finnNesteAvgang() {
         avreiseEtter = false;
     }
 
+    // Finner alle billettypene brukeren har valgt, og putter dem inn i et array
+    const billetter = document.querySelectorAll(".billettype");
+    billettyper = new Array();
+    billetter.forEach((billett) => billettyper.push(billett.value));
+
     const avgangParam = {
         StartStopp: startStopp,
         SluttStopp: sluttStopp,
@@ -51,8 +62,11 @@ function finnNesteAvgang() {
         AvreiseEtter: avreiseEtter
     }
 
+
     $.post("Buss/FinnNesteAvgang", avgangParam, function (avgang) {
-        ut = `<h4 class="mb-3"><strong>${avgang.rutenavn}, ${avgang.linjekode}</strong></h4>
+        linjekode = avgang.linjekode;
+        avgangId = avgang.avgangId;
+        ut = `<h4 class="mb-3"><strong>${avgang.rutenavn}, ${linjekode}</strong></h4>
                 <h6 class="mt-3">
                     <strong>Avreise:</strong>&nbsp;
                     20. November &nbsp;|&nbsp; ${startStopp}, 09:30 &nbsp;→&nbsp; ${sluttStopp}, 10:50</h6>
@@ -310,51 +324,23 @@ function bakgrunnOverlay() {
     console.log(h);
 }
 
-function fullforOrdre() {
-    // Henter de nødvendige verdiene for å laget et avgangParam
-    const startStopp = $("#startStopp").val();
-    const sluttStopp = $("#sluttStopp").val();
-    const dato = $("#dato").val();
-    const tidspunkt = $("#tidspunkt").val();
-    let avreiseEtter = $('input[name="avreiseEtter"]:checked').val();
-    if (avreiseEtter == "true") {
-        avreiseEtter = true
-    } else {
-        avreiseEtter = false;
-    }
-
-    const avgangParam = {
-        StartStopp: startStopp,
-        SluttStopp: sluttStopp,
-        Dato: dato,
-        Tidspunkt: tidspunkt,
-        AvreiseEtter: avreiseEtter
-    }
-
-    // Henter eposten brukeren fyllte inn
+function fullforOrdre() {    
+    // Henter en avgang fra DB, og lager en kundeordre med den og informasjonen hentet over
     const epost = $("#epost").val();
 
-    // Finner alle billettypene brukeren har valgt, og putter dem inn i et array
-    const billetter = document.querySelectorAll(".billettype");
-    let billettyper = new Array();
-    billetter.forEach((billett) => billettyper.push(billett.value));
+    const kundeordre = {
+        Epost: epost,
+        StartStopp: startStopp,
+        SluttStopp: sluttStopp,
+        Linjekode: linjekode,
+        AvgangId: avgangId,
+        Billettype: billettyper
+    }
+    //TODO: Fjerne denne
+    console.log(kundeordre);
 
+    // Kaller C# Metoden FullforOrdre()
+    $.post("Buss/FullforOrdre", kundeordre);
     
-    // Henter en avgang fra DB, og lager en kundeordre med den og informasjonen hentet over
-    $.post("Buss/FinnNesteAvgang", avgangParam, function (avgang) {
-        const kundeordre = {
-            Epost: epost,
-            StartStopp: startStopp,
-            SluttStopp: sluttStopp,
-            Linjekode: avgang.linjekode,
-            AvgangId: avgang.avgangId,
-            Billettype: billettyper
-        }
-        //TODO: Fjerne denne
-        console.log(kundeordre);
-
-        // Kaller C# Metoden FullforOrdre()
-        $.post("Buss/FullforOrdre", kundeordre);
-    })
 }
 

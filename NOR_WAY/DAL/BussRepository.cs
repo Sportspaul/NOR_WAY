@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -474,23 +475,41 @@ namespace NOR_WAY.DAL
         {
             try
             {
-                /* Henter data fra tabellene:
-                 * RuteStopp: Stoppnummer, MinutterTilNesteStopp
-                 * Ruter: Linjekode, Rutenavn
-                 * Stopp: Navn
-                 */ 
                 List<RuteData> RuteDataene = new List<RuteData>();
+                // Henter data fra tabeller:
                 List<Ruter> AlleRutene = await _db.Ruter.Select(r => new Ruter
                 {
                     Linjekode = r.Linjekode,
-                    Rutenavn = r.Rutenavn
+                    Rutenavn = r.Rutenavn, 
+                    TilleggPerStopp = r.TilleggPerStopp,
+                    Startpris = r.Startpris
                 }).ToListAsync();
-                List<RuteStopp> TidMellomStopp = await _db.RuteStopp.Select(rs => new RuteStopp
+                List<RuteStopp> ruteStopp = await _db.RuteStopp.Select(rs => new RuteStopp
                 {
                     StoppNummer = rs.StoppNummer,
-                    MinutterTilNesteStopp = rs.MinutterTilNesteStopp
+                    MinutterTilNesteStopp = rs.MinutterTilNesteStopp,
+                    Stopp = rs.Stopp,
+                    Rute = rs.Rute
                 }).ToListAsync();
-                List<Stopp> AlleStopp = await HentAlleStopp();
+                //Fyller opp tabellen
+                foreach(Ruter rute in AlleRutene)
+                {
+                    RuteData rutedata = new RuteData();
+                    rutedata.Rutenavn = rute.Rutenavn;
+                    rutedata.Linjekode = rute.Linjekode;
+                    rutedata.TilleggPerStopp = rute.TilleggPerStopp;
+                    rutedata.Startpris = rute.Startpris;
+                    foreach(RuteStopp rutestopp in ruteStopp )
+                    {
+                        if(rutestopp.Rute.Linjekode == rute.Linjekode)
+                        {
+                            rutedata.StoppNavn = rutestopp.Stopp.Navn;
+                        }
+                        rutedata.Stoppnummer = rutestopp.StoppNummer;
+                        rutedata.minutterTilNesteStopp = rutestopp.MinutterTilNesteStopp;
+                        RuteDataene.Add(rutedata);
+                    }
+                }
 
                 return RuteDataene;
             }

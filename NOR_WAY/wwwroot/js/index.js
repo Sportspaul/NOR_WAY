@@ -255,32 +255,33 @@ function finnNesteAvgang() {
     }
 
 
-
     function finnReisetid(reiseTid) {
         let intReise = parseInt(reiseTid,10);
         let min = intReise % 60;
-        let time =Math.floor(intReise / 60);
-        let utReisetid = "Reisetid: " + time;
+        let time = Math.floor(intReise / 60);
+        let utReisetid = "Reisetid: ";
 
-        if (time != 1) {
-            utReisetid += " timer ";
-            if (min != 1) {
-                utReisetid += min + " minutter";
-
+        if (time > 0) {
+            if (time != 1) {
+                utReisetid += time + " timer";
             } else {
-                utReisetid += min + " minutt";
-
-            }
-        } else {
-            utReisetid += " time";
-            if (min != 1) {
-                utReisetid += min + " minutter";
-
-            } else {
-                utReisetid += min + " minutt";
-
+                utReisetid += time + " time";
             }
         }
+
+        if (time > 0 && min > 0) {
+            utReisetid += " og ";
+        }
+
+        if (min > 0) { 
+            if (min != 1) {
+                utReisetid += min + " minutter";
+
+            } else {
+                utReisetid += min + " minutt";
+            }
+        }
+
         return utReisetid;
     }
 

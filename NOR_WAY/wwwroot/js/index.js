@@ -113,12 +113,10 @@ function finnNesteAvgang() {
                                     onKeyPress="if(this.value.length==3) return false;">
                             </div>
                         </div>
-
                     </div>
 
-                    <input type="submit" class="btn btn-success form-control shadow font-weight-bold" value="Betal">
+                    <input type="button" class="btn btn-success form-control shadow font-weight-bold" value="Betal" onclick="fullforOrdre()")>
                 </form>`;
-
         $("#feilAvgang").html("");
         $("#avgang").css("display", "block");
         $("#avgang").html(ut);
@@ -136,7 +134,7 @@ function leggTilBillett() {
     const antall = $('.billettype').length;
     const id = `billettype${antall+1}`;
 
-    $('#billetter').append(`<select id="${id}" class="form-control billettype mb-2"></select>`);
+    $('#billetter').append(`<select id="${id}" class="billettype form-control mb-2"></select>`);
     console.log(billettyper);
     var $dropdown = $(`#${id}`);
     $.each(billettyper, function () {
@@ -311,3 +309,52 @@ function bakgrunnOverlay() {
     $("#overlay").css('height', h);
     console.log(h);
 }
+
+function fullforOrdre() {
+    // Henter de nødvendige verdiene for å laget et avgangParam
+    const startStopp = $("#startStopp").val();
+    const sluttStopp = $("#sluttStopp").val();
+    const dato = $("#dato").val();
+    const tidspunkt = $("#tidspunkt").val();
+    let avreiseEtter = $('input[name="avreiseEtter"]:checked').val();
+    if (avreiseEtter == "true") {
+        avreiseEtter = true
+    } else {
+        avreiseEtter = false;
+    }
+
+    const avgangParam = {
+        StartStopp: startStopp,
+        SluttStopp: sluttStopp,
+        Dato: dato,
+        Tidspunkt: tidspunkt,
+        AvreiseEtter: avreiseEtter
+    }
+
+    // Henter eposten brukeren fyllte inn
+    const epost = $("#epost").val();
+
+    // Finner alle billettypene brukeren har valgt, og putter dem inn i et array
+    const billetter = document.querySelectorAll(".billettype");
+    let billettyper = new Array();
+    billetter.forEach((billett) => billettyper.push(billett.value));
+
+    
+    // Henter en avgang fra DB, og lager en kundeordre med den og informasjonen hentet over
+    $.post("Buss/FinnNesteAvgang", avgangParam, function (avgang) {
+        const kundeordre = {
+            Epost: epost,
+            StartStopp: startStopp,
+            SluttStopp: sluttStopp,
+            Linjekode: avgang.linjekode,
+            AvgangId: avgang.avgangId,
+            Billettype: billettyper
+        }
+        //TODO: Fjerne denne
+        console.log(kundeordre);
+
+        // Kaller C# Metoden FullforOrdre()
+        $.post("Buss/FullforOrdre", kundeordre);
+    })
+}
+

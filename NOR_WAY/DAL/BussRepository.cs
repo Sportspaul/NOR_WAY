@@ -247,11 +247,11 @@ namespace NOR_WAY.DAL
             Avganger avgang = await _db.Avganger.FirstOrDefaultAsync(a => a.Id == kundeOrdreParam.AvgangId);
 
             // Finner startStopp, og finner stoppnummeret i ruten
-            Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(a => a.Navn == kundeOrdreParam.StartStopp);
+            Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == kundeOrdreParam.StartStopp);
             int stoppNummer1 = await FinnStoppNummer(startStopp, rute);
 
             // Finner sluttStopp, og finner stoppnummeret i ruten
-            Stopp sluttStopp = await _db.Stopp.FirstOrDefaultAsync(a => a.Navn == kundeOrdreParam.SluttStopp);
+            Stopp sluttStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == kundeOrdreParam.SluttStopp);
             int stoppNummer2 = await FinnStoppNummer(sluttStopp, rute);
 
             // Regner ut antall stopp
@@ -268,7 +268,7 @@ namespace NOR_WAY.DAL
             {
                 Epost = kundeOrdreParam.Epost,
                 StartStopp = startStopp,
-                SluttStopp = startStopp,
+                SluttStopp = sluttStopp,
                 Sum = sum,
                 Rute = rute,
                 Avgang = avgang

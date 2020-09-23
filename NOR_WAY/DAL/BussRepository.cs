@@ -45,7 +45,12 @@ namespace NOR_WAY.DAL
             int stoppNummer2 = await FinnStoppNummer(sluttStopp, fellesRute);
             if (stoppNummer1 > stoppNummer2) {
                 _log.LogInformation("Seneste stopp har ikke lavere stoppnummer enn tidligste stopp!");
-                return null; }
+                return null; 
+            } else if (stoppNummer1 == -1 || stoppNummer2  == -1 )
+            {
+                _log.LogInformation("Ett eller begge stopp har ingen rute");
+                return null;
+            }
 
             // Beregner reisetiden fra stopp påstigning til avstigning
             int reisetid = await BeregnReisetid(stoppNummer1, stoppNummer2, fellesRute);
@@ -90,15 +95,27 @@ namespace NOR_WAY.DAL
         liste med ruter som innholder stoppet */
         private async Task<List<Ruter>> FinnRuter(Stopp stopp)
         {
-            return await _db.RuteStopp
-                .Where(rs => rs.Stopp == stopp)
-                .Select(rs => rs.Rute)
-                .ToListAsync();
+            try
+            {
+                return await _db.RuteStopp
+                    .Where(rs => rs.Stopp == stopp)
+                    .Select(rs => rs.Rute)
+                    .ToListAsync();
+            } catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return null;
+            }
         }
 
         // Hjelpemetode som finner Rutern to lister med Ruter har til felles
         private Ruter FinnFellesRute(List<Ruter> startStoppRuter, List<Ruter> sluttStoppRuter)
         {
+            if(startStoppRuter == null || sluttStoppRuter == null )
+            {
+                _log.LogInformation(" Ett eller flere oppgitte stopp har ingen rute");
+                return null;
+            }
             Ruter fellesRute = new Ruter();
             foreach (Ruter startStoppRute in startStoppRuter)
             {
@@ -117,10 +134,18 @@ namespace NOR_WAY.DAL
         // Hjelpemetode som finner stoppnummeret til et spesifikt stopp i en spesifikk rute
         private async Task<int> FinnStoppNummer(Stopp stopp, Ruter fellesRute)
         {
-            RuteStopp ruteStopp = await _db.RuteStopp
-                .FirstOrDefaultAsync(rs => rs.Stopp == stopp && rs.Rute == fellesRute);
+            try
+            {
+                RuteStopp ruteStopp = await _db.RuteStopp
+              .FirstOrDefaultAsync(rs => rs.Stopp == stopp && rs.Rute == fellesRute);
 
-            return ruteStopp.StoppNummer;
+                return ruteStopp.StoppNummer;
+            } catch (Exception e )
+            {
+                _log.LogInformation(e.Message);
+                return -1;
+            }
+          
         }
 
         // Hjelpemetode som beregner reisetiden fra startStopp til sluttStopp

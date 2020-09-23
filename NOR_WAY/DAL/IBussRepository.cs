@@ -11,7 +11,7 @@ namespace NOR_WAY.DAL
         Task<List<Stopp>> FinnMuligeStartStopp(InnStopp startStopp);
         Task<List<Stopp>> FinnMuligeSluttStopp(InnStopp sluttStopp);
         Task<List<Billettyper>> HentAlleBillettyper();
-        Task<List<Ruter>> HentAlleRuter();
+        Task<List<RuteData>> HentAlleRuter();
         Task<Avgang> FinnNesteAvgang(AvgangParam param);
         Task<bool> FullforOrdre(KundeOrdre ordre);
     }

@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL;
 using NOR_WAY.Model;
 
-
 namespace NOR_WAY.Controllers
 {
     [Route("[controller]/[action]")]
@@ -48,7 +47,7 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentAlleRuter()
         {
-            List<Ruter> rutene = await _db.HentAlleRuter();
+            List<RuteData> rutene = await _db.HentAlleRuter();
             return Ok(rutene); // returnerer alltid OK, null ved tom DB
         }
 

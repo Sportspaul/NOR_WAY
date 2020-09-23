@@ -15,7 +15,7 @@ namespace NOR_WAY.DAL
 
         private ILogger<BussRepository> _log;
 
-        public BussRepository(BussContext db, ILogger<BussRepository> log )
+        public BussRepository(BussContext db, ILogger<BussRepository> log)
         {
             _db = db;
             _log = log;
@@ -26,9 +26,11 @@ namespace NOR_WAY.DAL
             // Henter avgang- og påstigningsstoppet fra DB
             Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == input.StartStopp);
             Stopp sluttStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == input.SluttStopp);
-            if (startStopp.Equals(sluttStopp)) {
+            if (startStopp.Equals(sluttStopp))
+            {
                 _log.LogInformation("Sluttstopp kan ikke være lik startstopp!");
-                return null; }
+                return null;
+            }
 
             // Finner alle Rutene som inkluderer påstigning og som inkluderer avstigning
             List<Ruter> startStoppRuter = await FinnRuter(startStopp);
@@ -41,19 +43,20 @@ namespace NOR_WAY.DAL
             // Finne ut hvilket stoppNummer påstigning og avstigning har i den felles ruten
             int stoppNummer1 = await FinnStoppNummer(startStopp, fellesRute);
             int stoppNummer2 = await FinnStoppNummer(sluttStopp, fellesRute);
-            if (stoppNummer1 > stoppNummer2) {
+            if (stoppNummer1 > stoppNummer2)
+            {
                 _log.LogInformation("Seneste stopp har ikke lavere stoppnummer enn tidligste stopp!");
-                return null; 
+                return null;
             }
 
             // Beregner reisetiden fra stopp påstigning til avstigning
             int reisetid = await BeregnReisetid(stoppNummer1, stoppNummer2, fellesRute);
-            
+
 
             // Finne neste avgang som passer, basert på brukerens input
             Avganger nesteAvgang = await NesteAvgang(fellesRute, reisetid,
             input.AvreiseEtter, input.Dato, input.Tidspunkt);
-            if(nesteAvgang == null) { return null; }
+            if (nesteAvgang == null) { return null; }
 
             // Beregner avreise og ankomst
             DateTime avreise = await BeregnAvreisetid(nesteAvgang.Avreise, stoppNummer1, fellesRute);
@@ -61,7 +64,7 @@ namespace NOR_WAY.DAL
 
             // Konverterer avreise og ankomst fra DateTime til en strings
             string utAvreise = avreise.ToString("dd-MM-yyyy HH:mm");
-            string utAnkomst = ankomst.ToString("dd-MM-yyyy HH:mm"); 
+            string utAnkomst = ankomst.ToString("dd-MM-yyyy HH:mm");
 
             // Beregner prisen basert på startpris og antall stopp
             int antallStopp = stoppNummer2 - stoppNummer1;
@@ -79,13 +82,13 @@ namespace NOR_WAY.DAL
                 Rutenavn = fellesRute.Rutenavn,
                 Linjekode = fellesRute.Linjekode,
                 Pris = pris,
-                Avreise = utAvreise, 
+                Avreise = utAvreise,
                 Ankomst = utAnkomst,
                 Reisetid = reisetid
             };
 
             return utAvgang;
-        } 
+        }
 
         /* Hjelpemetode som tar inn et Stopp-objekt og returnerer en
         liste med ruter som innholder stoppet */
@@ -97,7 +100,8 @@ namespace NOR_WAY.DAL
                     .Where(rs => rs.Stopp == stopp)
                     .Select(rs => rs.Rute)
                     .ToListAsync();
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 _log.LogInformation(e.Message);
                 return null;
@@ -107,7 +111,7 @@ namespace NOR_WAY.DAL
         // Hjelpemetode som finner Rutern to lister med Ruter har til felles
         private Ruter FinnFellesRute(List<Ruter> startStoppRuter, List<Ruter> sluttStoppRuter)
         {
-            if(startStoppRuter == null || sluttStoppRuter == null )
+            if (startStoppRuter == null || sluttStoppRuter == null)
             {
                 _log.LogInformation(" Ett eller flere oppgitte stopp har ingen rute");
                 return null;
@@ -136,12 +140,13 @@ namespace NOR_WAY.DAL
               .FirstOrDefaultAsync(rs => rs.Stopp == stopp && rs.Rute == fellesRute);
 
                 return ruteStopp.StoppNummer;
-            } catch (Exception e )
+            }
+            catch (Exception e)
             {
                 _log.LogInformation(e.Message);
                 return -1;
             }
-          
+
         }
 
         // Hjelpemetode som beregner reisetiden fra startStopp til sluttStopp
@@ -160,12 +165,13 @@ namespace NOR_WAY.DAL
                     reisetid += minutter;
                 }
                 return reisetid;
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 _log.LogInformation(e.Message);
                 return -1;
             }
-           
+
         }
 
         // Hjelpemetode som finner neste avgang som passer for brukeren
@@ -213,14 +219,15 @@ namespace NOR_WAY.DAL
                     _log.LogInformation("Finner ingen avganger");
                     return null;
                 }
-            } catch (ArgumentOutOfRangeException bound)
+            }
+            catch (ArgumentOutOfRangeException bound)
             {
                 _log.LogInformation(bound.Message);
                 return null;
             }
-                
-             
-           
+
+
+
         }
 
 
@@ -261,13 +268,14 @@ namespace NOR_WAY.DAL
                 }
 
                 return (int)Math.Round(totalpris);
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 _log.LogInformation(e.Message);
                 return -1;
 
             }
-            
+
         }
 
         // Endrer avreisetiden hvis påstigning ikke er første stopp i ruten
@@ -280,16 +288,16 @@ namespace NOR_WAY.DAL
             }
             else
             {
-                    List<int> minTilNesteStoppList = await _db.RuteStopp
-                    .Where(rs => rs.StoppNummer < stoppNummer && rs.Rute == fellesRute)
-                    .Select(rs => rs.MinutterTilNesteStopp)
-                    .ToListAsync();
-                    int totalTid = 0;
-                    foreach (int minutter in minTilNesteStoppList)
-                    {
-                        totalTid += minutter;
-                    }
-                    return avreise.AddMinutes(totalTid);
+                List<int> minTilNesteStoppList = await _db.RuteStopp
+                .Where(rs => rs.StoppNummer < stoppNummer && rs.Rute == fellesRute)
+                .Select(rs => rs.MinutterTilNesteStopp)
+                .ToListAsync();
+                int totalTid = 0;
+                foreach (int minutter in minTilNesteStoppList)
+                {
+                    totalTid += minutter;
+                }
+                return avreise.AddMinutes(totalTid);
             }
         }
 
@@ -297,7 +305,7 @@ namespace NOR_WAY.DAL
         public async Task<bool> FullforOrdre(KundeOrdre kundeOrdreParam)
         {
             try
-            { 
+            {
                 // Henter ut ruten som tilhører kundeOrdreParam
                 Ruter rute = await _db.Ruter.FirstOrDefaultAsync(r => r.Linjekode == kundeOrdreParam.Linjekode);
 
@@ -356,12 +364,13 @@ namespace NOR_WAY.DAL
                 _db.SaveChanges();
 
                 return true;
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 _log.LogInformation(e.Message);
                 return false;
             }
-            
+
         }
 
         public async Task<List<Billettyper>> HentAlleBillettyper()
@@ -375,17 +384,19 @@ namespace NOR_WAY.DAL
                 }).ToListAsync();
 
                 return alleBillettyper;
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 _log.LogInformation(e.Message);
                 return null;
             }
-            
+
         }
 
         public async Task<List<Stopp>> HentAlleStopp()
         {
-            try {
+            try
+            {
                 List<Stopp> alleStopp = await _db.Stopp.Select(s => new Stopp
                 {
                     Navn = s.Navn
@@ -399,7 +410,7 @@ namespace NOR_WAY.DAL
                 return null;
             }
 
-            
+
         }
 
         public async Task<List<Stopp>> FinnMuligeStartStopp(InnStopp startStopp)
@@ -420,7 +431,8 @@ namespace NOR_WAY.DAL
                 }
 
                 return stoppListe;
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 _log.LogInformation(e.Message);
                 return null;
@@ -453,16 +465,41 @@ namespace NOR_WAY.DAL
             }
         }
 
-        public async Task<List<Ruter>> HentAlleRuter()
+        public async Task<List<RuteData>> HentAlleRuter()
         {
             try
-            { 
-           return await _db.RuteStopp.Select(rs => rs.Rute).ToListAsync();
+            {
+                /* Henter data fra tabellene:
+                 * RuteStopp: Stoppnummer, MinutterTilNesteStopp
+                 * Ruter: Linjekode, Rutenavn
+                 * Stopp: Navn
+                 * Avganger: Avreise, Rute
+                 */ 
+                List<RuteData> RuteDataene = new List<RuteData>();
+                List<Ruter> AlleRutene = await _db.Ruter.Select(r => new Ruter
+                {
+                    Linjekode = r.Linjekode,
+                    Rutenavn = r.Rutenavn
+                }).ToListAsync();
+                List<RuteStopp> TidMellomStopp = await _db.RuteStopp.Select(rs => new RuteStopp
+                {
+                    StoppNummer = rs.StoppNummer,
+                    MinutterTilNesteStopp = rs.MinutterTilNesteStopp
+                }).ToListAsync();
+                List<Avganger> Avgangene = await _db.Avganger.Select(av => new Avganger
+                {
+                    Avreise = av.Avreise,
+                    Rute = av.Rute
+                }).ToListAsync();
+                List<Stopp> AlleStopp = await HentAlleStopp();
+
+                return RuteDataene;
             }
             catch (Exception e)
             {
                 _log.LogInformation(e.Message);
                 return null;
             }
+        }
     }
 }

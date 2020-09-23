@@ -172,7 +172,8 @@ namespace NOR_WAY.DAL
         private async Task<Avganger> NesteAvgang(Ruter fellesRute, int reisetid,
             bool avreiseEtter, string dato, string tidspunkt)
         {
-            
+            try
+            {
                 // Oversetter string verdiene av dato og tidspunkt til et DateTime-objekt
                 string innAvreise = dato + " " + tidspunkt;
                 DateTime avreise = DateTime.ParseExact(innAvreise, "yyyy-MM-dd HH:mm",
@@ -191,26 +192,33 @@ namespace NOR_WAY.DAL
                         .Where(a => a.Rute == fellesRute && a.Avreise <= ankomst)
                         .ToListAsync();
                 }
-            if (kommendeAvganger != null)
-            {
-
-                Avganger nesteAvgang = kommendeAvganger[0];
-                TimeSpan lavesteDiff = avreise.Subtract(kommendeAvganger[0].Avreise).Duration();
-                for (int i = 1; i < kommendeAvganger.Count; i++)
+                if (kommendeAvganger != null)
                 {
-                    TimeSpan diff = avreise.Subtract(kommendeAvganger[i].Avreise).Duration();
-                    if (diff < lavesteDiff)
-                    {
-                        nesteAvgang = kommendeAvganger[i];
-                    }
-                }
 
-                return nesteAvgang;
-            } else
+                    Avganger nesteAvgang = kommendeAvganger[0];
+                    TimeSpan lavesteDiff = avreise.Subtract(kommendeAvganger[0].Avreise).Duration();
+                    for (int i = 1; i < kommendeAvganger.Count; i++)
+                    {
+                        TimeSpan diff = avreise.Subtract(kommendeAvganger[i].Avreise).Duration();
+                        if (diff < lavesteDiff)
+                        {
+                            nesteAvgang = kommendeAvganger[i];
+                        }
+                    }
+
+                    return nesteAvgang;
+                }
+                else
+                {
+                    _log.LogInformation("Finner ingen avganger");
+                    return null;
+                }
+            } catch (ArgumentOutOfRangeException bound)
             {
-                _log.LogInformation("Finner ingen avganger");
+                _log.LogInformation(bound.Message);
                 return null;
             }
+                
              
            
         }

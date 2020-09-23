@@ -60,8 +60,8 @@ namespace NOR_WAY.DAL
             DateTime ankomst = avreise.AddMinutes(reisetid);
 
             // Konverterer avreise og ankomst fra DateTime til en strings
-            string utAvreise = avreise.ToString("yyyy-MM-dd HH:mm");
-            string utAnkomst = ankomst.ToString("yyyy-MM-dd HH:mm"); 
+            string utAvreise = avreise.ToString("dd-MM-yyyy HH:mm");
+            string utAnkomst = ankomst.ToString("dd-MM-yyyy HH:mm"); 
 
             // Beregner prisen basert på startpris og antall stopp
             int antallStopp = stoppNummer2 - stoppNummer1;

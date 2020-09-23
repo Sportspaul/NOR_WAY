@@ -140,16 +140,18 @@ function finnNesteAvgang() {
 
         // Kaller serveren for å finne neste avgang
         $.post("Buss/FinnNesteAvgang", avgangParam, function (avgang) {
-
+            console.log(avgang.reisetid);
+            console.log(avgang)
             /* HTML-komponent som inneholder en oversikt over billettonfomasjonen,
                og et betalingskjema */
             ut = `<div id="billettInfo">
                     <h4 id="billettInfoOverskrift"><strong>${avgang.rutenavn}, ${avgang.linjekode}</strong></h4>
                     <div id="billettInfoBody">
                         <h6>
-                            Avresise: 20. November &nbsp;|&nbsp; ${startStopp}, 09:30 &nbsp;→&nbsp; ${sluttStopp}, 10:50</h6>
+                            Avreise: ${avgang.avreise.substr(0, 10)} &nbsp;|&nbsp; ${startStopp}, ${avgang.avreise.substr(11, 5)}  &nbsp;→&nbsp; ${sluttStopp}, 
+                                     ${avgang.ankomst.substr(11, 5)} </h6>
                         <h6 class="mt-4">
-                            Reisetid: 1 timer og 30 minutter
+                            Reisetid: ${finnReisetid(avgang.reisetid)}
                         </h6>
                         <h6 class="mt-4">
                             Biletter: 2 Voksen, 1 Student, 2 Hønnør
@@ -244,12 +246,13 @@ function finnNesteAvgang() {
 
 
     function finnReisetid(reiseTid) {
-        let min = reiseTid % 60;
-        let time = Math.floor(reiseTid / 60);
+        let intReise = parseInt(reiseTid,10);
+        let min = intReise % 60;
+        let time =Math.floor(intReise / 60);
         let utReisetid = "Reisetid: " + time;
 
         if (time != 1) {
-            utReisetid += " timer";
+            utReisetid += " timer ";
             if (min != 1) {
                 utReisetid += min + " minutter";
 

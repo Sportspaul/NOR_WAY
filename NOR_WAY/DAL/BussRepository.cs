@@ -53,6 +53,7 @@ namespace NOR_WAY.DAL
             // Finne neste avgang som passer, basert på brukerens input
             Avganger nesteAvgang = await NesteAvgang(fellesRute, reisetid,
             input.AvreiseEtter, input.Dato, input.Tidspunkt);
+            if(nesteAvgang == null) { return null; }
 
             // Beregner avreise og ankomst
             DateTime avreise = await BeregnAvreisetid(nesteAvgang.Avreise, stoppNummer1, fellesRute);
@@ -171,8 +172,7 @@ namespace NOR_WAY.DAL
         private async Task<Avganger> NesteAvgang(Ruter fellesRute, int reisetid,
             bool avreiseEtter, string dato, string tidspunkt)
         {
-            try
-            {
+            
                 // Oversetter string verdiene av dato og tidspunkt til et DateTime-objekt
                 string innAvreise = dato + " " + tidspunkt;
                 DateTime avreise = DateTime.ParseExact(innAvreise, "yyyy-MM-dd HH:mm",
@@ -191,6 +191,8 @@ namespace NOR_WAY.DAL
                         .Where(a => a.Rute == fellesRute && a.Avreise <= ankomst)
                         .ToListAsync();
                 }
+            if (kommendeAvganger != null)
+            {
 
                 Avganger nesteAvgang = kommendeAvganger[0];
                 TimeSpan lavesteDiff = avreise.Subtract(kommendeAvganger[0].Avreise).Duration();
@@ -204,12 +206,12 @@ namespace NOR_WAY.DAL
                 }
 
                 return nesteAvgang;
-            } catch ( Exception e)
+            } else
             {
-                _log.LogInformation(e.Message);
+                _log.LogInformation("Finner ingen avganger");
                 return null;
-
             }
+             
            
         }
 

@@ -11,6 +11,9 @@ namespace NOR_WAY.Model
         public string StoppNavn { get; set; }
         public string Linjekode { get; set; }
         public string Rutenavn { get; set; }
-        public List<Avganger> RuteAvganger { get; set; }
+        public int minutterTilNesteStopp { get; set; }
+        public int pris { get; set; }
+        public int TilleggPerStopp { get; set; }
+        
     }
 }

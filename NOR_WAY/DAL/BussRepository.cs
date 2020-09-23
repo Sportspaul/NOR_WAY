@@ -478,7 +478,6 @@ namespace NOR_WAY.DAL
                  * RuteStopp: Stoppnummer, MinutterTilNesteStopp
                  * Ruter: Linjekode, Rutenavn
                  * Stopp: Navn
-                 * Avganger: Avreise, Rute
                  */ 
                 List<RuteData> RuteDataene = new List<RuteData>();
                 List<Ruter> AlleRutene = await _db.Ruter.Select(r => new Ruter
@@ -490,11 +489,6 @@ namespace NOR_WAY.DAL
                 {
                     StoppNummer = rs.StoppNummer,
                     MinutterTilNesteStopp = rs.MinutterTilNesteStopp
-                }).ToListAsync();
-                List<Avganger> Avgangene = await _db.Avganger.Select(av => new Avganger
-                {
-                    Avreise = av.Avreise,
-                    Rute = av.Rute
                 }).ToListAsync();
                 List<Stopp> AlleStopp = await HentAlleStopp();
 

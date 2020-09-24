@@ -29,36 +29,43 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> FinnMuligeStartStopp(InnStopp startStopp)
         {
-            List<Stopp> stopp = await _db.FinnMuligeStartStopp(startStopp);
-            return Ok(stopp); // returnerer alltid OK, null ved tom DB
+            if(ModelState.IsValid)
+            {
+                List<Stopp> stopp = await _db.FinnMuligeStartStopp(startStopp);
+                return Ok(stopp); // returnerer alltid OK, null ved tom DB
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalideringen på server");
         }
 
         public async Task<ActionResult> FinnMuligeSluttStopp(InnStopp sluttStopp)
         {
-            List<Stopp> alleStopp = await _db.FinnMuligeSluttStopp(sluttStopp);
-            return Ok(alleStopp); // returnerer alltid OK, null ved tom DB
+            if(ModelState.IsValid)
+            {
+                List<Stopp> alleStopp = await _db.FinnMuligeSluttStopp(sluttStopp);
+                return Ok(alleStopp);
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalideringen på server");
         }
 
         public async Task<ActionResult> HentAlleBillettyper()
         {
             List<Billettyper> billettypene = await _db.HentAlleBillettyper();
-            return Ok(billettypene); // returnerer alltid OK, null ved tom DB
+            return Ok(billettypene);
         }
 
         public async Task<ActionResult> HentAlleRuter()
         {
-            if(ModelState.IsValid)
-            {
+          
                 List<RuteData> rutene = await _db.HentAlleRuter();
                 if(rutene == null)
                 {
                     _log.LogInformation("Rutene ble ikke funnet");
                     return NotFound("Rutene ble ikke funnet");
                 }
-                return Ok(rutene); // returnerer alltid OK, null ved tom DB
-            }
-            _log.LogInformation("Feil i inputvalideringen på server");
-            return BadRequest("Feil i inputvalideringen på server");
+                return Ok(rutene);
+           
         }
 
 
@@ -69,7 +76,7 @@ namespace NOR_WAY.Controllers
                 Avgang nesteAvgang = await _db.FinnNesteAvgang(input);
                 if (nesteAvgang == null) {
                     _log.LogInformation("Avgang ikke funnet");
-                    return BadRequest("Se loggfilen for informasjon om feil"); 
+                    return BadRequest("Avgang ikke funnet");
                 }
                 return Ok(nesteAvgang);
             }

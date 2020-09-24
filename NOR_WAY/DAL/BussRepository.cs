@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.Intrinsics.X86;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NOR_WAY.Model;
@@ -114,7 +115,7 @@ namespace NOR_WAY.DAL
         {
             if (startStoppRuter == null || sluttStoppRuter == null)
             {
-                _log.LogInformation(" Ett eller flere oppgitte stopp har ingen rute");
+                _log.LogInformation(" Ett eller begge oppgitte stopp har ingen rute");
                 return null;
             }
             Ruter fellesRute = new Ruter();

@@ -1,6 +1,5 @@
 ﻿// Kalles når siden laster inn
 $(function () {
-    hentAlleRuter(); //TODO: Ta vekk
     hentAlleStopp();
     hentAlleBillettyper();
     leggTilDato();
@@ -109,11 +108,10 @@ function hentAlleStopp() {
 function hentAlleRuter() {
     //TODO: gjøre noe med dataene
     $.get("Buss/HentAlleRuter", function (allerutene) {
-        console.log(allerutene.length); //TODO: Ta vekk
+        
         let rutene = new Array();
         for (let i = 0; i < allerutene.length; i++) {
             rutene.push(allerutene[i]);
-            console.table(allerutene[i]); //TODO: Ta vekk
         }
         
     });
@@ -156,8 +154,6 @@ function finnNesteAvgang() {
 
         // Kaller serveren for å finne neste avgang
         $.post("Buss/FinnNesteAvgang", avgangParam, function (avgang) {
-            console.log(avgang.reisetid);
-            console.log(avgang)
             /* HTML-komponent som inneholder en oversikt over billettonfomasjonen,
                og et betalingskjema */
             ut = `<div id="billettInfo">
@@ -255,10 +251,9 @@ function finnNesteAvgang() {
             // Gir brukeren tilbakemelding hvis ingen avganger ble hentet 
             $("#avgang").css("display", "none");
             $("#avgang").html("");
-            $("#feilAvgang").html("Vi tilbyr deverre ikke reisen du ønsker");
+            $("#feilAvgang").html("Vi tilbyr desverre ikke reisen du ønsker");
         });
     }
-
 
     function finnReisetid(reiseTid) {
         let intReise = parseInt(reiseTid,10);
@@ -288,14 +283,6 @@ function finnNesteAvgang() {
         }
 
         return utReisetid;
-    }
-
-    // Henter ut data ut fra strenger
-    function hentTidsdata(tidInput) {
-        let datoVerdier = tidInput.substr(0, 10).split("-")
-        let tidVerdier = tidInput.substr(11, 5).split(":").map(Number)
-        let tidspunkt = [datoVerdier, tidVerdier] //todimensjonalt array
-        return tidspunkt
     }
 
     // Legger til en ny select og fyller den med billettyer-data

@@ -46,6 +46,13 @@ namespace NOR_WAY.DAL
                 Injiser(NW192Rute, NW192Stopp, context);
                 context.SaveChanges();
 
+                // Rute 400 - Kystbussen
+                var NW400Rute = new Ruter() { Linjekode = "NW400", Rutenavn = "Kystbussen", Startpris = 79, TilleggPerStopp = 32, Kapasitet = 40 };
+                string[] NW400Stopp = { "Bergen", "Os","Halhjem", "Sandvikvåg", "Leirvik", "Haukås", "Aksdal", "Mjåsund", "Arsvågen", "Mortavika", "Stavanger" };
+                // Injiserer dataen inn i databasen og lagrer endringene
+                Injiser(NW400Rute, NW400Stopp, context);
+                context.SaveChanges();
+
 
                 // Injiserer Billettypene
                 Billettyper barn = new Billettyper() { Billettype = "Barn", Rabattsats = 50 };
@@ -73,10 +80,15 @@ namespace NOR_WAY.DAL
                 DateTime dato6 = new DateTime(2020, 11, 22, 13, 00, 00);
                 Avganger avgang6 = new Avganger() { Avreise = dato6, SolgteBilletter = 0, Rute = NW180Rute };
 
-                DateTime dato7 = new DateTime(2021, 1, 12, 10, 30, 00);
+                DateTime dato7 = new DateTime(2020, 12, 05, 07, 30, 00);
                 Avganger avgang7 = new Avganger() { Avreise = dato7, SolgteBilletter = 0, Rute = NW192Rute };
                 DateTime dato8 = new DateTime(2020, 11, 23, 14, 30, 00);
                 Avganger avgang8 = new Avganger() { Avreise = dato8, SolgteBilletter = 0, Rute = NW192Rute };
+
+                DateTime dato9 = new DateTime(2020, 11, 21, 15, 30, 00);
+                Avganger avgang9 = new Avganger() { Avreise = dato9, SolgteBilletter = 0, Rute = NW400Rute };
+                DateTime dato10 = new DateTime(2020, 11, 28, 09, 30, 00);
+                Avganger avgang10 = new Avganger() { Avreise = dato10, SolgteBilletter = 0, Rute = NW400Rute };
 
 
                 context.Avganger.Add(avgang1);
@@ -87,6 +99,8 @@ namespace NOR_WAY.DAL
                 context.Avganger.Add(avgang6);
                 context.Avganger.Add(avgang7);
                 context.Avganger.Add(avgang8);
+                context.Avganger.Add(avgang9);
+                context.Avganger.Add(avgang10);
 
                 context.SaveChanges();
             }

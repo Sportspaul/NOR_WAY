@@ -1,4 +1,4 @@
-﻿// Tester input mot regex  
+﻿// Tester input mot regex
 function testRegex(inId, regex) {
     let input = $(inId).val();
 
@@ -20,7 +20,7 @@ function feilmelding(ok, melding, utId) {
     }
 }
 
-// Validerer alle feltene knyttet til avngang 
+// Validerer alle feltene knyttet til avngang
 function validerAvgangInput() {
     const startStopp = validerStoppnavn("#startStopp", "#feilStartStopp");
     const sluttStopp = validerStoppnavn("#sluttStopp", "#feilSluttStopp");
@@ -29,13 +29,12 @@ function validerAvgangInput() {
     // Hvis alle valideringene over er GYLDIGE
     if (startStopp && sluttStopp && dato) { return true; }
 
-    // Hvis et eller flere valideringer over er UGYLDIGE 
-    $("#avgang").css("display", "none"); // Fjerner betalingskomponenten 
+    // Hvis et eller flere valideringer over er UGYLDIGE
+    $("#avgang").css("display", "none"); // Fjerner betalingskomponenten
     $("#feilAvgang").html("Vi tilbyr deverre ikke reisen du ønsker"); // Skriver feilmeling til bruker
     document.querySelector('nav').scrollIntoView(); // scroller til toppen av siden
     return false;
 }
-
 
 // Validerer alle feltene knyttet til betaling
 function validerBetalingsInput() {
@@ -55,14 +54,14 @@ function validerBetalingsInput() {
 
 // Stoppnavn-validering
 function validerStoppnavn(inId, utId) {
-    const stoppnavn = $(inId).val();  // Input i inputfeltet 
-    const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/; 
+    const stoppnavn = $(inId).val();  // Input i inputfeltet
+    const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
     const stoppFins = StoppListe.includes(stoppnavn); // Sjekker om stoppet fins i listen med stopp
     let melding = "";
 
     let ok = false;
     if (testRegex(inId, regex) && stoppFins) { ok = true; }
-    
+
     let preposisjon;
     if (inId == "startStopp") {
         preposisjon = "fra"
@@ -72,9 +71,9 @@ function validerStoppnavn(inId, utId) {
 
     if (stoppnavn != "") {
         melding = `Vi tilbyr desverre ikke reiser ${preposisjon} "${stoppnavn}"`
-    } 
-    
-    // Sjekker om input er gyldig formatert i henhold til regexen over 
+    }
+
+    // Sjekker om input er gyldig formatert i henhold til regexen over
     return feilmelding(ok, melding, utId);
 }
 
@@ -144,7 +143,7 @@ function validerCVC(inId, utId) {
     return feilmelding(testRegex(inId, regex), melding, utId);
 }
 
-// Finner dagens dato og formaterer i yyyy-mm-dd format 
+// Finner dagens dato og formaterer i yyyy-mm-dd format
 function idagISO() {
     var idag = new Date();
     var yyyy = idag.getFullYear();

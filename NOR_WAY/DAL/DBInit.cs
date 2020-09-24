@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,11 +47,10 @@ namespace NOR_WAY.DAL
 
                 // Rute 400 - Kystbussen
                 var NW400Rute = new Ruter() { Linjekode = "NW400", Rutenavn = "Kystbussen", Startpris = 79, TilleggPerStopp = 32, Kapasitet = 40 };
-                string[] NW400Stopp = { "Bergen", "Os","Halhjem", "Sandvikvåg", "Leirvik", "Haukås", "Aksdal", "Mjåsund", "Arsvågen", "Mortavika", "Stavanger" };
+                string[] NW400Stopp = { "Bergen", "Os", "Halhjem", "Sandvikvåg", "Leirvik", "Haukås", "Aksdal", "Mjåsund", "Arsvågen", "Mortavika", "Stavanger" };
                 // Injiserer dataen inn i databasen og lagrer endringene
                 Injiser(NW400Rute, NW400Stopp, context);
                 context.SaveChanges();
-
 
                 // Injiserer Billettypene
                 Billettyper barn = new Billettyper() { Billettype = "Barn", Rabattsats = 50 };
@@ -90,7 +88,6 @@ namespace NOR_WAY.DAL
                 DateTime dato10 = new DateTime(2020, 11, 28, 09, 30, 00);
                 Avganger avgang10 = new Avganger() { Avreise = dato10, SolgteBilletter = 0, Rute = NW400Rute };
 
-
                 context.Avganger.Add(avgang1);
                 context.Avganger.Add(avgang2);
                 context.Avganger.Add(avgang3);
@@ -106,8 +103,9 @@ namespace NOR_WAY.DAL
             }
         }
 
-        /* Metode som tar inn et Ruter-objekt en liste med Stopp og en 
+        /* Metode som tar inn et Ruter-objekt en liste med Stopp og en
         DB-context og injiserer det inn i databasen */
+
         private static void Injiser(Ruter rute, string[] stoppListe, BussContext context)
         {
             context.Ruter.Add(rute); // Nytt instans av Ruter i databasen

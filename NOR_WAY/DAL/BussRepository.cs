@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.Intrinsics.X86;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NOR_WAY.Model;
@@ -54,7 +52,6 @@ namespace NOR_WAY.DAL
             // Beregner reisetiden fra stopp påstigning til avstigning
             int reisetid = await BeregnReisetid(stoppNummer1, stoppNummer2, fellesRute);
 
-
             // Finne neste avgang som passer, basert på brukerens input
             Avganger nesteAvgang = await NesteAvgang(fellesRute, reisetid,
             input.AvreiseEtter, input.Dato, input.Tidspunkt);
@@ -94,6 +91,7 @@ namespace NOR_WAY.DAL
 
         /* Hjelpemetode som tar inn et Stopp-objekt og returnerer en
         liste med ruter som innholder stoppet */
+
         private async Task<List<Ruter>> FinnRuter(Stopp stopp)
         {
             try
@@ -140,11 +138,10 @@ namespace NOR_WAY.DAL
             {
                 RuteStopp ruteStopp = await _db.RuteStopp
               .FirstOrDefaultAsync(rs => rs.Stopp == stopp && rs.Rute == fellesRute);
-                if(ruteStopp == null)
+                if (ruteStopp == null)
                 {
                     _log.LogInformation("Stoppet er ikke på ruten");
                     return -1;
-
                 }
                 return ruteStopp.StoppNummer;
             }
@@ -153,7 +150,6 @@ namespace NOR_WAY.DAL
                 _log.LogInformation(e.Message);
                 return -1;
             }
-
         }
 
         // Hjelpemetode som beregner reisetiden fra startStopp til sluttStopp
@@ -178,7 +174,6 @@ namespace NOR_WAY.DAL
                 _log.LogInformation(e.Message);
                 return -1;
             }
-
         }
 
         // Hjelpemetode som finner neste avgang som passer for brukeren
@@ -207,7 +202,6 @@ namespace NOR_WAY.DAL
                 }
                 if (kommendeAvganger != null)
                 {
-
                     Avganger nesteAvgang = kommendeAvganger[0];
                     TimeSpan lavesteDiff = avreise.Subtract(kommendeAvganger[0].Avreise).Duration();
                     for (int i = 1; i < kommendeAvganger.Count; i++)
@@ -232,11 +226,7 @@ namespace NOR_WAY.DAL
                 _log.LogInformation(bound.Message);
                 return null;
             }
-
-
-
         }
-
 
         private async Task<int> BeregnPris(Ruter rute, int antallStopp, List<string> billettyper)
         {
@@ -280,9 +270,7 @@ namespace NOR_WAY.DAL
             {
                 _log.LogInformation(e.Message);
                 return -1;
-
             }
-
         }
 
         // Endrer avreisetiden hvis påstigning ikke er første stopp i ruten
@@ -334,8 +322,6 @@ namespace NOR_WAY.DAL
                 // antallStopp, rute, liste med billettype
                 int sum = await BeregnPris(rute, antallStopp, kundeOrdreParam.Billettype);
 
-
-
                 // Lager en ordre basert på kundeOrdreParam, rute og avgang
                 var ordre = new Ordre
                 {
@@ -377,7 +363,6 @@ namespace NOR_WAY.DAL
                 _log.LogInformation(e.Message);
                 return false;
             }
-
         }
 
         public async Task<List<Billettyper>> HentAlleBillettyper()
@@ -397,7 +382,6 @@ namespace NOR_WAY.DAL
                 _log.LogInformation(e.Message);
                 return null;
             }
-
         }
 
         public async Task<List<Stopp>> HentAlleStopp()
@@ -416,8 +400,6 @@ namespace NOR_WAY.DAL
                 _log.LogInformation(e.Message);
                 return null;
             }
-
-
         }
 
         public async Task<List<Stopp>> FinnMuligeStartStopp(InnStopp startStopp)
@@ -481,7 +463,7 @@ namespace NOR_WAY.DAL
                 List<Ruter> AlleRutene = await _db.Ruter.Select(r => new Ruter
                 {
                     Linjekode = r.Linjekode,
-                    Rutenavn = r.Rutenavn, 
+                    Rutenavn = r.Rutenavn,
                     TilleggPerStopp = r.TilleggPerStopp,
                     Startpris = r.Startpris
                 }).ToListAsync();
@@ -491,9 +473,9 @@ namespace NOR_WAY.DAL
                     Rute = rs.Rute,
                     Stopp = rs.Stopp
                 }).ToListAsync();
-                List<Stopp> stoppene =  await HentAlleStopp();
+                List<Stopp> stoppene = await HentAlleStopp();
                 //Fyller opp tabellen
-                foreach(Ruter rute in AlleRutene)
+                foreach (Ruter rute in AlleRutene)
                 {
                     RuteData rutedata = new RuteData();
                     rutedata.Rutenavn = rute.Rutenavn;
@@ -502,19 +484,19 @@ namespace NOR_WAY.DAL
                     rutedata.Startpris = rute.Startpris;
                     rutedata.Stoppene = new List<string>();
                     foreach (RuteStopp rutestopp in ruteStopp)
-                    {   
+                    {
                         if (rute.Linjekode == rutestopp.Rute.Linjekode)
                         {
-                            for (int i = 0; i < stoppene.Count; i++) {
+                            for (int i = 0; i < stoppene.Count; i++)
+                            {
                                 if (stoppene[i].Navn == rutestopp.Stopp.Navn)
                                 {
                                     rutedata.Stoppene.Add(stoppene[i].Navn);
                                 }
                             }
                         }
-                    
+
                         rutedata.minutterTilNesteStopp = rutestopp.MinutterTilNesteStopp;
-                                           
                     }
                     RuteDataene.Add(rutedata);
                 }

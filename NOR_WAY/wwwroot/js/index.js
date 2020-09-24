@@ -4,7 +4,6 @@ $(function () {
     hentAlleBillettyper();
     leggTilDato();
     endreBakgrunn();
-   
 });
 
 // Global liste med alle stoppene hentet i databasen
@@ -19,10 +18,9 @@ function leggTilDato() {
     })()
 }
 
-// Henter alle billettypene i databasen 
+// Henter alle billettypene i databasen
 function hentAlleBillettyper() {
     $.get("Buss/HentAlleBillettyper", function (alleBillettyper) {
-
         // Fyller nedtrekksmenyen med billettypene som ble hentet
         var nedtrekk = $("#billettype1");
         billettyper = alleBillettyper;
@@ -50,7 +48,7 @@ function finnMuligeSluttStopp() {
         });
     } else {
         stoppforslag($("#sluttStopp"), $("#auto2"), StoppListe, $("#feilSluttStopp"));
-    } 
+    }
 }
 
 /* Hvis bruker skriver inn gyldig sluttstopp blir listen for gyldige startstopp
@@ -74,7 +72,6 @@ function finnMuligeStartStopp(input) {
     }
 }
 
-
 // Legger til et nytt select-element og fyller den med billettyer-data fra DB
 function leggTilBillett() {
     console.log("Ja")
@@ -88,7 +85,7 @@ function leggTilBillett() {
     });
 }
 
-/* Henter alle stoppene i databasen, 
+/* Henter alle stoppene i databasen,
  * og kaller funksjoner for å legge til stoppforslag ved input i stoppnavn-feltene */
 function hentAlleStopp() {
     $.get("Buss/HentAlleStopp", function (alleStopp) {
@@ -98,7 +95,7 @@ function hentAlleStopp() {
         }
         StoppListe = stoppListe; // Legger stoppene i den globalen listen
 
-        // Gir brukeren live-stoppforslag for begge inputfeltene 
+        // Gir brukeren live-stoppforslag for begge inputfeltene
         stoppforslag($("#startStopp"), $("#auto1"), stoppListe, $("#feilStartStopp"));
         stoppforslag($("#sluttStopp"), $("#auto2"), stoppListe, $("#feilSluttStopp"));
     });
@@ -113,7 +110,6 @@ function endreBakgrunn() {
 
 // Henter neste avgang fra server og skriver det ut til dokumentet
 function finnNesteAvgang() {
-
     // Henter ut nødvendige verider fra inputfeltene
     const startStopp = $("#startStopp").val();
     const sluttStopp = $("#sluttStopp").val();
@@ -127,7 +123,7 @@ function finnNesteAvgang() {
     }
     let billettyper = ["Voksen", "Barn"]; // TODO: bytte ut denne med functions kall
 
-    // Klargjør obj som skal sendes til server 
+    // Klargjør obj som skal sendes til server
     const avgangParam = {
         StartStopp: startStopp,
         SluttStopp: sluttStopp,
@@ -138,7 +134,6 @@ function finnNesteAvgang() {
     }
 
     if (validerAvgangInput()) {
-
         // Kaller serveren for å finne neste avgang
         $.post("Buss/FinnNesteAvgang", avgangParam, function (avgang) {
             /* HTML-komponent som inneholder en oversikt over billettonfomasjonen,
@@ -147,7 +142,7 @@ function finnNesteAvgang() {
                     <h4 id="billettInfoOverskrift"><strong>${avgang.rutenavn}, ${avgang.linjekode}</strong></h4>
                     <div id="billettInfoBody">
                         <h6>
-                            Avreise: ${avgang.avreise.substr(0, 10)} &nbsp;|&nbsp; ${startStopp}, ${avgang.avreise.substr(11, 5)}  &nbsp;→&nbsp; ${sluttStopp}, 
+                            Avreise: ${avgang.avreise.substr(0, 10)} &nbsp;|&nbsp; ${startStopp}, ${avgang.avreise.substr(11, 5)}  &nbsp;→&nbsp; ${sluttStopp},
                                      ${avgang.ankomst.substr(11, 5)} </h6>
                         <h6 class="mt-4">
                             Reisetid: ${finnReisetid(avgang.reisetid)}
@@ -199,7 +194,7 @@ function finnNesteAvgang() {
                                     <input type="number" placeholder="ÅÅ" id="AA" class="form-control shadow-sm"
                                         onblur="validerAA('#AA', '#feilAA')" onKeyPress="if(this.value.length == 2) return false;" >
                                 </div>
-                        
+
                         </div>
                         <div class="col-sm-4">
                                 <label>CVC</label>
@@ -220,7 +215,7 @@ function finnNesteAvgang() {
             $("#avgang").html(ut);
             $("#feilAvgang").html("");
             $("#avgang").css("display", "block");
-            document.getElementById('avgang').scrollIntoView(); // Scroller til 
+            document.getElementById('avgang').scrollIntoView(); // Scroller til
             endreBakgrunn(); // Får overlay til å matche den endrede skjermhøyden
 
             // Hinder brukeren å skrive tall i navn-feltet
@@ -234,8 +229,7 @@ function finnNesteAvgang() {
                 $("#kortnummer").val($("#kortnummer").val().replace(/[^\d]/g, '').replace(/(.{4})/g, '$1 ').trim());
             });
         }).fail(function () {
-
-            // Gir brukeren tilbakemelding hvis ingen avganger ble hentet 
+            // Gir brukeren tilbakemelding hvis ingen avganger ble hentet
             $("#avgang").css("display", "none");
             $("#avgang").html("");
             $("#feilAvgang").html("Vi tilbyr desverre ikke reisen du ønsker");
@@ -243,7 +237,7 @@ function finnNesteAvgang() {
     }
 
     function finnReisetid(reiseTid) {
-        let intReise = parseInt(reiseTid,10);
+        let intReise = parseInt(reiseTid, 10);
         let min = intReise % 60;
         let time = Math.floor(intReise / 60);
         let utReisetid = "Reisetid: ";
@@ -260,10 +254,9 @@ function finnNesteAvgang() {
             utReisetid += " og ";
         }
 
-        if (min > 0) { 
+        if (min > 0) {
             if (min != 1) {
                 utReisetid += min + " minutter";
-
             } else {
                 utReisetid += min + " minutt";
             }
@@ -289,7 +282,7 @@ function finnNesteAvgang() {
     function stoppforslag(inputfelt, utskrift, stoppArray, feilmelding) {
         var fokusert;
 
-        // Eventlisner på intput feltet 
+        // Eventlisner på intput feltet
         inputfelt.on("input", function (e) {
             let stoppListe, stoppElement, i
             let val = this.value;
@@ -307,7 +300,6 @@ function finnNesteAvgang() {
 
             // Looper gjennom alle stoppene i listen med stopp
             for (i = 0; i < stoppArray.length; i++) {
-
                 // Sjekker om stopp i listen starter med de samme bokstavene som input
                 if (stoppArray[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
                     feilmelding.html("");
@@ -324,8 +316,7 @@ function finnNesteAvgang() {
 
                     // Event listner for om noen trykker på et av de foreslåtte stoppene
                     stoppElement.addEventListener("click", function (e) {
-
-                        // Fyller input feltet med stoppet som brukeren trykker på 
+                        // Fyller input feltet med stoppet som brukeren trykker på
                         inputfelt.val(this.getElementsByTagName("input")[0].value);
 
                         // Lukker listen med forslag til stopp
@@ -346,7 +337,6 @@ function finnNesteAvgang() {
 
             // Hvis brukeren trykker piltast ned
             if (e.keyCode == 40) {
-
                 // Flytter pekeren til aktivt element en videre i listen
                 fokusert++;
 
@@ -355,8 +345,7 @@ function finnNesteAvgang() {
 
                 // Hvis brukeren trykker piltast opp
             } else if (e.keyCode == 38) {
-
-                // Flytter pekeren til aktivt element en tilbake i listen 
+                // Flytter pekeren til aktivt element en tilbake i listen
                 fokusert--;
 
                 // Endrer style på aktivt element
@@ -364,7 +353,6 @@ function finnNesteAvgang() {
 
                 // Hvis bruker trykker ENTER på en fokusert stopp i listen
             } else if (e.keyCode == 13) {
-
                 e.preventDefault();
                 if (fokusert > -1) {
                     if (elmt) {
@@ -383,7 +371,7 @@ function finnNesteAvgang() {
             if (fokusert >= elmt.length) fokusert = 0;
             if (fokusert < 0) fokusert = (elmt.length - 1);
 
-            // Legger til style-klasse for aktivt element 
+            // Legger til style-klasse for aktivt element
             elmt[fokusert].classList.add("forslag-active");
         }
 
@@ -394,7 +382,7 @@ function finnNesteAvgang() {
             }
         }
 
-        // Lukker listen med forslag til stopp 
+        // Lukker listen med forslag til stopp
         function lukkAlleLister(elmt) {
             var elmt = document.getElementsByClassName("stoppListe");
             for (var i = 0; i < elmt.length; i++) {

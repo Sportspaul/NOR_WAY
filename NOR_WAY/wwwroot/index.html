@@ -27,49 +27,49 @@
                 <a href="loggInn.html"><li>Logg Inn</li></a>
             </ul>
         </nav>
-            <div class="shadowBox">
-                <form>
+        <div class="shadowBox">
+            <form>
 
-                    <div class="form-group">
-                        <h5>Jeg skal reise fra</h5>
-                        <input type="text" id="startStopp" placeholder="Skriv inn stoppnavn" class="form-control shadow-sm"
-                             onfocus="finnMuligeStartStopp()" />
-                        <div id="auto1"></div>
-                        <div id="feilStartStopp" class="mt-1 rodTekst"></div>
-                    </div>
+                <div class="form-group">
+                    <h5>Jeg skal reise fra</h5>
+                    <input type="text" id="startStopp" placeholder="Skriv inn stoppnavn" class="form-control shadow-sm"
+                           onfocus="finnMuligeStartStopp()" />
+                    <div id="auto1"></div>
+                    <div id="feilStartStopp" class="mt-1 rodTekst"></div>
+                </div>
 
-                    <div class="form-group">
-                        <h5 class="mt-4">Jeg skal reise til</h5>
-                        <input type="text" id="sluttStopp" placeholder="Skriv inn stoppnavn" class="form-control shadow-sm"
-                                onfocus="finnMuligeSluttStopp()" />
-                        <div id="auto2"></div>
-                        <div id="feilSluttStopp" class="mt-1 rodTekst"></div>
-                    </div>
+                <div class="form-group">
+                    <h5 class="mt-4">Jeg skal reise til</h5>
+                    <input type="text" id="sluttStopp" placeholder="Skriv inn stoppnavn" class="form-control shadow-sm"
+                           onfocus="finnMuligeSluttStopp()" />
+                    <div id="auto2"></div>
+                    <div id="feilSluttStopp" class="mt-1 rodTekst"></div>
+                </div>
 
-                    <div class="form-group">
-                        <h5 class="mt-4">Tidspunkt for min reise</h5>
-                        <input type="radio" id="avreiseEtter" name="avreiseEtter" value="true" checked />
-                        <label>Avreise etter</label>
-                        &nbsp;|&nbsp;
-                        <input type="radio" id="ankomstFør" name="avreiseEtter" value="false" />
-                        <label>Ankomst før</label>
-                        <br />
-                        <input type="date" id="dato" class="form-control shadow-sm" onfocusout="validerDato('#dato', '#feilDato')" />
-                        <input type="time" id="tidspunkt" class="form-control mt-2 shadow-sm" value="12:00" />
-                        <span id="feilDato" class="mt-1 rodTekst"></span>
-                    </div>
+                <div class="form-group">
+                    <h5 class="mt-4">Tidspunkt for min reise</h5>
+                    <input type="radio" id="avreiseEtter" name="avreiseEtter" value="true" checked />
+                    <label>Avreise etter</label>
+                    &nbsp;|&nbsp;
+                    <input type="radio" id="ankomstFør" name="avreiseEtter" value="false" />
+                    <label>Ankomst før</label>
+                    <br />
+                    <input type="date" id="dato" class="form-control shadow-sm" onfocusout="validerDato('#dato', '#feilDato')" />
+                    <input type="time" id="tidspunkt" class="form-control mt-2 shadow-sm" value="12:00" />
+                    <span id="feilDato" class="mt-1 rodTekst"></span>
+                </div>
 
-                        <h5 class="mt-4">Billettype</h5>
-                        <div id="billetter">
-                            <select id="billettype1" class="form-control shadow-sm billettype mb-2"></select>
-                        </div>
+                <h5 class="mt-4">Billettype</h5>
+                <div id="billetter">
+                    <select id="billettype1" class="form-control shadow-sm billettype mb-2"></select>
+                </div>
 
-                        <input type="button" value="Legg til en billett" class="btn btn-sm btn-dark font-weight-bold shadow" onclick="leggTilBillett()" />
-                        <input type="button" id="bestill" class="btn btn-md btn-primary mt-4 form-control font-weight-bold shadow" value="Finn reise" onclick="finnNesteAvgang()" />
-                </form>
-                <div id="feilAvgang" class="mt-2 rodTekst"></div>
-            </div>
-            <div id="avgang" class="shadowBox" style="display: none;"></div>
+                <input type="button" value="Legg til en billett" class="btn btn-sm btn-dark font-weight-bold shadow" onclick="leggTilBillett()" />
+                <input type="button" id="bestill" class="btn btn-md btn-primary mt-4 form-control font-weight-bold shadow" value="Finn reise" onclick="finnNesteAvgang()" />
+            </form>
+            <div id="feilAvgang" class="mt-2 rodTekst"></div>
         </div>
+        <div id="avgang" class="shadowBox" style="display: none;"></div>
+    </div>
 </body>
 </html>

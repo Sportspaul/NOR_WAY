@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +10,7 @@ namespace NOR_WAY.DAL
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string Linjekode { get; set; } // PK
+
         public string Rutenavn { get; set; }
         public int Startpris { get; set; }
         public int TilleggPerStopp { get; set; }
@@ -32,6 +32,7 @@ namespace NOR_WAY.DAL
 
         // Foreign Keys
         virtual public Stopp Stopp { get; set; } // FK
+
         virtual public Ruter Rute { get; set; } // FK
     }
 
@@ -55,6 +56,7 @@ namespace NOR_WAY.DAL
 
         // Foreign Keys
         virtual public Ruter Rute { get; set; } // FK
+
         virtual public Avganger Avgang { get; set; } // FK
     }
 
@@ -64,6 +66,7 @@ namespace NOR_WAY.DAL
 
         // Foreign Keys
         virtual public Billettyper Billettype { get; set; } // FK
+
         virtual public Ordre Ordre { get; set; } // FK
     }
 
@@ -72,6 +75,7 @@ namespace NOR_WAY.DAL
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string Billettype { get; set; } // PK
+
         public int Rabattsats { get; set; }
     }
 

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +13,6 @@ namespace NOR_WAY_Tests
 {
     public class BussTests
     {
-
         private readonly Mock<IBussRepository> mockRepo = new Mock<IBussRepository>();
         private readonly Mock<ILogger<BussController>> mockLog = new Mock<ILogger<BussController>>();
         private readonly ITestOutputHelper output;
@@ -23,7 +21,6 @@ namespace NOR_WAY_Tests
         {
             this.output = output;
         }
-
 
         [Fact]
         public async Task FinnNesteAvgangTest()
@@ -48,14 +45,12 @@ namespace NOR_WAY_Tests
                 Reisetid = 80
             };
 
-
             mockRepo.Setup(b => b.FinnNesteAvgang(param)).ReturnsAsync(forventetAvgang);
             var bussController = new BussController(mockRepo.Object, mockLog.Object);
             var resultat = await bussController.FinnNesteAvgang(param) as OkObjectResult;
             Avgang avgang = (Avgang)resultat.Value;
 
-
-            output.WriteLine("AvgangId " + avgang.AvgangId );
+            output.WriteLine("AvgangId " + avgang.AvgangId);
             output.WriteLine("Rutenavn " + avgang.Rutenavn);
             output.WriteLine("Reisetid " + avgang.Reisetid);
 
@@ -71,8 +66,7 @@ namespace NOR_WAY_Tests
         [Fact]
         public async Task FullforOrdreTest()
         {
-
-        // Arrange
+            // Arrange
             var billettype = new List<string>();
             billettype.Add("Student");
             billettype.Add("Barn");
@@ -89,11 +83,10 @@ namespace NOR_WAY_Tests
 
             mockRepo.Setup(br => br.FullforOrdre(kundeOrdre)).ReturnsAsync(true);
             var bussController = new BussController(mockRepo.Object, mockLog.Object);
-        // Act
+            // Act
             var resultat = await bussController.FullforOrdre(kundeOrdre) as OkObjectResult;
-        // Assert
+            // Assert
             Assert.Equal("Ordren ble lagret!", resultat.Value);
-
         }
     }
 }

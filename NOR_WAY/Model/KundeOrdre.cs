@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using NOR_WAY.DAL;
 
 namespace NOR_WAY.Model
 {
@@ -22,7 +20,7 @@ namespace NOR_WAY.Model
 
         [RegularExpression(@"[0-9]{1,}")]
         public int AvgangId { get; set; }
-        
-        public List<string> Billettype { get; set; } 
+
+        public List<string> Billettype { get; set; }
     }
 }

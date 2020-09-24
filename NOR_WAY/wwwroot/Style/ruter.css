@@ -2,7 +2,6 @@
     color: #2a347b;
 }
 
-
 #ruter {
     display: inline-block;
     width: 40%;
@@ -10,25 +9,25 @@
     padding-right: 5%;
 }
 
-#ruter h5 {
-    transition: .2s;
-    opacity: 0.75;
-}
+    #ruter h5 {
+        transition: .2s;
+        opacity: 0.75;
+    }
 
-#ruter h5:hover {
-    cursor: pointer;
-    opacity: 1;
-}
+        #ruter h5:hover {
+            cursor: pointer;
+            opacity: 1;
+        }
 
 #valgtRute {
     opacity: 1 !important;
     text-decoration: underline;
 }
 
-#valgtRute:hover {
-    opacity: 1;
-    cursor: arrow !important;
-}
+    #valgtRute:hover {
+        opacity: 1;
+        cursor: arrow !important;
+    }
 
 #stopp {
     float: right;
@@ -41,4 +40,3 @@
 .shadowBox {
     height: 150vh;
 }
-

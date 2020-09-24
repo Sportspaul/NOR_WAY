@@ -14,9 +14,9 @@ function hentAlleRuter() {
         }
 
         // Setter global liste for bruk utenfor functions
-        ruteMatrise = rutene; 
+        ruteMatrise = rutene;
 
-        // Skriver ut alle rutene 
+        // Skriver ut alle rutene
         utRuter = "<h4>Ruter</h4>"
         for (let i = 0; i < rutene.length; i++) {
             utRuter += `<h5 class="mt-4"
@@ -25,18 +25,16 @@ function hentAlleRuter() {
         }
         $("#ruter").html(utRuter);
 
-
         // Skriver ut stoppene til første ruten
         byttRute(0);
 
-        // Endrer høyden på shadowBox til å matche dataen 
+        // Endrer høyden på shadowBox til å matche dataen
         endreBoksHoyde();
     });
 }
 
 // Skriver ut stoppene til ruten med nummer til argumentet
 function byttRute(i) {
-
     let utStopp = `<h4 class='mb-4'>Stoppene i ${ruteMatrise[i].linjekode},<br>
                     ${ruteMatrise[i].rutenavn}</h4>`;
 
@@ -58,7 +56,7 @@ function byttRute(i) {
     $("#stopp").html(utStopp);
 }
 
- // Endrer høyden på shadowBox til å matche dataen
+// Endrer høyden på shadowBox til å matche dataen
 function endreBoksHoyde() {
     var s = $("#stopp").height();
     var r = $("#ruter").height();

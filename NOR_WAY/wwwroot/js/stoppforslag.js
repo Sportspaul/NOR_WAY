@@ -1,8 +1,8 @@
-﻿// Gir brukeren live-stoppforslag 
+﻿// Gir brukeren live-stoppforslag
 function stoppforslag(inputfelt, utskrift, stoppArray, feilmelding) {
     var fokusert;
 
-    // Eventlisner på intput feltet 
+    // Eventlisner på intput feltet
     inputfelt.on("input", function (e) {
         let stoppListe, stoppElement, i
         let val = this.value;
@@ -20,7 +20,6 @@ function stoppforslag(inputfelt, utskrift, stoppArray, feilmelding) {
 
         // Looper gjennom alle stoppene i listen med stopp
         for (i = 0; i < stoppArray.length; i++) {
-
             // Sjekker om stopp i listen starter med de samme bokstavene som input
             if (stoppArray[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
                 feilmelding.html("");
@@ -37,8 +36,7 @@ function stoppforslag(inputfelt, utskrift, stoppArray, feilmelding) {
 
                 // Event listner for om noen trykker på et av de foreslåtte stoppene
                 stoppElement.addEventListener("click", function (e) {
-
-                    // Fyller input feltet med stoppet som brukeren trykker på 
+                    // Fyller input feltet med stoppet som brukeren trykker på
                     inputfelt.val(this.getElementsByTagName("input")[0].value);
 
                     // Lukker listen med forslag til stopp
@@ -59,7 +57,6 @@ function stoppforslag(inputfelt, utskrift, stoppArray, feilmelding) {
 
         // Hvis brukeren trykker piltast ned
         if (e.keyCode == 40) {
-
             // Flytter pekeren til aktivt element en videre i listen
             fokusert++;
 
@@ -68,8 +65,7 @@ function stoppforslag(inputfelt, utskrift, stoppArray, feilmelding) {
 
             // Hvis brukeren trykker piltast opp
         } else if (e.keyCode == 38) {
-
-            // Flytter pekeren til aktivt element en tilbake i listen 
+            // Flytter pekeren til aktivt element en tilbake i listen
             fokusert--;
 
             // Endrer style på aktivt element
@@ -77,7 +73,6 @@ function stoppforslag(inputfelt, utskrift, stoppArray, feilmelding) {
 
             // Hvis bruker trykker ENTER på en fokusert stopp i listen
         } else if (e.keyCode == 13) {
-
             e.preventDefault();
             if (fokusert > -1) {
                 if (elmt) {
@@ -96,7 +91,7 @@ function stoppforslag(inputfelt, utskrift, stoppArray, feilmelding) {
         if (fokusert >= elmt.length) fokusert = 0;
         if (fokusert < 0) fokusert = (elmt.length - 1);
 
-        // Legger til style-klasse for aktivt element 
+        // Legger til style-klasse for aktivt element
         elmt[fokusert].classList.add("forslag-active");
     }
 
@@ -107,7 +102,7 @@ function stoppforslag(inputfelt, utskrift, stoppArray, feilmelding) {
         }
     }
 
-    // Lukker listen med forslag til stopp 
+    // Lukker listen med forslag til stopp
     function lukkAlleLister(elmt) {
         var elmt = document.getElementsByClassName("stoppListe");
         for (var i = 0; i < elmt.length; i++) {

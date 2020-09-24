@@ -432,7 +432,7 @@ namespace NOR_WAY.DAL
                 {
                     int stoppNummer = await FinnStoppNummer(stopp, rute);
                     List<Stopp> tempListe = await _db.RuteStopp
-                        .Where(rs => rs.StoppNummer > stoppNummer && rs.Rute == rute)
+                        .Where(rs => rs.StoppNummer < stoppNummer && rs.Rute == rute)
                         .Select(rs => rs.Stopp).ToListAsync();
                     stoppListe.AddRange(tempListe);
                 }
@@ -458,7 +458,7 @@ namespace NOR_WAY.DAL
                 {
                     int stoppNummer = await FinnStoppNummer(stopp, rute);
                     List<Stopp> tempListe = await _db.RuteStopp
-                        .Where(rs => rs.StoppNummer < stoppNummer && rs.Rute == rute)
+                        .Where(rs => rs.StoppNummer > stoppNummer && rs.Rute == rute)
                         .Select(rs => rs.Stopp).ToListAsync();
                     stoppListe.AddRange(tempListe);
                 }

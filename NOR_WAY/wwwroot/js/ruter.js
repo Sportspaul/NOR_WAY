@@ -35,8 +35,6 @@ function hentAlleRuter() {
 
 // Skriver ut stoppene til ruten med nummer til argumentet 
 function byttRute(i) {
-    let utStopp = `<h4 class='mb-4'>Stoppene i ${ruteMatrise[i].linjekode},<br>
-
     let utStopp = `<h4 class='mb-4'>Stoppene på linje ${ruteMatrise[i].linjekode},<br>
                     ${ruteMatrise[i].rutenavn}</h4>`;
 

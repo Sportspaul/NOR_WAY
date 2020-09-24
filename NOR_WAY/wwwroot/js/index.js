@@ -1,9 +1,11 @@
 ﻿// Kalles når siden laster inn
 $(function () {
+    hentAlleRuter(); //TODO: Ta vekk
     hentAlleStopp();
     hentAlleBillettyper();
     leggTilDato();
     endreBakgrunn();
+   
 });
 
 // Global liste med alle stoppene hentet i databasen
@@ -107,10 +109,13 @@ function hentAlleStopp() {
 function hentAlleRuter() {
     //TODO: gjøre noe med dataene
     $.get("Buss/HentAlleRuter", function (allerutene) {
+        console.log(allerutene.length); //TODO: Ta vekk
         let rutene = new Array();
         for (let i = 0; i < allerutene.length; i++) {
             rutene.push(allerutene[i]);
+            console.table(allerutene[i]); //TODO: Ta vekk
         }
+        
     });
 }
 

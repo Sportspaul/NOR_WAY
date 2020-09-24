@@ -9,8 +9,8 @@ namespace NOR_WAY.Model
 {
     public class RuteData
     {
-        [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,20}")]
-        public string StoppNavn { get; set; }
+        
+        public List<string> Stoppene { get; set; }
         [RegularExpression(@"(NW)[0-9]{1,4}")]
         public string Linjekode { get; set; }
         [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,20}")]
@@ -19,8 +19,6 @@ namespace NOR_WAY.Model
         public int minutterTilNesteStopp { get; set; }
         [RegularExpression(@"[0-9]{1,4}")]
         public int Startpris { get; set; }
-        [RegularExpression(@"[0-9]{1,4}")]
-        public int Stoppnummer { get; set; }
         [RegularExpression(@"[0-9]{1,4}")]
         public int TilleggPerStopp { get; set; }
     }

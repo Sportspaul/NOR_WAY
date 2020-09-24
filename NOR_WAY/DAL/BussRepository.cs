@@ -486,11 +486,11 @@ namespace NOR_WAY.DAL
                 }).ToListAsync();
                 List<RuteStopp> ruteStopp = await _db.RuteStopp.Select(rs => new RuteStopp
                 {
-                    StoppNummer = rs.StoppNummer,
                     MinutterTilNesteStopp = rs.MinutterTilNesteStopp,
-                    Stopp = rs.Stopp,
-                    Rute = rs.Rute
+                    Rute = rs.Rute,
+                    Stopp = rs.Stopp
                 }).ToListAsync();
+                List<Stopp> stoppene =  await HentAlleStopp();
                 //Fyller opp tabellen
                 foreach(Ruter rute in AlleRutene)
                 {
@@ -499,16 +499,23 @@ namespace NOR_WAY.DAL
                     rutedata.Linjekode = rute.Linjekode;
                     rutedata.TilleggPerStopp = rute.TilleggPerStopp;
                     rutedata.Startpris = rute.Startpris;
-                    foreach(RuteStopp rutestopp in ruteStopp )
-                    {
-                        if(rutestopp.Rute.Linjekode == rute.Linjekode)
+                    rutedata.Stoppene = new List<string>();
+                    foreach (RuteStopp rutestopp in ruteStopp)
+                    {   
+                        if (rute.Linjekode == rutestopp.Rute.Linjekode)
                         {
-                            rutedata.StoppNavn = rutestopp.Stopp.Navn;
+                            for (int i = 0; i < stoppene.Count; i++) {
+                                if (stoppene[i].Navn == rutestopp.Stopp.Navn)
+                                {
+                                    rutedata.Stoppene.Add(stoppene[i].Navn);
+                                }
+                            }
                         }
-                        rutedata.Stoppnummer = rutestopp.StoppNummer;
+                    
                         rutedata.minutterTilNesteStopp = rutestopp.MinutterTilNesteStopp;
-                        RuteDataene.Add(rutedata);
+                                           
                     }
+                    RuteDataene.Add(rutedata);
                 }
 
                 return RuteDataene;

@@ -57,12 +57,37 @@ namespace NOR_WAY.DAL
                 context.Billettyper.Add(honnor);
                 context.Billettyper.Add(voksen);
 
+                //Avganger
                 DateTime dato1 = new DateTime(2020, 10, 25, 8, 30, 00);
                 Avganger avgang1 = new Avganger() { Avreise = dato1, SolgteBilletter = 0, Rute = NW431Rute };
                 DateTime dato2 = new DateTime(2020, 11, 20, 17, 00, 00);
                 Avganger avgang2 = new Avganger() { Avreise = dato2, SolgteBilletter = 0, Rute = NW431Rute };
+
+                DateTime dato3 = new DateTime(2020, 10, 26, 12, 30, 00);
+                Avganger avgang3 = new Avganger() { Avreise = dato3, SolgteBilletter = 0, Rute = NW194Rute };
+                DateTime dato4 = new DateTime(2020, 11, 21, 10, 00, 00);
+                Avganger avgang4 = new Avganger() { Avreise = dato4, SolgteBilletter = 0, Rute = NW194Rute };
+
+                DateTime dato5 = new DateTime(2020, 12, 12, 10, 30, 00);
+                Avganger avgang5 = new Avganger() { Avreise = dato5, SolgteBilletter = 0, Rute = NW180Rute };
+                DateTime dato6 = new DateTime(2020, 11, 22, 13, 00, 00);
+                Avganger avgang6 = new Avganger() { Avreise = dato6, SolgteBilletter = 0, Rute = NW180Rute };
+
+                DateTime dato7 = new DateTime(2021, 1, 12, 10, 30, 00);
+                Avganger avgang7 = new Avganger() { Avreise = dato7, SolgteBilletter = 0, Rute = NW192Rute };
+                DateTime dato8 = new DateTime(2020, 11, 23, 14, 30, 00);
+                Avganger avgang8 = new Avganger() { Avreise = dato8, SolgteBilletter = 0, Rute = NW192Rute };
+
+
                 context.Avganger.Add(avgang1);
                 context.Avganger.Add(avgang2);
+                context.Avganger.Add(avgang3);
+                context.Avganger.Add(avgang4);
+                context.Avganger.Add(avgang5);
+                context.Avganger.Add(avgang6);
+                context.Avganger.Add(avgang7);
+                context.Avganger.Add(avgang8);
+
                 context.SaveChanges();
             }
         }

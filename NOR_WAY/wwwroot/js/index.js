@@ -18,6 +18,11 @@ function leggTilDato() {
     })()
 }
 
+// Setter stor forbokstav og fjerner mellomrom forran og bak strengen
+function rensStoppInput(input) {
+    return (input.charAt(0).toUpperCase() + input.slice(1)).trim();
+}
+
 // Henter alle billettypene i databasen
 function hentAlleBillettyper() {
     $.get("Buss/HentAlleBillettyper", function (alleBillettyper) {
@@ -111,8 +116,8 @@ function endreBakgrunn() {
 // Henter neste avgang fra server og skriver det ut til dokumentet
 function finnNesteAvgang() {
     // Henter ut nødvendige verider fra inputfeltene
-    const startStopp = $("#startStopp").val();
-    const sluttStopp = $("#sluttStopp").val();
+    const startStopp = rensStoppInput($("#startStopp").val());
+    const sluttStopp = rensStoppInput($("#sluttStopp").val());
     const dato = $("#dato").val();
     const tidspunkt = $("#tidspunkt").val();
     let avreiseEtter = $('input[name="avreiseEtter"]:checked').val();
@@ -121,7 +126,7 @@ function finnNesteAvgang() {
     } else {
         avreiseEtter = false;
     }
-    let billettyper = ["Voksen", "Barn"]; // TODO: bytte ut denne med functions kall
+    let billettyper = ["Student"]; // TODO: bytte ut denne med functions kall
 
     // Klargjør obj som skal sendes til server
     const avgangParam = {
@@ -148,7 +153,7 @@ function finnNesteAvgang() {
                             Reisetid: ${finnReisetid(avgang.reisetid)}
                         </h6>
                         <h6 class="mt-4">
-                            Biletter: 2 Voksen, 1 Student, 2 Hønnør
+                            Billetter: Student
                         </h6>
                         <h6 class="mt-4">
                             Pris: ${avgang.pris} kr
@@ -190,9 +195,11 @@ function finnNesteAvgang() {
                                 <label>Utløpsdato</label>
                                 <div class="input-group">
                                     <input type="number" placeholder="MM" id="MM" class="form-control shadow-sm"
-                                        onblur="validerMM('#MM', '#feilMM')" onKeyPress="if(this.value.length == 2) return false;" >
+                                            onblur="if(this.value.length == 1){ this.value = '0' + this.value.charAt(0) } validerMM('#MM', '#feilMM')"
+                                            onKeyPress="if(this.value.length == 2) return false;" >
                                     <input type="number" placeholder="ÅÅ" id="AA" class="form-control shadow-sm"
-                                        onblur="validerAA('#AA', '#feilAA')" onKeyPress="if(this.value.length == 2) return false;" >
+                                        onblur="validerAA('#AA', '#feilAA')"
+                                        onKeyPress="if(this.value.length == 2) return false;" >
                                 </div>
 
                         </div>
@@ -220,7 +227,7 @@ function finnNesteAvgang() {
 
             // Hinder brukeren å skrive tall i navn-feltet
             $("#navn").on("input", function (e) {
-                $("#navn").val($("#navn").val().replace(/[^a-zA-Z- ]/, ''));
+                $("#navn").val($("#navn").val().replace(/[^a-åA-Å- ]/, ''));
             });
 
             /* Hindere brukeren å skrive inn annet enn tall,
@@ -232,7 +239,7 @@ function finnNesteAvgang() {
             // Gir brukeren tilbakemelding hvis ingen avganger ble hentet
             $("#avgang").css("display", "none");
             $("#avgang").html("");
-            $("#feilAvgang").html("Vi tilbyr desverre ikke reisen du ønsker");
+            $("#feilAvgang").html("Vi finner desverre ingen avgang som passer ditt søk");
         });
     }
 
@@ -240,7 +247,7 @@ function finnNesteAvgang() {
         let intReise = parseInt(reiseTid, 10);
         let min = intReise % 60;
         let time = Math.floor(intReise / 60);
-        let utReisetid = "Reisetid: ";
+        let utReisetid = "";
 
         if (time > 0) {
             if (time != 1) {

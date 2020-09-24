@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <script src="js/index.js?n=14"></script>
-    <script src="js/validering.js?n=8"></script>
+    <script src="js/index.js?n=16"></script>
+    <script src="js/validering.js?n=9"></script>
     <script src="js/stoppforslag.js?n?=3"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <link rel="stylesheet" href="Style/index.css?n=7">
+    <link rel="stylesheet" href="Style/index.css?n=8">
     <link rel="stylesheet" href="Style/template.css">
 </head>
 <body>
@@ -33,7 +33,9 @@
                 <div class="form-group">
                     <h5>Jeg skal reise fra</h5>
                     <input type="text" id="startStopp" placeholder="Skriv inn stoppnavn" class="form-control shadow-sm"
-                           onfocus="finnMuligeStartStopp()" />
+                           onfocus="finnMuligeStartStopp()"
+                           onKeyPress="if (this.value.length == 1) { this.value = this.value.toUpperCase(); }"
+                    />
                     <div id="auto1"></div>
                     <div id="feilStartStopp" class="mt-1 rodTekst"></div>
                 </div>
@@ -41,7 +43,9 @@
                 <div class="form-group">
                     <h5 class="mt-4">Jeg skal reise til</h5>
                     <input type="text" id="sluttStopp" placeholder="Skriv inn stoppnavn" class="form-control shadow-sm"
-                           onfocus="finnMuligeSluttStopp()" />
+                           onfocus="finnMuligeSluttStopp()"
+                           onKeyPress="if(this.value.length==1) { this.value = this.value.toUpperCase(); }"
+                    />
                     <div id="auto2"></div>
                     <div id="feilSluttStopp" class="mt-1 rodTekst"></div>
                 </div>

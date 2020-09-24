@@ -134,7 +134,7 @@ namespace NOR_WAY.DAL
                 var ruteStopp = new RuteStopp()
                 {
                     StoppNummer = stoppNummer,
-                    MinutterTilNesteStopp = 20,
+                    MinutterTilNesteStopp = 45,
                     Stopp = stopp,
                     Rute = rute
                 };

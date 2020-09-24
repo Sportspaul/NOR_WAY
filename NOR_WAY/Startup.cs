@@ -40,10 +40,7 @@ namespace NOR_WAY
             app.UseStaticFiles();
 
             // Controllers
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }

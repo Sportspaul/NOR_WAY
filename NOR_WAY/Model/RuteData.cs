@@ -14,7 +14,7 @@ namespace NOR_WAY.Model
         public string Rutenavn { get; set; }
 
         [RegularExpression(@"[0-9]{1,4}")]
-        public int minutterTilNesteStopp { get; set; }
+        public int MinutterTilNesteStopp { get; set; }
 
         [RegularExpression(@"[0-9]{1,4}")]
         public int Startpris { get; set; }

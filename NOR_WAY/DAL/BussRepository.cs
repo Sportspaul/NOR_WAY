@@ -69,9 +69,11 @@ namespace NOR_WAY.DAL
             int antallStopp = stoppNummer2 - stoppNummer1;
 
             // TODO: Fikse billettyper listen via frontend
-            List<string> billettyper = new List<string>();
-            billettyper.Add("Student");
-            billettyper.Add("Honnør");
+            List<string> billettyper = new List<string>
+            {
+                "Student",
+                "Honnør"
+            };
             int pris = await BeregnPris(fellesRute, antallStopp, billettyper);
 
             // Opretter Avgang-objektet som skal sendes til klienten
@@ -188,7 +190,7 @@ namespace NOR_WAY.DAL
                     CultureInfo.InvariantCulture);
 
                 List<Avganger> kommendeAvganger = new List<Avganger>();
-                if (avreiseEtter == true) // Hvis Avreise Etter:
+                if (avreiseEtter) // Hvis Avreise Etter:
                 {
                     kommendeAvganger = await _db.Avganger
                         .Where(a => a.Rute == fellesRute && a.Avreise >= avreise).ToListAsync();
@@ -235,7 +237,7 @@ namespace NOR_WAY.DAL
                 // Finner den standard billettpris for en reise
                 int startpris = rute.Startpris;
                 int tilleggPerStopp = rute.TilleggPerStopp;
-                int maxPris = startpris + tilleggPerStopp * antallStopp;
+                int maxPris = startpris + (tilleggPerStopp * antallStopp);
 
                 // Henter liste med alle billettyper i DB
                 List<Billettyper> billettypeListe = await _db.Billettyper.Select(b => new Billettyper
@@ -260,7 +262,7 @@ namespace NOR_WAY.DAL
                 double totalpris = 0;
                 foreach (int rabbattsats in rabbattsatser)
                 {
-                    double billettPris = ((double)maxPris) * (1 - (double)rabbattsats / 100); // 1 - 0.25 = 0.75
+                    double billettPris = maxPris * (1 - ((double)rabbattsats / 100)); // 1 - 0.25 = 0.75
                     totalpris += billettPris;
                 }
 
@@ -477,12 +479,14 @@ namespace NOR_WAY.DAL
                 //Fyller opp tabellen
                 foreach (Ruter rute in AlleRutene)
                 {
-                    RuteData rutedata = new RuteData();
-                    rutedata.Rutenavn = rute.Rutenavn;
-                    rutedata.Linjekode = rute.Linjekode;
-                    rutedata.TilleggPerStopp = rute.TilleggPerStopp;
-                    rutedata.Startpris = rute.Startpris;
-                    rutedata.Stoppene = new List<string>();
+                    RuteData rutedata = new RuteData
+                    {
+                        Rutenavn = rute.Rutenavn,
+                        Linjekode = rute.Linjekode,
+                        TilleggPerStopp = rute.TilleggPerStopp,
+                        Startpris = rute.Startpris,
+                        Stoppene = new List<string>()
+                    };
                     foreach (RuteStopp rutestopp in ruteStopp)
                     {
                         if (rute.Linjekode == rutestopp.Rute.Linjekode)
@@ -496,7 +500,7 @@ namespace NOR_WAY.DAL
                             }
                         }
 
-                        rutedata.minutterTilNesteStopp = rutestopp.MinutterTilNesteStopp;
+                        rutedata.MinutterTilNesteStopp = rutestopp.MinutterTilNesteStopp;
                     }
                     RuteDataene.Add(rutedata);
                 }

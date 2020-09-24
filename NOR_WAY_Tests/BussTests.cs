@@ -67,9 +67,11 @@ namespace NOR_WAY_Tests
         public async Task FullforOrdreTest()
         {
             // Arrange
-            var billettype = new List<string>();
-            billettype.Add("Student");
-            billettype.Add("Barn");
+            var billettype = new List<string>
+            {
+                "Student",
+                "Barn"
+            };
 
             var kundeOrdre = new KundeOrdre
             {

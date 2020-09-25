@@ -2,25 +2,27 @@
 $(function () {
     hentAlleStopp();
     hentAlleBillettyper();
-    leggTilDato();
-    endreBakgrunn();
+    Hjelp.leggTilDato();
+    Hjelp.endreBakgrunn();
 });
 
 // Global liste med alle stoppene hentet i databasen
 let StoppListe = new Array();
 
-// Legger til dagens dato i datofeltet
-function leggTilDato() {
-    (function () {
-        var date = new Date().toISOString().substring(0, 10),
-            field = document.querySelector('#dato');
-        field.value = date;
-    })()
-}
+/* Henter alle stoppene i databasen,
+ * og kaller funksjoner for å legge til stoppforslag ved input i stoppnavn-feltene */
+function hentAlleStopp() {
+    $.get("Buss/HentAlleStopp", function (alleStopp) {
+        let stoppListe = new Array();
+        for (let i = 0; i < alleStopp.length; i++) {
+            stoppListe.push(alleStopp[i].navn)
+        }
+        StoppListe = stoppListe; // Legger stoppene i den globalen listen
 
-// Setter stor forbokstav og fjerner mellomrom forran og bak strengen
-function rensStoppInput(input) {
-    return (input.charAt(0).toUpperCase() + input.slice(1)).trim();
+        // Gir brukeren live-stoppforslag for begge inputfeltene
+        new Stoppforslag($("#startStopp"), $("#auto1"), stoppListe, $("#feilStartStopp"));
+        new Stoppforslag($("#sluttStopp"), $("#auto2"), stoppListe, $("#feilSluttStopp"));
+    });
 }
 
 // Henter alle billettypene i databasen
@@ -43,16 +45,15 @@ function finnMuligeSluttStopp() {
     if (validerStoppnavnSimple(input) && input != StartStopp) {
         StartStopp = input;
         const url = "Buss/finnMuligeSluttStopp";
-        console.log("yes");
         $.post(url, { Navn: input }, function (stopp) {
-            let stoppListe = new Array();
+            let nyStoppListe = new Array();
             for (let i = 0; i < stopp.length; i++) {
-                stoppListe.push(stopp[i].navn)
+                nyStoppListe.push(stopp[i].navn)
             }
-            stoppforslag($("#sluttStopp"), $("#auto2"), stoppListe, $("#feilSluttStopp"));
+            new Stoppforslag($("#sluttStopp"), $("#auto2"), nyStoppListe, $("#feilSluttStopp"));
         });
     } else {
-        stoppforslag($("#sluttStopp"), $("#auto2"), StoppListe, $("#feilSluttStopp"));
+        new Stoppforslag($("#sluttStopp"), $("#auto2"), StoppListe, $("#feilSluttStopp"));
     }
 }
 
@@ -61,102 +62,45 @@ function finnMuligeSluttStopp() {
 let SluttStopp;
 function finnMuligeStartStopp(input) {
     input = $("#sluttStopp").val();
-
     if (validerStoppnavnSimple(input) && input != SluttStopp) {
         SluttStopp = input;
         const url = "Buss/finnMuligeStartStopp";
         $.post(url, { Navn: input }, function (stopp) {
-            let stoppListe = new Array();
+            let nyStoppListe = new Array();
             for (let i = 0; i < stopp.length; i++) {
-                stoppListe.push(stopp[i].navn)
+                nyStoppListe.push(stopp[i].navn)
             }
-            stoppforslag($("#startStopp"), $("#auto1"), stoppListe, $("#feilStartStopp"));
+            new Stoppforslag($("#startStopp"), $("#auto1"), nyStoppListe, $("#feilStartStopp"));
         });
     } else {
-        stoppforslag($("#startStopp"), $("#auto1"), StoppListe, $("#feilStartStopp"));
+        new Stoppforslag($("#startStopp"), $("#auto1"), StoppListe, $("#feilStartStopp"));
     }
-}
-
-// Legger til et nytt select-element og fyller den med billettyer-data fra DB
-function leggTilBillett() {
-    console.log("Ja")
-    const antall = $('.billettype').length;
-    const id = `billettype${antall + 1}`;
-
-    $('#billetter').append(`<select id="${id}" class="form-control billettype mb-2"></select>`);
-    var dropdown = $(`#${id}`);
-    $.each(billettyper, function () {
-        dropdown.append($("<option />").val(this.billettype).text(this.billettype));
-    });
-}
-
-/* Henter alle stoppene i databasen,
- * og kaller funksjoner for å legge til stoppforslag ved input i stoppnavn-feltene */
-function hentAlleStopp() {
-    $.get("Buss/HentAlleStopp", function (alleStopp) {
-        let stoppListe = new Array();
-        for (let i = 0; i < alleStopp.length; i++) {
-            stoppListe.push(alleStopp[i].navn)
-        }
-        StoppListe = stoppListe; // Legger stoppene i den globalen listen
-
-        // Gir brukeren live-stoppforslag for begge inputfeltene
-        stoppforslag($("#startStopp"), $("#auto1"), stoppListe, $("#feilStartStopp"));
-        stoppforslag($("#sluttStopp"), $("#auto2"), stoppListe, $("#feilSluttStopp"));
-    });
-}
-
-/* Legger til et mørkt overlay over bakgrunnsbildet,
-   som matcher høyden på dokumentet */
-function endreBakgrunn() {
-    var h = $(document).height();
-    $("#overlay").css('height', h);
 }
 
 // Henter neste avgang fra server og skriver det ut til dokumentet
 function finnNesteAvgang() {
-    // Henter ut nødvendige verider fra inputfeltene
-    const startStopp = rensStoppInput($("#startStopp").val());
-    const sluttStopp = rensStoppInput($("#sluttStopp").val());
-    const dato = $("#dato").val();
-    const tidspunkt = $("#tidspunkt").val();
-    let avreiseEtter = $('input[name="avreiseEtter"]:checked').val();
-    if (avreiseEtter == "true") {
-        avreiseEtter = true
-    } else {
-        avreiseEtter = false;
-    }
-    let billettyper = ["Student"]; // TODO: bytte ut denne med functions kall
-
-    // Klargjør obj som skal sendes til server
-    const avgangParam = {
-        StartStopp: startStopp,
-        SluttStopp: sluttStopp,
-        Dato: dato,
-        Tidspunkt: tidspunkt,
-        AvreiseEtter: avreiseEtter,
-        Billettyper: billettyper
-    }
-
     if (validerAvgangInput()) {
+        let avgangParam = new AvgangParam();
         // Kaller serveren for å finne neste avgang
         $.post("Buss/FinnNesteAvgang", avgangParam, function (avgang) {
+            // Destructuring avgang-objektet til variabler
+            let {avgangId, rutenavn, linjekode, pris, avreise, ankomst, reisetid} = avgang;
             /* HTML-komponent som inneholder en oversikt over billettonfomasjonen,
                og et betalingskjema */
             ut = `<div id="billettInfo">
-                    <h4 id="billettInfoOverskrift"><strong>${avgang.rutenavn}, ${avgang.linjekode}</strong></h4>
+                    <h4 id="billettInfoOverskrift"><strong>${rutenavn}, ${linjekode}</strong></h4>
                     <div id="billettInfoBody">
                         <h6>
-                            Avreise: ${avgang.avreise.substr(0, 10)} &nbsp;|&nbsp; ${startStopp}, ${avgang.avreise.substr(11, 5)}  &nbsp;→&nbsp; ${sluttStopp},
-                                     ${avgang.ankomst.substr(11, 5)} </h6>
+                            Avreise: ${avreise.substr(0, 10)} &nbsp;|&nbsp; ${avgangParam.StartStopp}, ${avreise.substr(11, 5)}  &nbsp;→&nbsp; ${avgangParam.SluttStopp},
+                                     ${ankomst.substr(11, 5)} </h6>
                         <h6 class="mt-4">
-                            Reisetid: ${finnReisetid(avgang.reisetid)}
+                            Reisetid: ${Hjelp.finnReisetid(reisetid)}
                         </h6>
                         <h6 class="mt-4">
                             Billetter: Student
                         </h6>
                         <h6 class="mt-4">
-                            Pris: ${avgang.pris} kr
+                            Pris: ${pris} kr
                         </h6>
                     </div>
                 </div>
@@ -223,7 +167,7 @@ function finnNesteAvgang() {
             $("#feilAvgang").html("");
             $("#avgang").css("display", "block");
             document.getElementById('avgang').scrollIntoView(); // Scroller til
-            endreBakgrunn(); // Får overlay til å matche den endrede skjermhøyden
+            Hjelp.endreBakgrunn(); // Får overlay til å matche den endrede skjermhøyden
 
             // Hinder brukeren å skrive tall i navn-feltet
             $("#navn").on("input", function (e) {
@@ -241,162 +185,5 @@ function finnNesteAvgang() {
             $("#avgang").html("");
             $("#feilAvgang").html("Vi finner desverre ingen avgang som passer ditt søk");
         });
-    }
-
-    function finnReisetid(reiseTid) {
-        let intReise = parseInt(reiseTid, 10);
-        let min = intReise % 60;
-        let time = Math.floor(intReise / 60);
-        let utReisetid = "";
-
-        if (time > 0) {
-            if (time != 1) {
-                utReisetid += time + " timer";
-            } else {
-                utReisetid += time + " time";
-            }
-        }
-
-        if (time > 0 && min > 0) {
-            utReisetid += " og ";
-        }
-
-        if (min > 0) {
-            if (min != 1) {
-                utReisetid += min + " minutter";
-            } else {
-                utReisetid += min + " minutt";
-            }
-        }
-
-        return utReisetid;
-    }
-
-    // Legger til en ny select og fyller den med billettyer-data
-    function leggTilBillett() {
-        const antall = $('.billettype').length;
-        const id = `billettype${antall + 1}`;
-
-        $('#billetter').append(`<select id="${id}" class="form-control billettype mb-2"></select>`);
-        console.log(billettyper);
-        var $dropdown = $(`#${id}`);
-        $.each(billettyper, function () {
-            $dropdown.append($("<option />").val(this.billettype).text(this.billettype));
-        });
-    }
-
-    // Gir brukeren live-stoppforslag
-    function stoppforslag(inputfelt, utskrift, stoppArray, feilmelding) {
-        var fokusert;
-
-        // Eventlisner på intput feltet
-        inputfelt.on("input", function (e) {
-            let stoppListe, stoppElement, i
-            let val = this.value;
-
-            // Lukker eksiterende liste
-            lukkAlleLister();
-            if (!val) { return false; }
-            fokusert = -1;
-
-            // Lager en div som vil inneholde stoppene
-            stoppListe = document.createElement("div");
-            stoppListe.setAttribute("id", this.id + "stoppListe");
-            stoppListe.setAttribute("class", "stoppListe");
-            this.append(stoppListe);
-
-            // Looper gjennom alle stoppene i listen med stopp
-            for (i = 0; i < stoppArray.length; i++) {
-                // Sjekker om stopp i listen starter med de samme bokstavene som input
-                if (stoppArray[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                    feilmelding.html("");
-
-                    // Opretter en div for hvert stopp som marcher
-                    stoppElement = document.createElement("DIV");
-
-                    // Gjør bokstavene som matcher bold
-                    stoppElement.innerHTML = "<strong>" + stoppArray[i].substr(0, val.length) + "</strong>";
-                    stoppElement.innerHTML += stoppArray[i].substr(val.length);
-
-                    // Tar vare på verdien til stoppene som matcher i et input feltet
-                    stoppElement.innerHTML += "<input type='hidden' value='" + stoppArray[i] + "'>";
-
-                    // Event listner for om noen trykker på et av de foreslåtte stoppene
-                    stoppElement.addEventListener("click", function (e) {
-                        // Fyller input feltet med stoppet som brukeren trykker på
-                        inputfelt.val(this.getElementsByTagName("input")[0].value);
-
-                        // Lukker listen med forslag til stopp
-                        lukkAlleLister();
-                    });
-
-                    // Legger stopp elementet til stoppListe elementet og skriver listen ut til brukeren
-                    stoppListe.appendChild(stoppElement);
-                    utskrift.append(stoppListe);
-                }
-            }
-        });
-
-        // EventListener på om en tast blir trykket
-        inputfelt.on("keydown", function (e) {
-            var elmt = document.getElementById(this.id + "stoppListe");
-            if (elmt) elmt = elmt.getElementsByTagName("div");
-
-            // Hvis brukeren trykker piltast ned
-            if (e.keyCode == 40) {
-                // Flytter pekeren til aktivt element en videre i listen
-                fokusert++;
-
-                // Endrer style på aktivt element
-                leggTilAktiv(elmt);
-
-                // Hvis brukeren trykker piltast opp
-            } else if (e.keyCode == 38) {
-                // Flytter pekeren til aktivt element en tilbake i listen
-                fokusert--;
-
-                // Endrer style på aktivt element
-                leggTilAktiv(elmt);
-
-                // Hvis bruker trykker ENTER på en fokusert stopp i listen
-            } else if (e.keyCode == 13) {
-                e.preventDefault();
-                if (fokusert > -1) {
-                    if (elmt) {
-                        elmt[fokusert].click();
-                    }
-                }
-            }
-        });
-
-        // Setter et element til å være aktivt
-        function leggTilAktiv(elmt) {
-            if (!elmt) return false;
-
-            // Fjerner style for aktivt element fra alle elementene
-            fjernAktiv(elmt);
-            if (fokusert >= elmt.length) fokusert = 0;
-            if (fokusert < 0) fokusert = (elmt.length - 1);
-
-            // Legger til style-klasse for aktivt element
-            elmt[fokusert].classList.add("forslag-active");
-        }
-
-        // Fjerner style-klassen for aktivt element fra alle elementer
-        function fjernAktiv(elmt) {
-            for (var i = 0; i < elmt.length; i++) {
-                elmt[i].classList.remove("forslag-active");
-            }
-        }
-
-        // Lukker listen med forslag til stopp
-        function lukkAlleLister(elmt) {
-            var elmt = document.getElementsByClassName("stoppListe");
-            for (var i = 0; i < elmt.length; i++) {
-                if (elmt != elmt[i] && elmt != inputfelt) {
-                    elmt[i].parentNode.removeChild(elmt[i]);
-                }
-            }
-        }
     }
 }

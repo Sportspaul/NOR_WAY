@@ -54,6 +54,7 @@ function byttRute(i) {
 
     utStopp += "</table>";
     $("#stopp").html(utStopp);
+    endreBoksHoyde();
 }
 
 // Endrer høyden på shadowBox til å matche dataen
@@ -62,9 +63,9 @@ function endreBoksHoyde() {
     var r = $("#ruter").height();
 
     if (s > r) {
-        $(".shadowBox").css('height', s + 75);
+        $(".shadowBox").css('height', s + 50);
     } else {
-        $(".shadowBox").css('height', r + 75);
+        $(".shadowBox").css('height', r + 50);
     }
     endreBakgrunn();
 }

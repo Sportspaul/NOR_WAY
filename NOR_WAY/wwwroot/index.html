@@ -8,9 +8,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <script src="js/Hjelp.js"></script>
+    <script src="js/AvgangParam.js"></script>
     <script src="js/index.js?n=16"></script>
     <script src="js/validering.js?n=9"></script>
-    <script src="js/stoppforslag.js?n?=3"></script>
+    <script src="js/Stoppforslag.js?n?=3"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <link rel="stylesheet" href="Style/index.css?n=8">
     <link rel="stylesheet" href="Style/template.css">
@@ -68,7 +70,7 @@
                     <select id="billettype1" class="form-control shadow-sm billettype mb-2"></select>
                 </div>
 
-                <input type="button" value="Legg til en billett" class="btn btn-sm btn-dark font-weight-bold shadow" onclick="leggTilBillett()" />
+                <input type="button" value="Legg til en billett" class="btn btn-sm btn-dark font-weight-bold shadow" onclick="Hjelp.leggTilBillett()" />
                 <input type="button" id="bestill" class="btn btn-md btn-primary mt-4 form-control font-weight-bold shadow" value="Finn reise" onclick="finnNesteAvgang()" />
             </form>
             <div id="feilAvgang" class="mt-2 rodTekst"></div>

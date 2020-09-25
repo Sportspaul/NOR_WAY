@@ -140,14 +140,13 @@ function finnNesteAvgang() {
 
         // Kaller serveren for å finne neste avgang
         $.post("Buss/FinnNesteAvgang", avgangParam, function (avgang) {
-
             /* HTML-komponent som inneholder en oversikt over billettonfomasjonen,
                og et betalingskjema */
             ut = `<div id="billettInfo">
                     <h4 id="billettInfoOverskrift"><strong>${avgang.rutenavn}, ${avgang.linjekode}</strong></h4>
                     <div id="billettInfoBody">
                         <h6>
-                            Avresise: 20. November &nbsp;|&nbsp; ${startStopp}, 09:30 &nbsp;→&nbsp; ${sluttStopp}, 10:50</h6>
+                            Avresise: ${formaterDatoOgTid(avgang.avreise, "dato")} &nbsp;|&nbsp; ${startStopp}, ${formaterDatoOgTid(avgang.avreise, "tid")} &nbsp;→&nbsp; ${sluttStopp}, ${formaterDatoOgTid(avgang.ankomst, "tid")}</h6>
                         <h6 class="mt-4">
                             Reisetid: 1 timer og 30 minutter
                         </h6>
@@ -240,5 +239,41 @@ function finnNesteAvgang() {
             $("#feilAvgang").html("Vi tilbyr deverre ikke reisen du ønsker");
             endreBakgrunn();
         });
+    }
+
+    function formaterDatoOgTid(datoTid, tidEllerDato) {
+        // Splitter DateTime stringen inn i dato og tid
+        const datoTidSplittet = datoTid.split(" ");
+        const dato = datoTidSplittet[0];
+
+        // Formaterer dato hvis man har skrevet inn "dato" som input parameter
+        if (tidEllerDato == "dato") {
+            // Splitter dag, mnd år 
+            const datoSplittet = dato.split("-");
+            const dag = datoSplittet[2];
+            const mnd = datoSplittet[1];
+            // Liste med alle mnder
+            const mnder = ["Januar", "Februar", "Mars", "April", "Mai", "Juni",
+                "Juli", "August", "September", "Oktober", "November", "Desember"];
+            // Gjør om mnd til formatert mnd
+            console.log(datoTid);
+            const mndFormatert = mnder[mnd - 1];
+
+            // Utskrift
+            const datoFormatert = dag + "." + " " + mndFormatert;
+
+            return datoFormatert;
+        }
+        // Formaterer tid om han har skrvet inn "tid" som input parameter
+        else if (tidEllerDato === "tid") {
+            const datoTidSplittet = datoTid.split(" ");
+            const tidFormatert = datoTidSplittet[1];
+
+            return tidFormatert;
+        }
+        else {
+            console.log("Du har feil input paramter i metoden");
+            return false;
+        }
     }
 }

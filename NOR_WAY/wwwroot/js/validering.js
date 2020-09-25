@@ -21,8 +21,8 @@ function feilmelding(ok, melding, utId) {
 
 // Validerer alle feltene knyttet til avngang
 function validerAvgangInput() {
-    const startStopp = validerStoppnavn("#startStopp", "#feilStartStopp");
-    const sluttStopp = validerStoppnavn("#sluttStopp", "#feilSluttStopp");
+    const startStopp = validerStoppnavn($("#startStopp"), "#feilStartStopp");
+    const sluttStopp = validerStoppnavn($("#sluttStopp"), "#feilSluttStopp");
     const dato = validerDato("#dato");
 
     // Hvis alle valideringene over er GYLDIGE
@@ -53,7 +53,7 @@ function validerBetalingsInput() {
 
 // Stoppnavn-validering
 function validerStoppnavn(innElmt, utId) {
-    const stoppnavn = Hjelp.rensStoppInput(innElmt.val());  // Renser Input i inputfeltet 
+    const stoppnavn = Hjelpemetoder.rensStoppInput(innElmt.val());  // Renser Input i inputfeltet 
     const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
     const stoppFins = StoppListe.includes(stoppnavn); // Sjekker om stoppet fins i listen med stopp
     let melding = "";
@@ -78,7 +78,7 @@ function validerStoppnavn(innElmt, utId) {
 
 // Stoppnavn-validering simple versjon
 function validerStoppnavnSimple(input) {
-    const stoppnavn = Hjelp.rensStoppInput(input);  // Renser Input i inputfeltet 
+    const stoppnavn = Hjelpemetoder.rensStoppInput(input);  // Renser Input i inputfeltet 
     const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
     const stoppFins = StoppListe.includes(input);
     const ok = regex.test(input);

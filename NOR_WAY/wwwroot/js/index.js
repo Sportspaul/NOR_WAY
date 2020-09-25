@@ -2,8 +2,8 @@
 $(function () {
     hentAlleStopp();
     hentAlleBillettyper();
-    Hjelp.leggTilDato();
-    Hjelp.endreBakgrunn();
+    Hjelpemetoder.leggTilDato();
+    Hjelpemetoder.endreBakgrunn();
 });
 
 // Global liste med alle stoppene hentet i databasen
@@ -94,9 +94,9 @@ function finnNesteAvgang() {
                     <h4 id="billettInfoOverskrift"><strong>${avgang.rutenavn}, ${avgang.linjekode}</strong></h4>
                     <div id="billettInfoBody">
                         <h6>
-                            Avresise: ${formaterDatoOgTid(avreise, "dato")} &nbsp;|&nbsp; ${startStopp}, ${formaterDatoOgTid(avreise, "tid")} &nbsp;→&nbsp; ${sluttStopp}, ${formaterDatoOgTid(ankomst, "tid")}</h6>
+                            Avreise: ${Hjelpemetoder.formaterDatoOgTid(avgang.avreise, "dato")} &nbsp;|&nbsp; ${avgangParam.StartStopp}, ${Hjelpemetoder.formaterDatoOgTid(avgang.avreise, "tid")} &nbsp;→&nbsp; ${avgangParam.SluttStopp}, ${Hjelpemetoder.formaterDatoOgTid(avgang.ankomst, "tid")}</h6>
                         <h6 class="mt-4">
-                            Reisetid: ${Hjelp.finnReisetid(avgang.reisetid)}
+                            Reisetid: ${Hjelpemetoder.finnReisetid(avgang.reisetid)}
                         </h6>
                         <h6 class="mt-4">
                             Billetter: Student
@@ -168,51 +168,15 @@ function finnNesteAvgang() {
                 scrollLeft: offset.left
             }, 0);
 
-            Hjelp.endreBakgrunn(); // Får bakgrunn til å matche den endrede skjermhøyden
+            Hjelpemetoder.endreBakgrunn(); // Får bakgrunn til å matche den endrede skjermhøyden
             new BetalingEvents('#navn', '#epost', '#kortnummer', '#MM', '#AA', '#CVC');
         }).fail(function () {
             // Gir brukeren tilbakemelding hvis ingen avganger ble hentet
             feilAvgangElmt.html("Vi finner desverre ingen avgang som passer ditt søk");
             avgangElmt.css("display", "none");
             avgangElmt.html("");
-            Hjelp.endreBakgrunn(); // Får overlay til å matche den endrede skjermhøyden
+            Hjelpemetoder.endreBakgrunn(); // Får overlay til å matche den endrede skjermhøyden
             });
-        }
-    }
-
-    function formaterDatoOgTid(datoTid, tidEllerDato) {
-        // Splitter DateTime stringen inn i dato og tid
-        const datoTidSplittet = datoTid.split(" ");
-        const dato = datoTidSplittet[0];
-
-        // Formaterer dato hvis man har skrevet inn "dato" som input parameter
-        if (tidEllerDato == "dato") {
-            // Splitter dag, mnd år 
-            const datoSplittet = dato.split("-");
-            const dag = datoSplittet[2];
-            const mnd = datoSplittet[1];
-            // Liste med alle mnder
-            const mnder = ["Januar", "Februar", "Mars", "April", "Mai", "Juni",
-                "Juli", "August", "September", "Oktober", "November", "Desember"];
-            // Gjør om mnd til formatert mnd
-            console.log(datoTid);
-            const mndFormatert = mnder[mnd - 1];
-
-            // Utskrift
-            const datoFormatert = dag + "." + " " + mndFormatert;
-
-            return datoFormatert;
-        }
-        // Formaterer tid om han har skrvet inn "tid" som input parameter
-        else if (tidEllerDato === "tid") {
-            const datoTidSplittet = datoTid.split(" ");
-            const tidFormatert = datoTidSplittet[1];
-
-            return tidFormatert;
-        }
-        else {
-            console.log("Du har feil input paramter i metoden");
-            return false;
         }
     }
 

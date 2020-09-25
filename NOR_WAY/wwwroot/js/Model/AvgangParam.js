@@ -2,8 +2,8 @@
 class AvgangParam{
     // Henter data fra inputfeltene
     constructor(){
-        this.StartStopp = Hjelp.rensStoppInput($("#startStopp").val());
-        this.SluttStopp = Hjelp.rensStoppInput($("#sluttStopp").val());
+        this.StartStopp = Hjelpemetoder.rensStoppInput($("#startStopp").val());
+        this.SluttStopp = Hjelpemetoder.rensStoppInput($("#sluttStopp").val());
         this.Dato = $("#dato").val();
         this.Tidspunkt = $("#tidspunkt").val();
         this.AvreiseEtter = this.trueEllerFalse($('input[name="avreiseEtter"]:checked').val());

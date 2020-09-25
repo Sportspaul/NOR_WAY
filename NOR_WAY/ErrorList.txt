@@ -1,0 +1,8 @@
+﻿# RegEx: Ugyldige  tegn
+Uncaught TypeError: innElmt.val is not a function
+    at validerStoppnavn (validering.js?n=10:56)
+    at validerAvgangInput (validering.js?n=10:24)
+    at finnNesteAvgang (index.js?n=17:83)
+    at HTMLInputElement.onclick (index.html:76)
+
+

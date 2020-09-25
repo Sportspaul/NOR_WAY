@@ -88,8 +88,6 @@ function finnNesteAvgang() {
         $.post("Buss/FinnNesteAvgang", avgangParam, function (respons) {
             // Modell for å ta imot et Avgang-obj fra backend
             avgang = new Avgang(respons);
-            console.log(avgang);
-            console.log(avgangParam);
             /* HTML-komponent som inneholder en oversikt over billettonfomasjonen,
                og et betalingskjema */
             ut = `<div id="billettInfo">

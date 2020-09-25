@@ -53,7 +53,7 @@ function validerBetalingsInput() {
 
 // Stoppnavn-validering
 function validerStoppnavn(innElmt, utId) {
-    const stoppnavn = Hjelp.rensStoppInput($(inId).val());  // Renser Input i inputfeltet 
+    const stoppnavn = Hjelp.rensStoppInput(innElmt.val());  // Renser Input i inputfeltet 
     const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
     const stoppFins = StoppListe.includes(stoppnavn); // Sjekker om stoppet fins i listen med stopp
     let melding = "";
@@ -62,7 +62,7 @@ function validerStoppnavn(innElmt, utId) {
     if (testRegex(innElmt, regex) && stoppFins) { ok = true; }
 
     let preposisjon;
-    if (inId == "startStopp") {
+    if (innElmt.attr('id') == "startStopp") {
         preposisjon = "fra"
     } else {
         preposisjon = "til"

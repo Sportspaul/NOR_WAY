@@ -37,12 +37,12 @@ function validerAvgangInput() {
 
 // Validerer alle feltene knyttet til betaling
 function validerBetalingsInput() {
-    const navn = validerNavn("#navn", "#feilNavn");
-    const epost = validerEpost("#epost", "#feilEpost");
-    const kortnummer = validerKortnummer("#kortnummer", "#feilKortnummer");
-    const mm = validerMM("#MM", "#feilMM");
-    const aa = validerAA("#AA", "#feilAA");
-    const cvc = validerCVC("#CVC", "#feilCVC");
+    const navn = validerNavn($("#navn"), "#feilNavn");
+    const epost = validerEpost($("#epost"), "#feilEpost");
+    const kortnummer = validerKortnummer($("#kortnummer"), "#feilKortnummer");
+    const mm = validerMM($("#MM"), "#feilMM");
+    const aa = validerAA($("#AA"), "#feilAA");
+    const cvc = validerCVC($("#CVC"), "#feilCVC");
 
     // Hvis alle valideringene over er gyldige
     if (navn & epost & kortnummer & mm & aa & cvc) {
@@ -108,7 +108,7 @@ function validerNavn(innElmt, utId) {
 }
 
 // Epost-validering
-function validerEpost(elmt, utId) {
+function validerEpost(innElmt, utId) {
     const regex = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-z]{2,4}/;
     const melding = "Ugyldig epost";
     return feilmelding(testRegex(innElmt, regex), melding, utId);

@@ -17,7 +17,7 @@ class BetalingEvents {
     }
 
     epostInput(elmt) {
-        $(elmt).blur(function () {
+        elmt.blur(function () {
             validerEpost(elmt, '#feilEpost')
         });
     }
@@ -25,13 +25,13 @@ class BetalingEvents {
     /* Hindere brukeren å skrive inn annet enn tall, og legger til mellomrom for hvert fjerde tall 
      * eks. "1234 1234 1234 1234" */
     kortnummerInput(elmt){
-        $(elmt).on("input", function (e) {
-            $(elmt).val($(elmt).val().replace(/[^\d]/g, '').replace(/(.{4})/g, '$1 ').trim());
+        elmt.on("input", function (e) {
+            elmt.val($(elmt).val().replace(/[^\d]/g, '').replace(/(.{4})/g, '$1 ').trim());
         });
     }
 
     CVCInput(elmt){
-        $(elmt).blur(function () {
+        elmt.blur(function () {
             validerCVC(elmt, '#feilCVC');
             elmt.val(elmt.val().replace(/[^\d]/g, '').replace(/(.{4})/g, '$1 ').trim());
         });

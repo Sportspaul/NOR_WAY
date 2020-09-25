@@ -109,8 +109,7 @@ function finnNesteAvgang() {
                 <form role="form" id="betaling">
                     <div class="form-group">
                         <label for="navn">Fullt navn</label>
-                        <input type="text" id="navn" name="navn" placeholder="Ola Nordmann" class="form-control shadow-sm" maxlength="50"
-                            onblur="validerNavn('#navn', '#feilNavn')" />
+                        <input type="text" id="navn" name="navn" placeholder="Ola Nordmann" class="form-control shadow-sm" maxlength="50" />
                         <div id="feilNavn" class="mt-1 rodTekst"></div>
                     </div>
 
@@ -124,7 +123,7 @@ function finnNesteAvgang() {
                         <label for="kortnummer">Kortnummer</label>
                         <div class="input-group">
                             <input type="text" id="kortnummer" name="kortnummer" placeholder="0000 0000 0000 0000"
-                                class="form-control shadow-sm" onblur="validerKortnummer('#kortnummer', '#feilKortnummer')" onKeyPress="if(this.value.length == 19) return false;" />
+                                class="form-control shadow-sm" />
                             <div class="input-group-append">
                                 <span class="input-group-text text-muted">
                                     <i class="fa fa-cc-visa mx-1"></i>

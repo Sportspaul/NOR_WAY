@@ -62,7 +62,7 @@ function validerStoppnavn(innElmt, utId) {
     if (testRegex(innElmt, regex) && stoppFins) { ok = true; }
 
     let preposisjon;
-    if (inId == "startStopp") {
+    if (innElmt.attr('id') == "startStopp") {
         preposisjon = "fra"
     } else {
         preposisjon = "til"

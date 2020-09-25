@@ -309,13 +309,13 @@ namespace NOR_WAY.DAL
                 // Henter Avgangens Id
                 Avganger avgang = await _db.Avganger.FirstOrDefaultAsync(a => a.Id == kundeOrdreParam.AvgangId);
 
-                // Finner startStopp, og finner stoppnummeret i ruten
-                Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(a => a.Navn == kundeOrdreParam.StartStopp);
-                int stoppNummer1 = await FinnStoppNummer(startStopp, rute);
+            // Finner startStopp, og finner stoppnummeret i ruten
+            Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == kundeOrdreParam.StartStopp);
+            int stoppNummer1 = await FinnStoppNummer(startStopp, rute);
 
-                // Finner sluttStopp, og finner stoppnummeret i ruten
-                Stopp sluttStopp = await _db.Stopp.FirstOrDefaultAsync(a => a.Navn == kundeOrdreParam.SluttStopp);
-                int stoppNummer2 = await FinnStoppNummer(sluttStopp, rute);
+            // Finner sluttStopp, og finner stoppnummeret i ruten
+            Stopp sluttStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == kundeOrdreParam.SluttStopp);
+            int stoppNummer2 = await FinnStoppNummer(sluttStopp, rute);
 
                 // Regner ut antall stopp
                 int antallStopp = stoppNummer2 - stoppNummer1;
@@ -324,16 +324,18 @@ namespace NOR_WAY.DAL
                 // antallStopp, rute, liste med billettype
                 int sum = await BeregnPris(rute, antallStopp, kundeOrdreParam.Billettype);
 
-                // Lager en ordre basert på kundeOrdreParam, rute og avgang
-                var ordre = new Ordre
-                {
-                    Epost = kundeOrdreParam.Epost,
-                    StartStopp = startStopp,
-                    SluttStopp = startStopp,
-                    Sum = sum,
-                    Rute = rute,
-                    Avgang = avgang
-                };
+
+
+            // Lager en ordre basert på kundeOrdreParam, rute og avgang
+            var ordre = new Ordre
+            {
+                Epost = kundeOrdreParam.Epost,
+                StartStopp = startStopp,
+                SluttStopp = sluttStopp,
+                Sum = sum,
+                Rute = rute,
+                Avgang = avgang
+            };
 
                 // Legger ordren til i databasen
                 _db.Ordre.Add(ordre);

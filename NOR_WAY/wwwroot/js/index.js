@@ -155,7 +155,7 @@ function finnNesteAvgang() {
                         <div id="feilCVC" class="col-sm-4 mt-1 rodTekst"></div>
                     </div>
 
-                    <input type="submit" class="btn btn-success shadow form-control font-weight-bold mt-4" value="Betal">
+                    <input type="button" class="btn btn-success form-control shadow font-weight-bold" value="Betal" onclick="fullforOrdre()")>
                 </form>`;
 
             // Skriver til document, fjerner feilmeldinger og scroller ned
@@ -214,4 +214,21 @@ function finnNesteAvgang() {
             return false;
         }
     }
-}
+
+    function fullforOrdre() {
+        // Henter en avgang fra DB, og lager en kundeordre med den og informasjonen hentet over
+        const epost = $("#epost").val();
+
+        // Lager en kundeordre
+        const kundeordre = {
+            Epost: epost,
+            StartStopp: startStopp,
+            SluttStopp: sluttStopp,
+            Linjekode: linjekode,
+            AvgangId: avgangId,
+            Billettype: billettyper
+        }
+
+        // Kaller C# Metoden FullforOrdre()
+        $.post("Buss/FullforOrdre", kundeordre);
+    }

@@ -328,6 +328,7 @@ function fullforOrdre() {
     // Henter en avgang fra DB, og lager en kundeordre med den og informasjonen hentet over
     const epost = $("#epost").val();
 
+    // Lager en kundeordre
     const kundeordre = {
         Epost: epost,
         StartStopp: startStopp,
@@ -336,11 +337,8 @@ function fullforOrdre() {
         AvgangId: avgangId,
         Billettype: billettyper
     }
-    //TODO: Fjerne denne
-    console.log(kundeordre);
 
     // Kaller C# Metoden FullforOrdre()
     $.post("Buss/FullforOrdre", kundeordre);
-    
 }
 

@@ -7,7 +7,7 @@ class AvgangParam{
         this.Dato = $("#dato").val();
         this.Tidspunkt = $("#tidspunkt").val();
         this.AvreiseEtter = this.trueEllerFalse($('input[name="avreiseEtter"]:checked').val());
-        this.Billettyper = ["Student"];
+        this.Billettyper = Hjelpemetoder.hentValgteBillettyper();
     }
 
     trueEllerFalse(input){

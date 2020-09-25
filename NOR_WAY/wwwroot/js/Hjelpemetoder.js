@@ -84,7 +84,30 @@ class Hjelpemetoder{
         console.log("Du har feil input paramter i metoden");
         return false;
     }
-}
+    }
+
+
+    // Henter alle valgte billettyper
+    static hentValgteBillettyper() {
+        const billetter = document.querySelectorAll(".billettype");
+        let billettyper = new Array();
+        billetter.forEach((billett) => billettyper.push(billett.value));
+        return billettyper;
+    }
+
+    // Formaterer de valgte billettypene
+    static formaterValgteBillettyper(valgteBillettyper) {
+        valgteBillettyper.sort()
+        console.log(valgteBillettyper);
+        var barn = 0;
+        var honnoer = 0;
+        var student = 0;
+        var voksen = 0;
+
+        let utskrift;
+        return utskrift;
+    }
+
 
     // Legger til et nytt select-element og fyller den med billettyer-data fra DB
     static leggTilBillett() {

@@ -68,13 +68,7 @@ namespace NOR_WAY.DAL
             // Beregner prisen basert på startpris og antall stopp
             int antallStopp = stoppNummer2 - stoppNummer1;
 
-            // TODO: Fikse billettyper listen via frontend
-            List<string> billettyper = new List<string>
-            {
-                "Student",
-                "Honnør"
-            };
-            int pris = await BeregnPris(fellesRute, antallStopp, billettyper);
+            int pris = await BeregnPris(fellesRute, antallStopp, input.Billettyper);
 
             // Opretter Avgang-objektet som skal sendes til klienten
             Avgang utAvgang = new Avgang

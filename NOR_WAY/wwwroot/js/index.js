@@ -6,6 +6,12 @@ $(function () {
     Hjelpemetoder.endreBakgrunn();
 });
 
+// Globale variabler
+let StartStopp;
+let SluttStopp;
+let avgangParam;
+let avgang;
+
 // Global liste med alle stoppene hentet i databasen
 let StoppListe = new Array();
 
@@ -39,7 +45,6 @@ function hentAlleBillettyper() {
 
 /* Hvis bruker skriver inn gyldig startstopp blir listen for gyldige sluttstopp
  * inskrenket til å kun vise stopp som kommer senere i en felles rute */
-let StartStopp;
 function finnMuligeSluttStopp() {
     input = $("#startStopp").val();
     if (validerStoppnavnSimple(input) && input != StartStopp) {
@@ -59,7 +64,6 @@ function finnMuligeSluttStopp() {
 
 /* Hvis bruker skriver inn gyldig sluttstopp blir listen for gyldige startstopp
  * inskrenket til å kun vise stopp som kommer tidligere i en felles rute */
-let SluttStopp;
 function finnMuligeStartStopp(input) {
     input = $("#sluttStopp").val();
     if (validerStoppnavnSimple(input) && input != SluttStopp) {
@@ -78,17 +82,17 @@ function finnMuligeStartStopp(input) {
 }
 
 // Henter neste avgang fra server og skriver det ut til dokumentet
-let avgang;
 function finnNesteAvgang() {
     if (validerAvgangInput()) {
         const avgangElmt = $("#avgang");
         const feilAvgangElmt = $("#feilAvgang");
-        let avgangParam = new AvgangParam();
+        avgangParam = new AvgangParam();
         // Kaller serveren for å finne neste avgang
         $.post("Buss/FinnNesteAvgang", avgangParam, function (respons) {
             // Modell for å ta imot et Avgang-obj fra backend
             StartStopp = avgangParam.StartStopp;
             SluttStopp = avgangParam.SluttStopp;
+            Billettyper = avgangParam.Billettyper
             avgang = new Avgang(respons);
             /* HTML-komponent som inneholder en oversikt over billettonfomasjonen,
                og et betalingskjema */
@@ -101,7 +105,7 @@ function finnNesteAvgang() {
                             Reisetid: ${Hjelpemetoder.finnReisetid(avgang.reisetid)}
                         </h6>
                         <h6 class="mt-4">
-                            Billetter: Student
+                            Billetter: ${Hjelpemetoder.formaterValgteBillettyper(Hjelpemetoder.hentValgteBillettyper())}
                         </h6>
                         <h6 class="mt-4">
                             Pris: ${avgang.pris} kr
@@ -192,10 +196,10 @@ function finnNesteAvgang() {
             SluttStopp: SluttStopp,
             Linjekode: avgang.linjekode,
             AvgangId: avgang.avgangId,
-            Billettype: billettyper
+            Billettype: avgangParam.Billettyper
         }
         console.log(kundeordre)
         // Kaller C# Metoden FullforOrdre()
-        //$.post("Buss/FullforOrdre", kundeordre);
+        $.post("Buss/FullforOrdre", kundeordre);
         
     }

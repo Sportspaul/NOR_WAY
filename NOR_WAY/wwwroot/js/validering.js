@@ -9,7 +9,6 @@ function testRegex(elmt, regex) {
 function feilmelding(ok, melding, utId) {
     const feilElement = $(utId);
     if (ok) {
-        console.log(melding);
         feilElement.html("");
         endreBakgrunn();
         return true;

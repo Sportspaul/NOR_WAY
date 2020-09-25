@@ -87,6 +87,8 @@ function finnNesteAvgang() {
         // Kaller serveren for å finne neste avgang
         $.post("Buss/FinnNesteAvgang", avgangParam, function (respons) {
             // Modell for å ta imot et Avgang-obj fra backend
+            StartStopp = avgangParam.StartStopp;
+            SluttStopp = avgangParam.SluttStopp;
             avgang = new Avgang(respons);
             /* HTML-komponent som inneholder en oversikt over billettonfomasjonen,
                og et betalingskjema */
@@ -94,7 +96,7 @@ function finnNesteAvgang() {
                     <h4 id="billettInfoOverskrift"><strong>${avgang.rutenavn}, ${avgang.linjekode}</strong></h4>
                     <div id="billettInfoBody">
                         <h6>
-                            Avreise: ${Hjelpemetoder.formaterDatoOgTid(avgang.avreise, "dato")} &nbsp;|&nbsp; ${avgangParam.StartStopp}, ${Hjelpemetoder.formaterDatoOgTid(avgang.avreise, "tid")} &nbsp;→&nbsp; ${avgangParam.SluttStopp}, ${Hjelpemetoder.formaterDatoOgTid(avgang.ankomst, "tid")}</h6>
+                            Avreise: ${Hjelpemetoder.formaterDatoOgTid(avgang.avreise, "dato")} &nbsp;|&nbsp; ${StartStopp}, ${Hjelpemetoder.formaterDatoOgTid(avgang.avreise, "tid")} &nbsp;→&nbsp; ${SluttStopp}, ${Hjelpemetoder.formaterDatoOgTid(avgang.ankomst, "tid")}</h6>
                         <h6 class="mt-4">
                             Reisetid: ${Hjelpemetoder.finnReisetid(avgang.reisetid)}
                         </h6>
@@ -186,10 +188,10 @@ function finnNesteAvgang() {
         // Lager en kundeordre
         const kundeordre = {
             Epost: epost,
-            StartStopp: startStopp,
-            SluttStopp: sluttStopp,
-            Linjekode: linjekode,
-            AvgangId: avgangId,
+            StartStopp: StartStopp,
+            SluttStopp: SluttStopp,
+            Linjekode: avgang.linjekode,
+            AvgangId: avgang.avgangId,
             Billettype: billettyper
         }
         console.log(kundeordre)

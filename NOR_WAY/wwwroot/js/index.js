@@ -193,7 +193,8 @@ function finnNesteAvgang() {
             AvgangId: avgangId,
             Billettype: billettyper
         }
-
+        console.log(kundeordre)
         // Kaller C# Metoden FullforOrdre()
-        $.post("Buss/FullforOrdre", kundeordre);
+        //$.post("Buss/FullforOrdre", kundeordre);
+        
     }

@@ -167,7 +167,7 @@ function finnNesteAvgang() {
                 scrollTop: offset.top,
                 scrollLeft: offset.left
             }, 0);
-            
+
             Hjelp.endreBakgrunn(); // Får bakgrunn til å matche den endrede skjermhøyden
             new BetalingEvents('#navn', '#epost', '#kortnummer', '#MM', '#AA', '#CVC');
         }).fail(function () {
@@ -176,7 +176,8 @@ function finnNesteAvgang() {
             avgangElmt.css("display", "none");
             avgangElmt.html("");
             Hjelp.endreBakgrunn(); // Får overlay til å matche den endrede skjermhøyden
-        });
+            });
+        }
     }
 
     function formaterDatoOgTid(datoTid, tidEllerDato) {

@@ -1,7 +1,6 @@
 ﻿// Tester input mot regex
-function testRegex(inId, regex) {
-    let input = $(inId).val();
-
+function testRegex(elmt, regex) {
+    let input = elmt.val();
     if (regex.test(input)) { return true; }
     return false;
 }
@@ -53,14 +52,14 @@ function validerBetalingsInput() {
 }
 
 // Stoppnavn-validering
-function validerStoppnavn(inId, utId) {
+function validerStoppnavn(innElmt, utId) {
     const stoppnavn = Hjelp.rensStoppInput($(inId).val());  // Renser Input i inputfeltet 
     const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
     const stoppFins = StoppListe.includes(stoppnavn); // Sjekker om stoppet fins i listen med stopp
     let melding = "";
 
     let ok = false;
-    if (testRegex(inId, regex) && stoppFins) { ok = true; }
+    if (testRegex(innElmt, regex) && stoppFins) { ok = true; }
 
     let preposisjon;
     if (inId == "startStopp") {
@@ -102,45 +101,45 @@ function validerDato(inId, utId) {
 }
 
 // Navn-validering
-function validerNavn(inId, utId) {
+function validerNavn(innElmt, utId) {
     const regex = /^[a-åA-Å]([-']?[a-z]+)*( [a-åA-Å]([-']?[a-åA-Å]+)*)+$/
     const melding = "Ugyldig navn";
-    return feilmelding(testRegex(inId, regex), melding, utId);
+    return feilmelding(testRegex(innElmt, regex), melding, utId);
 }
 
 // Epost-validering
-function validerEpost(inId, utId) {
+function validerEpost(elmt, utId) {
     const regex = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-z]{2,4}/;
     const melding = "Ugyldig epost";
-    return feilmelding(testRegex(inId, regex), melding, utId);
+    return feilmelding(testRegex(innElmt, regex), melding, utId);
 }
 
 // Kortnummer-validering
-function validerKortnummer(inId, utId) {
+function validerKortnummer(innElmt, utId) {
     const regex = /^[0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}$/
     const melding = "Ugyldig kortnummer";
-    return feilmelding(testRegex(inId, regex), melding, utId);
+    return feilmelding(testRegex(innElmt, regex), melding, utId);
 }
 
 // MM validering
-function validerMM(inId, utId) {
+function validerMM(innElmt, utId) {
     const regex = /^[0-9]{2}$/
     const melding = "Ugyldig måned";
-    return feilmelding(testRegex(inId, regex), melding, utId);
+    return feilmelding(testRegex(innElmt, regex), melding, utId);
 }
 
 // ÅÅ-validering
-function validerAA(inId, utId) {
+function validerAA(innElmt, utId) {
     const regex = /^[0-9]{2}$/
     const melding = "Ugyldig årstall";
-    return feilmelding(testRegex(inId, regex), melding, utId);
+    return feilmelding(testRegex(innElmt, regex), melding, utId);
 }
 
 // CVC-validering
-function validerCVC(inId, utId) {
+function validerCVC(innElmt, utId) {
     const regex = /^[0-9]{3}$/
     const melding = "Ugyldig CVC";
-    return feilmelding(testRegex(inId, regex), melding, utId);
+    return feilmelding(testRegex(innElmt, regex), melding, utId);
 }
 
 // Finner dagens dato og formaterer i yyyy-mm-dd format

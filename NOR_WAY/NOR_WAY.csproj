@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Style\" />
+    <Folder Include="wwwroot\js\Model\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\Style\ruter.css" />

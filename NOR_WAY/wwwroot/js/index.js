@@ -78,29 +78,34 @@ function finnMuligeStartStopp(input) {
 }
 
 // Henter neste avgang fra server og skriver det ut til dokumentet
+let avgang;
 function finnNesteAvgang() {
     if (validerAvgangInput()) {
+        const avgangElmt = $("#avgang");
+        const feilAvgangElmt = $("#feilAvgang");
         let avgangParam = new AvgangParam();
         // Kaller serveren for å finne neste avgang
-        $.post("Buss/FinnNesteAvgang", avgangParam, function (avgang) {
-            // Destructuring avgang-objektet til variabler
-            let {avgangId, rutenavn, linjekode, pris, avreise, ankomst, reisetid} = avgang;
+        $.post("Buss/FinnNesteAvgang", avgangParam, function (respons) {
+            // Modell for å ta imot et Avgang-obj fra backend
+            avgang = new Avgang(respons);
+            console.log(avgang);
+            console.log(avgangParam);
             /* HTML-komponent som inneholder en oversikt over billettonfomasjonen,
                og et betalingskjema */
             ut = `<div id="billettInfo">
-                    <h4 id="billettInfoOverskrift"><strong>${rutenavn}, ${linjekode}</strong></h4>
+                    <h4 id="billettInfoOverskrift"><strong>${avgang.rutenavn}, ${avgang.linjekode}</strong></h4>
                     <div id="billettInfoBody">
                         <h6>
-                            Avreise: ${avreise.substr(0, 10)} &nbsp;|&nbsp; ${avgangParam.StartStopp}, ${avreise.substr(11, 5)}  &nbsp;→&nbsp; ${avgangParam.SluttStopp},
-                                     ${ankomst.substr(11, 5)} </h6>
+                            Avreise: ${avgang.avreise.substr(0, 10)} &nbsp;|&nbsp; ${avgangParam.StartStopp}, ${avgang.avreise.substr(11, 5)}  &nbsp;→&nbsp; ${avgangParam.SluttStopp},
+                                     ${avgang.ankomst.substr(11, 5)} </h6>
                         <h6 class="mt-4">
-                            Reisetid: ${Hjelp.finnReisetid(reisetid)}
+                            Reisetid: ${Hjelp.finnReisetid(avgang.reisetid)}
                         </h6>
                         <h6 class="mt-4">
                             Billetter: Student
                         </h6>
                         <h6 class="mt-4">
-                            Pris: ${pris} kr
+                            Pris: ${avgang.pris} kr
                         </h6>
                     </div>
                 </div>
@@ -114,8 +119,7 @@ function finnNesteAvgang() {
 
                     <div class="form-group">
                         <label for="epost">Epost</label>
-                        <input type="text" id="epost" placeholder="ola@normann.no" class="form-control shadow-sm" onfocusout="validerEpost('#epost', '#feilEpost')" maxlength="50"
-                            onblur="validerEpost('#epost', '#feilEpost')"/>
+                        <input type="text" id="epost" placeholder="ola@normann.no" class="form-control shadow-sm"  maxlength="50" />
                         <div id="feilEpost" class="mt-1 rodTekst"></div>
                     </div>
 
@@ -138,19 +142,14 @@ function finnNesteAvgang() {
                         <div class="col-sm-8">
                                 <label>Utløpsdato</label>
                                 <div class="input-group">
-                                    <input type="number" placeholder="MM" id="MM" class="form-control shadow-sm"
-                                            onblur="if(this.value.length == 1){ this.value = '0' + this.value.charAt(0) } validerMM('#MM', '#feilMM')"
-                                            onKeyPress="if(this.value.length == 2) return false;" >
-                                    <input type="number" placeholder="ÅÅ" id="AA" class="form-control shadow-sm"
-                                        onblur="validerAA('#AA', '#feilAA')"
-                                        onKeyPress="if(this.value.length == 2) return false;" >
+                                    <input type="number" placeholder="MM" id="MM" class="form-control shadow-sm">
+                                    <input type="number" placeholder="ÅÅ" id="AA" class="form-control shadow-sm">
                                 </div>
 
                         </div>
                         <div class="col-sm-4">
                                 <label>CVC</label>
-                                <input type="number" placeholder="xxx" id="CVC" class="form-control shadow-sm"
-                                    onblur="validerCVC('#CVC', '#feilCVC')"onKeyPress="if(this.value.length==3) return false;">
+                                <input type="number" placeholder="xxx" id="CVC" class="form-control shadow-sm">
                         </div>
                     </div>
                     <div class="row">
@@ -163,27 +162,23 @@ function finnNesteAvgang() {
                 </form>`;
 
             // Skriver til document, fjerner feilmeldinger og scroller ned
-            $("#avgang").html(ut);
-            $("#feilAvgang").html("");
-            $("#avgang").css("display", "block");
-            document.getElementById('avgang').scrollIntoView(); // Scroller til
-            Hjelp.endreBakgrunn(); // Får overlay til å matche den endrede skjermhøyden
-
-            // Hinder brukeren å skrive tall i navn-feltet
-            $("#navn").on("input", function (e) {
-                $("#navn").val($("#navn").val().replace(/[^a-åA-Å- ]/, ''));
-            });
-
-            /* Hindere brukeren å skrive inn annet enn tall,
-            og legger til mellomrom for hvert fjerde tall */
-            $("#kortnummer").on("input", function (e) {
-                $("#kortnummer").val($("#kortnummer").val().replace(/[^\d]/g, '').replace(/(.{4})/g, '$1 ').trim());
-            });
+            feilAvgangElmt.html("");
+            avgangElmt.html(ut);
+            avgangElmt.css("display", "block");
+            var offset = avgangElmt.offset();
+            $('html, body').animate({
+                scrollTop: offset.top,
+                scrollLeft: offset.left
+            }, 0);
+            
+            Hjelp.endreBakgrunn(); // Får bakgrunn til å matche den endrede skjermhøyden
+            new BetalingEvents('#navn', '#epost', '#kortnummer', '#MM', '#AA', '#CVC');
         }).fail(function () {
             // Gir brukeren tilbakemelding hvis ingen avganger ble hentet
-            $("#avgang").css("display", "none");
-            $("#avgang").html("");
-            $("#feilAvgang").html("Vi finner desverre ingen avgang som passer ditt søk");
+            feilAvgangElmt.html("Vi finner desverre ingen avgang som passer ditt søk");
+            avgangElmt.css("display", "none");
+            avgangElmt.html("");
+            Hjelp.endreBakgrunn(); // Får overlay til å matche den endrede skjermhøyden
         });
     }
 }

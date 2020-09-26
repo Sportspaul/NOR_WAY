@@ -30,7 +30,7 @@ function validerAvgangInput() {
 
     // Hvis et eller flere valideringer over er UGYLDIGE
     $("#avgang").css("display", "none"); // Fjerner betalingskomponenten
-    $("#feilAvgang").html("Vi finner desverre ingen avgang som passer ditt søk"); // Skriver feilmeling til bruker
+    $("#feilAvgang").html("Vi finner desverre ingen avgang som oppfyller søkekriteriene dine"); // Skriver feilmeling til bruker
     document.querySelector('nav').scrollIntoView(); // scroller til toppen av siden
     return false;
 }

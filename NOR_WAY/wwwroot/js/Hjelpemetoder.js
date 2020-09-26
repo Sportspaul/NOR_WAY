@@ -9,11 +9,27 @@ class Hjelpemetoder{
 
     // Legger til dagens dato i datofeltet
     static leggTilDato() {
-        (function () {
-            var date = new Date().toISOString().substring(0, 10),
-                field = document.querySelector('#dato');
-            field.value = date;
-        })()
+        var dato = new Date().toISOString().substring(0, 10);
+        dato.toLocaleString('no-NO')
+        const inputfelt = $('#dato');
+        inputfelt.val(dato);
+    }
+
+    static leggTilTidspunkt() {
+        var dato = new Date();
+        dato.toLocaleString('no-NO');
+        let time = dato.getHours().toString();
+        let minutt = dato.getMinutes().toString();
+        if (time.length == 1) {
+            time = "0" + time;
+        }
+
+        if (minutt.length == 1) {
+            minutt = minutt + "0";
+        }
+        const tidspunkt = time + ":" + minutt;
+        const inputfelt = $('#tidspunkt');
+        inputfelt.val(tidspunkt);
     }
 
     // Setter stor forbokstav og fjerner mellomrom forran og bak strengen
@@ -119,5 +135,13 @@ class Hjelpemetoder{
         $.each(billettyper, function () {
             dropdown.append($("<option />").val(this.billettype).text(this.billettype));
         });
+    }
+
+    static fjernBillett() {
+        const antall = $('.billettype').length;
+        const id = `#billettype${antall}`;
+        if(antall > 1) {
+            $(id).remove();
+        }
     }
 }

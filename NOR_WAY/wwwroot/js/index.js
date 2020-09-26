@@ -3,6 +3,7 @@ $(function () {
     hentAlleStopp();
     hentAlleBillettyper();
     Hjelpemetoder.leggTilDato();
+    Hjelpemetoder.leggTilTidspunkt()
     Hjelpemetoder.endreBakgrunn();
 });
 
@@ -180,7 +181,7 @@ function finnNesteAvgang() {
             new BetalingEvents('#navn', '#epost', '#kortnummer', '#MM', '#AA', '#CVC');
         }).fail(function () {
             // Gir brukeren tilbakemelding hvis ingen avganger ble hentet
-            feilAvgangElmt.html("Vi finner desverre ingen avgang som passer ditt søk");
+            feilAvgangElmt.html("Vi finner desverre ingen avgang som oppfyller søkekriteriene dine");
             avgangElmt.css("display", "none");
             avgangElmt.html("");
             Hjelpemetoder.endreBakgrunn(); // Får overlay til å matche den endrede skjermhøyden

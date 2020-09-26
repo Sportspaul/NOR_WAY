@@ -2,6 +2,7 @@
     box-sizing: border-box;
 }
 
+
 html {
     scroll-behavior: smooth;
     background: black;
@@ -9,11 +10,14 @@ html {
 
 body {
     background-color: #f5f7ff;
-    background: url(https://www.nor-way.no//media/1169/oslo-by-night-foap-visitnorwaycom.jpg), linear-gradient(180deg, rgba(0,0,0,90) 0%, rgba(0,0,0,.80) 25%, rgba(0,0,0,0.70) 50%, rgba(0,0,0,0.60) 75%, rgba(0,0,0,.40) 100%);
+    background: url(../Bilder/bakgrunn.jpg), linear-gradient(180deg, rgba(0,0,0,90) 0%, rgba(0,0,0,.80) 25%, rgba(0,0,0,0.70) 50%, rgba(0,0,0,0.60) 75%, rgba(0,0,0,.40) 100%);
     background-position: center;
     background-attachment: fixed;
     background-size: cover;
-    font-family: Helvetica, Arial, sans-serif;
+}
+
+.antialised {
+    -webkit-font-smoothing: antialiased !important;
 }
 
 #overlay {
@@ -26,28 +30,32 @@ nav {
     padding-top: 2vh;
 }
 
-    nav img {
-        margin-left: 2vw;
-        height: 4vh;
-    }
+nav img {
+    margin-left: 2vw;
+    height: 4vh;
+}
 
 ul li {
     list-style: none;
     display: inline;
     color: rgb(255,255,255);
     margin-left: 2vw;
+    font-weight: bold;
+    -webkit-font-smoothing: antialiased !important;
 }
 
 ul {
     display: inline;
 }
 
-    ul li:hover {
-        color: rgb(190,190,190);
-    }
+ul li a {
+    -webkit-font-smoothing: antialiased !important;
+    color: white;
+}
 
-a:hover {
+ul li a:hover {
     text-decoration: none;
+    color: rgb(190,190,190);
 }
 
 .shadowBox {

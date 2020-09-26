@@ -1,42 +1,52 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="no">
 <head>
-    <meta charset="utf-8" />
     <title>NOR-WAY</title>
-    <link rel="icon" href="https://s2.googleusercontent.com/s2/favicons?domain_url=https://www.nor-way.no/#/">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" href="Bilder/favicon.png">
 
-    <script src="js/Hjelpemetoder.js?n=2"></script>
-    <script src="js/Model/AvgangParam.js?n=1"></script>
-    <script src="js/Model/Avgang.js?n=1"></script>
-    <script src="js/Model/KundeOrdre.js?n=1"></script>
-    <script src="js/BetalingEvents.js?n=2"></script>
-    <script src="js/index.js?n=20"></script>
-    <script src="js/validering.js?n=13"></script>
-    <script src="js/Stoppforslag.js?n?=5"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <link rel="stylesheet" href="Style/index.css?n=8">
-    <link rel="stylesheet" href="Style/template.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=10">
+    <meta name="description" content="Vi gir deg mulighet til å reise med buss i Norge. Kjøp bussbilletter, søk etter reisemuligheter, finn din rute og avganger, rutetabeller og ruteinfo.">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="Style/index.css?n=12">
+    <link rel="stylesheet" href="Style/template.css?n=2">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
+    <script src="js/Hjelpemetoder.js?n=2" defer></script>
+    <script src="js/Model/AvgangParam.js?n=1" defer></script>
+    <script src="js/Model/Avgang.js?n=1" defer></script>
+    <script src="js/Model/KundeOrdre.js?n=1" defer></script>
+    <script src="js/BetalingEvents.js?n=2" defer></script>
+    <script src="js/index.js?n=21" defer></script>
+    <script src="js/validering.js?n=13" defer></script>
+    <script src="js/Stoppforslag.js?n?=5" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10" defer></script>
 </head>
 <body>
     <div id="overlay">
         <nav>
-            <img src="https://www.nor-way.no/media/1171/nor-way_rgb_hovedlogo-01-4526.svg" />
+            <img 
+                src="/Bilder/logo.svg" 
+                alt="NOR-WAY sin logo. NOR i bold rødt og WAY i bold kursiv blått. 
+                De to ordene skilles av en rød prikk"
+            />
             <ul>
-                <a href="index.html"><li><u>Kjøp Billett</u></li></a>
+                <li><a href="index.html"><u>Kjøp Billett</u></a></li>
                 <li>|</li>
-                <a href="ruter.html"><li>Ruter</li></a>
+                <li><a href="ruter.html">Ruter</a></li>
                 <li>|</li>
-                <a href="loggInn.html"><li>Logg Inn</li></a>
+                <li><a href="loggInn.html">Logg Inn</a></li>
             </ul>
         </nav>
         <div class="shadowBox">
             <form>
 
                 <div class="form-group">
-                    <h5>Jeg skal reise fra</h5>
+                    <h5 class="antialised">Jeg skal reise fra</h5>
                     <input type="text" id="startStopp" placeholder="Skriv inn stoppnavn" class="form-control shadow-sm"
                            onfocus="finnMuligeStartStopp()"
                            onKeyPress="if (this.value.length == 1) { this.value = this.value.toUpperCase(); }"
@@ -46,7 +56,7 @@
                 </div>
 
                 <div class="form-group">
-                    <h5 class="mt-4">Jeg skal reise til</h5>
+                    <h5 class="mt-4 antialised">Jeg skal reise til</h5>
                     <input type="text" id="sluttStopp" placeholder="Skriv inn stoppnavn" class="form-control shadow-sm"
                            onfocus="finnMuligeSluttStopp()"
                            onKeyPress="if(this.value.length==1) { this.value = this.value.toUpperCase(); }"
@@ -56,7 +66,7 @@
                 </div>
 
                 <div class="form-group">
-                    <h5 class="mt-4">Tidspunkt for min reise</h5>
+                    <h5 class="mt-4 antialised">Tidspunkt for min reise</h5>
                     <input type="radio" id="avreiseEtter" name="avreiseEtter" value="true" checked />
                     <label>Avreise etter</label>
                     &nbsp;|&nbsp;
@@ -68,14 +78,14 @@
                     <span id="feilDato" class="mt-1 rodTekst"></span>
                 </div>
 
-                <h5 class="mt-4">Billettype</h5>
+                <h5 class="mt-4 antialised">Billettype</h5>
                 <div id="billetter">
                     <select id="billettype1" class="form-control shadow-sm billettype mb-2"></select>
                 </div>
 
-                <input type="button" value="Legg til en billett" class="btn btn-sm btn-dark font-weight-bold shadow" onclick="Hjelpemetoder.leggTilBillett()" />
-                <input type="button" value="Fjern en billett" class="btn btn-sm btn-danger font-weight-bold shadow" onclick="Hjelpemetoder.fjernBillett()" />
-                <input type="button" id="bestill" class="btn btn-md btn-primary mt-4 form-control font-weight-bold shadow" value="Finn reise" onclick="finnNesteAvgang()" />
+                <input type="button" value="Legg til en billett" class="btn btn-sm btn-dark font-weight-bold shadow antialised" onclick="Hjelpemetoder.leggTilBillett()" />
+                <input type="button" id="fjernBillett" value="Fjern en billett" class="btn btn-sm btn-danger font-weight-bold shadow antialised" style="display: none;" onclick="Hjelpemetoder.fjernBillett()" />
+                <input type="button" id="bestill" class="btn btn-md btn-primary mt-4 form-control font-weight-bold shadow antialised" value="Finn reise" onclick="finnNesteAvgang()" />
             </form>
             <div id="feilAvgang" class="mt-2 rodTekst"></div>
         </div>

@@ -97,7 +97,7 @@ function finnNesteAvgang() {
             avgang = new Avgang(respons);
             /* HTML-komponent som inneholder en oversikt over billettonfomasjonen,
                og et betalingskjema */
-            ut = `<div id="billettInfo">
+            ut = `<div id="billettInfo" class="antialised">
                     <h4 id="billettInfoOverskrift"><strong>${avgang.Rutenavn}, ${avgang.Linjekode}</strong></h4>
                     <div id="billettInfoBody">
                         <h6>
@@ -164,7 +164,7 @@ function finnNesteAvgang() {
                         <div id="feilCVC" class="col-sm-4 mt-1 rodTekst"></div>
                     </div>
 
-                    <input type="button" class="btn btn-success mt-4 form-control shadow font-weight-bold" value="Betal" onclick="fullforOrdre()")>
+                    <input type="button" class="btn btn-success mt-4 form-control shadow font-weight-bold antialised" value="Betal" onclick="fullforOrdre()")>
                 </form>`;
 
             // Skriver til document, fjerner feilmeldinger og scroller ned

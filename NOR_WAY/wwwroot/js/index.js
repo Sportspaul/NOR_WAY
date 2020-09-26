@@ -132,7 +132,7 @@ function finnNesteAvgang() {
                         <label for="kortnummer">Kortnummer</label>
                         <div class="input-group">
                             <input type="text" id="kortnummer" name="kortnummer" placeholder="0000 0000 0000 0000"
-                                class="form-control shadow-sm" />
+                                class="form-control shadow-sm" maxlength="19"/>
                             <div class="input-group-append">
                                 <span class="input-group-text text-muted">
                                     <i class="fa fa-cc-visa mx-1"></i>

@@ -67,5 +67,5 @@ function endreBoksHoyde() {
     } else {
         $(".shadowBox").css('height', r + 50);
     }
-    Hjelp.endreBakgrunn();
+    Hjelpemetoder.endreBakgrunn();
 }

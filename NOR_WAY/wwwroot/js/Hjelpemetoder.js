@@ -18,18 +18,19 @@ class Hjelpemetoder{
     static leggTilTidspunkt() {
         var dato = new Date();
         dato.toLocaleString('no-NO');
-        let time = dato.getHours().toString();
-        let minutt = dato.getMinutes().toString();
-        if (time.length == 1) {
-            time = "0" + time;
-        }
-
-        if (minutt.length == 1) {
-            minutt = minutt + "0";
-        }
+        let time = this.nullForran(dato.getHours())
+        let minutt = this.nullForran(dato.getMinutes())
         const tidspunkt = time + ":" + minutt;
         const inputfelt = $('#tidspunkt');
         inputfelt.val(tidspunkt);
+    }
+
+    static nullForran(streng) {
+        streng = streng.toString();
+        if (streng.length == 1) {
+            streng = "0" + utStreng;
+        }
+        return streng;
     }
 
     // Setter stor forbokstav og fjerner mellomrom forran og bak strengen
@@ -124,24 +125,30 @@ class Hjelpemetoder{
         return utskrift;
     }
 
-
-    // Legger til et nytt select-element og fyller den med billettyer-data fra DB
+    // Legger til en nytt nedtrekksmeny og fyller den med billettyer-data fra DB
     static leggTilBillett() {
-        const antall = $('.billettype').length;
-        const id = `billettype${antall + 1}`;
-
+        const nyttAntall = $('.billettype').length + 1;
+        const id = `billettype${nyttAntall}`;
+        // Ny nedtrekksmeny for ny billett
         $('#billetter').append(`<select id="${id}" class="form-control billettype mb-2"></select>`);
         var dropdown = $(`#${id}`);
+        // Legger til alle billettypene i den nye nedtrekksmenyen
         $.each(billettyper, function () {
             dropdown.append($("<option />").val(this.billettype).text(this.billettype));
         });
+        $('#fjernBillett').css('display', 'inline-block');  // Viser knapp for å kunne fjerne en billett
     }
 
-    static fjernBillett() {
+    // Fjener en billett
+    static fjernBillett() {        
         const antall = $('.billettype').length;
         const id = `#billettype${antall}`;
         if(antall > 1) {
-            $(id).remove();
+            $(id).remove(); // Fjerner nedeste nedtrekksmeny
         }
+        // Hvis antall billetter er 2 blir fjernbillett-knappen skult 
+        if(antall == 2) {
+            $('#fjernBillett').css('display', 'none');
+        }  
     }
 }

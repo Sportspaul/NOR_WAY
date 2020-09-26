@@ -97,18 +97,21 @@ function finnNesteAvgang() {
             /* HTML-komponent som inneholder en oversikt over billettonfomasjonen,
                og et betalingskjema */
             ut = `<div id="billettInfo">
-                    <h4 id="billettInfoOverskrift"><strong>${avgang.rutenavn}, ${avgang.linjekode}</strong></h4>
+                    <h4 id="billettInfoOverskrift"><strong>${avgang.Rutenavn}, ${avgang.Linjekode}</strong></h4>
                     <div id="billettInfoBody">
                         <h6>
-                            Avreise: ${Hjelpemetoder.formaterDatoOgTid(avgang.avreise, "dato")} &nbsp;|&nbsp; ${StartStopp}, ${Hjelpemetoder.formaterDatoOgTid(avgang.avreise, "tid")} &nbsp;→&nbsp; ${SluttStopp}, ${Hjelpemetoder.formaterDatoOgTid(avgang.ankomst, "tid")}</h6>
+                            Avreise: ${Hjelpemetoder.formaterDatoOgTid(avgang.Avreise, "dato")} &nbsp;|&nbsp; 
+                            ${StartStopp}, ${Hjelpemetoder.formaterDatoOgTid(avgang.Avreise, "tid")} 
+                            &nbsp;→&nbsp; ${SluttStopp}, ${Hjelpemetoder.formaterDatoOgTid(avgang.Ankomst, "tid")}
+                        </h6>
                         <h6 class="mt-4">
-                            Reisetid: ${Hjelpemetoder.finnReisetid(avgang.reisetid)}
+                            Reisetid: ${Hjelpemetoder.finnReisetid(avgang.Reisetid)}
                         </h6>
                         <h6 class="mt-4">
                             Billetter: ${Hjelpemetoder.formaterValgteBillettyper(Hjelpemetoder.hentValgteBillettyper())}
                         </h6>
                         <h6 class="mt-4">
-                            Pris: ${avgang.pris} kr
+                            Pris: ${avgang.Pris} kr
                         </h6>
                     </div>
                 </div>
@@ -160,7 +163,7 @@ function finnNesteAvgang() {
                         <div id="feilCVC" class="col-sm-4 mt-1 rodTekst"></div>
                     </div>
 
-                    <input type="button" class="btn btn-success form-control shadow font-weight-bold" value="Betal" onclick="fullforOrdre()")>
+                    <input type="button" class="btn btn-success mt-4 form-control shadow font-weight-bold" value="Betal" onclick="fullforOrdre()")>
                 </form>`;
 
             // Skriver til document, fjerner feilmeldinger og scroller ned
@@ -190,14 +193,7 @@ function finnNesteAvgang() {
         const epost = $("#epost").val();
 
         // Lager en kundeordre
-        const kundeordre = {
-            Epost: epost,
-            StartStopp: StartStopp,
-            SluttStopp: SluttStopp,
-            Linjekode: avgang.linjekode,
-            AvgangId: avgang.avgangId,
-            Billettype: avgangParam.Billettyper
-        }
+        const kundeordre = new KundeOrdre(epost, StartStopp, SluttStopp, Avgang.Linjekode, Avgang.AvgangId, AvgangParam.Billettyper);
         console.log(kundeordre)
         // Kaller C# Metoden FullforOrdre()
         $.post("Buss/FullforOrdre", kundeordre);

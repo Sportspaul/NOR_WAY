@@ -28,7 +28,7 @@ class Hjelpemetoder{
     static nullForran(streng) {
         streng = streng.toString();
         if (streng.length == 1) {
-            streng = "0" + utStreng;
+            streng = "0" + streng;
         }
         return streng;
     }

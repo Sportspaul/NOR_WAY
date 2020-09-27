@@ -18,6 +18,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\Style\" />
     <Folder Include="wwwroot\js\Model\" />
+    <Folder Include="wwwroot\Bilder\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\Style\ruter.css" />

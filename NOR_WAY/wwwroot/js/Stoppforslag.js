@@ -55,7 +55,7 @@ class Stoppforslag{
         // EventListener på om en tast blir trykket
         inputfelt.on("keydown", function (e) {
             var elmt = document.getElementById(this.id + "stoppListe");
-            if (elmt) elmt = elmt.getElementsByTagName("div");
+            if (elmt) { elmt = elmt.getElementsByTagName("div"); }
 
             // Hvis brukeren trykker piltast ned
             if (e.keyCode == 40) {
@@ -81,6 +81,8 @@ class Stoppforslag{
                         elmt[fokusert].click();
                     }
                 }
+            } else if (e.keyCode == 9) {
+                forlotFelt(e.target);
             }
         });
 
@@ -114,11 +116,17 @@ class Stoppforslag{
             }
         }
 
-        // Lukker listen med stopp hvis bruker trykker utenfor listen
-        $(document).on("click", function (e) {
-            lukkAlleLister(e.target);
+        function forlotFelt(target) {
+            lukkAlleLister(target);
             validerStoppnavn($("#startStopp"), "#feilStartStopp");
             validerStoppnavn($("#sluttStopp"), "#feilSluttStopp");
+        }
+
+        // Lukker listen med stopp hvis bruker trykker utenfor listen
+        $(document).on("click", function (e) {
+            forlotFelt(e.target);
         });
+
+        $
     }
 }

@@ -5,6 +5,7 @@ $(function () {
     Hjelpemetoder.leggTilDato();
     Hjelpemetoder.leggTilTidspunkt()
     Hjelpemetoder.endreBakgrunn();
+    $('#startStopp').focus();
 });
 
 // Globale variabler

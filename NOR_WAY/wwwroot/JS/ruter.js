@@ -17,7 +17,7 @@ function hentAlleRuter() {
         ruteMatrise = rutene;
 
         // Skriver ut alle rutene
-        utRuter = "<h4>Ruter</h4>"
+        utRuter = "<h4>Velg Rute</h4>"
         for (let i = 0; i < rutene.length; i++) {
             utRuter += `<h5 class="mt-4"
                             onclick="byttRute(${i})">${rutene[i].rutenavn}
@@ -29,7 +29,7 @@ function hentAlleRuter() {
         byttRute(0);
 
         // Endrer høyden på shadowBox til å matche dataen
-        endreBoksHoyde();
+        tilpassHoyde();
     });
 }
 

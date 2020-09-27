@@ -1,95 +1,85 @@
 ﻿<!DOCTYPE html>
 <html lang="no">
-<head>
-    <title>NOR-WAY</title>
-    <link rel="icon" href="Bilder/favicon.png">
+    <head>
+        <!-- Tittel og favicon -->
+        <title>NOR-WAY</title>
+        <link rel="icon" href="Bilder/favicon.png">
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=10">
-    <meta name="description" content="Vi gir deg mulighet til å reise med buss i Norge. Kjøp bussbilletter, søk etter reisemuligheter, finn din rute og avganger, rutetabeller og ruteinfo.">
+        <!-- Metadata -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=10">
+        <meta name="description" content="Vi gir deg mulighet til å reise med buss i Norge. Kjøp bussbilletter, søk etter reisemuligheter, finn din rute og avganger, rutetabeller og ruteinfo.">
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="Style/index.css?n=12">
-    <link rel="stylesheet" href="Style/template.css?n=2">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="Style/index.css?n=12">
+        <link rel="stylesheet" href="Style/template.css?n=2">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-    <!-- Scripts -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
-    <script src="js/Hjelpemetoder.js?n=3" defer></script>
-    <script src="js/Model/AvgangParam.js?n=1" defer></script>
-    <script src="js/Model/Avgang.js?n=1" defer></script>
-    <script src="js/Model/KundeOrdre.js?n=1" defer></script>
-    <script src="js/BetalingEvents.js?n=2" defer></script>
-    <script src="js/index.js?n=22" defer></script>
-    <script src="js/validering.js?n=13" defer></script>
-    <script src="js/Stoppforslag.js?n?=6" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10" defer></script>
-</head>
-<body>
-    <div id="overlay">
-        <nav>
-            <img 
-                src="/Bilder/logo.svg" 
-                alt="NOR-WAY sin logo. NOR i bold rødt og WAY i bold kursiv blått. 
-                De to ordene skilles av en rød prikk"
-            />
-            <ul>
-                <li><a href="index.html">Kjøp Billett</a></li>
-                <li>|</li>
-                <li><a href="ruter.html">Ruter</a></li>
-                <li>|</li>
-                <li><a href="loggInn.html">Logg Inn</a></li>
-            </ul>
-        </nav>
-        <div class="shadowBox">
-            <form>
+        <!-- Javascript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
+        <script src="JS/Components/NavBar.js" defer></script>
+        <script src="JS/Hjelpemetoder.js?n=3" defer></script>
+        <script src="JS/Models/AvgangParam.js?n=1" defer></script>
+        <script src="JS/Models/Avgang.js?n=1" defer></script>
+        <script src="JS/Models/KundeOrdre.js?n=1" defer></script>
+        <script src="JS/BetalingEvents.js?n=2" defer></script>
+        <script src="JS/index.js?n=22" defer></script>
+        <script src="JS/validering.js?n=13" defer></script>
+        <script src="JS/Stoppforslag.js?n?=6" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10" defer></script>
+    </head>
+    <body>
+        <div id="overlay">
+            <nav-bar> <!-- Web Component, Components/Navbar.js--> </nav-bar>
+            <div class="shadowBox">
+                <form>
 
-                <div class="form-group">
-                    <h5 class="antialised">Jeg skal reise fra</h5>
-                    <input type="text" id="startStopp" placeholder="Skriv inn stoppnavn" class="form-control shadow-sm"
-                           onfocus="finnMuligeStartStopp()"
-                           onKeyPress="if (this.value.length == 1) { this.value = this.value.toUpperCase(); }"
-                    />
-                    <div id="auto1"></div>
-                    <div id="feilStartStopp" class="mt-1 rodTekst"></div>
-                </div>
+                    <div class="form-group">
+                        <h5 class="antialised">Jeg skal reise fra</h5>
+                        <input type="text" id="startStopp" placeholder="Skriv inn stoppnavn" class="form-control shadow-sm"
+                            onfocus="finnMuligeStartStopp()"
+                            onKeyPress="if (this.value.length == 1) { this.value = this.value.toUpperCase(); }"
+                        />
+                        <div id="auto1"></div>
+                        <div id="feilStartStopp" class="mt-1 rodTekst"></div>
+                    </div>
 
-                <div class="form-group">
-                    <h5 class="mt-4 antialised">Jeg skal reise til</h5>
-                    <input type="text" id="sluttStopp" placeholder="Skriv inn stoppnavn" class="form-control shadow-sm"
-                           onfocus="finnMuligeSluttStopp()"
-                           onKeyPress="if(this.value.length==1) { this.value = this.value.toUpperCase(); }"
-                    />
-                    <div id="auto2"></div>
-                    <div id="feilSluttStopp" class="mt-1 rodTekst"></div>
-                </div>
+                    <div class="form-group">
+                        <h5 class="mt-4 antialised">Jeg skal reise til</h5>
+                        <input type="text" id="sluttStopp" placeholder="Skriv inn stoppnavn" class="form-control shadow-sm"
+                            onfocus="finnMuligeSluttStopp()"
+                            onKeyPress="if(this.value.length==1) { this.value = this.value.toUpperCase(); }"
+                        />
+                        <div id="auto2"></div>
+                        <div id="feilSluttStopp" class="mt-1 rodTekst"></div>
+                    </div>
 
-                <div class="form-group">
-                    <h5 class="mt-4 antialised">Tidspunkt for min reise</h5>
-                    <input type="radio" id="avreiseEtter" name="avreiseEtter" value="true" checked />
-                    <label>Avreise etter</label>
-                    &nbsp;|&nbsp;
-                    <input type="radio" id="ankomstFør" name="avreiseEtter" value="false" />
-                    <label>Ankomst før</label>
-                    <br />
-                    <input type="date" id="dato" class="form-control shadow-sm" onfocusout="validerDato('#dato', '#feilDato')" />
-                    <input type="time" id="tidspunkt" class="form-control mt-2 shadow-sm" value="12:00" />
-                    <span id="feilDato" class="mt-1 rodTekst"></span>
-                </div>
+                    <div class="form-group">
+                        <h5 class="mt-4 antialised">Tidspunkt for min reise</h5>
+                        <input type="radio" id="avreiseEtter" name="avreiseEtter" value="true" checked />
+                        <label>Avreise etter</label>
+                        &nbsp;|&nbsp;
+                        <input type="radio" id="ankomstFør" name="avreiseEtter" value="false" />
+                        <label>Ankomst før</label>
+                        <br />
+                        <input type="date" id="dato" class="form-control shadow-sm" onfocusout="validerDato('#dato', '#feilDato')" />
+                        <input type="time" id="tidspunkt" class="form-control mt-2 shadow-sm" value="12:00" />
+                        <span id="feilDato" class="mt-1 rodTekst"></span>
+                    </div>
 
-                <h5 class="mt-4 antialised">Billettype</h5>
-                <div id="billetter">
-                    <select id="billettype1" class="form-control shadow-sm billettype mb-2"></select>
-                </div>
+                    <h5 class="mt-4 antialised">Billettype</h5>
+                    <div id="billetter">
+                        <select id="billettype1" class="form-control shadow-sm billettype mb-2"></select>
+                    </div>
 
-                <input type="button" value="Legg til en billett" class="btn btn-sm btn-dark font-weight-bold shadow antialised" onclick="Hjelpemetoder.leggTilBillett()" />
-                <input type="button" id="fjernBillett" value="Fjern en billett" class="btn btn-sm btn-danger font-weight-bold shadow antialised" style="display: none;" onclick="Hjelpemetoder.fjernBillett()" />
-                <input type="button" id="bestill" class="btn btn-md btn-primary mt-4 form-control font-weight-bold shadow antialised" value="Finn reise" onclick="finnNesteAvgang()" />
-            </form>
-            <div id="feilAvgang" class="mt-2 rodTekst"></div>
+                    <input type="button" value="Legg til en billett" class="btn btn-sm btn-dark font-weight-bold shadow antialised" onclick="Hjelpemetoder.leggTilBillett()" />
+                    <input type="button" id="fjernBillett" value="Fjern en billett" class="btn btn-sm btn-danger font-weight-bold shadow antialised" style="display: none;" onclick="Hjelpemetoder.fjernBillett()" />
+                    <input type="button" id="bestill" class="btn btn-md btn-primary mt-4 form-control font-weight-bold shadow antialised" value="Finn reise" onclick="finnNesteAvgang()" />
+                </form>
+                <div id="feilAvgang" class="mt-2 rodTekst"></div>
+            </div>
+            <div id="avgang" class="shadowBox" style="display: none;"></div>
         </div>
-        <div id="avgang" class="shadowBox" style="display: none;"></div>
-    </div>
-</body>
+    </body>
 </html>

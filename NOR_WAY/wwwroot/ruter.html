@@ -1,36 +1,33 @@
 ﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>NOR-WAY</title>
-    <link rel="icon" href="https://s2.googleusercontent.com/s2/favicons?domain_url=https://www.nor-way.no/#/">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="js/Hjelpemetoder.js"></script>
-    <script src="js/ruter.js?n=1"></script>
-    <link rel="stylesheet" href="Style/template.css">
-    <link rel="stylesheet" href="Style/ruter.css?n=5">
-</head>
-<body>
-    <div id="overlay">
-        <nav>
-            <img src="https://www.nor-way.no/media/1171/nor-way_rgb_hovedlogo-01-4526.svg" />
-            <ul>
-                <li><a href="index.html">Kjøp Billett</a></li>
-                <li>|</li>
-                <li><a href="ruter.html">Ruter</a></li>
-                <li>|</li>
-                <li><a href="loggInn.html">Logg Inn</a></li>
-            </ul>
-        </nav>
-        <div class="shadowBox">
-            <div id="stopp">
-                <!-- Populeres i JS -->
-            </div>
-            <div id="ruter">
-                <!-- Populeres i JS -->
+<html lang="no">
+    <head>
+        <!-- Tittel og favicon -->
+        <title>NOR-WAY</title>
+        <link rel="icon" href="Bilder/favicon.png">
+
+        <!-- Metadata -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=10">
+        <meta name="description" content="Vi gir deg mulighet til å reise med buss i Norge. Kjøp bussbilletter, søk etter reisemuligheter, finn din rute og avganger, rutetabeller og ruteinfo.">
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="Style/template.css">
+        <link rel="stylesheet" href="Style/ruter.css?n=5">
+
+        <!-- Javascript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="JS/Components/NavBar.js" defer></script>
+        <script src="JS/Hjelpemetoder.js"></script>
+        <script src="JS/ruter.js?n=1"></script>
+    </head>
+    <body>
+        <div id="overlay">
+            <nav-bar> <!-- Web Component, Components/Navbar.js--> </nav-bar>
+            <div class="shadowBox">
+                <div id="stopp"> <!-- Populeres i JS --> </div>
+                <div id="ruter"> <!-- Populeres i JS --> </div>
             </div>
         </div>
-    </div>
-</body>
+    </body>
 </html>

@@ -12,13 +12,13 @@
 
         <!-- CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="Style/index.css?n=12">
+        <link rel="stylesheet" href="Style/index.css?n=13">
         <link rel="stylesheet" href="Style/template.css?n=2">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
         <!-- Javascript -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
-        <script src="JS/Components/NavBar.js" defer></script>
+        <script src="JS/Components/NavBar.js?n=1" defer></script>
         <script src="JS/Hjelpemetoder.js?n=3" defer></script>
         <script src="JS/Models/AvgangParam.js?n=1" defer></script>
         <script src="JS/Models/Avgang.js?n=1" defer></script>
@@ -30,56 +30,67 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10" defer></script>
     </head>
     <body>
+        <!-- Sort filter over 'background-image' til body -->
         <div id="overlay">
-            <nav-bar> <!-- Web Component, Components/Navbar.js--> </nav-bar>
-            <div class="shadowBox">
-                <form>
 
+            <!-- NavBar Component-->
+            <nav-bar><!-- Populeres i Javascript --></nav-bar>
+
+            <!-- Hvit box med skygge -->
+            <div class="shadowBox">
+
+                    <!-- Startstopp -->
                     <div class="form-group">
                         <h5 class="antialised">Jeg skal reise fra</h5>
                         <input type="text" id="startStopp" placeholder="Skriv inn stoppnavn" class="form-control shadow-sm"
-                            onfocus="finnMuligeStartStopp()"
-                            onKeyPress="if (this.value.length == 1) { this.value = this.value.toUpperCase(); }"
-                        />
+                               onfocus="finnMuligeStartStopp()"
+                               onKeyPress="if (this.value.length == 1) { this.value = this.value.toUpperCase(); }" />
                         <div id="auto1"></div>
                         <div id="feilStartStopp" class="mt-1 rodTekst"></div>
                     </div>
 
+                    <!-- Sluttstopp -->
                     <div class="form-group">
                         <h5 class="mt-4 antialised">Jeg skal reise til</h5>
                         <input type="text" id="sluttStopp" placeholder="Skriv inn stoppnavn" class="form-control shadow-sm"
-                            onfocus="finnMuligeSluttStopp()"
-                            onKeyPress="if(this.value.length==1) { this.value = this.value.toUpperCase(); }"
-                        />
+                               onfocus="finnMuligeSluttStopp()"
+                               onKeyPress="if(this.value.length==1) { this.value = this.value.toUpperCase(); }" />
                         <div id="auto2"></div>
                         <div id="feilSluttStopp" class="mt-1 rodTekst"></div>
                     </div>
 
+                    <!-- Tidspunkt for reisen -->
                     <div class="form-group">
                         <h5 class="mt-4 antialised">Tidspunkt for min reise</h5>
                         <input type="radio" id="avreiseEtter" name="avreiseEtter" value="true" checked />
-                        <label>Avreise etter</label>
-                        &nbsp;|&nbsp;
+                        <label for="avreiseEtter">Avreise etter</label>
+                        &nbsp;&nbsp;|&nbsp;&nbsp;
                         <input type="radio" id="ankomstFør" name="avreiseEtter" value="false" />
-                        <label>Ankomst før</label>
+                        <label for="ankomstFør">Ankomst før</label>
                         <br />
                         <input type="date" id="dato" class="form-control shadow-sm" onfocusout="validerDato('#dato', '#feilDato')" />
                         <input type="time" id="tidspunkt" class="form-control mt-2 shadow-sm" value="12:00" />
                         <span id="feilDato" class="mt-1 rodTekst"></span>
                     </div>
 
-                    <h5 class="mt-4 antialised">Billettype</h5>
-                    <div id="billetter">
-                        <select id="billettype1" class="form-control shadow-sm billettype mb-2"></select>
+                    <!-- Valg av billettype -->
+                    <div class="form-group">
+                        <h5 class="mt-4 antialised">Billettype</h5>
+                        <div id="billetter">
+                            <select id="billettype1" class="form-control shadow-sm billettype mb-2"></select>
+                        </div>
+                        <input type="button" value="Legg til en billett" class="btn btn-sm btn-dark font-weight-bold shadow antialised" onclick="Hjelpemetoder.leggTilBillett()" />
+                        <input type="button" id="fjernBillett" value="Fjern en billett" class="btn btn-sm btn-danger font-weight-bold shadow antialised" style="display: none;" onclick="Hjelpemetoder.fjernBillett()" />
                     </div>
 
-                    <input type="button" value="Legg til en billett" class="btn btn-sm btn-dark font-weight-bold shadow antialised" onclick="Hjelpemetoder.leggTilBillett()" />
-                    <input type="button" id="fjernBillett" value="Fjern en billett" class="btn btn-sm btn-danger font-weight-bold shadow antialised" style="display: none;" onclick="Hjelpemetoder.fjernBillett()" />
-                    <input type="button" id="bestill" class="btn btn-md btn-primary mt-4 form-control font-weight-bold shadow antialised" value="Finn reise" onclick="finnNesteAvgang()" />
-                </form>
-                <div id="feilAvgang" class="mt-2 rodTekst"></div>
-            </div>
-            <div id="avgang" class="shadowBox" style="display: none;"></div>
-        </div>
+                    <!-- Knapp for å finne avgang -->
+                    <input type="button" id="bestill" class="btn btn-md btn-primary mt-3 form-control font-weight-bold shadow antialised" value="Finn reise" onclick="finnNesteAvgang()" />
+                    <div id="feilAvgang" class="mt-2 rodTekst"></div>
+
+            </div> <!-- slutt: #shadowBox -->
+
+            <!-- Element for som viser info om avgangen -->
+            <div id="avgang" class="shadowBox" style="display: none;"><!-- Populeres i Javascript --></div>
+        </div> <!-- slutt: #overlay -->
     </body>
 </html>

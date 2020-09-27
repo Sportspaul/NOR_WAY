@@ -18,7 +18,6 @@ template.innerHTML = `
 
     ul {
         position: absolute;
-        top: 1vh;
         display: inline;
     }
 
@@ -34,11 +33,13 @@ template.innerHTML = `
         color: rgb(190,190,190);
     }
 </style>
-<img 
-    src="/Bilder/logo.svg" 
-    alt="NOR-WAY sin logo. NOR i bold rødt og WAY i bold kursiv blått. 
-    De to ordene skilles av en rød prikk"
-/>
+<a href="index.html">
+    <img 
+        src="/Bilder/logo.svg" 
+        alt="NOR-WAY sin logo. NOR i bold rødt og WAY i bold kursiv blått. 
+        De to ordene skilles av en rød prikk"
+    />
+</a>
 <ul>
     <li><a href="index.html">Kjøp Billett</a></li>
     <li>|</li>

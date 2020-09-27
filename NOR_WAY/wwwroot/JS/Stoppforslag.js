@@ -17,7 +17,7 @@ class Stoppforslag{
             // Lager en div som vil inneholde stoppene
             stoppListe = document.createElement("div");
             stoppListe.setAttribute("id", this.id + "stoppListe");
-            stoppListe.setAttribute("class", "stoppListe");
+            stoppListe.setAttribute("class", "stoppListe shadow");
             this.append(stoppListe);
 
             // Looper gjennom alle stoppene i listen med stopp

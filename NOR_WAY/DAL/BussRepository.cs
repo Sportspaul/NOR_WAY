@@ -457,7 +457,8 @@ namespace NOR_WAY.DAL
             try
             {
                 List<RuteData> RuteDataene = new List<RuteData>();
-                // Henter data fra tabeller:
+
+                // Henter alle rutene fra DB
                 List<Ruter> AlleRutene = await _db.Ruter.Select(r => new Ruter
                 {
                     Linjekode = r.Linjekode,
@@ -465,40 +466,37 @@ namespace NOR_WAY.DAL
                     TilleggPerStopp = r.TilleggPerStopp,
                     Startpris = r.Startpris
                 }).ToListAsync();
-                List<RuteStopp> ruteStopp = await _db.RuteStopp.Select(rs => new RuteStopp
-                {
-                    MinutterTilNesteStopp = rs.MinutterTilNesteStopp,
-                    Rute = rs.Rute,
-                    Stopp = rs.Stopp
-                }).ToListAsync();
-                List<Stopp> stoppene = await HentAlleStopp();
-                //Fyller opp tabellen
+
+                // Lopper gjennom alle rutene i DB
                 foreach (Ruter rute in AlleRutene)
                 {
                     RuteData rutedata = new RuteData
                     {
+                        Stoppene = new List<string>(),
+                        MinutterTilNesteStopp = new List<int>(),
                         Rutenavn = rute.Rutenavn,
                         Linjekode = rute.Linjekode,
                         TilleggPerStopp = rute.TilleggPerStopp,
-                        Startpris = rute.Startpris,
-                        Stoppene = new List<string>()
+                        Startpris = rute.Startpris
                     };
+
+                    // Henter alle ruteStopp som hører til spesifikk rute
+                    List<RuteStopp> ruteStopp = await _db.RuteStopp
+                        .Where(rs => rs.Rute.Linjekode == rute.Linjekode)
+                        .Select(rs => new RuteStopp
+                    {
+                        MinutterTilNesteStopp = rs.MinutterTilNesteStopp,
+                        Rute = rs.Rute,
+                        Stopp = rs.Stopp
+                    }).ToListAsync();
+
+                    // Looper gjennom alle ruteStoppp og legger navn og tid i lister
                     foreach (RuteStopp rutestopp in ruteStopp)
                     {
-                        if (rute.Linjekode == rutestopp.Rute.Linjekode)
-                        {
-                            for (int i = 0; i < stoppene.Count; i++)
-                            {
-                                if (stoppene[i].Navn == rutestopp.Stopp.Navn)
-                                {
-                                    rutedata.Stoppene.Add(stoppene[i].Navn);
-                                }
-                            }
-                        }
-
-                        rutedata.MinutterTilNesteStopp = rutestopp.MinutterTilNesteStopp;
+                            rutedata.Stoppene.Add(rutestopp.Stopp.Navn);
+                            rutedata.MinutterTilNesteStopp.Add(rutestopp.MinutterTilNesteStopp);
                     }
-                    RuteDataene.Add(rutedata);
+                    RuteDataene.Add(rutedata); // Legger objektet i listen
                 }
 
                 return RuteDataene;

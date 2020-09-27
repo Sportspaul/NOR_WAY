@@ -172,7 +172,7 @@ function finnNesteAvgang() {
             feilAvgangElmt.html("");
             avgangElmt.html(ut);
             avgangElmt.css("display", "block");
-            var offset = avgangElmt.offset();
+            const offset = avgangElmt.offset();
             $('html, body').animate({
                 scrollTop: offset.top,
                 scrollLeft: offset.left

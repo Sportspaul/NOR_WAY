@@ -7,14 +7,13 @@ namespace NOR_WAY.Model
     {
         public List<string> Stoppene { get; set; }
 
+        public List<int> MinutterTilNesteStopp { get; set; }
+
         [RegularExpression(@"(NW)[0-9]{1,4}")]
         public string Linjekode { get; set; }
 
         [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,20}")]
         public string Rutenavn { get; set; }
-
-        [RegularExpression(@"[0-9]{1,4}")]
-        public int MinutterTilNesteStopp { get; set; }
 
         [RegularExpression(@"[0-9]{1,4}")]
         public int Startpris { get; set; }

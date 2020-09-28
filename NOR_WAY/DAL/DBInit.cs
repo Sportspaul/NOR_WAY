@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,84 +22,51 @@ namespace NOR_WAY.DAL
                 var NW431Rute = new Ruter() { Linjekode = "NW431", Rutenavn = "Fjordekspressen", Startpris = 79, TilleggPerStopp = 30, Kapasitet = 55 };
                 string[] NW431Stopp = { "Bergen", "Oppedal", "Lavik", "Vadheim", "Førde", "Byrkjelo", "Stryn", "Lom", "Otta", "Oppdal", "Trondheim" };
                 // Injiserer dataen inn i databasen og lagrer endringene
-                Injiser(NW431Rute, NW431Stopp, context);
-                context.SaveChanges();
+                InjiserRute(NW431Rute, NW431Stopp, context);
 
                 // Rute NW194 - Grenlandsekspressen
                 var NW194Rute = new Ruter() { Linjekode = "NW194", Rutenavn = "Grenlandsekspressen", Startpris = 50, TilleggPerStopp = 35, Kapasitet = 45 };
                 string[] NW194Stopp = { "Oslo", "Vippetangen", "Drammen", "Kronlia", "Sundbyfoss", "Hvittingfoss", "Svarstad", "Steinsholt", "Siljan", "Skien" };
                 // Injiserer dataen inn i databasen og lagrer endringene
-                Injiser(NW194Rute, NW194Stopp, context);
-                context.SaveChanges();
+                InjiserRute(NW194Rute, NW194Stopp, context);
 
                 // Rute NW180 - Haukeliekspressen
                 var NW180Rute = new Ruter() { Linjekode = "NW180", Rutenavn = "Haukeliekspressen", Startpris = 149, TilleggPerStopp = 20, Kapasitet = 65 };
                 string[] NW180Stopp = { "Oslo", "Kongsberg", "Notodden", "Sauland", "Seljord", "Åmot", "Haukeligrend", "Røldal", "Seljestad", "Ølen", "Haugesund" };
                 // Injiserer dataen inn i databasen og lagrer endringene
-                Injiser(NW180Rute, NW180Stopp, context);
-                context.SaveChanges();
+                InjiserRute(NW180Rute, NW180Stopp, context);
 
                 // Rute 192 - Konkurrenten
                 var NW192Rute = new Ruter() { Linjekode = "NW192", Rutenavn = "Konkurrenten", Startpris = 49, TilleggPerStopp = 30, Kapasitet = 60 };
                 string[] NW192Stopp = { "Oslo", "Drammen", "Fokserød", "Skjelsvik", "Tangen", "Vinterkjær", "Harebakken", "Grimstad", "Lillesand", "Kristiansand", "Mandal", "Lyngdal", "Flekkefjord", "Sandnes", "Stavanger Lufthavn", "Stavanger", "Bergen" };
                 // Injiserer dataen inn i databasen og lagrer endringene
-                Injiser(NW192Rute, NW192Stopp, context);
-                context.SaveChanges();
+                InjiserRute(NW192Rute, NW192Stopp, context);
 
                 // Rute 400 - Kystbussen
                 var NW400Rute = new Ruter() { Linjekode = "NW400", Rutenavn = "Kystbussen", Startpris = 79, TilleggPerStopp = 32, Kapasitet = 40 };
                 string[] NW400Stopp = { "Bergen", "Os", "Halhjem", "Sandvikvåg", "Leirvik", "Haukås", "Aksdal", "Mjåsund", "Arsvågen", "Mortavika", "Stavanger" };
                 // Injiserer dataen inn i databasen og lagrer endringene
-                Injiser(NW400Rute, NW400Stopp, context);
-                context.SaveChanges();
+                InjiserRute(NW400Rute, NW400Stopp, context);
 
                 // Injiserer Billettypene
                 Billettyper barn = new Billettyper() { Billettype = "Barn", Rabattsats = 50 };
                 Billettyper student = new Billettyper() { Billettype = "Student", Rabattsats = 25 };
                 Billettyper honnor = new Billettyper() { Billettype = "Honnør", Rabattsats = 25 };
                 Billettyper voksen = new Billettyper() { Billettype = "Voksen", Rabattsats = 0 };
-                context.Billettyper.Add(barn);
-                context.Billettyper.Add(student);
-                context.Billettyper.Add(honnor);
-                context.Billettyper.Add(voksen);
+                List<Billettyper> billettyper = new List<Billettyper> { barn, student, honnor, voksen };
+                InjiserBillettyper(billettyper, context);
+                
+                // Injiserer Avganger
+                DateTime idag = DateTime.Now;
+                InjiserAvganger(idag, NW431Rute, 2.00, 200, context);
+                InjiserAvganger(idag, NW194Rute, 2.00, 200, context);
+                InjiserAvganger(idag, NW180Rute, 2.00, 200, context);
+                InjiserAvganger(idag, NW194Rute, 2.00, 200, context);
+                InjiserAvganger(idag, NW192Rute, 2.00, 200, context);
+                InjiserAvganger(idag, NW400Rute, 2.00, 200, context);
 
-                //Avganger
-                DateTime dato1 = new DateTime(2020, 10, 25, 8, 30, 00);
-                Avganger avgang1 = new Avganger() { Avreise = dato1, SolgteBilletter = 0, Rute = NW431Rute };
-                DateTime dato2 = new DateTime(2020, 11, 20, 17, 00, 00);
-                Avganger avgang2 = new Avganger() { Avreise = dato2, SolgteBilletter = 0, Rute = NW431Rute };
 
-                DateTime dato3 = new DateTime(2020, 10, 26, 12, 30, 00);
-                Avganger avgang3 = new Avganger() { Avreise = dato3, SolgteBilletter = 0, Rute = NW194Rute };
-                DateTime dato4 = new DateTime(2020, 11, 21, 10, 00, 00);
-                Avganger avgang4 = new Avganger() { Avreise = dato4, SolgteBilletter = 0, Rute = NW194Rute };
-
-                DateTime dato5 = new DateTime(2020, 12, 12, 10, 30, 00);
-                Avganger avgang5 = new Avganger() { Avreise = dato5, SolgteBilletter = 0, Rute = NW180Rute };
-                DateTime dato6 = new DateTime(2020, 11, 22, 13, 00, 00);
-                Avganger avgang6 = new Avganger() { Avreise = dato6, SolgteBilletter = 0, Rute = NW180Rute };
-
-                DateTime dato7 = new DateTime(2020, 12, 05, 07, 30, 00);
-                Avganger avgang7 = new Avganger() { Avreise = dato7, SolgteBilletter = 0, Rute = NW192Rute };
-                DateTime dato8 = new DateTime(2020, 11, 23, 14, 30, 00);
-                Avganger avgang8 = new Avganger() { Avreise = dato8, SolgteBilletter = 0, Rute = NW192Rute };
-
-                DateTime dato9 = new DateTime(2020, 11, 21, 15, 30, 00);
-                Avganger avgang9 = new Avganger() { Avreise = dato9, SolgteBilletter = 0, Rute = NW400Rute };
-                DateTime dato10 = new DateTime(2020, 11, 28, 09, 30, 00);
-                Avganger avgang10 = new Avganger() { Avreise = dato10, SolgteBilletter = 0, Rute = NW400Rute };
-
-                context.Avganger.Add(avgang1);
-                context.Avganger.Add(avgang2);
-                context.Avganger.Add(avgang3);
-                context.Avganger.Add(avgang4);
-                context.Avganger.Add(avgang5);
-                context.Avganger.Add(avgang6);
-                context.Avganger.Add(avgang7);
-                context.Avganger.Add(avgang8);
-                context.Avganger.Add(avgang9);
-                context.Avganger.Add(avgang10);
-
+                // Lagrer all seedet data
                 context.SaveChanges();
             }
         }
@@ -106,7 +74,7 @@ namespace NOR_WAY.DAL
         /* Metode som tar inn et Ruter-objekt en liste med Stopp og en
         DB-context og injiserer det inn i databasen */
 
-        private static void Injiser(Ruter rute, string[] stoppListe, BussContext context)
+        private static void InjiserRute(Ruter rute, string[] stoppListe, BussContext context)
         {
             context.Ruter.Add(rute); // Nytt instans av Ruter i databasen
 
@@ -128,7 +96,7 @@ namespace NOR_WAY.DAL
 
                 // Genererer tilfeldig tall mellom 10 og 25
                 // Random rInt = new Random();
-                // int randomTid = rInt.Next(15, 45);
+                // int tilfeldigTid = rInt.Next(15, 45);
 
                 // Nytt instans av RuteStopp
                 var ruteStopp = new RuteStopp()
@@ -143,6 +111,48 @@ namespace NOR_WAY.DAL
                 context.RuteStopp.Add(ruteStopp);
                 stoppNummer++;
             }
+
+            context.SaveChanges();
         }
+
+        private static void InjiserBillettyper(List<Billettyper> billettyper, BussContext context)
+        {
+            foreach (Billettyper billettype in billettyper)
+            {
+                context.Billettyper.Add(billettype);
+            }
+        }
+
+        /* Legger inn en nye avganer
+         * int antall: antall avganger som skal injiserers
+         * double hyppighet: hvor lenge mellom hver avgang */
+        private static void InjiserAvganger(DateTime idag, Ruter rute, double hyppighet, int antall, BussContext context)
+        {
+            Random tInt = new Random();
+            int tilfeldigTime = tInt.Next(7, 11); // Velger Tilfeldig time 7 - 11
+
+            // Velger tilfeldig minutt fra listen
+            int tilfeldigIndex = tInt.Next(0, 3);
+            List<int> minuttliste = new List<int> { 0, 15, 30, 45 }; 
+            int tilfeldigMinutt = minuttliste[tilfeldigIndex];
+
+            // Ny dato basert på tilfeldig time og minutt
+            TimeSpan tilfeldigTidspunkt = new TimeSpan(tilfeldigTime, tilfeldigMinutt, 0);
+            DateTime tilfeldigAvreise = idag.Date + tilfeldigTidspunkt;
+
+            // Produserer 100 avganger plasser annen hver dag
+            for (int i = 0; i < antall; i++)
+            {
+                Avganger nyAvgang = new Avganger()
+                {
+                    Avreise = tilfeldigAvreise,
+                    SolgteBilletter = 0,
+                    Rute = rute
+                };
+                tilfeldigAvreise = tilfeldigAvreise.AddDays(hyppighet);
+                context.Avganger.Add(nyAvgang);
+            }
+        }
+           
     }
 }

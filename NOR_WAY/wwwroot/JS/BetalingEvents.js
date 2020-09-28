@@ -46,13 +46,6 @@ class BetalingEvents {
         });
     }
 
-    AAInput(elmt){
-        elmt.blur(function () {
-            validerAA(elmt, '#feilAA')
-        });
-        this.toSiffer(elmt);                           
-    }
-
     MMInput(elmt){
         elmt.blur(function () {
             if(this.value.length == 1){ 
@@ -60,7 +53,25 @@ class BetalingEvents {
             }
             validerMM(elmt, '#feilMM')
         });
+        // Hvis 2 tall er fylt inn hopper vi til nesete felt
+        $(elmt).keyup(function () {
+            if(this.value.length == 2){ $('#AA').focus(); }
+        });
         this.toSiffer(elmt);
+    }
+
+    AAInput(elmt){
+        elmt.blur(function () {
+            validerAA(elmt, '#feilAA')
+        });
+        this.toSiffer(elmt); 
+        // Hvis siste tall i feltet blir fjernet hopper vi inn i forrige felt
+        $(elmt).keyup(function () {
+            let tast = event.keyCode;
+            if( tast == 8 ){
+                if(this.value.length == 0){ $('#MM').focus(); }
+            }
+        });                          
     }
 
     toSiffer(elmt){

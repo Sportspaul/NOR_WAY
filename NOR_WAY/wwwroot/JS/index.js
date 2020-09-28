@@ -5,7 +5,7 @@ $(function () {
     Hjelpemetoder.leggTilDato();
     Hjelpemetoder.leggTilTidspunkt()
     Hjelpemetoder.endreBakgrunn();
-    $('#startStopp').focus();
+    $('#startStopp').focus(); // Hopper inn i førte input felt
 });
 
 // Globale variabler
@@ -180,6 +180,7 @@ function finnNesteAvgang() {
 
             Hjelpemetoder.endreBakgrunn(); // Får bakgrunn til å matche den endrede skjermhøyden
             new BetalingEvents('#navn', '#epost', '#kortnummer', '#MM', '#AA', '#CVC');
+            $('#navn').focus(); // Hopper inn i førte input felt
         }).fail(function () {
             // Gir brukeren tilbakemelding hvis ingen avganger ble hentet
             feilAvgangElmt.html("Vi finner desverre ingen avgang som oppfyller søkekriteriene dine");

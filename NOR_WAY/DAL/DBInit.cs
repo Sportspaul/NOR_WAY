@@ -78,6 +78,15 @@ namespace NOR_WAY.DAL
                 InjiserRute(NW160Rute, NW160Stopp, context);
                 context.SaveChanges();
 
+                //Rute 162 - Øst-Vestekspressen 
+                var NW162Rute = new Ruter() { Linjekode = "NW162", Rutenavn = "Øst-Vestekspressen", Startpris = 72, TilleggPerStopp = 29, Kapasitet = 65 };
+                string[] NW162Stopp = { "Lillehammer", "Dokka", "Fagernes", "Tyinkrysset", "Håbakken", "Flåm", "Voss", "Bergen" };
+                // Injiserer dataen inn i databasen og lagrer endringene
+                InjiserRute(NW162Rute, NW162Stopp, context);
+                context.SaveChanges();
+
+                
+
 
                 // Injiserer Billettypene
                 Billettyper barn = new Billettyper() { Billettype = "Barn", Rabattsats = 50 };

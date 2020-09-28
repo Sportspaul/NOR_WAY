@@ -67,9 +67,15 @@ namespace NOR_WAY.DAL
                 var NW130Rute = new Ruter() { Linjekode = "NW130", Rutenavn = "Trysilekspressen", Startpris = 88, TilleggPerStopp = 28, Kapasitet = 65 };
                 string[] NW130Stopp = { "Oslo",  "Oslo Lufthavn (OSL)", "Romedal", "Myklegard", "Terningmoen", "Elverum", "Kjernmoen", "Trysil Turistsenter",
                         "Radisson Blu Resort", "Trysil busstasjon", "Trysil Høyfjellssenter" };
-                
                 // Injiserer dataen inn i databasen og lagrer endringene
                 InjiserRute(NW130Rute, NW130Stopp, context);
+                context.SaveChanges();
+
+                //Rute 160 - Valdresekspressen 
+                var NW160Rute = new Ruter() { Linjekode = "NW160", Rutenavn = "Valdresekspressen", Startpris = 82, TilleggPerStopp = 31, Kapasitet = 55 };
+                string[] NW160Stopp = { "Oslo", "Hønefoss", "Nes i Ådal", "Fagernes", "Ryfoss", "Grindaheim", "Tyinkrysset", "Tyin", "Sletterust", "Øvre Årdal", "Årdal" };
+                // Injiserer dataen inn i databasen og lagrer endringene
+                InjiserRute(NW160Rute, NW160Stopp, context);
                 context.SaveChanges();
 
 

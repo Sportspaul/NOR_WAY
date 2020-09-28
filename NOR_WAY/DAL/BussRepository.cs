@@ -206,6 +206,7 @@ namespace NOR_WAY.DAL
                         if (diff < lavesteDiff)
                         {
                             nesteAvgang = kommendeAvganger[i];
+                            lavesteDiff = diff;
                         }
                     }
 

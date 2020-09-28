@@ -85,9 +85,6 @@ namespace NOR_WAY.DAL
                 InjiserRute(NW162Rute, NW162Stopp, context);
                 context.SaveChanges();
 
-                
-
-
                 // Injiserer Billettypene
                 Billettyper barn = new Billettyper() { Billettype = "Barn", Rabattsats = 50 };
                 Billettyper student = new Billettyper() { Billettype = "Student", Rabattsats = 25 };
@@ -98,13 +95,17 @@ namespace NOR_WAY.DAL
                 
                 // Injiserer Avganger
                 DateTime idag = DateTime.Now;
-                InjiserAvganger(idag, NW431Rute, 2.00, 200, context);
-                InjiserAvganger(idag, NW194Rute, 2.00, 200, context);
-                InjiserAvganger(idag, NW180Rute, 2.00, 200, context);
-                InjiserAvganger(idag, NW194Rute, 2.00, 200, context);
-                InjiserAvganger(idag, NW192Rute, 2.00, 200, context);
-                InjiserAvganger(idag, NW400Rute, 2.00, 200, context);
-
+                InjiserAvganger(idag, NW431Rute, 2.00, 100, context);
+                InjiserAvganger(idag, NW194Rute, 2.00, 100, context);
+                InjiserAvganger(idag, NW180Rute, 2.00, 100, context);
+                InjiserAvganger(idag, NW194Rute, 2.00, 100, context);
+                InjiserAvganger(idag, NW192Rute, 2.00, 100, context);
+                InjiserAvganger(idag, NW400Rute, 2.00, 100, context);
+                InjiserAvganger(idag, NW420Rute, 2.00, 100, context);
+                InjiserAvganger(idag, NW182Rute, 2.00, 100, context);
+                InjiserAvganger(idag, NW130Rute, 2.00, 100, context);
+                InjiserAvganger(idag, NW160Rute, 2.00, 100, context);
+                InjiserAvganger(idag, NW162Rute, 2.00, 100, context);
 
                 // Lagrer all seedet data
                 context.SaveChanges();
@@ -134,15 +135,15 @@ namespace NOR_WAY.DAL
                     context.Stopp.Add(stopp);
                 }
 
-                // Genererer tilfeldig tall mellom 10 og 25
-                // Random rInt = new Random();
-                // int tilfeldigTid = rInt.Next(15, 45);
+                // Genererer tilfeldig tall mellom 35 og 45
+                    Random rInt = new Random();
+                    int tilfeldigTid = rInt.Next(35, 45);
 
                 // Nytt instans av RuteStopp
                 var ruteStopp = new RuteStopp()
                 {
                     StoppNummer = stoppNummer,
-                    MinutterTilNesteStopp = 45,
+                    MinutterTilNesteStopp = tilfeldigTid,
                     Stopp = stopp,
                     Rute = rute
                 };

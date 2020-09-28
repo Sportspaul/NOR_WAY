@@ -168,19 +168,19 @@ function finnNesteAvgang() {
                     <input type="button" class="btn btn-success mt-4 form-control shadow font-weight-bold antialised" value="Betal" onclick="fullforOrdre()")>
                 </form>`;
 
-            // Skriver til document, fjerner feilmeldinger og scroller ned
+            // Skriver til document, fjerner feilmeldinger, hopper inn i første inputfelt og scroller ned
             feilAvgangElmt.html("");
             avgangElmt.html(ut);
             avgangElmt.css("display", "block");
+            $('#navn').focus(); // Hopper inn i førte input felt
             const offset = avgangElmt.offset();
             $('html, body').animate({
-                scrollTop: offset.top,
+                scrollTop: offset.top - 25,
                 scrollLeft: offset.left
             }, 0);
 
             Hjelpemetoder.endreBakgrunn(); // Får bakgrunn til å matche den endrede skjermhøyden
-            new BetalingEvents('#navn', '#epost', '#kortnummer', '#MM', '#AA', '#CVC');
-            $('#navn').focus(); // Hopper inn i førte input felt
+            new BetalingEvents('#navn', '#epost', '#kortnummer', '#MM', '#AA', '#CVC'); // Gir inputfeltene EventListners
         }).fail(function () {
             // Gir brukeren tilbakemelding hvis ingen avganger ble hentet
             feilAvgangElmt.html("Vi finner desverre ingen avgang som oppfyller søkekriteriene dine");

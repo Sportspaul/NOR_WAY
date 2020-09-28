@@ -52,6 +52,14 @@ namespace NOR_WAY.DAL
                 Injiser(NW400Rute, NW400Stopp, context);
                 context.SaveChanges();
 
+                //Rute 420 Sognefjordekspressen
+                var NW420Rute = new Ruter() { Linjekode = "NW420", Rutenavn = "Sognefjordekspressen", Startpris = 76, TilleggPerStopp = 21, Kapasitet = 35 };
+                string[] NW420Stopp = { "Bergen", "Dale", "Voss", "Gudvangen", "Flåm", "Håbakken", "Lærdal", "Fodnes", "Manheller", "Sogndal" };
+                // Injiserer dataen inn i databasen og lagrer endringene
+                Injiser(NW420Rute, NW420Stopp, context);
+                context.SaveChanges();
+
+
                 // Injiserer Billettypene
                 Billettyper barn = new Billettyper() { Billettype = "Barn", Rabattsats = 50 };
                 Billettyper student = new Billettyper() { Billettype = "Student", Rabattsats = 25 };

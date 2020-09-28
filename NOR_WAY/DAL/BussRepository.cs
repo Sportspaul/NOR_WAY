@@ -316,7 +316,7 @@ namespace NOR_WAY.DAL
 
                 // Finner summen for reisen
                 // antallStopp, rute, liste med billettype
-                int sum = await BeregnPris(rute, antallStopp, kundeOrdreParam.Billettype);
+                int sum = await BeregnPris(rute, antallStopp, kundeOrdreParam.Billettyper);
 
 
 
@@ -335,7 +335,7 @@ namespace NOR_WAY.DAL
                 _db.Ordre.Add(ordre);
 
                 // Går gjennom listen med billettyper
-                foreach (string billettype in kundeOrdreParam.Billettype)
+                foreach (string billettype in kundeOrdreParam.Billettyper)
                 {
                     // Henter ut en billettype i listen
                     Billettyper billettypeObjekt = await _db.Billettyper.FirstOrDefaultAsync(a => a.Billettype == billettype);

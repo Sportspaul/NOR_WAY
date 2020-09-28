@@ -6,6 +6,14 @@ $(function () {
     Hjelpemetoder.leggTilTidspunkt()
     Hjelpemetoder.endreBakgrunn();
     $('#startStopp').focus();
+    const dato = 1;
+    if (window.location.href.includes("bestilling=ok")) {
+        Swal.fire(
+            "Bestillingen var vellykket",
+            "Billetten har blitt sendt via mail",
+            "success"
+        )
+    }
 });
 
 // Globale variabler
@@ -96,6 +104,7 @@ function finnNesteAvgang() {
             SluttStopp = avgangParam.SluttStopp;
             Billettyper = avgangParam.Billettyper
             avgang = new Avgang(respons);
+            console.log(Hjelpemetoder.hentValgteBillettyper());
             /* HTML-komponent som inneholder en oversikt over billettonfomasjonen,
                og et betalingskjema */
             ut = `<div id="billettInfo" class="antialised">
@@ -110,7 +119,7 @@ function finnNesteAvgang() {
                             Reisetid: ${Hjelpemetoder.finnReisetid(avgang.Reisetid)}
                         </h6>
                         <h6 class="mt-4">
-                            Billetter: ${/*Hjelpemetoder.formaterValgteBillettyper(*/Hjelpemetoder.hentValgteBillettyper()}
+                            Billetter:${Hjelpemetoder.formaterValgteBillettyper2(Hjelpemetoder.hentValgteBillettyper())}
                         </h6>
                         <h6 class="mt-4">
                             Pris: ${avgang.Pris} kr
@@ -188,25 +197,23 @@ function finnNesteAvgang() {
             Hjelpemetoder.endreBakgrunn(); // Får overlay til å matche den endrede skjermhøyden
             });
         }
-    }
+}
+
 
     function fullforOrdre() {
         // Henter en avgang fra DB, og lager en kundeordre med den og informasjonen hentet over
         const epost = $("#epost").val();
 
         // Lager en kundeordre
-        const kundeordre = new KundeOrdre(epost, StartStopp, SluttStopp, avgang.Linjekode, avgang.AvgangId, avgangParam.Billettyper);
-        console.log(kundeordre)
+        const kundeordre2 = new KundeOrdre(epost, StartStopp, SluttStopp, avgang.Linjekode, avgang.AvgangId, avgangParam.Billettyper);
+        console.log(kundeordre2)
 
         if (validerBetalingsInput() === false) {
             return;
         }
         else {
             // Kaller C# Metoden FullforOrdre()
-            $.post("Buss/FullforOrdre", kundeordre);
-            /*Swal.fire(
-                'Ordren er fullført!',
-                "Billetten er sendt til ${epost}" . epost
-            )*/
+            //$.post("Buss/FullforOrdre", kundeordre2);
+            window.location.replace("index.html?bestilling=ok");
         }
     }

@@ -21,6 +21,6 @@ namespace NOR_WAY.Model
         [RegularExpression(@"[0-9]{1,}")]
         public int AvgangId { get; set; }
 
-        public List<string> Billettype { get; set; }
+        public List<string> Billettyper { get; set; }
     }
 }

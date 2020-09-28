@@ -110,7 +110,7 @@ function finnNesteAvgang() {
                             Reisetid: ${Hjelpemetoder.finnReisetid(avgang.Reisetid)}
                         </h6>
                         <h6 class="mt-4">
-                            Billetter: ${Hjelpemetoder.formaterValgteBillettyper(Hjelpemetoder.hentValgteBillettyper())}
+                            Billetter: ${/*Hjelpemetoder.formaterValgteBillettyper(*/Hjelpemetoder.hentValgteBillettyper()}
                         </h6>
                         <h6 class="mt-4">
                             Pris: ${avgang.Pris} kr
@@ -195,9 +195,18 @@ function finnNesteAvgang() {
         const epost = $("#epost").val();
 
         // Lager en kundeordre
-        const kundeordre = new KundeOrdre(epost, StartStopp, SluttStopp, Avgang.Linjekode, Avgang.AvgangId, AvgangParam.Billettyper);
+        const kundeordre = new KundeOrdre(epost, StartStopp, SluttStopp, avgang.Linjekode, avgang.AvgangId, avgangParam.Billettyper);
         console.log(kundeordre)
-        // Kaller C# Metoden FullforOrdre()
-        $.post("Buss/FullforOrdre", kundeordre);
-        
+
+        if (validerBetalingsInput() === false) {
+            return;
+        }
+        else {
+            // Kaller C# Metoden FullforOrdre()
+            $.post("Buss/FullforOrdre", kundeordre);
+            /*Swal.fire(
+                'Ordren er fullført!',
+                "Billetten er sendt til ${epost}" . epost
+            )*/
+        }
     }

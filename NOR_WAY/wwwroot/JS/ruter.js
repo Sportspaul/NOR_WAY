@@ -19,14 +19,14 @@ function hentAlleRuter() {
         // Skriver ut alle rutene
         utRuter = "<h4>Velg Rute</h4>"
         for (let i = 0; i < rutene.length; i++) {
-            utRuter += `<h5 class="mt-4"
-                            onclick="byttRute(${i})">${rutene[i].rutenavn}
+            utRuter += `<h5 id="${rutene[i].linjekode}"class="mt-4 rute"
+                            onclick="byttRute(${i}, ${rutene[i].linjekode})">${rutene[i].rutenavn}
                         </h5>`;
         }
         $("#ruter").html(utRuter);
 
         // Skriver ut stoppene til første ruten
-        byttRute(0);
+        byttRute(0, '#' + rutene[0].linjekode);
 
         // Endrer høyden på shadowBox til å matche dataen
         tilpassHoyde();
@@ -34,19 +34,23 @@ function hentAlleRuter() {
 }
 
 // Skriver ut stoppene til ruten med nummer til argumentet 
-function byttRute(i) {
+function byttRute(i, id) {
+    $('.rute').css('text-decoration', 'none');
+    $(id).css('text-decoration', 'underline');
+
     let { rutenavn, linjekode, startpris, tilleggPerStopp, stoppene, minutterTilNesteStopp } = ruteMatrise[i];
     
     // Legger til overskrift
     let utStopp = `<h4 class='mb-4'>Linje ${linjekode}, ${rutenavn}</h4>`;
     
     // Legger til rutedetaljer
-    utStopp += `<h6>Startpris: ${startpris}</h6>
-                <h6>Tillegg per stopp: ${tilleggPerStopp}</h6>
-                <h6 class="mb-4">
+    utStopp += `<h6>Startpris: ${startpris} kr</h6>
+                <h6>Tillegg per stopp: ${tilleggPerStopp} kr</h6>
+                <h6>
                     ${stoppene[0]} → ${stoppene[stoppene.length - 1]}: 
                     ${beregnReisetid(minutterTilNesteStopp, minutterTilNesteStopp.length - 1)}
-                </h6>`;
+                </h6>
+                <h6 class="mb-4">Antall stopp: ${stoppene.length}</h6>`;
 
     // Legger til overskrifter i tabellen
     utStopp += `<table class="table">

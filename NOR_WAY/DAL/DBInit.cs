@@ -52,15 +52,24 @@ namespace NOR_WAY.DAL
                 var NW420Rute = new Ruter() { Linjekode = "NW420", Rutenavn = "Sognefjordekspressen", Startpris = 76, TilleggPerStopp = 21, Kapasitet = 35 };
                 string[] NW420Stopp = { "Bergen", "Dale", "Voss", "Gudvangen", "Flåm", "Håbakken", "Lærdal", "Fodnes", "Manheller", "Sogndal" };
                 // Injiserer dataen inn i databasen og lagrer endringene
-                Injiser(NW420Rute, NW420Stopp, context);
+                InjiserRute(NW420Rute, NW420Stopp, context);
                 context.SaveChanges();
 
-                //Rute 182 - Sognefjordekspressen
+                //Rute 182 - Telemarkekspressen 
                 var NW182Rute = new Ruter() { Linjekode = "NW182", Rutenavn = "Telemarkekspressen", Startpris = 95, TilleggPerStopp = 16, Kapasitet = 85 };
                 string[] NW182Stopp = { "Flatdal", "Bø", "Ulefoss","Skien", "Porsgrunn", "Langangenkrysset", "Ringdal", "Fokserød", "Sandefjord Lufthavn Torp" };   
                 //TODO: Skien og Fokserød er mellomstopp på andre ruter
                 // Injiserer dataen inn i databasen og lagrer endringene
-                Injiser(NW182Rute, NW182Stopp, context);
+                InjiserRute(NW182Rute, NW182Stopp, context);
+                context.SaveChanges();
+
+                //Rute 130 - Trysilekspressen 
+                var NW130Rute = new Ruter() { Linjekode = "NW130", Rutenavn = "Trysilekspressen", Startpris = 88, TilleggPerStopp = 28, Kapasitet = 65 };
+                string[] NW130Stopp = { "Oslo",  "Oslo Lufthavn (OSL)", "Romedal", "Myklegard", "Terningmoen", "Elverum", "Kjernmoen", "Trysil Turistsenter",
+                        "Radisson Blu Resort", "Trysil busstasjon", "Trysil Høyfjellssenter" };
+                
+                // Injiserer dataen inn i databasen og lagrer endringene
+                InjiserRute(NW130Rute, NW130Stopp, context);
                 context.SaveChanges();
 
 
@@ -69,7 +78,7 @@ namespace NOR_WAY.DAL
                 Billettyper student = new Billettyper() { Billettype = "Student", Rabattsats = 25 };
                 Billettyper honnor = new Billettyper() { Billettype = "Honnør", Rabattsats = 25 };
                 Billettyper voksen = new Billettyper() { Billettype = "Voksen", Rabattsats = 0 };
-                List<Billettyper> billettyper = new List<Billettyper> { barn, student, honnor, voksen };
+                List<Billettyper> billettyper = new List<Billettyper> { voksen, honnor, student, barn };
                 InjiserBillettyper(billettyper, context);
                 
                 // Injiserer Avganger

@@ -52,9 +52,17 @@ namespace NOR_WAY.DAL
                 Injiser(NW400Rute, NW400Stopp, context);
                 context.SaveChanges();
 
-                //Rute 420 Sognefjordekspressen
+                //Rute 420 - Sognefjordekspressen
                 var NW420Rute = new Ruter() { Linjekode = "NW420", Rutenavn = "Sognefjordekspressen", Startpris = 76, TilleggPerStopp = 21, Kapasitet = 35 };
                 string[] NW420Stopp = { "Bergen", "Dale", "Voss", "Gudvangen", "Flåm", "Håbakken", "Lærdal", "Fodnes", "Manheller", "Sogndal" };
+                // Injiserer dataen inn i databasen og lagrer endringene
+                Injiser(NW420Rute, NW420Stopp, context);
+                context.SaveChanges();
+
+                //Rute 182 - Sognefjordekspressen
+                var NW182Rute = new Ruter() { Linjekode = "NW182", Rutenavn = "Telemarkekspressen", Startpris = 95, TilleggPerStopp = 16, Kapasitet = 85 };
+                string[] NW182Stopp = { "Flatdal", "Bø", "Ulefoss","Skien", "Porsgrunn", "Langangenkrysset", "Ringdal", "Fokserød", "Sandefjord Lufthavn Torp" };   
+                //TODO: Skien og Fokserød er mellomstopp på andre ruter
                 // Injiserer dataen inn i databasen og lagrer endringene
                 Injiser(NW420Rute, NW420Stopp, context);
                 context.SaveChanges();

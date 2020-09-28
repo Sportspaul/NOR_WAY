@@ -64,7 +64,7 @@ namespace NOR_WAY.DAL
                 string[] NW182Stopp = { "Flatdal", "Bø", "Ulefoss","Skien", "Porsgrunn", "Langangenkrysset", "Ringdal", "Fokserød", "Sandefjord Lufthavn Torp" };   
                 //TODO: Skien og Fokserød er mellomstopp på andre ruter
                 // Injiserer dataen inn i databasen og lagrer endringene
-                Injiser(NW420Rute, NW420Stopp, context);
+                Injiser(NW182Rute, NW182Stopp, context);
                 context.SaveChanges();
 
 

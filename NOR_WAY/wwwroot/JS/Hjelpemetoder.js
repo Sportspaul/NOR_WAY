@@ -115,36 +115,11 @@ class Hjelpemetoder{
     // Formaterer de valgte billettypene
     static formaterValgteBillettyper(valgteBillettyper) {
         valgteBillettyper;
-
         valgteBillettyper.sort();
-
-        let current = null;
-        let billetTeller = 0;
-        for (var i = 0; i < valgteBillettyper.length; i++) {
-            if (valgteBillettyper[i] != current) {
-                if (billetTeller > 0) {
-                    console.log(`${billetTeller}x ${current}`);
-                }
-                current = valgteBillettyper[i];
-                billetTeller = 1;
-            } else {
-                billetTeller++;
-            }
-        }
-        if (billetTeller > 0) {
-            console.log(`${billetTeller}x ${current}`);
-        }
-    }
-
-    // Formaterer de valgte billettypene
-    static formaterValgteBillettyper2(valgteBillettyper) {
-        valgteBillettyper;
-
-        valgteBillettyper.sort();
-
         let current = null;
         let billetTeller = 0;
         let utskrift = new Array();
+
         for (let billett of valgteBillettyper) {
             if (billett != current) {
                 if (billetTeller > 0) {
@@ -161,7 +136,7 @@ class Hjelpemetoder{
             let string = ` ${billetTeller}x ${current}`;
             utskrift.push(string);
         }
-        console.log(utskrift);
+
         return utskrift;
     }
 

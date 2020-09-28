@@ -119,7 +119,7 @@ function finnNesteAvgang() {
                             Reisetid: ${Hjelpemetoder.finnReisetid(avgang.Reisetid)}
                         </h6>
                         <h6 class="mt-4">
-                            Billetter:${Hjelpemetoder.formaterValgteBillettyper2(Hjelpemetoder.hentValgteBillettyper())}
+                            Billetter:${Hjelpemetoder.formaterValgteBillettyper(Hjelpemetoder.hentValgteBillettyper())}
                         </h6>
                         <h6 class="mt-4">
                             Pris: ${avgang.Pris} kr
@@ -195,25 +195,24 @@ function finnNesteAvgang() {
             avgangElmt.css("display", "none");
             avgangElmt.html("");
             Hjelpemetoder.endreBakgrunn(); // Får overlay til å matche den endrede skjermhøyden
-            });
-        }
+        });
+    }
 }
 
+function fullforOrdre() {
+    // Henter en avgang fra DB, og lager en kundeordre med den og informasjonen hentet over
+    const epost = $("#epost").val();
 
-    function fullforOrdre() {
-        // Henter en avgang fra DB, og lager en kundeordre med den og informasjonen hentet over
-        const epost = $("#epost").val();
+    // Lager en kundeordre
+    const kundeordre = new KundeOrdre(epost, StartStopp, SluttStopp, avgang.Linjekode, avgang.AvgangId, avgangParam.Billettyper);
+    console.log(kundeordre)
 
-        // Lager en kundeordre
-        const kundeordre2 = new KundeOrdre(epost, StartStopp, SluttStopp, avgang.Linjekode, avgang.AvgangId, avgangParam.Billettyper);
-        console.log(kundeordre2)
-
-        if (validerBetalingsInput() === false) {
-            return;
-        }
-        else {
-            // Kaller C# Metoden FullforOrdre()
-            //$.post("Buss/FullforOrdre", kundeordre2);
-            window.location.replace("index.html?bestilling=ok");
-        }
+    if (validerBetalingsInput() === false) {
+        return;
     }
+    else {
+        // Kaller C# Metoden FullforOrdre()
+        $.post("Buss/FullforOrdre", kundeordre);
+        window.location.replace("index.html?bestilling=ok");
+    }
+}

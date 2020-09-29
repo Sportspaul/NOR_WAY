@@ -6,10 +6,10 @@ namespace NOR_WAY.Model
     // Modell for å ta imot nødvendige verdier fra klienten for å beregne neste mulige avgang
     public class AvgangParam
     {
-        [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,20}")]
+        [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,50}")]
         public string StartStopp { get; set; }
 
-        [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,20}")]
+        [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,50}")]
         public string SluttStopp { get; set; }
 
         [RegularExpression(@"([0-9]{4})[-]([0-9]{2})[-]([0-9]{2})")]

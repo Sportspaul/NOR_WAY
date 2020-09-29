@@ -8,7 +8,7 @@ namespace NOR_WAY.Model
         [RegularExpression(@"[0-9]{1,}")]
         public int AvgangId { get; set; }
 
-        [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,20}")]
+        [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,50}")]
         public string Rutenavn { get; set; }
 
         [RegularExpression(@"(NW)[0-9]{1,4}")]

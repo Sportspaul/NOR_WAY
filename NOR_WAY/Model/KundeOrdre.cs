@@ -9,10 +9,10 @@ namespace NOR_WAY.Model
         [RegularExpression(@"^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-z]{2,4}$")]
         public string Epost { get; set; }
 
-        [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,20}")]
+        [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,50}")]
         public string StartStopp { get; set; }
 
-        [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,20}")]
+        [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,50}")]
         public string SluttStopp { get; set; }
 
         [RegularExpression(@"(NW)[0-9]{1,4}")]

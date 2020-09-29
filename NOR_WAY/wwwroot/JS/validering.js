@@ -31,7 +31,7 @@ function validerAvgangInput() {
     // Hvis et eller flere valideringer over er UGYLDIGE
     $("#avgang").css("display", "none"); // Fjerner betalingskomponenten
     $("#feilAvgang").html("Vi finner desverre ingen avgang som oppfyller søkekriteriene dine"); // Skriver feilmeling til bruker
-    document.querySelector('nav').scrollIntoView(); // scroller til toppen av siden
+    document.querySelector('nav-bar').scrollIntoView(); // scroller til toppen av siden
     return false;
 }
 
@@ -54,7 +54,7 @@ function validerBetalingsInput() {
 // Stoppnavn-validering
 function validerStoppnavn(innElmt, utId) {
     const stoppnavn = Hjelpemetoder.rensStoppInput(innElmt.val());  // Renser Input i inputfeltet 
-    const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
+    const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,50}$/;
     const stoppFins = StoppListe.includes(stoppnavn); // Sjekker om stoppet fins i listen med stopp
     let melding = "";
 

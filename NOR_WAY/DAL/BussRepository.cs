@@ -38,12 +38,13 @@ namespace NOR_WAY.DAL
 
             // Finner ruten påstigning og avstigning har til felles
             Ruter fellesRute = FinnFellesRute(startStoppRuter, sluttStoppRuter);
-            if (fellesRute == null) { return null; }
+            if (fellesRute == null) { return null; } // Hvis stoppene ikke har noen felles ruter
 
             // Finne ut hvilket stoppNummer påstigning og avstigning har i den felles ruten
             int stoppNummer1 = await FinnStoppNummer(startStopp, fellesRute);
             int stoppNummer2 = await FinnStoppNummer(sluttStopp, fellesRute);
-            if (stoppNummer1 > stoppNummer2)
+            // Hvis første stopp kommer senere i ruten enn siste stopp
+            if (stoppNummer1 > stoppNummer2)    
             {
                 _log.LogInformation("Seneste stopp har ikke lavere stoppnummer enn tidligste stopp!");
                 return null;
@@ -53,9 +54,9 @@ namespace NOR_WAY.DAL
             int reisetid = await BeregnReisetid(stoppNummer1, stoppNummer2, fellesRute);
 
             // Finne neste avgang som passer, basert på brukerens input
-            Avganger nesteAvgang = await NesteAvgang(fellesRute, reisetid,
-            input.AvreiseEtter, input.Dato, input.Tidspunkt);
-            if (nesteAvgang == null) { return null; }
+            int antallBilletter = input.Billettyper.Count();    // antall billetter brukeren ønsker
+            Avganger nesteAvgang = await NesteAvgang(fellesRute, reisetid, input.AvreiseEtter, input.Dato, input.Tidspunkt, antallBilletter);
+            if (nesteAvgang == null) { return null; }  // Hvis ingen avgang ble funnet 
 
             // Beregner avreise og ankomst
             DateTime avreise = await BeregnAvreisetid(nesteAvgang.Avreise, stoppNummer1, fellesRute);
@@ -67,7 +68,6 @@ namespace NOR_WAY.DAL
 
             // Beregner prisen basert på startpris og antall stopp
             int antallStopp = stoppNummer2 - stoppNummer1;
-
             int pris = await BeregnPris(fellesRute, antallStopp, input.Billettyper);
 
             // Opretter Avgang-objektet som skal sendes til klienten
@@ -174,39 +174,48 @@ namespace NOR_WAY.DAL
 
         // Hjelpemetode som finner neste avgang som passer for brukeren
         private async Task<Avganger> NesteAvgang(Ruter fellesRute, int reisetid,
-            bool avreiseEtter, string dato, string tidspunkt)
+            bool avreiseEtter, string dato, string tidspunkt, int antallBilletter)
         {
             try
             {
                 // Oversetter string verdiene av dato og tidspunkt til et DateTime-objekt
-                string innAvreise = dato + " " + tidspunkt;
-                DateTime avreise = DateTime.ParseExact(innAvreise, "yyyy-MM-dd HH:mm",
+                string innTidStreng = dato + " " + tidspunkt;
+                DateTime innTid = DateTime.ParseExact(innTidStreng, "yyyy-MM-dd HH:mm",
                     CultureInfo.InvariantCulture);
 
-                List<Avganger> kommendeAvganger = new List<Avganger>();
-                if (avreiseEtter) // Hvis Avreise Etter:
+                List<Avganger> muligeAvganger = new List<Avganger>();
+                // Hvis "Avreise Etter" er valgt av brukeren
+                if (avreiseEtter) 
                 {
-                    kommendeAvganger = await _db.Avganger
-                        .Where(a => a.Rute == fellesRute && a.Avreise >= avreise).ToListAsync();
+                    // Henter alle avganger hvor brukeren kan reiser etter innTid
+                    muligeAvganger = await _db.Avganger
+                        .Where(a => a.Rute == fellesRute && a.Avreise >= innTid).ToListAsync();
                 }
-                else  // Hvis Ankomst Før:
+                // Hvis "Ankomst Før" er valgt av brukeren
+                else
                 {
-                    DateTime ankomst = avreise.AddMinutes(-reisetid);
-                    kommendeAvganger = await _db.Avganger
-                        .Where(a => a.Rute == fellesRute && a.Avreise <= ankomst)
+                    // Trekker fra reisetid på innTid for å finne ut når bruker må reise for å komme fram i tide
+                    DateTime avreise = innTid.AddMinutes(-reisetid);        
+
+                    // Henter alle avganger hvor brukeren kan kommer fram før innTid
+                    muligeAvganger = await _db.Avganger
+                        .Where(a => a.Rute == fellesRute && a.Avreise <= avreise)
                         .ToListAsync();
                 }
-                if (kommendeAvganger != null)
+                if (muligeAvganger.Count > 0)                                                          // Hvis listen med mulige avganger ikke er tom  
                 {
-                    Avganger nesteAvgang = kommendeAvganger[0];
-                    TimeSpan lavesteDiff = avreise.Subtract(kommendeAvganger[0].Avreise).Duration();
-                    for (int i = 1; i < kommendeAvganger.Count; i++)
+                    Avganger nesteAvgang = null;
+                    TimeSpan lavesteDiff = innTid.Subtract(muligeAvganger[0].Avreise).Duration();      // Føste avgang i listen sitt avvik fra ønsket tid
+                    foreach (Avganger muligAvgang in muligeAvganger)                                     // Looper gjennom alle avgangene
                     {
-                        TimeSpan diff = avreise.Subtract(kommendeAvganger[i].Avreise).Duration();
-                        if (diff < lavesteDiff)
+                        TimeSpan diff = innTid.Subtract(muligAvgang.Avreise).Duration();
+                        if (diff < lavesteDiff)                                                         // Hvis differansen fra ønsket tid er mindre enn hittil laveste differanse
                         {
-                            nesteAvgang = kommendeAvganger[i];
-                            lavesteDiff = diff;
+                            if (muligAvgang.SolgteBilletter + antallBilletter <= fellesRute.Kapasitet)  // Hvis det er nok billetter igjen
+                            {   
+                                nesteAvgang = muligAvgang;
+                                lavesteDiff = diff;
+                            }
                         }
                     }
 
@@ -257,7 +266,7 @@ namespace NOR_WAY.DAL
                 double totalpris = 0;
                 foreach (int rabbattsats in rabbattsatser)
                 {
-                    double billettPris = maxPris * (1 - ((double)rabbattsats / 100)); // 1 - 0.25 = 0.75
+                    double billettPris = maxPris * (1 - ((double)rabbattsats / 100)); // eks. 1 - 0.25 = 0.75
                     totalpris += billettPris;
                 }
 
@@ -490,6 +499,7 @@ namespace NOR_WAY.DAL
                     // Henter alle ruteStopp som hører til spesifikk rute
                     List<RuteStopp> ruteStopp = await _db.RuteStopp
                         .Where(rs => rs.Rute.Linjekode == rute.Linjekode)
+                        .OrderBy(rs => rs.StoppNummer)
                         .Select(rs => new RuteStopp
                     {
                         MinutterTilNesteStopp = rs.MinutterTilNesteStopp,

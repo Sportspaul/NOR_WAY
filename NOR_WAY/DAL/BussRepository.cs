@@ -304,13 +304,13 @@ namespace NOR_WAY.DAL
                 // Henter Avgangens Id
                 Avganger avgang = await _db.Avganger.FirstOrDefaultAsync(a => a.Id == kundeOrdreParam.AvgangId);
 
-            // Finner startStopp, og finner stoppnummeret i ruten
-            Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == kundeOrdreParam.StartStopp);
-            int stoppNummer1 = await FinnStoppNummer(startStopp, rute);
+                // Finner startStopp, og finner stoppnummeret i ruten
+                Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == kundeOrdreParam.StartStopp);
+                int stoppNummer1 = await FinnStoppNummer(startStopp, rute);
 
-            // Finner sluttStopp, og finner stoppnummeret i ruten
-            Stopp sluttStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == kundeOrdreParam.SluttStopp);
-            int stoppNummer2 = await FinnStoppNummer(sluttStopp, rute);
+                // Finner sluttStopp, og finner stoppnummeret i ruten
+                Stopp sluttStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == kundeOrdreParam.SluttStopp);
+                int stoppNummer2 = await FinnStoppNummer(sluttStopp, rute);
 
                 // Regner ut antall stopp
                 int antallStopp = stoppNummer2 - stoppNummer1;
@@ -335,6 +335,9 @@ namespace NOR_WAY.DAL
                 // Legger ordren til i databasen
                 _db.Ordre.Add(ordre);
 
+                // Raden til spesifisert avgang  
+                Avganger dbAvgang = _db.Avganger.Find(avgang.Id);
+
                 // Går gjennom listen med billettyper
                 foreach (string billettype in kundeOrdreParam.Billettyper)
                 {
@@ -350,9 +353,12 @@ namespace NOR_WAY.DAL
 
                     // Legger denne ordrelinjen til databasen
                     _db.Ordrelinjer.Add(ordrelinje);
+
+                    // Øker antalll solgte billetter med 1
+                    dbAvgang.SolgteBilletter++;
                 }
 
-                //Lagrer alt som er blitt lagt til i databasen
+                // Lagrer alt som er blitt lagt til i databasen
                 _db.SaveChanges();
 
                 return true;

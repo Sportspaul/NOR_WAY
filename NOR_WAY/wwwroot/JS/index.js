@@ -5,7 +5,6 @@ $(function () {
     Hjelpemetoder.leggTilDato();
     Hjelpemetoder.leggTilTidspunkt()
     Hjelpemetoder.endreBakgrunn();
-    const dato = 1;
     if (window.location.href.includes("bestilling=ok")) {
         Swal.fire(
             "Bestillingen var vellykket",

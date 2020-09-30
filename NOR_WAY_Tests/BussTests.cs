@@ -80,7 +80,7 @@ namespace NOR_WAY_Tests
                 SluttStopp = "Trondheim",
                 Linjekode = "NW431",
                 AvgangId = 2,
-                Billettype = billettype
+                Billettyper = billettype
             };
 
             mockRepo.Setup(br => br.FullforOrdre(kundeOrdre)).ReturnsAsync(true);

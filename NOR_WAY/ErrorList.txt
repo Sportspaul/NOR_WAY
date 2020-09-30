@@ -1,8 +1,8 @@
-﻿# RegEx: Ugyldige  tegn
-Uncaught TypeError: innElmt.val is not a function
-    at validerStoppnavn (validering.js?n=10:56)
-    at validerAvgangInput (validering.js?n=10:24)
-    at finnNesteAvgang (index.js?n=17:83)
-    at HTMLInputElement.onclick (index.html:76)
+﻿jquery.min.js:2 POST http://localhost:54158/Buss/FinnNesteAvgang 400 (Bad Request)
+send @ jquery.min.js:2
+ajax @ jquery.min.js:2
+S.<computed> @ jquery.min.js:2
+finnNesteAvgang @ index.js?n=25:100
+onclick @ index.html:87
 
 

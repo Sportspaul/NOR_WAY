@@ -13,16 +13,16 @@
     color: #2a347b;
 }
 
-.stoppListe div {
-    padding: 10px 15px;
-    cursor: pointer;
-    background-color: #fff;
-    border-bottom: 1px solid #d4d4d4;
-}
+    .stoppListe div {
+        padding: 10px 15px;
+        cursor: pointer;
+        background-color: #fff;
+        border-bottom: 1px solid #d4d4d4;
+    }
 
-.stoppListe div:hover {
-    background-color: #e9e9e9;
-}
+        .stoppListe div:hover {
+            background-color: #e9e9e9;
+        }
 
 .forslag-active {
     background-color: #2a347b !important;
@@ -44,20 +44,20 @@
     transition: .5s;
 }
 
-.btn-primary:active {
-    background-color: #192164 !important;
-    color: white;
-}
+    .btn-primary:active {
+        background-color: #192164 !important;
+        color: white;
+    }
 
-.btn-primary:hover {
-    background-color: #192164 !important;
-    color: white;
-}
+    .btn-primary:hover {
+        background-color: #192164 !important;
+        color: white;
+    }
 
-.btn-primary:focus {
-    background-color: #192164 !important;
-    color: white;
-}
+    .btn-primary:focus {
+        background-color: #192164 !important;
+        color: white;
+    }
 
 #billettInfo {
     padding-bottom: 30px;

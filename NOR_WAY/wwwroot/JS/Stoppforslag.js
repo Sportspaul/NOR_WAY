@@ -1,5 +1,5 @@
 ﻿// Klasse som ved instansiering gir et 'inputfelt' listen 'stoppArray' som stoppforslag
-class Stoppforslag{
+class Stoppforslag {
     // Gir brukeren live-stoppforslag
     constructor(inputfelt, utskrift, stoppArray, feilmelding) {
         var fokusert;

@@ -1,8 +1,3 @@
-﻿jquery.min.js:2 POST http://localhost:54158/Buss/FinnNesteAvgang 400 (Bad Request)
-send @ jquery.min.js:2
-ajax @ jquery.min.js:2
-S.<computed> @ jquery.min.js:2
-finnNesteAvgang @ index.js?n=25:100
-onclick @ index.html:87
+﻿
 
 

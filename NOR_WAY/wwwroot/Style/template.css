@@ -2,7 +2,6 @@
     box-sizing: border-box;
 }
 
-
 html {
     scroll-behavior: smooth;
     background: black;
@@ -30,10 +29,10 @@ nav {
     padding-top: 2vh;
 }
 
-nav img {
-    margin-left: 2vw;
-    height: 4vh;
-}
+    nav img {
+        margin-left: 2vw;
+        height: 4vh;
+    }
 
 ul li {
     list-style: none;
@@ -48,15 +47,15 @@ ul {
     display: inline;
 }
 
-ul li a {
-    -webkit-font-smoothing: antialiased !important;
-    color: white;
-}
+    ul li a {
+        -webkit-font-smoothing: antialiased !important;
+        color: white;
+    }
 
-ul li a:hover {
-    text-decoration: none;
-    color: rgb(190,190,190);
-}
+        ul li a:hover {
+            text-decoration: none;
+            color: rgb(190,190,190);
+        }
 
 .shadowBox {
     margin: auto;

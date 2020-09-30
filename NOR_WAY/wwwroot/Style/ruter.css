@@ -10,26 +10,26 @@
     padding-right: 5%;
 }
 
-#ruter h5 {
-    transition: .2s;
-    opacity: .7;
-    -webkit-font-smoothing: antialiased !important;
-}
+    #ruter h5 {
+        transition: .2s;
+        opacity: .7;
+        -webkit-font-smoothing: antialiased !important;
+    }
 
-#ruter h5:hover {
-    cursor: pointer;
-    opacity: 1;
-}
+        #ruter h5:hover {
+            cursor: pointer;
+            opacity: 1;
+        }
 
 #valgtRute {
     opacity: 1 !important;
     text-decoration: underline;
 }
 
-#valgtRute:hover {
-    opacity: 1;
-    cursor: arrow !important;
-}
+    #valgtRute:hover {
+        opacity: 1;
+        cursor: arrow !important;
+    }
 
 #stopp {
     float: right;
@@ -39,10 +39,10 @@
     padding-left: 5%;
 }
 
-#stopp th {
-    -webkit-font-smoothing: antialiased !important;
-}
+    #stopp th {
+        -webkit-font-smoothing: antialiased !important;
+    }
 
-#stopp h6 {
-    -webkit-font-smoothing: antialiased !important;
-}
+    #stopp h6 {
+        -webkit-font-smoothing: antialiased !important;
+    }

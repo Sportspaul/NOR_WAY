@@ -109,8 +109,8 @@ function finnNesteAvgang() {
                     <h4 id="billettInfoOverskrift"><strong>${avgang.Rutenavn}, ${avgang.Linjekode}</strong></h4>
                     <div id="billettInfoBody">
                         <h6>
-                            Avreise: ${Hjelpemetoder.formaterDatoOgTid(avgang.Avreise, "dato")} &nbsp;|&nbsp; 
-                            ${StartStopp}, ${Hjelpemetoder.formaterDatoOgTid(avgang.Avreise, "tid")} 
+                            Avreise: ${Hjelpemetoder.formaterDatoOgTid(avgang.Avreise, "dato")} &nbsp;|&nbsp;
+                            ${StartStopp}, ${Hjelpemetoder.formaterDatoOgTid(avgang.Avreise, "tid")}
                             &nbsp;→&nbsp; ${SluttStopp}, ${Hjelpemetoder.formaterDatoOgTid(avgang.Ankomst, "tid")}
                         </h6>
                         <h6 class="mt-4">
@@ -204,7 +204,6 @@ function fullforOrdre() {
 
     // Lager en kundeordre
     const kundeordre = new KundeOrdre(epost, StartStopp, SluttStopp, avgang.Linjekode, avgang.AvgangId, avgangParam.Billettyper);
-    console.log(kundeordre)
 
     if (validerBetalingsInput() === false) {
         return;

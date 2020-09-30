@@ -1,7 +1,7 @@
 // Modell av objekt som skal sendes til server ved finnNesteAvgang()
-class AvgangParam{
+class AvgangParam {
     // Henter data fra inputfeltene
-    constructor(){
+    constructor() {
         this.StartStopp = Hjelpemetoder.rensStoppInput($("#startStopp").val());
         this.SluttStopp = Hjelpemetoder.rensStoppInput($("#sluttStopp").val());
         this.Dato = $("#dato").val();
@@ -10,7 +10,7 @@ class AvgangParam{
         this.Billettyper = Hjelpemetoder.hentValgteBillettyper();
     }
 
-    trueEllerFalse(input){
+    trueEllerFalse(input) {
         if (input == "true") {
             return true;
         } else {

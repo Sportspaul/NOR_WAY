@@ -53,7 +53,7 @@ function validerBetalingsInput() {
 
 // Stoppnavn-validering
 function validerStoppnavn(innElmt, utId) {
-    const stoppnavn = Hjelpemetoder.rensStoppInput(innElmt.val());  // Renser Input i inputfeltet 
+    const stoppnavn = Hjelpemetoder.rensStoppInput(innElmt.val());  // Renser Input i inputfeltet
     const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,50}$/;
     const stoppFins = StoppListe.includes(stoppnavn); // Sjekker om stoppet fins i listen med stopp
     let melding = "";
@@ -78,7 +78,7 @@ function validerStoppnavn(innElmt, utId) {
 
 // Stoppnavn-validering simple versjon
 function validerStoppnavnSimple(input) {
-    const stoppnavn = Hjelpemetoder.rensStoppInput(input);  // Renser Input i inputfeltet 
+    const stoppnavn = Hjelpemetoder.rensStoppInput(input);  // Renser Input i inputfeltet
     const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
     const stoppFins = StoppListe.includes(input);
     const ok = regex.test(input);

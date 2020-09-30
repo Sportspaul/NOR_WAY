@@ -1,5 +1,5 @@
 // Klasse med hjelpemetoder
-class Hjelpemetoder{
+class Hjelpemetoder {
     /* Legger til et mørkt overlay over bakgrunnsbildet,
    som matcher høyden på dokumentet */
     static endreBakgrunn() {
@@ -68,41 +68,42 @@ class Hjelpemetoder{
     }
 
     static formaterDatoOgTid(datoTid, tidEllerDato) {
-    // Splitter DateTime stringen inn i dato og tid
-    const datoTidSplittet = datoTid.split(" ");
-    const dato = datoTidSplittet[0];
-
-    // Formaterer dato hvis man har skrevet inn "dato" som input parameter
-    if (tidEllerDato == "dato") {
-        // Splitter dag, mnd år 
-        const datoSplittet = dato.split("-");
-        const dag = datoSplittet[0];
-        const mnd = datoSplittet[1];
-        // Liste med alle mnder
-        const mnder = ["Januar", "Februar", "Mars", "April", "Mai", "Juni",
-            "Juli", "August", "September", "Oktober", "November", "Desember"];
-        // Gjør om mnd til formatert mnd
-        console.log(datoTid);
-        const mndFormatert = mnder[mnd - 1];
-
-        // Utskrift
-        const datoFormatert = dag + "." + " " + mndFormatert;
-
-        return datoFormatert;
-    }
-    // Formaterer tid om han har skrvet inn "tid" som input parameter
-    else if (tidEllerDato === "tid") {
+        // Splitter DateTime stringen inn i dato og tid
         const datoTidSplittet = datoTid.split(" ");
-        const tidFormatert = datoTidSplittet[1];
+        const dato = datoTidSplittet[0];
 
-        return tidFormatert;
-    }
-    else {
-        console.log("Du har feil input paramter i metoden");
-        return false;
-    }
-    }
+        // Formaterer dato hvis man har skrevet inn "dato" som input parameter
+        if (tidEllerDato == "dato") {
+            // Splitter dag, mnd år
+            const datoSplittet = dato.split("-");
+            const dag = datoSplittet[0];
+            const mnd = datoSplittet[1];
+            const aar = datoSplittet[2];
 
+            // Liste med alle mnder
+            const mnder = ["Januar", "Februar", "Mars", "April", "Mai", "Juni",
+                "Juli", "August", "September", "Oktober", "November", "Desember"];
+            // Gjør om mnd til formatert mnd
+
+            const mndFormatert = mnder[mnd - 1];
+
+            // Utskrift
+            const datoFormatert = dag + "." + " " + mndFormatert + " " + aar;
+
+            return datoFormatert;
+        }
+        // Formaterer tid om han har skrvet inn "tid" som input parameter
+        else if (tidEllerDato === "tid") {
+            const datoTidSplittet = datoTid.split(" ");
+            const tidFormatert = datoTidSplittet[1];
+
+            return tidFormatert;
+        }
+        else {
+            console.log("Du har feil input parameter i metoden");
+            return false;
+        }
+    }
 
     // Henter alle valgte billettyper
     static hentValgteBillettyper() {
@@ -155,15 +156,15 @@ class Hjelpemetoder{
     }
 
     // Fjener en billett
-    static fjernBillett() {        
+    static fjernBillett() {
         const antall = $('.billettype').length;
         const id = `#billettype${antall}`;
-        if(antall > 1) {
+        if (antall > 1) {
             $(id).remove(); // Fjerner nedeste nedtrekksmeny
         }
-        // Hvis antall billetter er 2 blir fjernbillett-knappen skult 
-        if(antall == 2) {
+        // Hvis antall billetter er 2 blir fjernbillett-knappen skult
+        if (antall == 2) {
             $('#fjernBillett').css('display', 'none');
-        }  
+        }
     }
 }

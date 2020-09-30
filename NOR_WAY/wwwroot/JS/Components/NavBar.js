@@ -25,7 +25,6 @@ template.innerHTML = `
         -webkit-font-smoothing: antialiased !important;
         color: white;
         text-decoration: none;
-        
     }
 
     ul li a:hover {
@@ -34,9 +33,9 @@ template.innerHTML = `
     }
 </style>
 <a href="index.html">
-    <img 
-        src="/Bilder/logo.svg" 
-        alt="NOR-WAY sin logo. NOR i bold rødt og WAY i bold kursiv blått. 
+    <img
+        src="/Bilder/logo.svg"
+        alt="NOR-WAY sin logo. NOR i bold rødt og WAY i bold kursiv blått.
         De to ordene skilles av en rød prikk"
     />
 </a>

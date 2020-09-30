@@ -55,15 +55,15 @@ namespace NOR_WAY.DAL
                 InjiserRute(NW420Rute, NW420Stopp, context);
                 context.SaveChanges();
 
-                //Rute 182 - Telemarkekspressen 
+                //Rute 182 - Telemarkekspressen
                 var NW182Rute = new Ruter() { Linjekode = "NW182", Rutenavn = "Telemarkekspressen", Startpris = 95, TilleggPerStopp = 16, Kapasitet = 85 };
-                string[] NW182Stopp = { "Flatdal", "Bø", "Ulefoss","Skien", "Porsgrunn", "Langangenkrysset", "Ringdal", "Fokserød", "Sandefjord Lufthavn Torp" };   
+                string[] NW182Stopp = { "Flatdal", "Bø", "Ulefoss", "Skien", "Porsgrunn", "Langangenkrysset", "Ringdal", "Fokserød", "Sandefjord Lufthavn Torp" };
                 //TODO: Skien og Fokserød er mellomstopp på andre ruter
                 // Injiserer dataen inn i databasen og lagrer endringene
                 InjiserRute(NW182Rute, NW182Stopp, context);
                 context.SaveChanges();
 
-                //Rute 130 - Trysilekspressen 
+                //Rute 130 - Trysilekspressen
                 var NW130Rute = new Ruter() { Linjekode = "NW130", Rutenavn = "Trysilekspressen", Startpris = 88, TilleggPerStopp = 28, Kapasitet = 65 };
                 string[] NW130Stopp = { "Oslo",  "Oslo Lufthavn (OSL)", "Romedal", "Myklegard", "Terningmoen", "Elverum", "Kjernmoen", "Trysil Turistsenter",
                         "Radisson Blu Resort", "Trysil busstasjon", "Trysil Høyfjellssenter" };
@@ -71,7 +71,7 @@ namespace NOR_WAY.DAL
                 InjiserRute(NW130Rute, NW130Stopp, context);
                 context.SaveChanges();
 
-                //Rute 160 - Valdresekspressen 
+                //Rute 160 - Valdresekspressen
                 var NW160Rute = new Ruter() { Linjekode = "NW160", Rutenavn = "Valdresekspressen", Startpris = 82, TilleggPerStopp = 31, Kapasitet = 55 };
                 string[] NW160Stopp = { "Oslo", "Hønefoss", "Nes i Ådal", "Fagernes", "Ryfoss", "Grindaheim", "Tyinkrysset", "Tyin", "Sletterust", "Øvre Årdal", "Årdal" };
                 // Injiserer dataen inn i databasen og lagrer endringene
@@ -92,7 +92,7 @@ namespace NOR_WAY.DAL
                 Billettyper voksen = new Billettyper() { Billettype = "Voksen", Rabattsats = 0 };
                 List<Billettyper> billettyper = new List<Billettyper> { voksen, honnor, student, barn };
                 InjiserBillettyper(billettyper, context);
-                
+
                 // Injiserer Avganger
                 DateTime idag = DateTime.Now;
                 InjiserAvganger(idag, NW431Rute, 2.00, 100, context);
@@ -136,8 +136,8 @@ namespace NOR_WAY.DAL
                 }
 
                 // Genererer tilfeldig tall mellom 35 og 45
-                    Random rInt = new Random();
-                    int tilfeldigTid = rInt.Next(35, 45);
+                Random rInt = new Random();
+                int tilfeldigTid = rInt.Next(35, 45);
 
                 // Nytt instans av RuteStopp
                 var ruteStopp = new RuteStopp()
@@ -167,6 +167,7 @@ namespace NOR_WAY.DAL
         /* Legger inn en nye avganer
          * int antall: antall avganger som skal injiserers
          * double hyppighet: hvor lenge mellom hver avgang */
+
         private static void InjiserAvganger(DateTime idag, Ruter rute, double hyppighet, int antall, BussContext context)
         {
             Random tInt = new Random();
@@ -174,7 +175,7 @@ namespace NOR_WAY.DAL
 
             // Velger tilfeldig minutt fra listen
             int tilfeldigIndex = tInt.Next(0, 3);
-            List<int> minuttliste = new List<int> { 0, 15, 30, 45 }; 
+            List<int> minuttliste = new List<int> { 0, 15, 30, 45 };
             int tilfeldigMinutt = minuttliste[tilfeldigIndex];
 
             // Ny dato basert på tilfeldig time og minutt
@@ -194,6 +195,5 @@ namespace NOR_WAY.DAL
                 context.Avganger.Add(nyAvgang);
             }
         }
-           
     }
 }

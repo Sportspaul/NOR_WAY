@@ -12,7 +12,7 @@ $(function () {
             "success"
         )
     }
-    $('#startStopp').focus(); // Hopper inn i førte input felt
+    $('#startStopp').focus(); // Hopper inn i første input felt
 });
 
 // Globale variabler
@@ -121,9 +121,11 @@ function finnNesteAvgang() {
                         </h6>
                         <h6 class="mt-4">
                             Pris: ${avgang.Pris} kr
+                            <input id="endre" class="btn btn-sm btn-primary font-weight-bold shadow antialised" type="button" value="Endre" onclick="endreOrdre()">
                         </h6>
                     </div>
                 </div>
+                
                 <form role="form" id="betaling">
                     <div class="form-group">
                         <label for="navn">Fullt navn</label>
@@ -213,4 +215,9 @@ function fullforOrdre() {
         $.post("Buss/FullforOrdre", kundeordre);
         window.location.replace("index.html?bestilling=ok");
     }
+}
+
+function endreOrdre() {
+   window.location.replace("#"); 
+   $("#bestill").prop("value", "Oppdater");
 }

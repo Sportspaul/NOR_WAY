@@ -120,9 +120,9 @@ function finnNesteAvgang() {
                             Billetter:${Hjelpemetoder.formaterValgteBillettyper(Hjelpemetoder.hentValgteBillettyper())}
                         </h6>
                         <h6 class="mt-4">
-                            Pris: ${avgang.Pris} kr
-                            <input id="endre" class="btn btn-sm btn-primary font-weight-bold shadow antialised" type="button" value="Endre" onclick="endreOrdre()">
+                            Pris: ${avgang.Pris} kr 
                         </h6>
+                           <input id="endre"  class="btn btn-sm btn-primary mt-4 font-weight-bold shadow antialised" type="button" value="Endre" onclick="endreOrdre()">
                     </div>
                 </div>
                 
@@ -219,5 +219,5 @@ function fullforOrdre() {
 
 function endreOrdre() {
    window.location.replace("#"); 
-   $("#bestill").prop("value", "Oppdater");
+   $("#bestill").prop("value", "Oppdater reisen ");
 }

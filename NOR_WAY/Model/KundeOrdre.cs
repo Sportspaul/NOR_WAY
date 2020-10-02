@@ -23,4 +23,5 @@ namespace NOR_WAY.Model
 
         public List<string> Billettyper { get; set; }
     }
+
 }

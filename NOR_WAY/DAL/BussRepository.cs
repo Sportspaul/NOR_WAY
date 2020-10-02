@@ -204,7 +204,7 @@ namespace NOR_WAY.DAL
                 }
                 if (muligeAvganger.Count > 0)                                                          // Hvis listen med mulige avganger ikke er tom
                 {
-                    Avganger nesteAvgang = null;
+                    Avganger nesteAvgang = muligeAvganger[0];
                     TimeSpan lavesteDiff = innTid.Subtract(muligeAvganger[0].Avreise).Duration();      // Føste avgang i listen sitt avvik fra ønsket tid
                     foreach (Avganger muligAvgang in muligeAvganger)                                     // Looper gjennom alle avgangene
                     {

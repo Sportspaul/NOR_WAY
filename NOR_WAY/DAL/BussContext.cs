@@ -19,8 +19,7 @@ namespace NOR_WAY.DAL
 
     public class Stopp
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int Id { get; set; } // PK
         public string Navn { get; set; } // PK
     }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 namespace NOR_WAY.DAL
@@ -15,6 +16,12 @@ namespace NOR_WAY.DAL
         {
             _db = db;
             _log = log;
+        }
+
+        // TODO: Fjern Eksempel
+        public Task<string> HeiVerden()
+        {
+            throw new NotImplementedException();
         }
     }
 }

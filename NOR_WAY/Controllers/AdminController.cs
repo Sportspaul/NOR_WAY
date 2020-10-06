@@ -21,8 +21,10 @@ namespace NOR_WAY.Controllers
             _log = log;
         }
 
-        public string HeiVerden() {
-            return "Hei Verden";
+        // TODO: Fjern Eksempel
+        public ActionResult HeiVerden()
+        {
+            return Ok("Hei Verden");
         }
     }
 }

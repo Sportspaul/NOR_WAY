@@ -23,8 +23,9 @@ namespace NOR_WAY_Tests
         }
 
         [Fact]
-        public async Task FinnNesteAvgangTest()
+        public async Task FinnNesteAvgangTestOK()
         {
+            // Arrange
             var param = new AvgangParam
             {
                 StartStopp = "Bergen",
@@ -33,7 +34,6 @@ namespace NOR_WAY_Tests
                 Tidspunkt = "16:00",
                 AvreiseEtter = true
             };
-
             var forventetAvgang = new Avgang
             {
                 AvgangId = 1,
@@ -47,20 +47,63 @@ namespace NOR_WAY_Tests
 
             mockRepo.Setup(b => b.FinnNesteAvgang(param)).ReturnsAsync(forventetAvgang);
             var bussController = new BussController(mockRepo.Object, mockLog.Object);
+            // Act
             var resultat = await bussController.FinnNesteAvgang(param) as OkObjectResult;
             Avgang avgang = (Avgang)resultat.Value;
 
-            output.WriteLine("AvgangId " + avgang.AvgangId);
-            output.WriteLine("Rutenavn " + avgang.Rutenavn);
-            output.WriteLine("Reisetid " + avgang.Reisetid);
+            // Assert
+            Assert.Equal(forventetAvgang, avgang);
+        }
 
-            Assert.Equal(forventetAvgang.AvgangId, avgang.AvgangId);
-            Assert.Equal(forventetAvgang.Rutenavn, avgang.Rutenavn);
-            Assert.Equal(forventetAvgang.Linjekode, avgang.Linjekode);
-            Assert.Equal(forventetAvgang.Pris, avgang.Pris);
-            Assert.Equal(forventetAvgang.Avreise, avgang.Avreise);
-            Assert.Equal(forventetAvgang.Ankomst, avgang.Ankomst);
-            Assert.Equal(forventetAvgang.Reisetid, avgang.Reisetid);
+        [Fact]
+        public async Task FinnNesteAvgangTestIkkeOK()
+        {
+            // Arrange
+            var param = new AvgangParam();
+            
+            mockRepo.Setup(b => b.FinnNesteAvgang(param)).ReturnsAsync(() => null);
+            var bussController = new BussController(mockRepo.Object, mockLog.Object);
+
+            // Act
+            var resultat = await bussController.FinnNesteAvgang(param) as NotFoundObjectResult;
+            
+            // Assert
+            Assert.Equal("Avgang ikke funnet", resultat.Value);
+        }
+
+        [Fact]
+        public async Task FinnNesteAvgangFeilModelTest()
+        {
+            // Arrange
+            var param = new AvgangParam
+            {
+                StartStopp = "Bergen",
+                SluttStopp = "Vadheim",
+                Dato = "2020-11-20",
+                Tidspunkt = "16:00",
+                AvreiseEtter = true
+            };
+            var forventetAvgang = new Avgang
+            {
+                AvgangId = 1,
+                Rutenavn = "Fjordekspressen",
+                Linjekode = "",
+                Pris = 100,
+                Avreise = "2020-11-25 17:00",
+                Ankomst = "2020-11-25 18:20",
+                Reisetid = 80
+            };
+
+            mockRepo.Setup(b => b.FinnNesteAvgang(param)).ReturnsAsync(forventetAvgang);
+            var bussController = new BussController(mockRepo.Object, mockLog.Object);
+            bussController.ModelState.AddModelError("Linjekode", "Feil i inputvalideringen på server");
+           
+
+            // Act
+            var resultat = await bussController.FinnNesteAvgang(param) as BadRequestObjectResult;
+          
+            // Assert
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
         }
 
         [Fact]

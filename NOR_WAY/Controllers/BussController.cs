@@ -72,7 +72,7 @@ namespace NOR_WAY.Controllers
                 if (nesteAvgang == null)
                 {
                     _log.LogInformation("Avgang ikke funnet");
-                    return BadRequest("Avgang ikke funnet");
+                    return NotFound("Avgang ikke funnet");
                 }
                 return Ok(nesteAvgang);
             }

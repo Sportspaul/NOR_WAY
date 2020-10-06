@@ -52,12 +52,12 @@ namespace NOR_WAY.DAL
                 return null;
             }
 
-            // Beregner reisetiden fra stopp påstigning til avstigning
-            int reisetid = await BeregnReisetid(stoppNummer1, stoppNummer2, fellesRute);
+            int reisetid = await BeregnReisetid(stoppNummer1, stoppNummer2, fellesRute); // Beregner reisetiden fra stopp påstigning til avstigning
+            int antallBilletter = input.Billettyper.Count();    // antall billetter brukeren ønsker
+            DateTime innTid = StringTilDateTime(input.Dato, input.Tidspunkt);   // Konverterer fra strings til DateTime
 
             // Finne neste avgang som passer, basert på brukerens input
-            int antallBilletter = input.Billettyper.Count();    // antall billetter brukeren ønsker
-            Avganger nesteAvgang = await NesteAvgang(fellesRute, reisetid, input.AvreiseEtter, input.Dato, input.Tidspunkt, antallBilletter);
+            Avganger nesteAvgang = await NesteAvgang(fellesRute, reisetid, input.AvreiseEtter, innTid, antallBilletter);
             if (nesteAvgang == null) { return null; }  // Hvis ingen avgang ble funnet
 
             // Beregner avreise og ankomst
@@ -174,17 +174,20 @@ namespace NOR_WAY.DAL
             }
         }
 
+        // Oversetter string verdiene av dato og tidspunkt til et DateTime-objekt
+        private DateTime StringTilDateTime(string dato, string tidspunkt)
+        {
+            string innTidStreng = dato + " " + tidspunkt;
+            return DateTime.ParseExact(innTidStreng, "yyyy-MM-dd HH:mm",
+                CultureInfo.InvariantCulture);
+        }
+
         // Hjelpemetode som finner neste avgang som passer for brukeren
         private async Task<Avganger> NesteAvgang(Ruter fellesRute, int reisetid,
-            bool avreiseEtter, string dato, string tidspunkt, int antallBilletter)
+            bool avreiseEtter, DateTime innTid, int antallBilletter)
         {
             try
             {
-                // Oversetter string verdiene av dato og tidspunkt til et DateTime-objekt
-                string innTidStreng = dato + " " + tidspunkt;
-                DateTime innTid = DateTime.ParseExact(innTidStreng, "yyyy-MM-dd HH:mm",
-                    CultureInfo.InvariantCulture);
-
                 List<Avganger> muligeAvganger = new List<Avganger>();
                 // Hvis "Avreise Etter" er valgt av brukeren
                 if (avreiseEtter)

@@ -151,6 +151,19 @@ namespace NOR_WAY_Tests
             }
         }
 
+        [Fact]
+        public async Task HentAlleRuter_Null()
+        {
+            // Arrange 
+            mockRepo.Setup(b => b.HentAlleRuter()).ReturnsAsync(() => null);
+            var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
+            //Act
+            var resultat = await bussController.HentAlleRuter() as NotFoundObjectResult;
+           
+            // Assert
+            Assert.Equal("Rutene ble ikke funnet", resultat.Value);
+        }
+
         private List<RuteData> HentRuteDataListe()
         {
             List<string> stoppene1 = new List<string> { "Bergen", "Vaheim", "Trondheim" };
@@ -216,7 +229,7 @@ namespace NOR_WAY_Tests
 
 
         [Fact]
-        public async Task FinnNesteAvgang_NullException()
+        public async Task FinnNesteAvgang_Null()
         {
             // Arrange
             var param = new AvgangParam();
@@ -237,9 +250,9 @@ namespace NOR_WAY_Tests
             // Arrange
             var param = new AvgangParam
             {
-                StartStopp = "Bergen",
+                StartStopp = "",
                 SluttStopp = "Vadheim",
-                Dato = "2020-11-20",
+                Dato = "",
                 Tidspunkt = "16:00",
                 AvreiseEtter = true
             };
@@ -247,7 +260,7 @@ namespace NOR_WAY_Tests
             {
                 AvgangId = 1,
                 Rutenavn = "Fjordekspressen",
-                Linjekode = "",
+                Linjekode = "NW431",
                 Pris = 100,
                 Avreise = "2020-11-25 17:00",
                 Ankomst = "2020-11-25 18:20",
@@ -256,8 +269,10 @@ namespace NOR_WAY_Tests
 
             mockRepo.Setup(b => b.FinnNesteAvgang(param)).ReturnsAsync(forventetAvgang);
             var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
-            bussController.ModelState.AddModelError("Linjekode", "Feil i inputvalideringen på server");
-           
+            bussController.ModelState.AddModelError("StartStopp", "Feil i inputvalideringen på server");
+            bussController.ModelState.AddModelError("Dato", "Feil i inputvalideringen på server");
+            
+
 
             // Act
             var resultat = await bussController.FinnNesteAvgang(param) as BadRequestObjectResult;
@@ -293,6 +308,64 @@ namespace NOR_WAY_Tests
             var resultat = await bussController.FullforOrdre(kundeOrdre) as OkObjectResult;
             // Assert
             Assert.Equal("Ordren ble lagret!", resultat.Value);
+        }
+
+        [Fact]
+        public async Task FullforOrdre_IkkeOK()
+        {
+            // Arrange
+            var billettype = new List<string>
+            {
+                "Student",
+                "Barn"
+            };
+
+            var kundeOrdre = new KundeOrdre
+            {
+                Epost = "hvrustad@gmail.com",
+                StartStopp = "Bergen",
+                SluttStopp = "Trondheim",
+                Linjekode = "NW431",
+                AvgangId = 2,
+                Billettyper = billettype
+            };
+
+            mockRepo.Setup(br => br.FullforOrdre(kundeOrdre)).ReturnsAsync(false);
+            var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
+            // Act
+            var resultat = await bussController.FullforOrdre(kundeOrdre) as BadRequestObjectResult;
+            // Assert
+            Assert.Equal("Ordren kunne ikke lagres!", resultat.Value);
+        }
+
+        [Fact]
+        public async Task FullforOrdre_RegEx()
+        {
+            // Arrange
+            var billettype = new List<string>
+            {
+                "Student",
+                "Barn"
+            };
+
+            var kundeOrdre = new KundeOrdre
+            {
+                Epost = "hvrustad@gmail.com",
+                StartStopp = "Bergen",
+                SluttStopp = "Trondheim",
+                Linjekode = "NW431",
+                AvgangId = 2,
+                Billettyper = billettype
+            };
+
+            mockRepo.Setup(br => br.FullforOrdre(kundeOrdre)).ReturnsAsync(false);
+            var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
+            bussController.ModelState.AddModelError("Epost", "Feil i inputvalideringen på server");
+            // Act
+            var resultat = await bussController.FullforOrdre(kundeOrdre) as BadRequestObjectResult;
+            
+            // Assert
+            Assert.Equal("Feil i inputvalidering på server", resultat.Value);
         }
     }
 }

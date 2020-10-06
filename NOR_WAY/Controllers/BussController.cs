@@ -67,7 +67,7 @@ namespace NOR_WAY.Controllers
         public async Task<ActionResult> FinnNesteAvgang(AvgangParam input)
         {
             if (ModelState.IsValid)
-            {
+            { 
                 Avgang nesteAvgang = await _db.FinnNesteAvgang(input);
                 if (nesteAvgang == null)
                 {

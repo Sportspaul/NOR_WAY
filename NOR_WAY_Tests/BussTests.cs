@@ -49,8 +49,8 @@ namespace NOR_WAY_Tests
         [Fact]
         public async Task FinnMuligStartStopp_RiktigeVerdier()
         {
+            InnStopp innStopp = HentUgyldigInnStopp();
             List<Stopp> forventedeStopp = HentStoppListe();
-            InnStopp innStopp = new InnStopp { Navn = "Bergen" };
 
             mockRepo.Setup(b => b.FinnMuligeStartStopp(innStopp)).ReturnsAsync(forventedeStopp);
             var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
@@ -71,10 +71,10 @@ namespace NOR_WAY_Tests
         public async Task FinnMuligeStartStopp_RegEx()
         {
             // Arrange 
-            var param = HentUgyldigAvgangParam();
-            var forventetAvgang = HentAvgang();
+            InnStopp innStopp = HentUgyldigInnStopp();
+            List<Stopp> forventedeStopp = HentStoppListe();
 
-            mockRepo.Setup(b => b.FinnNesteAvgang(param)).ReturnsAsync(forventetAvgang);
+            mockRepo.Setup(b => b.FinnMuligeStartStopp(innStopp)).ReturnsAsync(forventedeStopp);
             var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
             bussController.ModelState.AddModelError("StartStopp", "Feil i inputvalideringen på server");
             bussController.ModelState.AddModelError("SluttStopp", "Feil i inputvalideringen på server");
@@ -82,7 +82,7 @@ namespace NOR_WAY_Tests
             bussController.ModelState.AddModelError("Tidspunkt", "Feil i inputvalideringen på server");
 
             // Act
-            var resultat = await bussController.FinnNesteAvgang(param) as BadRequestObjectResult;
+            var resultat = await bussController.FinnMuligeStartStopp(innStopp) as BadRequestObjectResult;
 
             // Assert
             Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
@@ -115,10 +115,10 @@ namespace NOR_WAY_Tests
         public async Task FinnMuligeSluttStopp_RegEx()
         {
             // Arrange 
-            var param = HentUgyldigAvgangParam();
-            var forventetAvgang = HentAvgang();
+            InnStopp innStopp = HentUgyldigInnStopp();
+            List<Stopp> forventedeStopp = HentStoppListe();
 
-            mockRepo.Setup(b => b.FinnNesteAvgang(param)).ReturnsAsync(forventetAvgang);
+            mockRepo.Setup(b => b.FinnMuligeSluttStopp(innStopp)).ReturnsAsync(forventedeStopp);
             var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
             bussController.ModelState.AddModelError("StartStopp", "Feil i inputvalideringen på server");
             bussController.ModelState.AddModelError("SluttStopp", "Feil i inputvalideringen på server");
@@ -126,7 +126,7 @@ namespace NOR_WAY_Tests
             bussController.ModelState.AddModelError("Tidspunkt", "Feil i inputvalideringen på server");
 
             // Act
-            var resultat = await bussController.FinnNesteAvgang(param) as BadRequestObjectResult;
+            var resultat = await bussController.FinnMuligeSluttStopp(innStopp) as BadRequestObjectResult;
 
             // Assert
             Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
@@ -381,6 +381,11 @@ namespace NOR_WAY_Tests
 
         private AvgangParam HentUgyldigAvgangParam() {
             return new AvgangParam { StartStopp = "", SluttStopp = "", Dato = "", Tidspunkt = "", AvreiseEtter = true, Billettyper = HentBillettyperStringListe() };
+        }
+
+        private InnStopp HentUgyldigInnStopp()
+        {
+            return new InnStopp { Navn = "Bergen" };
         }
     }
 }

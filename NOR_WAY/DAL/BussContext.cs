@@ -1,10 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
 namespace NOR_WAY.DAL
 {
+    [ExcludeFromCodeCoverage]
     public class Ruter
     {
         [Key]
@@ -17,12 +19,14 @@ namespace NOR_WAY.DAL
         public int Kapasitet { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class Stopp
     {
         public int Id { get; set; } // PK
         public string Navn { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class RuteStopp
     {
         public int Id { get; set; } // PK
@@ -35,6 +39,7 @@ namespace NOR_WAY.DAL
         virtual public Ruter Rute { get; set; } // FK
     }
 
+    [ExcludeFromCodeCoverage]
     public class Avganger
     {
         public int Id { get; set; } // PK
@@ -45,6 +50,7 @@ namespace NOR_WAY.DAL
         virtual public Ruter Rute { get; set; } // FK
     }
 
+    [ExcludeFromCodeCoverage]
     public class Ordre
     {
         public int Id { get; set; } // PK
@@ -59,6 +65,7 @@ namespace NOR_WAY.DAL
         virtual public Avganger Avgang { get; set; } // FK
     }
 
+    [ExcludeFromCodeCoverage]
     public class Ordrelinjer
     {
         public int Id { get; set; }
@@ -69,6 +76,7 @@ namespace NOR_WAY.DAL
         virtual public Ordre Ordre { get; set; } // FK
     }
 
+    [ExcludeFromCodeCoverage]
     public class Billettyper
     {
         [Key]
@@ -78,6 +86,7 @@ namespace NOR_WAY.DAL
         public int Rabattsats { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class BussContext : DbContext
     {
         public BussContext(DbContextOptions<BussContext> options) : base(options)

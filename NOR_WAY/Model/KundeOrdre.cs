@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NOR_WAY.Model
 {
     // Modell for å ta imot verdier fra klienten for å fullføre kjøp av billett
+    [ExcludeFromCodeCoverage]
     public class KundeOrdre
     {
         [RegularExpression(@"^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-z]{2,4}$")]

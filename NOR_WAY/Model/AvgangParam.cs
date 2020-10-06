@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NOR_WAY.Model
 {
     // Modell for å ta imot nødvendige verdier fra klienten for å beregne neste mulige avgang
+    [ExcludeFromCodeCoverage]
     public class AvgangParam
     {
         [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,50}")]

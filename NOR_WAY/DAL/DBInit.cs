@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace NOR_WAY.DAL
 {
+    [ExcludeFromCodeCoverage]
     public class DBInit
     {
         public static void SeedDB(IApplicationBuilder app)

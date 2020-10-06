@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 
 namespace NOR_WAY.DAL
 {
+    [ExcludeFromCodeCoverage]
     public class AdminRepository : IAdminRepository
     {
         private readonly BussContext _db;

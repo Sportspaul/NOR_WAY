@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NOR_WAY.Model
 {
     // Modell for å sende Avgangsinformasjon til klienten
+    [ExcludeFromCodeCoverage]
     public class Avgang
     {
         [RegularExpression(@"[0-9]{1,}")]

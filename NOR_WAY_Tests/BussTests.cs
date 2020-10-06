@@ -43,6 +43,7 @@ namespace NOR_WAY_Tests
             }
         }
 
+
         /* Tester at ikke listen med Stopp fra BussRepo endrer seg i controlleren
            for FinnMuligeStartStopp() */
         [Fact]
@@ -63,6 +64,28 @@ namespace NOR_WAY_Tests
                 Assert.Equal(forventedeStopp[i].Id, faktiskeStopp[i].Id);
                 Assert.Equal(forventedeStopp[i].Navn, faktiskeStopp[i].Navn);
             }
+        }
+
+        // Tester at FinnMulgeStartStopp i controlleren håndterer InvalidModelState
+        [Fact]
+        public async Task FinnMuligeStartStopp_RegEx()
+        {
+            // Arrange 
+            var param = HentUgyldigAvgangParam();
+            var forventetAvgang = HentAvgang();
+
+            mockRepo.Setup(b => b.FinnNesteAvgang(param)).ReturnsAsync(forventetAvgang);
+            var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
+            bussController.ModelState.AddModelError("StartStopp", "Feil i inputvalideringen på server");
+            bussController.ModelState.AddModelError("SluttStopp", "Feil i inputvalideringen på server");
+            bussController.ModelState.AddModelError("Dato", "Feil i inputvalideringen på server");
+            bussController.ModelState.AddModelError("Tidspunkt", "Feil i inputvalideringen på server");
+
+            // Act
+            var resultat = await bussController.FinnNesteAvgang(param) as BadRequestObjectResult;
+
+            // Assert
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
         }
 
         /* Tester at ikke listen med Stopp fra BussRepo endrer seg i controlleren
@@ -87,14 +110,26 @@ namespace NOR_WAY_Tests
             }
         }
 
-        // Returnerer en liste med Stopp
-        private List<Stopp> HentStoppListe()
+        // Tester at FinnMuligeSluttStopp i controlleren håndterer InvalidModelState
+        [Fact]
+        public async Task FinnMuligeSluttStopp_RegEx()
         {
-            Stopp stopp1 = new Stopp { Id = 1, Navn = "Bergen" };
-            Stopp stopp2 = new Stopp { Id = 1, Navn = "Oslo" };
-            Stopp stopp3 = new Stopp { Id = 1, Navn = "Vadheim" };
-            Stopp stopp4 = new Stopp { Id = 1, Navn = "Trondheim" };
-            return new List<Stopp> { stopp1, stopp2, stopp3, stopp4 };
+            // Arrange 
+            var param = HentUgyldigAvgangParam();
+            var forventetAvgang = HentAvgang();
+
+            mockRepo.Setup(b => b.FinnNesteAvgang(param)).ReturnsAsync(forventetAvgang);
+            var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
+            bussController.ModelState.AddModelError("StartStopp", "Feil i inputvalideringen på server");
+            bussController.ModelState.AddModelError("SluttStopp", "Feil i inputvalideringen på server");
+            bussController.ModelState.AddModelError("Dato", "Feil i inputvalideringen på server");
+            bussController.ModelState.AddModelError("Tidspunkt", "Feil i inputvalideringen på server");
+
+            // Act
+            var resultat = await bussController.FinnNesteAvgang(param) as BadRequestObjectResult;
+
+            // Assert
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
         }
 
         /* Tester at ikke listen med Stopp fra BussRepo endrer seg i controlleren
@@ -102,7 +137,7 @@ namespace NOR_WAY_Tests
         [Fact]
         public async Task HentAlleBillettyper_RiktigeVerdier()
         {
-            List<Billettyper> forventet = HentBillettypeListe();
+            List<Billettyper> forventet = HentBillettyperListe();
 
             mockRepo.Setup(b => b.HentAlleBillettyper()).ReturnsAsync(forventet);
             var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
@@ -116,14 +151,6 @@ namespace NOR_WAY_Tests
                 Assert.Equal(forventet[i].Billettype, faktisk[i].Billettype);
                 Assert.Equal(forventet[i].Rabattsats, faktisk[i].Rabattsats);
             }
-        }
-
-        private List<Billettyper> HentBillettypeListe()
-        {
-            Billettyper billettype1 = new Billettyper { Billettype = "Student", Rabattsats = 50 };
-            Billettyper billettype2 = new Billettyper { Billettype = "Voksen", Rabattsats = 0};
-            Billettyper billettype3 = new Billettyper{ Billettype = "Honør", Rabattsats = 25};
-            return new List<Billettyper> { billettype1, billettype2, billettype3 };
         }
 
         /* Tester at ikke listen med Stopp fra BussRepo endrer seg i controlleren
@@ -164,26 +191,12 @@ namespace NOR_WAY_Tests
             Assert.Equal("Rutene ble ikke funnet", resultat.Value);
         }
 
-        private List<RuteData> HentRuteDataListe()
-        {
-            List<string> stoppene1 = new List<string> { "Bergen", "Vaheim", "Trondheim" };
-            List<string> stoppene2 = new List<string> { "Oslo", "Røros", "Trondheim" };
-            List<string> stoppene3 = new List<string> { "Kristiansand", "Stavanger", "Molde" };
-            List<int> minuttListe1 = new List<int> { 20, 25, 35 };
-            List<int> minuttListe2 = new List<int> { 20, 23, 35 };
-            List<int> minuttListe3 = new List<int> { 20, 55, 60 };
-            RuteData ruteData1 = new RuteData { Stoppene = stoppene1, MinutterTilNesteStopp = minuttListe1, Linjekode = "NW123", Rutenavn = "Bussturen", Startpris = 79, TilleggPerStopp = 25 };
-            RuteData ruteData2 = new RuteData { Stoppene = stoppene2, MinutterTilNesteStopp = minuttListe2, Linjekode = "NW600", Rutenavn = "Ekspressruta", Startpris = 100, TilleggPerStopp = 15 };
-            RuteData ruteData3 = new RuteData { Stoppene = stoppene3, MinutterTilNesteStopp = minuttListe3, Linjekode = "NW007", Rutenavn = "Bondespressen", Startpris = 50, TilleggPerStopp = 35 };
-            return new List<RuteData> { ruteData1, ruteData2, ruteData3 };
-        }
-
         // Tester at ikke Avgang fra BussRepo endrer seg i controlleren
         [Fact]
         public async Task FinnNesteAvgang_RiktigeVerdier()
         {
             AvgangParam param = HentAvgangParam();
-            Avgang forventetAvgang = HentEnAvgang();
+            Avgang forventetAvgang = HentAvgang();
 
             // Lager en mock av IBussRepo og sier at FinnNesteAvgang-metoden (BussRepo) alltid skal returnerer Avgang fra enAvgang()
             mockRepo.Setup(b => b.FinnNesteAvgang(param)).ReturnsAsync(forventetAvgang);
@@ -217,17 +230,6 @@ namespace NOR_WAY_Tests
         }
 
 
-        private AvgangParam HentAvgangParam()
-        {
-            return new AvgangParam { StartStopp = "Bergen", SluttStopp = "Vadheim", Dato = "2020-11-20", Tidspunkt = "16:00", AvreiseEtter = true };
-        }
-        private Avgang HentEnAvgang()
-        {
-            return new Avgang { AvgangId = 1, Rutenavn = "Fjordekspressen", Linjekode = "NW431", Pris = 100, Avreise = "2020-11-25 17:00", Ankomst = "2020-11-25 18:20", Reisetid = 80 };
-        }
-
-
-
         [Fact]
         public async Task FinnNesteAvgang_Null()
         {
@@ -244,6 +246,7 @@ namespace NOR_WAY_Tests
             Assert.Equal("Avgang ikke funnet", resultat.Value);
         }
 
+        // Tester at FinnNesteAvgang i controlleren håndterer InvalidModelState
         [Fact]
         public async Task FinnNesteAvgang_RegEx()
         {
@@ -256,16 +259,7 @@ namespace NOR_WAY_Tests
                 Tidspunkt = "16:00",
                 AvreiseEtter = true
             };
-            var forventetAvgang = new Avgang
-            {
-                AvgangId = 1,
-                Rutenavn = "Fjordekspressen",
-                Linjekode = "NW431",
-                Pris = 100,
-                Avreise = "2020-11-25 17:00",
-                Ankomst = "2020-11-25 18:20",
-                Reisetid = 80
-            };
+            var forventetAvgang = HentAvgang();
 
             mockRepo.Setup(b => b.FinnNesteAvgang(param)).ReturnsAsync(forventetAvgang);
             var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
@@ -286,21 +280,7 @@ namespace NOR_WAY_Tests
         public async Task FullforOrdre_RiktigeVerdier()
         {
             // Arrange
-            var billettype = new List<string>
-            {
-                "Student",
-                "Barn"
-            };
-
-            var kundeOrdre = new KundeOrdre
-            {
-                Epost = "hvrustad@gmail.com",
-                StartStopp = "Bergen",
-                SluttStopp = "Trondheim",
-                Linjekode = "NW431",
-                AvgangId = 2,
-                Billettyper = billettype
-            };
+            var kundeOrdre = HentEnKundeOrdre();
 
             mockRepo.Setup(br => br.FullforOrdre(kundeOrdre)).ReturnsAsync(true);
             var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
@@ -314,21 +294,7 @@ namespace NOR_WAY_Tests
         public async Task FullforOrdre_IkkeOK()
         {
             // Arrange
-            var billettype = new List<string>
-            {
-                "Student",
-                "Barn"
-            };
-
-            var kundeOrdre = new KundeOrdre
-            {
-                Epost = "hvrustad@gmail.com",
-                StartStopp = "Bergen",
-                SluttStopp = "Trondheim",
-                Linjekode = "NW431",
-                AvgangId = 2,
-                Billettyper = billettype
-            };
+            var kundeOrdre = HentEnKundeOrdre();
 
             mockRepo.Setup(br => br.FullforOrdre(kundeOrdre)).ReturnsAsync(false);
             var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
@@ -338,25 +304,12 @@ namespace NOR_WAY_Tests
             Assert.Equal("Ordren kunne ikke lagres!", resultat.Value);
         }
 
+        // Tester at FullforOrdre i controlleren håndterer InvalidModelState
         [Fact]
         public async Task FullforOrdre_RegEx()
         {
             // Arrange
-            var billettype = new List<string>
-            {
-                "Student",
-                "Barn"
-            };
-
-            var kundeOrdre = new KundeOrdre
-            {
-                Epost = "hvrustad@gmail.com",
-                StartStopp = "Bergen",
-                SluttStopp = "Trondheim",
-                Linjekode = "NW431",
-                AvgangId = 2,
-                Billettyper = billettype
-            };
+            var kundeOrdre = HentEnKundeOrdre();
 
             mockRepo.Setup(br => br.FullforOrdre(kundeOrdre)).ReturnsAsync(false);
             var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
@@ -366,6 +319,68 @@ namespace NOR_WAY_Tests
             
             // Assert
             Assert.Equal("Feil i inputvalidering på server", resultat.Value);
+        }
+
+        // Returnerer et KundeOrdre-objekt
+        private KundeOrdre HentEnKundeOrdre()
+        {
+            return new KundeOrdre { Epost = "hvrustad@gmail.com", StartStopp = "Bergen", SluttStopp = "Trondheim", Linjekode = "NW431", AvgangId = 2, Billettyper = HentBillettyperStringListe() };
+        }
+
+        // Returnerer en List med string billettypenavn
+        private List<string> HentBillettyperStringListe()
+        {
+            return new List<string> { "Student", "Barn" };
+        }
+
+        // Returnerer et AvgangParam-objekt
+        private AvgangParam HentAvgangParam()
+        {
+            return new AvgangParam { StartStopp = "Bergen", SluttStopp = "Vadheim", Dato = "2020-11-20", Tidspunkt = "16:00", AvreiseEtter = true };
+        }
+
+        // Returnerer et Avgang-objekt
+        private Avgang HentAvgang()
+        {
+            return new Avgang { AvgangId = 1, Rutenavn = "Fjordekspressen", Linjekode = "NW431", Pris = 100, Avreise = "2020-11-25 17:00", Ankomst = "2020-11-25 18:20", Reisetid = 80 };
+        }
+
+        // Returnerer en List med Stopp-objekter
+        private List<Stopp> HentStoppListe()
+        {
+            Stopp stopp1 = new Stopp { Id = 1, Navn = "Bergen" };
+            Stopp stopp2 = new Stopp { Id = 1, Navn = "Oslo" };
+            Stopp stopp3 = new Stopp { Id = 1, Navn = "Vadheim" };
+            Stopp stopp4 = new Stopp { Id = 1, Navn = "Trondheim" };
+            return new List<Stopp> { stopp1, stopp2, stopp3, stopp4 };
+        }
+
+        // Returnerer en List med Billettyper-objekter
+        private List<Billettyper> HentBillettyperListe()
+        {
+            Billettyper billettype1 = new Billettyper { Billettype = "Student", Rabattsats = 50 };
+            Billettyper billettype2 = new Billettyper { Billettype = "Voksen", Rabattsats = 0 };
+            Billettyper billettype3 = new Billettyper { Billettype = "Honør", Rabattsats = 25 };
+            return new List<Billettyper> { billettype1, billettype2, billettype3 };
+        }
+
+        // Returnerer en List med RuteData-objekter
+        private List<RuteData> HentRuteDataListe()
+        {
+            List<string> stoppene1 = new List<string> { "Bergen", "Vaheim", "Trondheim" };
+            List<string> stoppene2 = new List<string> { "Oslo", "Røros", "Trondheim" };
+            List<string> stoppene3 = new List<string> { "Kristiansand", "Stavanger", "Molde" };
+            List<int> minuttListe1 = new List<int> { 20, 25, 35 };
+            List<int> minuttListe2 = new List<int> { 20, 23, 35 };
+            List<int> minuttListe3 = new List<int> { 20, 55, 60 };
+            RuteData ruteData1 = new RuteData { Stoppene = stoppene1, MinutterTilNesteStopp = minuttListe1, Linjekode = "NW123", Rutenavn = "Bussturen", Startpris = 79, TilleggPerStopp = 25 };
+            RuteData ruteData2 = new RuteData { Stoppene = stoppene2, MinutterTilNesteStopp = minuttListe2, Linjekode = "NW600", Rutenavn = "Ekspressruta", Startpris = 100, TilleggPerStopp = 15 };
+            RuteData ruteData3 = new RuteData { Stoppene = stoppene3, MinutterTilNesteStopp = minuttListe3, Linjekode = "NW007", Rutenavn = "Bondespressen", Startpris = 50, TilleggPerStopp = 35 };
+            return new List<RuteData> { ruteData1, ruteData2, ruteData3 };
+        }
+
+        private AvgangParam HentUgyldigAvgangParam() {
+            return new AvgangParam { StartStopp = "", SluttStopp = "", Dato = "", Tidspunkt = "", AvreiseEtter = true, Billettyper = HentBillettyperStringListe() };
         }
     }
 }

@@ -20,7 +20,7 @@ namespace NOR_WAY.DAL
     public class Stopp
     {
         public int Id { get; set; } // PK
-        public string Navn { get; set; } // PK
+        public string Navn { get; set; }
     }
 
     public class RuteStopp

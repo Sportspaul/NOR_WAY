@@ -22,9 +22,152 @@ namespace NOR_WAY_Tests
             this.output = output;
         }
 
+        /* Tester at ikke listen med Stopp fra BussRepo endrer seg i controlleren
+            for HentAlleStopp() */
+        [Fact]
+        public async Task HentAlleStopp_RiktigeVerdier()
+        {
+            List<Stopp> forventedeStopp = HentStoppListe();
+
+            mockRepo.Setup(b => b.HentAlleStopp()).ReturnsAsync(forventedeStopp);
+            var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
+            var resultat = await bussController.HentAlleStopp() as OkObjectResult;
+            List<Stopp> faktiskeStopp = (List<Stopp>)resultat.Value;
+
+            Assert.Equal(forventedeStopp.Count, faktiskeStopp.Count);   // Tester om listene er like lange
+            // Tester om alle verdiene er like i alle elementene
+            for (int i = 0; i < forventedeStopp.Count; i++)
+            {
+                Assert.Equal(forventedeStopp[i].Id, faktiskeStopp[i].Id);
+                Assert.Equal(forventedeStopp[i].Navn, faktiskeStopp[i].Navn);
+            }
+        }
+
+        /* Tester at ikke listen med Stopp fra BussRepo endrer seg i controlleren
+           for FinnMuligeStartStopp() */
+        [Fact]
+        public async Task FinnMuligStartStopp_RiktigeVerdier()
+        {
+            List<Stopp> forventedeStopp = HentStoppListe();
+            InnStopp innStopp = new InnStopp { Navn = "Bergen" };
+
+            mockRepo.Setup(b => b.FinnMuligeStartStopp(innStopp)).ReturnsAsync(forventedeStopp);
+            var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
+            var resultat = await bussController.FinnMuligeStartStopp(innStopp) as OkObjectResult;
+            List<Stopp> faktiskeStopp = (List<Stopp>)resultat.Value;
+
+            Assert.Equal(forventedeStopp.Count, faktiskeStopp.Count);   // Tester om listene er like lange
+            // Tester om alle verdiene er like i alle elementeneƒ
+            for (int i = 0; i < forventedeStopp.Count; i++)
+            {
+                Assert.Equal(forventedeStopp[i].Id, faktiskeStopp[i].Id);
+                Assert.Equal(forventedeStopp[i].Navn, faktiskeStopp[i].Navn);
+            }
+        }
+
+        /* Tester at ikke listen med Stopp fra BussRepo endrer seg i controlleren
+           for FinnMuligeSluttStopp() */
+        [Fact]
+        public async Task FinnMuligSluttStopp_RiktigeVerdier()
+        {
+            List<Stopp> forventet = HentStoppListe();
+            InnStopp innStopp = new InnStopp { Navn = "Bergen" };
+
+            mockRepo.Setup(b => b.FinnMuligeSluttStopp(innStopp)).ReturnsAsync(forventet);
+            var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
+            var resultat = await bussController.FinnMuligeSluttStopp(innStopp) as OkObjectResult;
+            List<Stopp> faktisk = (List<Stopp>)resultat.Value;
+
+            Assert.Equal(forventet.Count, faktisk.Count);   // Tester om listene er like lange
+            // Tester om alle verdiene er like i alle elementene
+            for (int i = 0; i < forventet.Count; i++)
+            {
+                Assert.Equal(forventet[i].Id, faktisk[i].Id);
+                Assert.Equal(forventet[i].Navn, faktisk[i].Navn);
+            }
+        }
+
+        // Returnerer en liste med Stopp
+        private List<Stopp> HentStoppListe()
+        {
+            Stopp stopp1 = new Stopp { Id = 1, Navn = "Bergen" };
+            Stopp stopp2 = new Stopp { Id = 1, Navn = "Oslo" };
+            Stopp stopp3 = new Stopp { Id = 1, Navn = "Vadheim" };
+            Stopp stopp4 = new Stopp { Id = 1, Navn = "Trondheim" };
+            return new List<Stopp> { stopp1, stopp2, stopp3, stopp4 };
+        }
+
+        /* Tester at ikke listen med Stopp fra BussRepo endrer seg i controlleren
+           for HentAlleBillettyper() */
+        [Fact]
+        public async Task HentAlleBillettyper_RiktigeVerdier()
+        {
+            List<Billettyper> forventet = HentBillettypeListe();
+
+            mockRepo.Setup(b => b.HentAlleBillettyper()).ReturnsAsync(forventet);
+            var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
+            var resultat = await bussController.HentAlleBillettyper() as OkObjectResult;
+            List<Billettyper> faktisk = (List<Billettyper>)resultat.Value;
+
+            Assert.Equal(forventet.Count, faktisk.Count);   // Tester om listene er like lange
+            // Tester om alle verdiene er like i alle elementene
+            for (int i = 0; i < forventet.Count; i++)
+            {
+                Assert.Equal(forventet[i].Billettype, faktisk[i].Billettype);
+                Assert.Equal(forventet[i].Rabattsats, faktisk[i].Rabattsats);
+            }
+        }
+
+        private List<Billettyper> HentBillettypeListe()
+        {
+            Billettyper billettype1 = new Billettyper { Billettype = "Student", Rabattsats = 50 };
+            Billettyper billettype2 = new Billettyper { Billettype = "Voksen", Rabattsats = 0};
+            Billettyper billettype3 = new Billettyper{ Billettype = "Honør", Rabattsats = 25};
+            return new List<Billettyper> { billettype1, billettype2, billettype3 };
+        }
+
+        /* Tester at ikke listen med Stopp fra BussRepo endrer seg i controlleren
+           for HentAlleRuter() */
+        [Fact]
+        public async Task HentAlleRuter_RiktigeVerdier()
+        {
+            List<RuteData> forventet = HentRuteDataListe();
+
+            mockRepo.Setup(b => b.HentAlleRuter()).ReturnsAsync(forventet);
+            var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
+            var resultat = await bussController.HentAlleRuter() as OkObjectResult;
+            List<RuteData> faktisk = (List<RuteData>)resultat.Value;
+
+            Assert.Equal(forventet.Count, faktisk.Count);   // Tester om listene er like lange
+            // Tester om alle verdiene er like i alle elementene
+            for (int i = 0; i < forventet.Count; i++)
+            {
+                Assert.Equal(forventet[i].Stoppene, faktisk[i].Stoppene);
+                Assert.Equal(forventet[i].MinutterTilNesteStopp, faktisk[i].MinutterTilNesteStopp);
+                Assert.Equal(forventet[i].Linjekode, faktisk[i].Linjekode);
+                Assert.Equal(forventet[i].Rutenavn, faktisk[i].Rutenavn);
+                Assert.Equal(forventet[i].Startpris, faktisk[i].Startpris);
+                Assert.Equal(forventet[i].TilleggPerStopp, faktisk[i].TilleggPerStopp);
+            }
+        }
+
+        private List<RuteData> HentRuteDataListe()
+        {
+            List<string> stoppene1 = new List<string> { "Bergen", "Vaheim", "Trondheim" };
+            List<string> stoppene2 = new List<string> { "Oslo", "Røros", "Trondheim" };
+            List<string> stoppene3 = new List<string> { "Kristiansand", "Stavanger", "Molde" };
+            List<int> minuttListe1 = new List<int> { 20, 25, 35 };
+            List<int> minuttListe2 = new List<int> { 20, 23, 35 };
+            List<int> minuttListe3 = new List<int> { 20, 55, 60 };
+            RuteData ruteData1 = new RuteData { Stoppene = stoppene1, MinutterTilNesteStopp = minuttListe1, Linjekode = "NW123", Rutenavn = "Bussturen", Startpris = 79, TilleggPerStopp = 25 };
+            RuteData ruteData2 = new RuteData { Stoppene = stoppene2, MinutterTilNesteStopp = minuttListe2, Linjekode = "NW600", Rutenavn = "Ekspressruta", Startpris = 100, TilleggPerStopp = 15 };
+            RuteData ruteData3 = new RuteData { Stoppene = stoppene3, MinutterTilNesteStopp = minuttListe3, Linjekode = "NW007", Rutenavn = "Bondespressen", Startpris = 50, TilleggPerStopp = 35 };
+            return new List<RuteData> { ruteData1, ruteData2, ruteData3 };
+        }
+
         // Tester at ikke Avgang fra BussRepo endrer seg i controlleren
         [Fact]
-        public async Task FinnNesteAvgangRiktigeVerdier()
+        public async Task FinnNesteAvgang_RiktigeVerdier()
         {
             AvgangParam param = HentAvgangParam();
             Avgang forventetAvgang = HentEnAvgang();
@@ -60,63 +203,14 @@ namespace NOR_WAY_Tests
              * FinnNesteAvgang (BussRepo) fungerer slik den skal */
         }
 
-        private Avgang HentEnAvgang()
-        {
-            var forventetAvgang = new Avgang
-            {
-                AvgangId = 1,
-                Rutenavn = "Fjordekspressen",
-                Linjekode = "NW431",
-                Pris = 100,
-                Avreise = "2020-11-25 17:00",
-                Ankomst = "2020-11-25 18:20",
-                Reisetid = 80
-            };
-
-            return forventetAvgang;
-        }
-
         private AvgangParam HentAvgangParam()
         {
-            var param = new AvgangParam
-            {
-                StartStopp = "Bergen",
-                SluttStopp = "Vadheim",
-                Dato = "2020-11-20",
-                Tidspunkt = "16:00",
-                AvreiseEtter = true
-            };
-
-            return param;
+            return new AvgangParam { StartStopp = "Bergen", SluttStopp = "Vadheim", Dato = "2020-11-20", Tidspunkt = "16:00", AvreiseEtter = true };
         }
 
-        // Tester at ikke listen med Stopp fra BussRepo endrer seg i controlleren
-        [Fact]
-        public async Task HentAlleStoppRiktigeVerdier()
+        private Avgang HentEnAvgang()
         {
-            List<Stopp> forventedeStopp = HentStoppListe();
-
-            mockRepo.Setup(b => b.HentAlleStopp()).ReturnsAsync(forventedeStopp);
-            var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
-            var resultat = await bussController.HentAlleStopp() as OkObjectResult;
-            List<Stopp> faktiskeStopp = (List<Stopp>)resultat.Value;
-
-            Assert.Equal(forventedeStopp.Count, faktiskeStopp.Count);   // Tester om listene er like lange
-            // Tester om alle verdiene er like i alle elementene
-            for (int i = 0; i < forventedeStopp.Count; i++)
-            {
-                Assert.Equal(forventedeStopp[i].Id, faktiskeStopp[i].Id);
-                Assert.Equal(forventedeStopp[i].Navn, faktiskeStopp[i].Navn);
-            }
-        }
-
-        // Returnerer en liste med Stopp
-        private List<Stopp> HentStoppListe() {
-            Stopp stopp1 = new Stopp { Id = 1, Navn = "Bergen" };
-            Stopp stopp2 = new Stopp { Id = 1, Navn = "Oslo" };
-            Stopp stopp3 = new Stopp { Id = 1, Navn = "Vadheim" };
-            Stopp stopp4 = new Stopp { Id = 1, Navn = "Trondheim" };
-            return new List<Stopp> { stopp1, stopp2, stopp3, stopp4 };
+            return new Avgang { AvgangId = 1, Rutenavn = "Fjordekspressen", Linjekode = "NW431", Pris = 100, Avreise = "2020-11-25 17:00", Ankomst = "2020-11-25 18:20", Reisetid = 80 };
         }
 
         [Fact]

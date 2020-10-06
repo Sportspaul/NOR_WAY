@@ -203,18 +203,26 @@ namespace NOR_WAY_Tests
              * FinnNesteAvgang (BussRepo) fungerer slik den skal */
         }
 
-            // Assert
-            Assert.Equal(forventetAvgang, avgang);
+
+        private AvgangParam HentAvgangParam()
+        {
+            return new AvgangParam { StartStopp = "Bergen", SluttStopp = "Vadheim", Dato = "2020-11-20", Tidspunkt = "16:00", AvreiseEtter = true };
+        }
+        private Avgang HentEnAvgang()
+        {
+            return new Avgang { AvgangId = 1, Rutenavn = "Fjordekspressen", Linjekode = "NW431", Pris = 100, Avreise = "2020-11-25 17:00", Ankomst = "2020-11-25 18:20", Reisetid = 80 };
         }
 
+
+
         [Fact]
-        public async Task FinnNesteAvgangTestIkkeOK()
+        public async Task FinnNesteAvgang_NullException()
         {
             // Arrange
             var param = new AvgangParam();
             
             mockRepo.Setup(b => b.FinnNesteAvgang(param)).ReturnsAsync(() => null);
-            var bussController = new BussController(mockRepo.Object, mockLog.Object);
+            var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
 
             // Act
             var resultat = await bussController.FinnNesteAvgang(param) as NotFoundObjectResult;
@@ -224,7 +232,7 @@ namespace NOR_WAY_Tests
         }
 
         [Fact]
-        public async Task FinnNesteAvgangFeilModelTest()
+        public async Task FinnNesteAvgang_RegEx()
         {
             // Arrange
             var param = new AvgangParam
@@ -247,7 +255,7 @@ namespace NOR_WAY_Tests
             };
 
             mockRepo.Setup(b => b.FinnNesteAvgang(param)).ReturnsAsync(forventetAvgang);
-            var bussController = new BussController(mockRepo.Object, mockLog.Object);
+            var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
             bussController.ModelState.AddModelError("Linjekode", "Feil i inputvalideringen på server");
            
 
@@ -258,8 +266,9 @@ namespace NOR_WAY_Tests
             Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
         }
 
+
         [Fact]
-        public async Task FullforOrdreTest()
+        public async Task FullforOrdre_RiktigeVerdier()
         {
             // Arrange
             var billettype = new List<string>

@@ -8,7 +8,9 @@ namespace NOR_WAY.DAL.Interfaces
 {
     public interface IStoppRepository
     {
-        Task<List<StoppInfo>> HentAlleStopp();
+        Task<List<Stopp>> HentAlleStopp();
+
+        Task<List<StoppMedRuter>> HentAlleStoppMedRuter();
 
         Task<bool> EndreStoppnavn(int Id);
     }

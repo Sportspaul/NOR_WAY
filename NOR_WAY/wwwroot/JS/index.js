@@ -27,7 +27,7 @@ let StoppListe = new Array();
 /* Henter alle stoppene i databasen,
  * og kaller funksjoner for å legge til stoppforslag ved input i stoppnavn-feltene */
 function hentAlleStopp() {
-    $.get("BestillReise/HentAlleStopp", function (alleStopp) {
+    $.get("Stopp/HentAlleStopp", function (alleStopp) {
         let stoppListe = new Array();
         for (let i = 0; i < alleStopp.length; i++) {
             stoppListe.push(alleStopp[i].navn)

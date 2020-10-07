@@ -22,9 +22,10 @@ namespace NOR_WAY.Controllers
             _log = log;
         }
 
-        public Task<ActionResult> HentAlleStopp()
+        public async Task<ActionResult> HentAlleStopp()
         {
-            throw new NotImplementedException();
+            List<Stopp> alleStopp = await _db.HentAlleStopp();
+            return Ok(alleStopp); // returnerer alltid OK, null ved tom DB
         }
 
         public Task<ActionResult> EndreStoppnavn(int Id)

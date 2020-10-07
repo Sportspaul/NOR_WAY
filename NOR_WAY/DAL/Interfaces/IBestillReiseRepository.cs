@@ -6,8 +6,6 @@ namespace NOR_WAY.DAL.Interfaces
 {
     public interface IBestillReiseRepository
     {
-        Task<List<Stopp>> HentAlleStopp();
-
         Task<List<Stopp>> FinnMuligeStartStopp(InnStopp startStopp);
 
         Task<List<Stopp>> FinnMuligeSluttStopp(InnStopp sluttStopp);

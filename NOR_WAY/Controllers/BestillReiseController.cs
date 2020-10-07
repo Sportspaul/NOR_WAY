@@ -20,12 +20,6 @@ namespace NOR_WAY.Controllers
             _log = log;
         }
 
-        public async Task<ActionResult> HentAlleStopp()
-        {
-            List<Stopp> alleStopp = await _db.HentAlleStopp();
-            return Ok(alleStopp); // returnerer alltid OK, null ved tom DB
-        }
-
         public async Task<ActionResult> FinnMuligeStartStopp(InnStopp startStopp)
         {
             if (ModelState.IsValid)

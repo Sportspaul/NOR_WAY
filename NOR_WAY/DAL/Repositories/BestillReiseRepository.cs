@@ -382,25 +382,6 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
-        public async Task<List<Stopp>> HentAlleStopp()
-        {
-            try
-            {
-                List<Stopp> alleStopp = await _db.Stopp.Select(s => new Stopp
-                {
-                    Id = s.Id,
-                    Navn = s.Navn
-                }).ToListAsync();
-
-                return alleStopp;
-            }
-            catch (Exception e)
-            {
-                _log.LogInformation(e.Message);
-                return null;
-            }
-        }
-
         public async Task<List<Stopp>> FinnMuligeStartStopp(InnStopp startStopp)
         {
             try

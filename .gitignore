@@ -13,6 +13,9 @@
 #Loggfiler skal ignoreres
 NOR_WAY/Logs/
 
+#DB-fil skal ignoreres
+Buss.db
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 

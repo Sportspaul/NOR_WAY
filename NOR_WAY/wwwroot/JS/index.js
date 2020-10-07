@@ -27,7 +27,7 @@ let StoppListe = new Array();
 /* Henter alle stoppene i databasen,
  * og kaller funksjoner for å legge til stoppforslag ved input i stoppnavn-feltene */
 function hentAlleStopp() {
-    $.get("Buss/HentAlleStopp", function (alleStopp) {
+    $.get("BestillReise/HentAlleStopp", function (alleStopp) {
         let stoppListe = new Array();
         for (let i = 0; i < alleStopp.length; i++) {
             stoppListe.push(alleStopp[i].navn)
@@ -42,7 +42,7 @@ function hentAlleStopp() {
 
 // Henter alle billettypene i databasen
 function hentAlleBillettyper() {
-    $.get("Buss/HentAlleBillettyper", function (alleBillettyper) {
+    $.get("BestillReise/HentAlleBillettyper", function (alleBillettyper) {
         // Fyller nedtrekksmenyen med billettypene som ble hentet
         var nedtrekk = $("#billettype1");
         billettyper = alleBillettyper;
@@ -58,7 +58,7 @@ function finnMuligeSluttStopp() {
     input = $("#startStopp").val();
     if (validerStoppnavnSimple(input) && input != StartStopp) {
         StartStopp = input;
-        const url = "Buss/finnMuligeSluttStopp";
+        const url = "BestillReise/finnMuligeSluttStopp";
         $.post(url, { Navn: input }, function (stopp) {
             let nyStoppListe = new Array();
             for (let i = 0; i < stopp.length; i++) {
@@ -77,7 +77,7 @@ function finnMuligeStartStopp(input) {
     input = $("#sluttStopp").val();
     if (validerStoppnavnSimple(input) && input != SluttStopp) {
         SluttStopp = input;
-        const url = "Buss/finnMuligeStartStopp";
+        const url = "BestillReise/finnMuligeStartStopp";
         $.post(url, { Navn: input }, function (stopp) {
             let nyStoppListe = new Array();
             for (let i = 0; i < stopp.length; i++) {
@@ -97,7 +97,7 @@ function finnNesteAvgang() {
         const feilAvgangElmt = $("#feilAvgang");
         avgangParam = new AvgangParam();
         // Kaller serveren for å finne neste avgang
-        $.post("Buss/FinnNesteAvgang", avgangParam, function (respons) {
+        $.post("BestillReise/FinnNesteAvgang", avgangParam, function (respons) {
             // Modell for å ta imot et Avgang-obj fra backend
             StartStopp = avgangParam.StartStopp;
             SluttStopp = avgangParam.SluttStopp;
@@ -212,7 +212,7 @@ function fullforOrdre() {
     }
     else {
         // Kaller C# Metoden FullforOrdre()
-        $.post("Buss/FullforOrdre", kundeordre);
+        $.post("BestillReise/FullforOrdre", kundeordre);
         window.location.replace("index.html?bestilling=ok");
     }
 }

@@ -9,12 +9,12 @@ using NOR_WAY.Model;
 namespace NOR_WAY.Controllers
 {
     [Route("[controller]/[action]")]
-    public class BussController : ControllerBase
+    public class BestillReiseController : ControllerBase
     {
-        private readonly IBussRepository _db;
-        private ILogger<BussController> _log;
+        private readonly IBestillReiseRepository _db;
+        private ILogger<BestillReiseController> _log;
 
-        public BussController(IBussRepository db, ILogger<BussController> log)
+        public BestillReiseController(IBestillReiseRepository db, ILogger<BestillReiseController> log)
         {
             _db = db;
             _log = log;
@@ -62,17 +62,6 @@ namespace NOR_WAY.Controllers
         {
             List<Billettyper> billettypene = await _db.HentAlleBillettyper();
             return Ok(billettypene);
-        }
-
-        public async Task<ActionResult> HentAlleRuter()
-        {
-            List<RuteData> rutene = await _db.HentAlleRuter();
-            if (rutene == null)
-            {
-                _log.LogInformation("Rutene ble ikke funnet");
-                return NotFound("Rutene ble ikke funnet");
-            }
-            return Ok(rutene);
         }
 
         public async Task<ActionResult> FinnNesteAvgang(AvgangParam input)

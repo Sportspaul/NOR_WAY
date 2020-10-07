@@ -31,7 +31,7 @@ namespace NOR_WAY
             services.AddScoped<IRuterRepository, RuterRepository>();
             services.AddScoped<IRuteStoppRepository, RuteStoppRepository>();
             services.AddScoped<IStoppRepository, StoppRepository>();
-            services.AddScoped<IBussRepository, BussRepository>();
+            services.AddScoped<IBestillReiseRepository, BestillReiseRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

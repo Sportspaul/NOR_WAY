@@ -7,7 +7,7 @@ let ruteMatrise = new Array();
 
 //Til rutedelen
 function hentAlleRuter() {
-    $.get("Buss/HentAlleRuter", function (allerutene) {
+    $.get("Ruter/HentRuterMedStopp", function (allerutene) {
         let rutene = new Array();
         for (let i = 0; i < allerutene.length; i++) {
             rutene.push(allerutene[i]);

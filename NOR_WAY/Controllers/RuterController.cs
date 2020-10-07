@@ -11,12 +11,12 @@ using NOR_WAY.Model;
 namespace NOR_WAY.Controllers
 {
     [Route("[controller]/[action]")]
-    public class RuterController
+    public class RuterController : ControllerBase
     {
-        private readonly IAvgangRepository _db;
+        private readonly IRuterRepository _db;
         private ILogger<RuterController> _log;
 
-        public RuterController(IAvgangRepository db, ILogger<RuterController> log)
+        public RuterController(IRuterRepository db, ILogger<RuterController> log)
         {
             _db = db;
             _log = log;
@@ -31,6 +31,18 @@ namespace NOR_WAY.Controllers
         {
             throw new NotImplementedException();
         }
+
+        public async Task<ActionResult> HentRuterMedStopp()
+        {
+            List<RuteData> rutene = await _db.HentRuterMedStopp();
+            if (rutene == null)
+            {
+                _log.LogInformation("Rutene ble ikke funnet");
+                return NotFound("Rutene ble ikke funnet");
+            }
+            return Ok(rutene);
+        }
+
 
         public Task<ActionResult> NyRute()
         {

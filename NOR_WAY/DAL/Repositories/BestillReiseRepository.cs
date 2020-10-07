@@ -12,12 +12,12 @@ using NOR_WAY.Model;
 namespace NOR_WAY.DAL.Repositories
 {
     [ExcludeFromCodeCoverage]
-    public class BussRepository : IBussRepository
+    public class BestillReiseRepository : IBestillReiseRepository
     {
         private readonly BussContext _db;
-        private ILogger<BussRepository> _log;
+        private ILogger<BestillReiseRepository> _log;
 
-        public BussRepository(BussContext db, ILogger<BussRepository> log)
+        public BestillReiseRepository(BussContext db, ILogger<BestillReiseRepository> log)
         {
             _db = db;
             _log = log;
@@ -464,63 +464,6 @@ namespace NOR_WAY.DAL.Repositories
                 }
 
                 return stoppListe;
-            }
-            catch (Exception e)
-            {
-                _log.LogInformation(e.Message);
-                return null;
-            }
-        }
-
-        public async Task<List<RuteData>> HentAlleRuter()
-        {
-            try
-            {
-                List<RuteData> RuteDataene = new List<RuteData>();
-
-                // Henter alle rutene fra DB
-                List<Ruter> AlleRutene = await _db.Ruter.Select(r => new Ruter
-                {
-                    Linjekode = r.Linjekode,
-                    Rutenavn = r.Rutenavn,
-                    TilleggPerStopp = r.TilleggPerStopp,
-                    Startpris = r.Startpris
-                }).ToListAsync();
-
-                // Lopper gjennom alle rutene i DB
-                foreach (Ruter rute in AlleRutene)
-                {
-                    RuteData rutedata = new RuteData
-                    {
-                        Stoppene = new List<string>(),
-                        MinutterTilNesteStopp = new List<int>(),
-                        Rutenavn = rute.Rutenavn,
-                        Linjekode = rute.Linjekode,
-                        TilleggPerStopp = rute.TilleggPerStopp,
-                        Startpris = rute.Startpris
-                    };
-
-                    // Henter alle ruteStopp som hører til spesifikk rute
-                    List<RuteStopp> ruteStopp = await _db.RuteStopp
-                        .Where(rs => rs.Rute.Linjekode == rute.Linjekode)
-                        .OrderBy(rs => rs.StoppNummer)
-                        .Select(rs => new RuteStopp
-                        {
-                            MinutterTilNesteStopp = rs.MinutterTilNesteStopp,
-                            Rute = rs.Rute,
-                            Stopp = rs.Stopp
-                        }).ToListAsync();
-
-                    // Looper gjennom alle ruteStoppp og legger navn og tid i lister
-                    foreach (RuteStopp rutestopp in ruteStopp)
-                    {
-                        rutedata.Stoppene.Add(rutestopp.Stopp.Navn);
-                        rutedata.MinutterTilNesteStopp.Add(rutestopp.MinutterTilNesteStopp);
-                    }
-                    RuteDataene.Add(rutedata); // Legger objektet i listen
-                }
-
-                return RuteDataene;
             }
             catch (Exception e)
             {

@@ -4,7 +4,7 @@ using NOR_WAY.Model;
 
 namespace NOR_WAY.DAL.Interfaces
 {
-    public interface IBussRepository
+    public interface IBestillReiseRepository
     {
         Task<List<Stopp>> HentAlleStopp();
 
@@ -13,8 +13,6 @@ namespace NOR_WAY.DAL.Interfaces
         Task<List<Stopp>> FinnMuligeSluttStopp(InnStopp sluttStopp);
 
         Task<List<Billettyper>> HentAlleBillettyper();
-
-        Task<List<RuteData>> HentAlleRuter();
 
         Task<Avgang> FinnNesteAvgang(AvgangParam param);
 

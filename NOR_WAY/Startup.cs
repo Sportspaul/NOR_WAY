@@ -26,6 +26,9 @@ namespace NOR_WAY
             // Scoped Services
             services.AddScoped<IBussRepository, BussRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
+            services.AddScoped<IAdminAvgangRepository, AdminAvgangRepository>();
+            services.AddScoped<IAdminRuterRepository, AdminRuterRepository>();
+            services.AddScoped<IAdminRuteStoppRepository, AdminRuteStoppRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

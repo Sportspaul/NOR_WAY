@@ -8,4 +8,4 @@ namespace NOR_WAY.Model
         public string Stoppnavn { get; set; }
         public List<string> Linjekoder{get; set;}
     }
-}
+} 

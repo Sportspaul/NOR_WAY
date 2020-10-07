@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace NOR_WAY.Model
 {
     [ExcludeFromCodeCoverage]
-    public class RuteData
+    public class RuteMedStopp
     {
         public List<string> Stoppene { get; set; }
 

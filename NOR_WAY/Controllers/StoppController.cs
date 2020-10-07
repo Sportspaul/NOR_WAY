@@ -22,6 +22,39 @@ namespace NOR_WAY.Controllers
             _log = log;
         }
 
+        public async Task<ActionResult> FinnMuligeStartStopp(InnStopp startStopp)
+        {
+            if (ModelState.IsValid)
+            {
+                List<Stopp> stoppListe = await _db.FinnMuligeStartStopp(startStopp);
+                if (stoppListe.Count == 0)
+                {
+                    _log.LogInformation("Ingen mulige StartStopp ble funnet");
+                    return NotFound("Ingen mulige StartStopp ble funnet");
+                }
+                return Ok(stoppListe); // returnerer alltid OK, null ved tom DB
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalideringen på server");
+        }
+
+        public async Task<ActionResult> FinnMuligeSluttStopp(InnStopp sluttStopp)
+        {
+            if (ModelState.IsValid)
+            {
+                List<Stopp> stoppListe = await _db.FinnMuligeSluttStopp(sluttStopp);
+                if (stoppListe.Count == 0)
+                {
+                    _log.LogInformation("Ingen mulige SluttStopp ble funnet");
+                    return NotFound("Ingen mulige SluttStopp ble funnet");
+                }
+                return Ok(stoppListe);
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalideringen på server");
+        }
+
+
         public async Task<ActionResult> HentAlleStopp()
         {
             List<Stopp> alleStopp = await _db.HentAlleStopp();

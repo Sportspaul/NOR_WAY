@@ -58,7 +58,7 @@ function finnMuligeSluttStopp() {
     input = $("#startStopp").val();
     if (validerStoppnavnSimple(input) && input != StartStopp) {
         StartStopp = input;
-        const url = "BestillReise/finnMuligeSluttStopp";
+        const url = "Stopp/finnMuligeSluttStopp";
         $.post(url, { Navn: input }, function (stopp) {
             let nyStoppListe = new Array();
             for (let i = 0; i < stopp.length; i++) {
@@ -77,7 +77,7 @@ function finnMuligeStartStopp(input) {
     input = $("#sluttStopp").val();
     if (validerStoppnavnSimple(input) && input != SluttStopp) {
         SluttStopp = input;
-        const url = "BestillReise/finnMuligeStartStopp";
+        const url = "Stopp/finnMuligeStartStopp";
         $.post(url, { Navn: input }, function (stopp) {
             let nyStoppListe = new Array();
             for (let i = 0; i < stopp.length; i++) {

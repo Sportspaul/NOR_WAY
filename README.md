@@ -10,3 +10,7 @@
   # Forutsetninger i prosjektet:
     - Admin kan ikke oppdatere ordre/ordrelinjer
     - Admin kan ikke opprette ordre/ordrelinjer
+    
+    Brukernavn: Admin
+    Passord: Admin
+    

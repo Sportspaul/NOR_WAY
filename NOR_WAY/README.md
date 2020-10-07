@@ -1,6 +1,6 @@
 # NOR_WAY webapplikasjoner
 
-#Github
+# Github
 https://github.com/Sportspaul/NOR_WAY.git
 
 

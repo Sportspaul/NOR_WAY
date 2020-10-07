@@ -11,12 +11,12 @@ using NOR_WAY.Model;
 namespace NOR_WAY.Controllers
 {
     [Route("[controller]/[action]")]
-    public class OrdreController
+    public class OrdreController : ControllerBase
     {
-        private readonly IAvgangRepository _db;
+        private readonly IOrdreRepository _db;
         private ILogger<OrdreController> _log;
 
-        public OrdreController(IAvgangRepository db, ILogger<OrdreController> log)
+        public OrdreController(IOrdreRepository db, ILogger<OrdreController> log)
         {
             _db = db;
             _log = log;

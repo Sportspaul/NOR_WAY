@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using NOR_WAY.DAL;
 using NOR_WAY.DAL.Interfaces;
-using NOR_WAY.Model;
 
 namespace NOR_WAY.Controllers
 {
     [Route("[controller]/[action]")]
-    public class InnloggingController
+    public class InnloggingController : ControllerBase
     {
-        private readonly IAvgangRepository _db;
+        private readonly IInnloggingRepository _db;
         private ILogger<InnloggingController> _log;
 
-        public InnloggingController(IAvgangRepository db, ILogger<InnloggingController> log)
+        public InnloggingController(IInnloggingRepository db, ILogger<InnloggingController> log)
         {
             _db = db;
             _log = log;

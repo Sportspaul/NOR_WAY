@@ -11,12 +11,12 @@ using NOR_WAY.Model;
 namespace NOR_WAY.Controllers
 {
     [Route("[controller]/[action]")]
-    public class RuteStoppController
+    public class RuteStoppController : ControllerBase
     {
-        private readonly IAvgangRepository _db;
+        private readonly IRuteStoppRepository _db;
         private ILogger<RuteStoppController> _log;
 
-        public RuteStoppController(IAvgangRepository db, ILogger<RuteStoppController> log)
+        public RuteStoppController(IRuteStoppRepository db, ILogger<RuteStoppController> log)
         {
             _db = db;
             _log = log;

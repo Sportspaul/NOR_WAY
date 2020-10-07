@@ -11,7 +11,7 @@ using NOR_WAY.Model;
 namespace NOR_WAY.Controllers
 {
     [Route("[controller]/[action]")]
-    public class BillettyperController
+    public class BillettyperController : ControllerBase
     {
         private readonly IBillettyperRepository _db;
         private ILogger<BillettyperController> _log;

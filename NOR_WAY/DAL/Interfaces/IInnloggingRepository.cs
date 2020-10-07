@@ -6,7 +6,7 @@ using NOR_WAY.Model;
 
 namespace NOR_WAY.DAL.Interfaces
 {
-    public interface IinnloggingRepository
+    public interface IInnloggingRepository
     {
         Task<bool> LoggInn(string brukernavn, string passord);
 

@@ -10,13 +10,13 @@ using Xunit.Abstractions;
 
 namespace NOR_WAY_Tests
 {
-    public class AdminTests
+    public class AdminControllerTests
     {
         private readonly Mock<IAdminRepository> mockRepo = new Mock<IAdminRepository>();
         private readonly Mock<ILogger<AdminController>> mockLog = new Mock<ILogger<AdminController>>();
         private readonly ITestOutputHelper output;
 
-        public AdminTests(ITestOutputHelper output)
+        public AdminControllerTests(ITestOutputHelper output)
         {
             this.output = output;
         }

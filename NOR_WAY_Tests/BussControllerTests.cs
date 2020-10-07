@@ -215,7 +215,7 @@ namespace NOR_WAY_Tests
 
         // Tester at ikke Avgang fra BussRepo endrer seg i controlleren
         [Fact]
-        public async Task FinnNesteAvgang_RiktigeVerdier()
+        public async Task FinnNesteAvgang_RiktigeVerdier() // TODO: Fjerne overflødige kommentarer, etter demo for Herman
         {
             AvgangParam param = HentAvgangParam();
             Avgang forventetAvgang = HentAvgang();

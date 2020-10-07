@@ -14,7 +14,6 @@ namespace NOR_WAY.DAL
     public class BussRepository : IBussRepository
     {
         private readonly BussContext _db;
-
         private ILogger<BussRepository> _log;
 
         public BussRepository(BussContext db, ILogger<BussRepository> log)

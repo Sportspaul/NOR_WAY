@@ -24,11 +24,14 @@ namespace NOR_WAY
                             options.UseSqlite("Data Source=Buss.db"));
 
             // Scoped Services
-            services.AddScoped<IBussRepository, BussRepository>();
-            services.AddScoped<IAdminRepository, AdminRepository>();
             services.AddScoped<IAdminAvgangRepository, AdminAvgangRepository>();
+            services.AddScoped<IAdminBillettyperRepository, AdminBillettyperRepository>();
+            services.AddScoped<IAdminInnloggingRepository, AdminInnloggingRepository>();
+            services.AddScoped<IAdminOrdreRepository, AdminOrdreRepository>();
             services.AddScoped<IAdminRuterRepository, AdminRuterRepository>();
             services.AddScoped<IAdminRuteStoppRepository, AdminRuteStoppRepository>();
+            services.AddScoped<IAdminStoppRepository, AdminStoppRepository>();
+            services.AddScoped<IBussRepository, BussRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL.Interfaces;
 using NOR_WAY.Model;
 
@@ -9,14 +11,37 @@ namespace NOR_WAY.DAL.Repositories
 {
     public class BillettyperRepository : IBillettyperRepository
     {
+        private readonly BussContext _db;
+        private ILogger<BillettyperRepository> _log;
+
+        public BillettyperRepository(BussContext db, ILogger<BillettyperRepository> log)
+        {
+            _db = db;
+            _log = log;
+        }
+
         public Task<bool> NyBillettType()
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Billettyper>> HentAlleBillettyper()
+        public async Task<List<Billettyper>> HentAlleBillettyper()
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<Billettyper> alleBillettyper = await _db.Billettyper.Select(b => new Billettyper
+                {
+                    Billettype = b.Billettype,
+                    Rabattsats = b.Rabattsats
+                }).ToListAsync();
+
+                return alleBillettyper;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return null;
+            }
         }
 
         public Task<bool> OppdaterBillettType(string navn)

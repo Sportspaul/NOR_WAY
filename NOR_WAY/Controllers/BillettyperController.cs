@@ -27,9 +27,10 @@ namespace NOR_WAY.Controllers
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult> HentAlleBillettyper()
+        public async Task<ActionResult> HentAlleBillettyper()
         {
-            throw new NotImplementedException();
+            List<Billettyper> billettypene = await _db.HentAlleBillettyper();
+            return Ok(billettypene);
         }
 
         public Task<ActionResult> OppdaterBillettType(string navn)

@@ -58,12 +58,6 @@ namespace NOR_WAY.Controllers
             return BadRequest("Feil i inputvalideringen på server");
         }
 
-        public async Task<ActionResult> HentAlleBillettyper()
-        {
-            List<Billettyper> billettypene = await _db.HentAlleBillettyper();
-            return Ok(billettypene);
-        }
-
         public async Task<ActionResult> FinnNesteAvgang(AvgangParam input)
         {
             if (ModelState.IsValid)

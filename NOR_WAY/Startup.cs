@@ -26,7 +26,7 @@ namespace NOR_WAY
             // Scoped Services
             services.AddScoped<IAvgangRepository, AvgangRepository>();
             services.AddScoped<IBillettyperRepository, BillettyperRepository>();
-            services.AddScoped<IinnloggingRepository, InnloggingRepository>();
+            services.AddScoped<IInnloggingRepository, InnloggingRepository>();
             services.AddScoped<IOrdreRepository, OrdreRepository>();
             services.AddScoped<IRuterRepository, RuterRepository>();
             services.AddScoped<IRuteStoppRepository, RuteStoppRepository>();

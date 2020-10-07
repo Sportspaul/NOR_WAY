@@ -12,8 +12,6 @@ namespace NOR_WAY.DAL.Interfaces
 
         Task<List<Stopp>> FinnMuligeSluttStopp(InnStopp sluttStopp);
 
-        Task<List<Billettyper>> HentAlleBillettyper();
-
         Task<Avgang> FinnNesteAvgang(AvgangParam param);
 
         Task<bool> FullforOrdre(KundeOrdre ordre);

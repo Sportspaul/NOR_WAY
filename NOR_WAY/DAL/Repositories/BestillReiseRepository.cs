@@ -382,25 +382,6 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
-        public async Task<List<Billettyper>> HentAlleBillettyper()
-        {
-            try
-            {
-                List<Billettyper> alleBillettyper = await _db.Billettyper.Select(b => new Billettyper
-                {
-                    Billettype = b.Billettype,
-                    Rabattsats = b.Rabattsats
-                }).ToListAsync();
-
-                return alleBillettyper;
-            }
-            catch (Exception e)
-            {
-                _log.LogInformation(e.Message);
-                return null;
-            }
-        }
-
         public async Task<List<Stopp>> HentAlleStopp()
         {
             try

@@ -42,7 +42,7 @@ function hentAlleStopp() {
 
 // Henter alle billettypene i databasen
 function hentAlleBillettyper() {
-    $.get("BestillReise/HentAlleBillettyper", function (alleBillettyper) {
+    $.get("Billettyper/HentAlleBillettyper", function (alleBillettyper) {
         // Fyller nedtrekksmenyen med billettypene som ble hentet
         var nedtrekk = $("#billettype1");
         billettyper = alleBillettyper;

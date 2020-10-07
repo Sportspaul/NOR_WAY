@@ -7,7 +7,7 @@ using NOR_WAY.Model;
 
 namespace NOR_WAY.DAL.Repositories
 {
-    public class AdminOrdreRepository : IAdminOrdreRepository
+    public class OrdreRepository : IOrdreRepository
     {
         public Task<List<KundeOrdre>> HentOrdre(string epost)
         {

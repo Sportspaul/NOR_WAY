@@ -11,33 +11,29 @@ using NOR_WAY.Model;
 namespace NOR_WAY.Controllers
 {
     [Route("[controller]/[action]")]
-    public class AdminBillettyperController
+    public class InnloggingController
     {
-        private readonly IAdminBillettyperRepository _db;
-        private ILogger<AdminBillettyperController> _log;
+        private readonly IAvgangRepository _db;
+        private ILogger<InnloggingController> _log;
 
-        public AdminBillettyperController(IAdminBillettyperRepository db, ILogger<AdminBillettyperController> log)
+        public InnloggingController(IAvgangRepository db, ILogger<InnloggingController> log)
         {
             _db = db;
             _log = log;
         }
 
-        public Task<ActionResult> NyBillettType()
+        public Task<ActionResult> LoggInn(string brukernavn, string passord)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult> HentAlleBillettyper()
+        public Task<ActionResult> LoggUt()
         {
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult> OppdaterBillettType(string navn)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ActionResult> FjernBillettType(string navn)
+        //TODO: Midlertidig til vi vet om denne skal ligge her
+        public Task<ActionResult> NyAdmin(string brukernavn, string passord)
         {
             throw new NotImplementedException();
         }

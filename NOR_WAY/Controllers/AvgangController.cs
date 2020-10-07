@@ -11,29 +11,33 @@ using NOR_WAY.Model;
 namespace NOR_WAY.Controllers
 {
     [Route("[controller]/[action]")]
-    public class AdminInnloggingController
+    public class AvgangController
     {
-        private readonly IAdminAvgangRepository _db;
-        private ILogger<AdminInnloggingController> _log;
+        private readonly IAvgangRepository _db;
+        private ILogger<AvgangController> _log;
 
-        public AdminInnloggingController(IAdminAvgangRepository db, ILogger<AdminInnloggingController> log)
+        public AvgangController(IAvgangRepository db, ILogger<AvgangController> log)
         {
             _db = db;
             _log = log;
         }
 
-        public Task<ActionResult> LoggInn(string brukernavn, string passord)
+        public Task<ActionResult> FjernAvgang(int Id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult> LoggUt()
+        public Task<ActionResult> HentAvganger(string linjekode, int side)
         {
             throw new NotImplementedException();
         }
 
-        //TODO: Midlertidig til vi vet om denne skal ligge her
-        public Task<ActionResult> NyAdmin(string brukernavn, string passord)
+        public Task<ActionResult> NyAvgang(NyAvgang nyAvgang)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ActionResult> OppdaterAvgang(Avgang avgang, int Id)
         {
             throw new NotImplementedException();
         }

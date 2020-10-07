@@ -103,8 +103,8 @@ namespace NOR_WAY.DAL
                 admin.BrukerId = 1;
                 string passord = "Admin";
 
-                byte[] salt = AdminInnloggingRepository.LagSalt();
-                byte[] hash = AdminInnloggingRepository.LagHash(passord, salt);
+                byte[] salt = InnloggingRepository.LagSalt();
+                byte[] hash = InnloggingRepository.LagHash(passord, salt);
                 admin.Passord = hash;
                 admin.Salt = salt;
                 context.Brukere.Add(admin);

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace NOR_WAY.DAL.Interfaces
 {
-    public interface IAdminBillettyperRepository
+    public interface IBillettyperRepository
     {
         Task<bool> NyBillettType();
 

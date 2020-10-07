@@ -7,7 +7,7 @@ using NOR_WAY.Model;
 
 namespace NOR_WAY.DAL.Repositories
 {
-    public class AdminBillettyperRepository : IAdminBillettyperRepository
+    public class BillettyperRepository : IBillettyperRepository
     {
         public Task<bool> NyBillettType()
         {

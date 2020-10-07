@@ -6,7 +6,7 @@ using NOR_WAY.Model;
 
 namespace NOR_WAY.DAL.Interfaces
 {
-    public interface IAdminStoppRepository
+    public interface IStoppRepository
     {
         Task<List<StoppInfo>> HentAlleStopp();
 

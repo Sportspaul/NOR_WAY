@@ -6,7 +6,7 @@ using NOR_WAY.Model;
 
 namespace NOR_WAY.DAL.Interfaces
 {
-    public interface IAdminRuteStoppRepository
+    public interface IRuteStoppRepository
     {
 
         Task<bool> NyRuteStopp(NyRuteStopp nyRuteStopp);

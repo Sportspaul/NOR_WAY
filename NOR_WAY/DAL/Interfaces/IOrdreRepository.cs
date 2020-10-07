@@ -6,7 +6,7 @@ using NOR_WAY.Model;
 
 namespace NOR_WAY.DAL.Interfaces
 {
-    public interface IAdminOrdreRepository
+    public interface IOrdreRepository
     {
         Task<List<KundeOrdre>> HentOrdre(string epost);
 

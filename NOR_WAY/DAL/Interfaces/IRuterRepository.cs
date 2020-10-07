@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace NOR_WAY.DAL.Interfaces
 {
-    public interface IAdminRuterRepository
+    public interface IRuterRepository
     {
         Task<bool> NyRute();
 

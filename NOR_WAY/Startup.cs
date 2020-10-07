@@ -24,13 +24,13 @@ namespace NOR_WAY
                             options.UseSqlite("Data Source=Buss.db"));
 
             // Scoped Services
-            services.AddScoped<IAdminAvgangRepository, AdminAvgangRepository>();
-            services.AddScoped<IAdminBillettyperRepository, AdminBillettyperRepository>();
-            services.AddScoped<IAdminInnloggingRepository, AdminInnloggingRepository>();
-            services.AddScoped<IAdminOrdreRepository, AdminOrdreRepository>();
-            services.AddScoped<IAdminRuterRepository, AdminRuterRepository>();
-            services.AddScoped<IAdminRuteStoppRepository, AdminRuteStoppRepository>();
-            services.AddScoped<IAdminStoppRepository, AdminStoppRepository>();
+            services.AddScoped<IAvgangRepository, AvgangRepository>();
+            services.AddScoped<IBillettyperRepository, BillettyperRepository>();
+            services.AddScoped<IinnloggingRepository, InnloggingRepository>();
+            services.AddScoped<IOrdreRepository, OrdreRepository>();
+            services.AddScoped<IRuterRepository, RuterRepository>();
+            services.AddScoped<IRuteStoppRepository, RuteStoppRepository>();
+            services.AddScoped<IStoppRepository, StoppRepository>();
             services.AddScoped<IBussRepository, BussRepository>();
         }
 

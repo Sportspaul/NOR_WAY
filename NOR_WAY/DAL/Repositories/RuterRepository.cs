@@ -6,7 +6,7 @@ using NOR_WAY.DAL.Interfaces;
 
 namespace NOR_WAY.DAL.Repositories
 {
-    public class AdminRuterRepository : IAdminRuterRepository
+    public class RuterRepository : IRuterRepository
     {
         public Task<bool> FjernRute(string linjekode)
         {

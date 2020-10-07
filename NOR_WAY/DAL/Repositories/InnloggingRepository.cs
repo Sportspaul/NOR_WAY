@@ -9,7 +9,7 @@ using NOR_WAY.Model;
 
 namespace NOR_WAY.DAL.Repositories
 {
-    public class AdminInnloggingRepository : IAdminInnloggingRepository
+    public class InnloggingRepository : IinnloggingRepository
     {
         public Task<bool> LoggInn(string brukernavn, string passord)
         {

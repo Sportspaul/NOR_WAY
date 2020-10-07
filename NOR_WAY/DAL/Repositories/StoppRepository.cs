@@ -7,7 +7,7 @@ using NOR_WAY.Model;
 
 namespace NOR_WAY.DAL.Repositories
 {
-    public class AdminStoppRepository : IAdminStoppRepository
+    public class StoppRepository : IStoppRepository
     {
         public Task<List<StoppInfo>> HentAlleStopp()
         {

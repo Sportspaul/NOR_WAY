@@ -11,33 +11,33 @@ using NOR_WAY.Model;
 namespace NOR_WAY.Controllers
 {
     [Route("[controller]/[action]")]
-    public class AdminRuterController
+    public class BillettyperController
     {
-        private readonly IAdminAvgangRepository _db;
-        private ILogger<AdminRuterController> _log;
+        private readonly IBillettyperRepository _db;
+        private ILogger<BillettyperController> _log;
 
-        public AdminRuterController(IAdminAvgangRepository db, ILogger<AdminRuterController> log)
+        public BillettyperController(IBillettyperRepository db, ILogger<BillettyperController> log)
         {
             _db = db;
             _log = log;
         }
 
-        public Task<ActionResult> FjernRute(string linjekode)
+        public Task<ActionResult> NyBillettType()
         {
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult> HentAlleRuter()
+        public Task<ActionResult> HentAlleBillettyper()
         {
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult> NyRute()
+        public Task<ActionResult> OppdaterBillettType(string navn)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult> OppdaterRute(Ruter rute, string linjekode)
+        public Task<ActionResult> FjernBillettType(string navn)
         {
             throw new NotImplementedException();
         }

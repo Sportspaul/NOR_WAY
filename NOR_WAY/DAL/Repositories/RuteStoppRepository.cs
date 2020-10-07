@@ -7,24 +7,29 @@ using NOR_WAY.Model;
 
 namespace NOR_WAY.DAL.Repositories
 {
-    public class AdminAvgangRepository : IAdminAvgangRepository
+    public class RuteStoppRepository : IRuteStoppRepository
     {
-        public Task<bool> FjernAvgang(int Id)
+        public Task<bool> FjernRuteStopp(int Id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Avganger> HentAvganger(string linjekode, int side)
+        public Task<List<NyRuteStopp>> HentAlleRuteStopp()
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> NyAvgang(NyAvgang nyAvgang)
+        public Task<RuteStopp> HentRuteStopp(string linjekode)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> OppdaterAvgang(Avgang avgang, int Id)
+        public Task<bool> NyRuteStopp(NyRuteStopp nyRuteStopp)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> OppdaterStoppNavn(int Id)
         {
             throw new NotImplementedException();
         }

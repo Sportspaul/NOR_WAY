@@ -14,7 +14,7 @@
 NOR_WAY/Logs/
 
 #DB-fil skal ignoreres
-Buss.db
+*.db
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

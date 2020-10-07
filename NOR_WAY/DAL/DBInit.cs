@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using NOR_WAY.DAL.Repositories;
 
 namespace NOR_WAY.DAL
 {
@@ -95,6 +96,20 @@ namespace NOR_WAY.DAL
                 List<Billettyper> billettyper = new List<Billettyper> { voksen, honnor, student, barn };
                 InjiserBillettyper(billettyper, context);
 
+
+                Brukere admin = new Brukere();
+                admin.Brukernavn = "Admin";
+                admin.Tilgang = "Admin";
+                admin.BrukerId = 1;
+                string passord = "Admin";
+
+                byte[] salt = AdminInnloggingRepository.LagSalt();
+                byte[] hash = AdminInnloggingRepository.LagHash(passord, salt);
+                admin.Passord = hash;
+                admin.Salt = salt;
+                context.Brukere.Add(admin);
+
+                
                 // Injiserer Avganger
                 DateTime idag = DateTime.Now;
                 InjiserAvganger(idag, NW431Rute, 2.00, 100, context);

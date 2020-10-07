@@ -6,9 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using NOR_WAY.DAL.Interfaces;
 using NOR_WAY.Model;
 
-namespace NOR_WAY.DAL
+namespace NOR_WAY.DAL.Repositories
 {
     [ExcludeFromCodeCoverage]
     public class BussRepository : IBussRepository
@@ -406,6 +407,7 @@ namespace NOR_WAY.DAL
             {
                 List<Stopp> alleStopp = await _db.Stopp.Select(s => new Stopp
                 {
+                    Id = s.Id,
                     Navn = s.Navn
                 }).ToListAsync();
 

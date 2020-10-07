@@ -12,7 +12,6 @@ namespace NOR_WAY.DAL
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string Linjekode { get; set; } // PK
-
         public string Rutenavn { get; set; }
         public int Startpris { get; set; }
         public int TilleggPerStopp { get; set; }

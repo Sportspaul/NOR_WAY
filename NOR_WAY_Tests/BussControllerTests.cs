@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NOR_WAY.Controllers;
 using NOR_WAY.DAL;
+using NOR_WAY.DAL.Interfaces;
 using NOR_WAY.Model;
 using Xunit;
 

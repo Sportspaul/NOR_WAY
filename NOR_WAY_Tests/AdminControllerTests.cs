@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NOR_WAY.Controllers;
 using NOR_WAY.DAL;
+using NOR_WAY.DAL.Interfaces;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -25,9 +26,7 @@ namespace NOR_WAY_Tests
         [Fact]
         public void HeiVerden()
         {
-            mockRepo.Setup(b => b.HeiVerden()).ReturnsAsync("Hei Verden");
-            var adminController = new AdminController(mockRepo.Object, mockLog.Object);
-            var resultat = adminController.HeiVerden() as OkObjectResult;
+
         }
     }
 }

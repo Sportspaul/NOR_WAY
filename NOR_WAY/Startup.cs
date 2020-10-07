@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL;
+using NOR_WAY.DAL.Interfaces;
+using NOR_WAY.DAL.Repositories;
 
 namespace NOR_WAY
 {

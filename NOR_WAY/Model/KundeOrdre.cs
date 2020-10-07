@@ -8,6 +8,10 @@ namespace NOR_WAY.Model
     [ExcludeFromCodeCoverage]
     public class KundeOrdre
     {
+        // TODO: Lagt til OrdreId, modifiser koden så det funker
+        [RegularExpression(@"[1-9][0-9]{0,8}")]
+        public int OrdreId { get; set; } = 1;
+
         [RegularExpression(@"^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-z]{2,4}$")]
         public string Epost { get; set; }
 

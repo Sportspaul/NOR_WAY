@@ -1,5 +1,9 @@
 # NOR_WAY webapplikasjoner
 
+#Github
+https://github.com/Sportspaul/NOR_WAY.git
+
+
 # Del 1
   # Forutsetninger i prosjektet:
     - Henter første rute i databasen, ikke nødvendigvis den raskeste

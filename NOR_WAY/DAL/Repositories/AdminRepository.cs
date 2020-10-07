@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL.Interfaces;
 using NOR_WAY.Model;
@@ -21,72 +23,6 @@ namespace NOR_WAY.DAL.Repositories
             _log = log;
         }
 
-        public Task<bool> EndreStoppnavn(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> FjernAvgang(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> FjernBillettType(string navn)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> FjernRute(string linjekode)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> FjernRuteStopp(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        // TODO: Fjern Eksempel
-        public Task<string> HeiVerden()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Billettyper>> HentAlleBillettyper()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Ruter>> HentAlleRuter()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<NyRuteStopp>> HentAlleRuteStopp()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<StoppInfo>> HentAlleStopp()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Avganger> HentAvganger(string linjekode, int side)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<KundeOrdre>> HentOrdre(string epost)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<RuteStopp> HentRuteStopp(string linjekode)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<bool> LoggInn(string brukernavn, string passord)
         {
             throw new NotImplementedException();
@@ -102,49 +38,22 @@ namespace NOR_WAY.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> NyAvgang(NyAvgang nyAvgang)
+        public static byte[] LagHash(string passord, byte[] salt)
         {
-            throw new NotImplementedException();
+            return KeyDerivation.Pbkdf2(
+                                password: passord,
+                                salt: salt,
+                                prf: KeyDerivationPrf.HMACSHA512,
+                                iterationCount: 1000,
+                                numBytesRequested: 32);
         }
 
-        public Task<bool> NyBillettType()
+        public static byte[] LagSalt()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> NyRute()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> NyRuteStopp(NyRuteStopp nyRuteStopp)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> OppdaterAvgang(Avgang avgang, int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> OppdaterBillettType(string navn)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> OppdaterRute(Ruter rute, string linjekode)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> OppdaterStoppNavn(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> SlettOrdre(int id)
-        {
-            throw new NotImplementedException();
+            var csp = new RNGCryptoServiceProvider();
+            var salt = new byte[24];
+            csp.GetBytes(salt);
+            return salt;
         }
     }
 }

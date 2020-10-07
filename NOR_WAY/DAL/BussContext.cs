@@ -86,6 +86,17 @@ namespace NOR_WAY.DAL
     }
 
     [ExcludeFromCodeCoverage]
+    public class Brukere
+    {
+        public int BrukerId { get; set; } //PK
+        public string Brukernavn { get; set; }
+
+        public string Passord { get; set; }
+
+        public string Tilgang { get; set; }
+    }
+
+    [ExcludeFromCodeCoverage]
     public class BussContext : DbContext
     {
         public BussContext(DbContextOptions<BussContext> options) : base(options)
@@ -100,6 +111,7 @@ namespace NOR_WAY.DAL
         public DbSet<Ordre> Ordre { get; set; }
         public DbSet<Ordrelinjer> Ordrelinjer { get; set; }
         public DbSet<Billettyper> Billettyper { get; set; }
+        public DbSet<Brukere>Brukere { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

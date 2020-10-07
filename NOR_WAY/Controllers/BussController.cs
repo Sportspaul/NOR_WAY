@@ -29,8 +29,13 @@ namespace NOR_WAY.Controllers
         {
             if (ModelState.IsValid)
             {
-                List<Stopp> stopp = await _db.FinnMuligeStartStopp(startStopp);
-                return Ok(stopp); // returnerer alltid OK, null ved tom DB
+                List<Stopp> stoppListe = await _db.FinnMuligeStartStopp(startStopp);
+                if (stoppListe.Count == 0)
+                {
+                    _log.LogInformation("Ingen mulige StartStopp ble funnet");
+                    return NotFound("Ingen mulige StartStopp ble funnet");
+                }
+                return Ok(stoppListe); // returnerer alltid OK, null ved tom DB
             }
             _log.LogInformation("Feil i inputvalideringen på server");
             return BadRequest("Feil i inputvalideringen på server");
@@ -40,8 +45,13 @@ namespace NOR_WAY.Controllers
         {
             if (ModelState.IsValid)
             {
-                List<Stopp> alleStopp = await _db.FinnMuligeSluttStopp(sluttStopp);
-                return Ok(alleStopp);
+                List<Stopp> stoppListe = await _db.FinnMuligeSluttStopp(sluttStopp);
+                if (stoppListe.Count == 0)
+                {
+                    _log.LogInformation("Ingen mulige SluttStopp ble funnet");
+                    return NotFound("Ingen mulige SluttStopp ble funnet");
+                }
+                return Ok(stoppListe);
             }
             _log.LogInformation("Feil i inputvalideringen på server");
             return BadRequest("Feil i inputvalideringen på server");

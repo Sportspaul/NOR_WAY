@@ -31,7 +31,7 @@ namespace NOR_WAY_Tests
         {
             // Arrange
             List<Stopp> forventedeStopp = HentStoppListe();
-            mockRepo.Setup(b => b.HentAlleStopp()).ReturnsAsync(forventedeStopp);
+            mockRepo.Setup(b => b.HentAlleStopp()).ReturnsAsync(HentStoppListe());
 
             // Act
             var resultat = await bussController.HentAlleStopp() as OkObjectResult;
@@ -58,7 +58,7 @@ namespace NOR_WAY_Tests
             // Arrange
             InnStopp innStopp = HentUgyldigInnStopp();
             List<Stopp> forventedeStopp = HentStoppListe();
-            mockRepo.Setup(b => b.FinnMuligeStartStopp(innStopp)).ReturnsAsync(forventedeStopp);
+            mockRepo.Setup(b => b.FinnMuligeStartStopp(innStopp)).ReturnsAsync(HentStoppListe());
 
             // Act
             var resultat = await bussController.FinnMuligeStartStopp(innStopp) as OkObjectResult;
@@ -72,6 +72,22 @@ namespace NOR_WAY_Tests
                 Assert.Equal(forventedeStopp[i].Id, faktiskeStopp[i].Id);
                 Assert.Equal(forventedeStopp[i].Navn, faktiskeStopp[i].Navn);
             }
+        }
+
+        // Tester at FinnMulgeStartStopp i controlleren håndterer Tom liste
+        [Fact]
+        public async Task FinnMuligeStartStopp_TomListe()
+        {
+            // Arrange 
+            InnStopp innStopp = HentInnStopp();
+            List<Stopp> tomStoppListe = new List<Stopp>();
+            mockRepo.Setup(b => b.FinnMuligeStartStopp(innStopp)).ReturnsAsync(tomStoppListe);
+
+            // Act
+            var resultat = await bussController.FinnMuligeStartStopp(innStopp) as NotFoundObjectResult;
+
+            // Assert
+            Assert.Equal("Ingen mulige StartStopp ble funnet", resultat.Value);
         }
 
         // Tester at FinnMulgeStartStopp i controlleren håndterer InvalidModelState
@@ -105,7 +121,7 @@ namespace NOR_WAY_Tests
             // Arrange
             List<Stopp> forventet = HentStoppListe();
             InnStopp innStopp = new InnStopp { Navn = "Bergen" };
-            mockRepo.Setup(b => b.FinnMuligeSluttStopp(innStopp)).ReturnsAsync(forventet);
+            mockRepo.Setup(b => b.FinnMuligeSluttStopp(innStopp)).ReturnsAsync(HentStoppListe());
 
             // Act
             var resultat = await bussController.FinnMuligeSluttStopp(innStopp) as OkObjectResult;
@@ -119,6 +135,22 @@ namespace NOR_WAY_Tests
                 Assert.Equal(forventet[i].Id, faktisk[i].Id);
                 Assert.Equal(forventet[i].Navn, faktisk[i].Navn);
             }
+        }
+
+        // Tester at FinnMulgeStartStopp i controlleren håndterer Tom liste
+        [Fact]
+        public async Task FinnMuligeSluttStopp_TomListe()
+        {
+            // Arrange 
+            InnStopp innStopp = HentInnStopp();
+            List<Stopp> tomStoppListe = new List<Stopp>();
+            mockRepo.Setup(b => b.FinnMuligeSluttStopp(innStopp)).ReturnsAsync(tomStoppListe);
+
+            // Act
+            var resultat = await bussController.FinnMuligeSluttStopp(innStopp) as NotFoundObjectResult;
+
+            // Assert
+            Assert.Equal("Ingen mulige SluttStopp ble funnet", resultat.Value);
         }
 
         // Tester at FinnMuligeSluttStopp i controlleren håndterer InvalidModelState
@@ -151,7 +183,7 @@ namespace NOR_WAY_Tests
         {
             // Arrange
             List<Billettyper> forventet = HentBillettyperListe();
-            mockRepo.Setup(b => b.HentAlleBillettyper()).ReturnsAsync(forventet);
+            mockRepo.Setup(b => b.HentAlleBillettyper()).ReturnsAsync(HentBillettyperListe());
 
             // Act
             var resultat = await bussController.HentAlleBillettyper() as OkObjectResult;
@@ -177,7 +209,7 @@ namespace NOR_WAY_Tests
         {
             // Arrange
             List<RuteData> forventet = HentRuteDataListe();
-            mockRepo.Setup(b => b.HentAlleRuter()).ReturnsAsync(forventet);
+            mockRepo.Setup(b => b.HentAlleRuter()).ReturnsAsync(HentRuteDataListe());
 
             // Act
             var resultat = await bussController.HentAlleRuter() as OkObjectResult;
@@ -215,29 +247,18 @@ namespace NOR_WAY_Tests
 
         // Tester at ikke Avgang fra BussRepo endrer seg i controlleren
         [Fact]
-        public async Task FinnNesteAvgang_RiktigeVerdier() // TODO: Fjerne overflødige kommentarer, etter demo for Herman
+        public async Task FinnNesteAvgang_RiktigeVerdier() 
         {
+            // Arrange
             AvgangParam param = HentAvgangParam();
             Avgang forventetAvgang = HentAvgang();
 
-            // Lager en mock av IBussRepo og sier at FinnNesteAvgang-metoden (BussRepo) alltid skal returnerer Avgang fra enAvgang()
-            mockRepo.Setup(b => b.FinnNesteAvgang(param)).ReturnsAsync(forventetAvgang);
-
-            /* Nytt instans av BussCtr som tar inn IBussRepo-mock som argument.
-             * Altså objektet med FinnNesteAvgang-metoden som alltid returnerer Avgang fra enAvgang() */
-            var bussController = new BussController(mockRepo.Object, mockLogCtr.Object);
-
-            /* Kaller FinnNesteAvgang-metoden (BussCtr),
-             * som igjen kaller FinnNesteAvgang (BussRepo), 
-             * men siden vi har mocket vil den metoden alltid returnere Avgang fra enAvgang() */
+            // Act
+            mockRepo.Setup(b => b.FinnNesteAvgang(param)).ReturnsAsync(HentAvgang());
             var resultat = await bussController.FinnNesteAvgang(param) as OkObjectResult;
-
-            // Henter ut Avgang-objektet fra OkObjectResult som FinnNesteAvgang fra Controlleren returnerte
             Avgang faktiskAvgang = (Avgang)resultat.Value;
 
-            /* Disse testene sjekker da om Avgang-objetet ble modifisert i FinnNesteAvgang (BussCtr)
-             * Det betyr at vi har isolert metoden fra resten av programmet 
-             * Vi luker ut eventuelle feil som kan oppså i DB */
+            // Assert
             Assert.Equal(forventetAvgang.AvgangId, faktiskAvgang.AvgangId);
             Assert.Equal(forventetAvgang.Rutenavn, faktiskAvgang.Rutenavn);
             Assert.Equal(forventetAvgang.Linjekode, faktiskAvgang.Linjekode);
@@ -245,10 +266,6 @@ namespace NOR_WAY_Tests
             Assert.Equal(forventetAvgang.Avreise, faktiskAvgang.Avreise);
             Assert.Equal(forventetAvgang.Ankomst, faktiskAvgang.Ankomst);
             Assert.Equal(forventetAvgang.Reisetid, faktiskAvgang.Reisetid);
-
-            /* Skriver vi tester for alle metodene i BussCtr kan vi sikre oss mot skrivefeil
-             * og forsikre oss om at metodene i BussCtr alltid vil returnere riktig verider så lenge 
-             * FinnNesteAvgang (BussRepo) fungerer slik den skal */
         }
 
         [Fact]
@@ -395,6 +412,11 @@ namespace NOR_WAY_Tests
             RuteData ruteData2 = new RuteData { Stoppene = stoppene2, MinutterTilNesteStopp = minuttListe2, Linjekode = "NW600", Rutenavn = "Ekspressruta", Startpris = 100, TilleggPerStopp = 15 };
             RuteData ruteData3 = new RuteData { Stoppene = stoppene3, MinutterTilNesteStopp = minuttListe3, Linjekode = "NW007", Rutenavn = "Bondespressen", Startpris = 50, TilleggPerStopp = 35 };
             return new List<RuteData> { ruteData1, ruteData2, ruteData3 };
+        }
+
+        private InnStopp HentInnStopp()
+        {
+            return new InnStopp { Navn = "Bergen" };
         }
 
         // Returnerer et InnStopp-objekt med ugyldig Navn

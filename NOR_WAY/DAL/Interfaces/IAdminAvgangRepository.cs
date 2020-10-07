@@ -6,7 +6,7 @@ using NOR_WAY.Model;
 
 namespace NOR_WAY.DAL.Interfaces
 {
-    interface IAdminAvgangRepository
+    public interface IAdminAvgangRepository
     {
 
         Task<bool> NyAvgang(NyAvgang nyAvgang);

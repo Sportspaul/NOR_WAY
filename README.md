@@ -8,5 +8,5 @@
       
 # Del 2
   # Forutsetninger i prosjektet:
-   - Admin kan ikke oppdatere ordre/ordrelinjer
-   - Admin kan ikke opprette ordre/ordrelinjer
+    - Admin kan ikke oppdatere ordre/ordrelinjer
+    - Admin kan ikke opprette ordre/ordrelinjer

@@ -7,37 +7,6 @@ namespace NOR_WAY.DAL.Interfaces
 {
     public interface IAdminRepository
     {
-        // Ruter: CRUD
-        Task<bool> NyRute();
-
-        Task<List<Ruter>> HentAlleRuter();
-
-        Task<bool> OppdaterRute(Ruter rute, string linjekode);
-
-        Task<bool> FjernRute(string linjekode);
-
-        // Avgang: CRUD
-
-        Task<bool> NyAvgang(NyAvgang nyAvgang);
-
-        Task<Avganger> HentAvganger(string linjekode, int side);
-
-        Task<bool> OppdaterAvgang(Avgang avgang, int Id);
-
-        Task<bool> FjernAvgang(int Id);
-
-        // RuteStopp: CRUD
-
-        Task<bool> NyRuteStopp(NyRuteStopp nyRuteStopp);
-
-        Task<RuteStopp> HentRuteStopp(string linjekode);
-
-        Task<bool> OppdaterStoppNavn(int Id);
-
-        Task<List<NyRuteStopp>> HentAlleRuteStopp();
-
-        Task<bool> FjernRuteStopp(int Id);
-
         // Billettyper: CRUD
 
         Task<bool> NyBillettType();

@@ -21,11 +21,5 @@ namespace NOR_WAY.Controllers
             _db = db;
             _log = log;
         }
-
-        // TODO: Fjern Eksempel
-        public ActionResult HeiVerden()
-        {
-            return Ok("Hei Verden");
-        }
     }
 }

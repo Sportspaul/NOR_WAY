@@ -20,7 +20,7 @@ namespace NOR_WAY.DAL.Repositories
             _log = log;
         }
 
-        public Task<bool> NyBillettType()
+        public Task<bool> NyBillettType(Billettyper nyBillettype)
         {
             throw new NotImplementedException();
         }
@@ -44,7 +44,7 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
-        public Task<bool> OppdaterBillettType(string navn)
+        public Task<bool> OppdaterRabattsats(Billettyper oppdatertRabattsats)
         {
             throw new NotImplementedException();
         }

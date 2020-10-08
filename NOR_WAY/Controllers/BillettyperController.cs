@@ -22,7 +22,7 @@ namespace NOR_WAY.Controllers
             _log = log;
         }
 
-        public Task<ActionResult> NyBillettType()
+        public Task<ActionResult> NyBillettType(Billettyper nyBillettype)
         {
             throw new NotImplementedException();
         }
@@ -33,7 +33,7 @@ namespace NOR_WAY.Controllers
             return Ok(billettypene);
         }
 
-        public Task<ActionResult> OppdaterBillettType(string navn)
+        public Task<ActionResult> OppdaterRabattsats(Billettyper oppdatertRabattsats)
         {
             throw new NotImplementedException();
         }

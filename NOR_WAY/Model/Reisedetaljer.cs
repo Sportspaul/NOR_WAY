@@ -5,7 +5,7 @@ namespace NOR_WAY.Model
 {
     // Modell for å sende Avgangsinformasjon til klienten
     [ExcludeFromCodeCoverage]
-    public class Avgang
+    public class Reisedetaljer
     {
         [RegularExpression(@"[0-9]{1,}")]
         public int AvgangId { get; set; }

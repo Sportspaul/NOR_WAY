@@ -37,7 +37,7 @@ namespace NOR_WAY.Controllers
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult> OppdaterAvgang(Avgang avgang, int Id)
+        public Task<ActionResult> OppdaterAvgang(Avganger avgang, int Id)
         {
             throw new NotImplementedException();
         }

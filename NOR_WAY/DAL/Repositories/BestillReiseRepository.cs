@@ -23,7 +23,7 @@ namespace NOR_WAY.DAL.Repositories
             _log = log;
         }
 
-        public async Task<Avgang> FinnNesteAvgang(AvgangParam input)
+        public async Task<Reisedetaljer> FinnNesteAvgang(AvgangParam input)
         {
             // Henter avgang- og påstigningsstoppet fra DB
             Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == input.StartStopp);
@@ -73,7 +73,7 @@ namespace NOR_WAY.DAL.Repositories
             int pris = await BeregnPris(fellesRute, antallStopp, input.Billettyper);
 
             // Opretter Avgang-objektet som skal sendes til klienten
-            Avgang utAvgang = new Avgang
+            Reisedetaljer utAvgang = new Reisedetaljer
             {
                 AvgangId = nesteAvgang.Id,
                 Rutenavn = fellesRute.Rutenavn,

@@ -31,11 +31,11 @@ namespace NOR_WAY.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<List<RuteData>> HentRuterMedStopp()
+        public async Task<List<RuteMedStopp>> HentRuterMedStopp()
         {
             try
             {
-                List<RuteData> RuteDataene = new List<RuteData>();
+                List<RuteMedStopp> RuteDataene = new List<RuteMedStopp>();
 
                 // Henter alle rutene fra DB
                 List<Ruter> AlleRutene = await _db.Ruter.Select(r => new Ruter
@@ -49,7 +49,7 @@ namespace NOR_WAY.DAL.Repositories
                 // Lopper gjennom alle rutene i DB
                 foreach (Ruter rute in AlleRutene)
                 {
-                    RuteData rutedata = new RuteData
+                    RuteMedStopp rutedata = new RuteMedStopp
                     {
                         Stoppene = new List<string>(),
                         MinutterTilNesteStopp = new List<int>(),

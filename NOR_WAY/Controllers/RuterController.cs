@@ -34,7 +34,7 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentRuterMedStopp()
         {
-            List<RuteData> rutene = await _db.HentRuterMedStopp();
+            List<RuteMedStopp> rutene = await _db.HentRuterMedStopp();
             if (rutene == null)
             {
                 _log.LogInformation("Rutene ble ikke funnet");

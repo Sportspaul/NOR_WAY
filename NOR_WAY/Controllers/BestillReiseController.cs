@@ -24,7 +24,7 @@ namespace NOR_WAY.Controllers
         {
             if (ModelState.IsValid)
             { 
-                Avgang nesteAvgang = await _db.FinnNesteAvgang(input);
+                Reisedetaljer nesteAvgang = await _db.FinnNesteAvgang(input);
                 if (nesteAvgang == null)
                 {
                     _log.LogInformation("Avgang ikke funnet");

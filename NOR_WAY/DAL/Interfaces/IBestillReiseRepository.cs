@@ -6,7 +6,7 @@ namespace NOR_WAY.DAL.Interfaces
 {
     public interface IBestillReiseRepository
     {
-        Task<Avgang> FinnNesteAvgang(AvgangParam param);
+        Task<Reisedetaljer> FinnNesteAvgang(AvgangParam param);
 
         Task<bool> FullforOrdre(KundeOrdre ordre);
     }

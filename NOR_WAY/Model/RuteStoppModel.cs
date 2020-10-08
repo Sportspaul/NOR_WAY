@@ -1,6 +1,6 @@
 ﻿namespace NOR_WAY.Model
 {
-    public class NyRuteStopp
+    public class RuteStoppModel
     {
     }
 }

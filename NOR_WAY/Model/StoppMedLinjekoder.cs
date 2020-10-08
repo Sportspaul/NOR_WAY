@@ -2,7 +2,7 @@
 
 namespace NOR_WAY.Model
 {
-    public class StoppMedRuter
+    public class StoppMedLinjekoder
     {
         public int Id { get; set; }
         public string Stoppnavn { get; set; }

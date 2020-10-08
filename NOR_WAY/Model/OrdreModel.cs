@@ -6,7 +6,7 @@ namespace NOR_WAY.Model
 {
     // Modell for å ta imot verdier fra klienten for å fullføre kjøp av billett
     [ExcludeFromCodeCoverage]
-    public class KundeOrdre
+    public class OrdreModel
     {
         // TODO: Lagt til OrdreId, modifiser koden så det funker
         [RegularExpression(@"[1-9][0-9]{0,8}")]

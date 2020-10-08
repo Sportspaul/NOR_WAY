@@ -19,7 +19,7 @@ namespace NOR_WAY.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> NyAvgang(NyAvgang nyAvgang)
+        public Task<bool> NyAvgang(AvgangModel nyAvgang)
         {
             throw new NotImplementedException();
         }

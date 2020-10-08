@@ -9,7 +9,7 @@ namespace NOR_WAY.DAL.Repositories
 {
     public class OrdreRepository : IOrdreRepository
     {
-        public Task<List<KundeOrdre>> HentOrdre(string epost)
+        public Task<List<OrdreModel>> HentOrdre(string epost)
         {
             throw new NotImplementedException();
         }

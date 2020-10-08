@@ -32,7 +32,7 @@ namespace NOR_WAY.Controllers
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult> NyAvgang(NyAvgang nyAvgang)
+        public Task<ActionResult> NyAvgang(AvgangModel nyAvgang)
         {
             throw new NotImplementedException();
         }

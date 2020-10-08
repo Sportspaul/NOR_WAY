@@ -22,7 +22,7 @@ namespace NOR_WAY.Controllers
             _log = log;
         }
 
-        public async Task<ActionResult> FinnMuligeStartStopp(InnStopp startStopp)
+        public async Task<ActionResult> FinnMuligeStartStopp(StoppModel startStopp)
         {
             if (ModelState.IsValid)
             {
@@ -38,7 +38,7 @@ namespace NOR_WAY.Controllers
             return BadRequest("Feil i inputvalideringen på server");
         }
 
-        public async Task<ActionResult> FinnMuligeSluttStopp(InnStopp sluttStopp)
+        public async Task<ActionResult> FinnMuligeSluttStopp(StoppModel sluttStopp)
         {
             if (ModelState.IsValid)
             {

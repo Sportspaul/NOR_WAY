@@ -20,7 +20,7 @@ namespace NOR_WAY.DAL.Repositories
             _log = log;
         }
 
-        public async Task<List<Stopp>> FinnMuligeStartStopp(InnStopp startStopp)
+        public async Task<List<Stopp>> FinnMuligeStartStopp(StoppModel startStopp)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
-        public async Task<List<Stopp>> FinnMuligeSluttStopp(InnStopp sluttStopp)
+        public async Task<List<Stopp>> FinnMuligeSluttStopp(StoppModel sluttStopp)
         {
             try
             {
@@ -133,7 +133,7 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
-        public Task<List<StoppMedRuter>> HentAlleStoppMedRuter()
+        public Task<List<StoppMedLinjekoder>> HentAlleStoppMedRuter()
         {
             throw new NotImplementedException();
         }

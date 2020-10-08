@@ -37,7 +37,7 @@ namespace NOR_WAY.Controllers
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult> NyRuteStopp(NyRuteStopp nyRuteStopp)
+        public Task<ActionResult> NyRuteStopp(RuteStoppModel nyRuteStopp)
         {
             throw new NotImplementedException();
         }

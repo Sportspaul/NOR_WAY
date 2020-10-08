@@ -14,7 +14,7 @@ namespace NOR_WAY.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<NyRuteStopp>> HentAlleRuteStopp()
+        public Task<List<RuteStoppModel>> HentAlleRuteStopp()
         {
             throw new NotImplementedException();
         }
@@ -24,7 +24,7 @@ namespace NOR_WAY.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> NyRuteStopp(NyRuteStopp nyRuteStopp)
+        public Task<bool> NyRuteStopp(RuteStoppModel nyRuteStopp)
         {
             throw new NotImplementedException();
         }

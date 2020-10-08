@@ -23,7 +23,7 @@ namespace NOR_WAY.DAL.Repositories
             _log = log;
         }
 
-        public async Task<Reisedetaljer> FinnNesteAvgang(AvgangParam input)
+        public async Task<Reisedetaljer> FinnNesteAvgang(Avgangkriterier input)
         {
             // Henter avgang- og påstigningsstoppet fra DB
             Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == input.StartStopp);
@@ -308,7 +308,7 @@ namespace NOR_WAY.DAL.Repositories
         }
 
         // Fullfør ordre
-        public async Task<bool> FullforOrdre(KundeOrdre kundeOrdreParam)
+        public async Task<bool> FullforOrdre(OrdreModel kundeOrdreParam)
         {
             try
             {

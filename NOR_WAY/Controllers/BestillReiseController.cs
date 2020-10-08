@@ -20,7 +20,7 @@ namespace NOR_WAY.Controllers
             _log = log;
         }
 
-        public async Task<ActionResult> FinnNesteAvgang(AvgangParam input)
+        public async Task<ActionResult> FinnNesteAvgang(Avgangkriterier input)
         {
             if (ModelState.IsValid)
             { 
@@ -36,7 +36,7 @@ namespace NOR_WAY.Controllers
             return BadRequest("Feil i inputvalideringen på server");
         }
 
-        public async Task<ActionResult> FullforOrdre(KundeOrdre ordre)
+        public async Task<ActionResult> FullforOrdre(OrdreModel ordre)
         {
             if (ModelState.IsValid)
             {

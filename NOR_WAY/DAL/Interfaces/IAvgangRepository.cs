@@ -9,7 +9,7 @@ namespace NOR_WAY.DAL.Interfaces
     public interface IAvgangRepository
     {
 
-        Task<bool> NyAvgang(NyAvgang nyAvgang);
+        Task<bool> NyAvgang(AvgangModel nyAvgang);
 
         Task<Avganger> HentAvganger(string linjekode, int side);
 

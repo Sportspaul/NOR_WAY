@@ -8,7 +8,7 @@ namespace NOR_WAY.DAL.Interfaces
 {
     public interface IOrdreRepository
     {
-        Task<List<KundeOrdre>> HentOrdre(string epost);
+        Task<List<OrdreModel>> HentOrdre(string epost);
 
         Task<bool> SlettOrdre(int id);
     }

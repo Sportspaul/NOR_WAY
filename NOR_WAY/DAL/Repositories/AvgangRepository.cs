@@ -34,8 +34,8 @@ namespace NOR_WAY.DAL.Repositories
             }
 
             // Finner alle Rutene som inkluderer påstigning og som inkluderer avstigning
-            List<Ruter> startStoppRuter = await _hjelp.FinnRuter(startStopp);
-            List<Ruter> sluttStoppRuter = await _hjelp.FinnRuter(sluttStopp);
+            List<Ruter> startStoppRuter = await _hjelp.FinnRuteneTilStopp(startStopp);
+            List<Ruter> sluttStoppRuter = await _hjelp.FinnRuteneTilStopp(sluttStopp);
 
             // Finner ruten påstigning og avstigning har til felles
             Ruter fellesRute = _hjelp.FinnFellesRute(startStoppRuter, sluttStoppRuter);

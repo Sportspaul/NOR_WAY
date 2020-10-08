@@ -23,7 +23,7 @@ namespace NOR_WAY.DAL.Repositories
         /* Hjelpemetode som tar inn et Stopp-objekt og returnerer en
         liste med ruter som innholder stoppet */
 
-        public async Task<List<Ruter>> FinnRuter(Stopp stopp)
+        public async Task<List<Ruter>> FinnRuteneTilStopp(Stopp stopp)
         {
             try
             {

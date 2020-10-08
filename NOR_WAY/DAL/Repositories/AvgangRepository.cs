@@ -24,7 +24,7 @@ namespace NOR_WAY.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> OppdaterAvgang(Avganger avgang, int Id)
+        public Task<bool> OppdaterAvgang(int Id, Avganger oppdaterAvgang)
         {
             throw new NotImplementedException();
         }

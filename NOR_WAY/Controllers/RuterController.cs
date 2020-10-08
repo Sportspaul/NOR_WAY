@@ -49,7 +49,7 @@ namespace NOR_WAY.Controllers
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult> OppdaterRute(string linjekode, Ruter rute)
+        public Task<ActionResult> OppdaterRute(string linjekode, Ruter oppdatertRute)
         {
             throw new NotImplementedException();
         }

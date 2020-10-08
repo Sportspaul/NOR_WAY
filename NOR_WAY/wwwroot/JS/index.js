@@ -97,7 +97,7 @@ function finnNesteAvgang() {
         const feilAvgangElmt = $("#feilAvgang");
         avgangParam = new AvgangParam();
         // Kaller serveren for å finne neste avgang
-        $.post("BestillReise/FinnNesteAvgang", avgangParam, function (respons) {
+        $.post("Avgang/FinnNesteAvgang", avgangParam, function (respons) {
             // Modell for å ta imot et Avgang-obj fra backend
             StartStopp = avgangParam.StartStopp;
             SluttStopp = avgangParam.SluttStopp;
@@ -212,7 +212,7 @@ function fullforOrdre() {
     }
     else {
         // Kaller C# Metoden FullforOrdre()
-        $.post("BestillReise/FullforOrdre", kundeordre);
+        $.post("Ordre/FullforOrdre", kundeordre);
         window.location.replace("index.html?bestilling=ok");
     }
 }

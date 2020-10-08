@@ -61,7 +61,7 @@ namespace NOR_WAY.Controllers
             return Ok(alleStopp); // returnerer alltid OK, null ved tom DB
         }
 
-        public Task<ActionResult> EndreStoppnavn(int Id)
+        public Task<ActionResult> OppdaterStoppnavn(Stopp oppdatertStoppnavn)
         {
             throw new NotImplementedException();
         }

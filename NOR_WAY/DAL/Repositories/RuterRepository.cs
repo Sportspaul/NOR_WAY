@@ -88,12 +88,12 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
-        public Task<bool> NyRute()
+        public Task<bool> NyRute(Ruter nyRute, List<RuteStoppModel> nyeRuteStopp)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> OppdaterRute(Ruter rute, string linjekode)
+        public Task<bool> OppdaterRute(string linjekode, Ruter rute)
         {
             throw new NotImplementedException();
         }

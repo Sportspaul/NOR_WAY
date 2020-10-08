@@ -44,12 +44,12 @@ namespace NOR_WAY.Controllers
         }
 
 
-        public Task<ActionResult> NyRute()
+        public Task<ActionResult> NyRute(Ruter nyRute, List<RuteStoppModel> nyeRuteStopp)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult> OppdaterRute(Ruter rute, string linjekode)
+        public Task<ActionResult> OppdaterRute(string linjekode, Ruter rute)
         {
             throw new NotImplementedException();
         }

@@ -20,36 +20,6 @@ namespace NOR_WAY.Controllers
             _log = log;
         }
 
-        public async Task<ActionResult> FinnNesteAvgang(Avgangkriterier input)
-        {
-            if (ModelState.IsValid)
-            { 
-                Reisedetaljer nesteAvgang = await _db.FinnNesteAvgang(input);
-                if (nesteAvgang == null)
-                {
-                    _log.LogInformation("Avgang ikke funnet");
-                    return NotFound("Avgang ikke funnet");
-                }
-                return Ok(nesteAvgang);
-            }
-            _log.LogInformation("Feil i inputvalideringen på server");
-            return BadRequest("Feil i inputvalideringen på server");
-        }
-
-        public async Task<ActionResult> FullforOrdre(OrdreModel ordre)
-        {
-            if (ModelState.IsValid)
-            {
-                bool returOK = await _db.FullforOrdre(ordre);
-                if (!returOK)
-                {
-                    _log.LogInformation("Ordren kunne ikke lagres!");
-                    return BadRequest("Ordren kunne ikke lagres!");
-                }
-                return Ok("Ordren ble lagret!");
-            }
-            _log.LogInformation("Feil i inputvalideringen på server");
-            return BadRequest("Feil i inputvalidering på server");
-        }
+        
     }
 }

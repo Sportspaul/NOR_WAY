@@ -11,7 +11,7 @@ using NOR_WAY.Model;
 namespace NOR_WAY.Controllers
 {
     [Route("[controller]/[action]")]
-    public class AvgangController
+    public class AvgangController : ControllerBase
     {
         private readonly IAvgangRepository _db;
         private ILogger<AvgangController> _log;
@@ -20,6 +20,22 @@ namespace NOR_WAY.Controllers
         {
             _db = db;
             _log = log;
+        }
+
+        public async Task<ActionResult> FinnNesteAvgang(Avgangkriterier kriterier)
+        {
+            if (ModelState.IsValid)
+            {
+                Reisedetaljer nesteAvgang = await _db.FinnNesteAvgang(kriterier);
+                if (nesteAvgang == null)
+                {
+                    _log.LogInformation("Avgang ikke funnet");
+                    return NotFound("Avgang ikke funnet");
+                }
+                return Ok(nesteAvgang);
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalideringen på server");
         }
 
         public Task<ActionResult> FjernAvgang(int Id)

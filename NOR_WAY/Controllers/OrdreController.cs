@@ -22,6 +22,22 @@ namespace NOR_WAY.Controllers
             _log = log;
         }
 
+        public async Task<ActionResult> FullforOrdre(OrdreModel ordre)
+        {
+            if (ModelState.IsValid)
+            {
+                bool returOK = await _db.FullforOrdre(ordre);
+                if (!returOK)
+                {
+                    _log.LogInformation("Ordren kunne ikke lagres!");
+                    return BadRequest("Ordren kunne ikke lagres!");
+                }
+                return Ok("Ordren ble lagret!");
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalidering på server");
+        }
+
         public Task<ActionResult> HentOrdre(string epost)
         {
             throw new NotImplementedException();

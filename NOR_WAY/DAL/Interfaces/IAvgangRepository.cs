@@ -8,6 +8,7 @@ namespace NOR_WAY.DAL.Interfaces
 {
     public interface IAvgangRepository
     {
+        Task<Reisedetaljer> FinnNesteAvgang(Avgangkriterier kriterier);
 
         Task<bool> NyAvgang(AvgangModel nyAvgang);
 

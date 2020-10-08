@@ -13,10 +13,10 @@ namespace NOR_WAY.DAL.Interfaces
 
         Task<RuteStopp> HentRuteStopp(string linjekode);
 
-        Task<bool> OppdaterStoppNavn(int Id);
+        Task<bool> OppdaterRuteStopp(int stoppNumer, string linjekode, RuteStoppModel oppdatertRuteStopp);
 
         Task<List<RuteStoppModel>> HentAlleRuteStopp();
 
-        Task<bool> FjernRuteStopp(int Id);
+        Task<bool> FjernRuteStopp(int stoppNummer, string linjekode);
     }
 }

@@ -9,7 +9,7 @@ namespace NOR_WAY.DAL.Repositories
 {
     public class RuteStoppRepository : IRuteStoppRepository
     {
-        public Task<bool> FjernRuteStopp(int Id)
+        public Task<bool> FjernRuteStopp(int stoppNummer, string linjekode)
         {
             throw new NotImplementedException();
         }
@@ -29,7 +29,7 @@ namespace NOR_WAY.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> OppdaterStoppNavn(int Id)
+        public Task<bool> OppdaterRuteStopp(int stoppNumer, string linjekode, RuteStoppModel oppdatertRuteStopp)
         {
             throw new NotImplementedException();
         }

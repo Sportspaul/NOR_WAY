@@ -22,7 +22,7 @@ namespace NOR_WAY.Controllers
             _log = log;
         }
 
-        public Task<ActionResult> FjernRuteStopp(int Id)
+        public Task<ActionResult> FjernRuteStopp(int stoppNummer, string linjekode)
         {
             throw new NotImplementedException();
         }
@@ -42,7 +42,7 @@ namespace NOR_WAY.Controllers
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult> OppdaterStoppNavn(int Id)
+        public Task<ActionResult> OppdaterStoppNavn(int stoppNumer, string linjekode, RuteStoppModel oppdatertRuteStopp)
         {
             throw new NotImplementedException();
         }

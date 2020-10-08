@@ -12,10 +12,10 @@ namespace NOR_WAY.DAL.Repositories
     public class RuterRepository : IRuterRepository
     {
         private readonly BussContext _db;
-        private ILogger<BestillReiseRepository> _log;
+        private readonly ILogger<RuterRepository> _log;
 
 
-        public RuterRepository(BussContext db, ILogger<BestillReiseRepository> log)
+        public RuterRepository(BussContext db, ILogger<RuterRepository> log)
         {
             _db = db;
             _log = log;

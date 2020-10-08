@@ -31,7 +31,6 @@ namespace NOR_WAY
             services.AddScoped<IRuterRepository, RuterRepository>();
             services.AddScoped<IRuteStoppRepository, RuteStoppRepository>();
             services.AddScoped<IStoppRepository, StoppRepository>();
-            services.AddScoped<IBestillReiseRepository, BestillReiseRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,7 +40,6 @@ namespace NOR_WAY
             {
                 app.UseDeveloperExceptionPage();
                 loggerFactory.AddFile("Logs/BussLog.txt");
-                loggerFactory.AddFile("Logs/AdminLog.txt");
                 // Scoped Services
                 DBInit.SeedDB(app); // denne må fjernes dersom vi vil beholde dataene i databasen og ikke initialisere
             }

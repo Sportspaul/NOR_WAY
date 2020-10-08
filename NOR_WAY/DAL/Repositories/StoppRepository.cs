@@ -12,7 +12,7 @@ namespace NOR_WAY.DAL.Repositories
     public class StoppRepository : IStoppRepository
     {
         private readonly BussContext _db;
-        private ILogger<StoppRepository> _log;
+        private readonly ILogger<StoppRepository> _log;
 
         public StoppRepository(BussContext db, ILogger<StoppRepository> log)
         {

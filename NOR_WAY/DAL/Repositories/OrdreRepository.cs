@@ -12,12 +12,12 @@ namespace NOR_WAY.DAL.Repositories
     public class OrdreRepository : IOrdreRepository
     {
         private readonly BussContext _db;
-        private ILogger<OrdreRepository> _log;
-        private HjelpeRepository Hjelp;
+        private readonly ILogger<OrdreRepository> _log;
+        private readonly HjelpeRepository _hjelp;
 
         public OrdreRepository(BussContext db, ILogger<OrdreRepository> log)
         {
-            Hjelp = new HjelpeRepository(db, log);
+            _hjelp = new HjelpeRepository(db, log);
             _db = db;
             _log = log;
         }
@@ -35,18 +35,18 @@ namespace NOR_WAY.DAL.Repositories
 
                 // Finner startStopp, og finner stoppnummeret i ruten
                 Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == kundeOrdreParam.StartStopp);
-                int stoppNummer1 = await Hjelp.FinnStoppNummer(startStopp, rute);
+                int stoppNummer1 = await _hjelp.FinnStoppNummer(startStopp, rute);
 
                 // Finner sluttStopp, og finner stoppnummeret i ruten
                 Stopp sluttStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == kundeOrdreParam.SluttStopp);
-                int stoppNummer2 = await Hjelp.FinnStoppNummer(sluttStopp, rute);
+                int stoppNummer2 = await _hjelp.FinnStoppNummer(sluttStopp, rute);
 
                 // Regner ut antall stopp
                 int antallStopp = stoppNummer2 - stoppNummer1;
 
                 // Finner summen for reisen
                 // antallStopp, rute, liste med billettype
-                int sum = await Hjelp.BeregnPris(rute, antallStopp, kundeOrdreParam.Billettyper);
+                int sum = await _hjelp.BeregnPris(rute, antallStopp, kundeOrdreParam.Billettyper);
 
                 // Lager en ordre basert på kundeOrdreParam, rute og avgang
                 var ordre = new Ordre

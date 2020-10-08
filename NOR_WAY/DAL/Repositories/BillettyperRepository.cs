@@ -12,7 +12,7 @@ namespace NOR_WAY.DAL.Repositories
     public class BillettyperRepository : IBillettyperRepository
     {
         private readonly BussContext _db;
-        private ILogger<BillettyperRepository> _log;
+        private readonly ILogger<BillettyperRepository> _log;
 
         public BillettyperRepository(BussContext db, ILogger<BillettyperRepository> log)
         {

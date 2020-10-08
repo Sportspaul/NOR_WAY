@@ -12,12 +12,12 @@ namespace NOR_WAY.DAL.Repositories
     public class AvgangRepository : IAvgangRepository
     {
         private readonly BussContext _db;
-        private ILogger<AvgangRepository> _log;
-        private HjelpeRepository Hjelp;
+        private readonly ILogger<AvgangRepository> _log;
+        private readonly HjelpeRepository _hjelp;
 
         public AvgangRepository(BussContext db, ILogger<AvgangRepository> log)
         {
-            Hjelp = new HjelpeRepository(db, log);
+            _hjelp = new HjelpeRepository(db, log);
             _db = db;
             _log = log;
         }
@@ -34,16 +34,16 @@ namespace NOR_WAY.DAL.Repositories
             }
 
             // Finner alle Rutene som inkluderer påstigning og som inkluderer avstigning
-            List<Ruter> startStoppRuter = await Hjelp.FinnRuter(startStopp);
-            List<Ruter> sluttStoppRuter = await Hjelp.FinnRuter(sluttStopp);
+            List<Ruter> startStoppRuter = await _hjelp.FinnRuter(startStopp);
+            List<Ruter> sluttStoppRuter = await _hjelp.FinnRuter(sluttStopp);
 
             // Finner ruten påstigning og avstigning har til felles
-            Ruter fellesRute = Hjelp.FinnFellesRute(startStoppRuter, sluttStoppRuter);
+            Ruter fellesRute = _hjelp.FinnFellesRute(startStoppRuter, sluttStoppRuter);
             if (fellesRute == null) { return null; } // Hvis stoppene ikke har noen felles ruter
 
             // Finne ut hvilket stoppNummer påstigning og avstigning har i den felles ruten
-            int stoppNummer1 = await Hjelp.FinnStoppNummer(startStopp, fellesRute);
-            int stoppNummer2 = await Hjelp.FinnStoppNummer(sluttStopp, fellesRute);
+            int stoppNummer1 = await _hjelp.FinnStoppNummer(startStopp, fellesRute);
+            int stoppNummer2 = await _hjelp.FinnStoppNummer(sluttStopp, fellesRute);
             // Hvis første stopp kommer senere i ruten enn siste stopp
             if (stoppNummer1 > stoppNummer2)
             {
@@ -51,16 +51,16 @@ namespace NOR_WAY.DAL.Repositories
                 return null;
             }
 
-            int reisetid = await Hjelp.BeregnReisetid(stoppNummer1, stoppNummer2, fellesRute); // Beregner reisetiden fra stopp påstigning til avstigning
+            int reisetid = await _hjelp.BeregnReisetid(stoppNummer1, stoppNummer2, fellesRute); // Beregner reisetiden fra stopp påstigning til avstigning
             int antallBilletter = input.Billettyper.Count();    // antall billetter brukeren ønsker
-            DateTime innTid = Hjelp.StringTilDateTime(input.Dato, input.Tidspunkt);   // Konverterer fra strings til DateTime
+            DateTime innTid = _hjelp.StringTilDateTime(input.Dato, input.Tidspunkt);   // Konverterer fra strings til DateTime
 
             // Finne neste avgang som passer, basert på brukerens input
-            Avganger nesteAvgang = await Hjelp.NesteAvgang(fellesRute, reisetid, input.AvreiseEtter, innTid, antallBilletter);
+            Avganger nesteAvgang = await _hjelp.NesteAvgang(fellesRute, reisetid, input.AvreiseEtter, innTid, antallBilletter);
             if (nesteAvgang == null) { return null; }  // Hvis ingen avgang ble funnet
 
             // Beregner avreise og ankomst
-            DateTime avreise = await Hjelp.BeregnAvreisetid(nesteAvgang.Avreise, stoppNummer1, fellesRute);
+            DateTime avreise = await _hjelp.BeregnAvreisetid(nesteAvgang.Avreise, stoppNummer1, fellesRute);
             DateTime ankomst = avreise.AddMinutes(reisetid);
 
             // Konverterer avreise og ankomst fra DateTime til en strings
@@ -69,7 +69,7 @@ namespace NOR_WAY.DAL.Repositories
 
             // Beregner prisen basert på startpris og antall stopp
             int antallStopp = stoppNummer2 - stoppNummer1;
-            int pris = await Hjelp.BeregnPris(fellesRute, antallStopp, input.Billettyper);
+            int pris = await _hjelp.BeregnPris(fellesRute, antallStopp, input.Billettyper);
 
             // Opretter Avgang-objektet som skal sendes til klienten
             Reisedetaljer utAvgang = new Reisedetaljer

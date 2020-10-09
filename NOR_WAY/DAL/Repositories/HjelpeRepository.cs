@@ -10,7 +10,6 @@ namespace NOR_WAY.DAL.Repositories
 {
     public class HjelpeRepository
     {
-
         private readonly BussContext _db;
         private readonly ILogger _log;
 

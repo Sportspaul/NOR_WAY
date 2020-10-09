@@ -49,12 +49,6 @@ namespace NOR_WAY_Tests
             }
         }
 
-        // Returnerer en List med string billettypenavn
-        private List<string> HentBillettyperStringListe()
-        {
-            return new List<string> { "Student", "Barn" };
-        }
-
         // Returnerer en List med Billettyper-objekter
         private List<Billettyper> HentBillettyperListe()
         {

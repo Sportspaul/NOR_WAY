@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
+using NOR_WAY.Controllers;
 using NOR_WAY.DAL.Interfaces;
+using NOR_WAY.Model;
 using Xunit;
 
 namespace NOR_WAY_Tests
@@ -12,12 +16,12 @@ namespace NOR_WAY_Tests
     {
 
         private readonly Mock<IOrdreRepository> mockRepo = new Mock<IOrdreRepository>();
-        private readonly Mock<ILogger<BillettyperController>> mockLogCtr = new Mock<ILogger<BillettyperController>>();
-        private readonly BillettyperController billettyperController;
+        private readonly Mock<ILogger<OrdreController>> mockLogCtr = new Mock<ILogger<OrdreController>>();
+        private readonly OrdreController ordreController;
 
         public OrdreController_Tests()
         {
-            billettyperController = new BillettyperController(mockRepo.Object, mockLogCtr.Object);
+            ordreController = new OrdreController(mockRepo.Object, mockLogCtr.Object);
         }
         /* Enhetstester for FullforOrdre */
 
@@ -30,7 +34,7 @@ namespace NOR_WAY_Tests
             mockRepo.Setup(br => br.FullforOrdre(kundeOrdre)).ReturnsAsync(true);
 
             // Act
-            var resultat = await bussController.FullforOrdre(kundeOrdre) as OkObjectResult;
+            var resultat = await ordreController.FullforOrdre(kundeOrdre) as OkObjectResult;
 
             // Assert
             Assert.Equal("Ordren ble lagret!", resultat.Value);
@@ -44,7 +48,7 @@ namespace NOR_WAY_Tests
             mockRepo.Setup(br => br.FullforOrdre(kundeOrdre)).ReturnsAsync(false);
 
             // Act
-            var resultat = await bussController.FullforOrdre(kundeOrdre) as BadRequestObjectResult;
+            var resultat = await ordreController.FullforOrdre(kundeOrdre) as BadRequestObjectResult;
 
             // Assert
             Assert.Equal("Ordren kunne ikke lagres!", resultat.Value);
@@ -57,10 +61,10 @@ namespace NOR_WAY_Tests
             // Arrange
             var kundeOrdre = HentEnKundeOrdre();
             mockRepo.Setup(br => br.FullforOrdre(kundeOrdre)).ReturnsAsync(false);
-            bussController.ModelState.AddModelError("Epost", "Feil i inputvalideringen på server");
+            ordreController.ModelState.AddModelError("Epost", "Feil i inputvalideringen på server");
 
             // Act
-            var resultat = await bussController.FullforOrdre(kundeOrdre) as BadRequestObjectResult;
+            var resultat = await ordreController.FullforOrdre(kundeOrdre) as BadRequestObjectResult;
 
             // Assert
             Assert.Equal("Feil i inputvalidering på server", resultat.Value);
@@ -70,11 +74,15 @@ namespace NOR_WAY_Tests
         /* Private metoder som instansierer objekter til brukes i testmetodene */
 
         // Returnerer et KundeOrdre-objekt
-        private KundeOrdre HentEnKundeOrdre()
+        private OrdreModel HentEnKundeOrdre()
         {
-            return new KundeOrdre { Epost = "hvrustad@gmail.com", StartStopp = "Bergen", SluttStopp = "Trondheim", Linjekode = "NW431", AvgangId = 2, Billettyper = HentBillettyperStringListe() };
+            return new OrdreModel { Epost = "hvrustad@gmail.com", StartStopp = "Bergen", SluttStopp = "Trondheim", Linjekode = "NW431", AvgangId = 2, Billettyper = HentBillettyperStringListe() };
         }
 
-
+        // Returnerer en List med string billettypenavn
+        private List<string> HentBillettyperStringListe()
+        {
+            return new List<string> { "Student", "Barn" };
+        }
     }
 }

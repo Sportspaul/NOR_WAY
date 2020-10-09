@@ -14,7 +14,6 @@ namespace NOR_WAY.DAL.Repositories
         private readonly BussContext _db;
         private readonly ILogger<RuterRepository> _log;
 
-
         public RuterRepository(BussContext db, ILogger<RuterRepository> log)
         {
             _db = db;

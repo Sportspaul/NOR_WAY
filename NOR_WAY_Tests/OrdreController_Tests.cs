@@ -1,11 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using Moq;
+using NOR_WAY.DAL.Interfaces;
+using Xunit;
 
 namespace NOR_WAY_Tests
 {
-    class OrdreController_Tests
+    public class OrdreController_Tests
     {
+
+        private readonly Mock<IOrdreRepository> mockRepo = new Mock<IOrdreRepository>();
+        private readonly Mock<ILogger<BillettyperController>> mockLogCtr = new Mock<ILogger<BillettyperController>>();
+        private readonly BillettyperController billettyperController;
+
+        public OrdreController_Tests()
+        {
+            billettyperController = new BillettyperController(mockRepo.Object, mockLogCtr.Object);
+        }
         /* Enhetstester for FullforOrdre */
 
         // Tester at FullforOrdre returnerer forventet verdi

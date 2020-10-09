@@ -1,11 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
+using NOR_WAY.Controllers;
+using NOR_WAY.DAL;
+using NOR_WAY.DAL.Interfaces;
+using Xunit;
 
 namespace NOR_WAY_Tests
 {
-    class BillettyperController_Tests
+    public class BillettyperController_Tests
     {
+
+        private readonly Mock<IBillettyperRepository> mockRepo = new Mock<IBillettyperRepository>();
+        private readonly Mock<ILogger<BillettyperController>> mockLogCtr = new Mock<ILogger<BillettyperController>>();
+        private readonly BillettyperController billettyperController;
+
+        public BillettyperController_Tests()
+        {
+            billettyperController = new BillettyperController(mockRepo.Object, mockLogCtr.Object);
+        }
 
         /* Enhetstester for HentAlleBillettyper */
 
@@ -19,7 +36,7 @@ namespace NOR_WAY_Tests
             mockRepo.Setup(b => b.HentAlleBillettyper()).ReturnsAsync(HentBillettyperListe());
 
             // Act
-            var resultat = await bussController.HentAlleBillettyper() as OkObjectResult;
+            var resultat = await billettyperController.HentAlleBillettyper() as OkObjectResult;
             List<Billettyper> faktisk = (List<Billettyper>)resultat.Value;
 
             // Assert

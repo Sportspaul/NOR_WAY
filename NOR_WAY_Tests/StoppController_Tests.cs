@@ -1,12 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
+using NOR_WAY.Controllers;
+using NOR_WAY.DAL;
+using NOR_WAY.DAL.Interfaces;
+using NOR_WAY.Model;
+using Xunit;
 
 namespace NOR_WAY_Tests
 {
-    class StoppController_Tests
+    public class StoppController_Tests
     {
+        private readonly Mock<IStoppRepository> mockRepo = new Mock<IStoppRepository>();
+        private readonly Mock<ILogger<StoppController>> mockLogCtr = new Mock<ILogger<StoppController>>();
+        private readonly StoppController stoppController;
 
+        public StoppController_Tests()
+        {
+            stoppController = new StoppController(mockRepo.Object, mockLogCtr.Object);
+        }
         /* Enhetstester for HentAlleStopp */
 
         /* Tester at ikke listen med Stopp fra BussRepo endrer seg i controlleren
@@ -19,7 +35,7 @@ namespace NOR_WAY_Tests
             mockRepo.Setup(b => b.HentAlleStopp()).ReturnsAsync(HentStoppListe());
 
             // Act
-            var resultat = await bussController.HentAlleStopp() as OkObjectResult;
+            var resultat = await stoppController.HentAlleStopp() as OkObjectResult;
             List<Stopp> faktiskeStopp = (List<Stopp>)resultat.Value;
 
             // Assert
@@ -40,12 +56,12 @@ namespace NOR_WAY_Tests
         public async Task FinnMuligStartStopp_RiktigeVerdier()
         {
             // Arrange
-            InnStopp innStopp = HentUgyldigInnStopp();
+            StoppModel StoppModel = HentUgyldigInnStopp();
             List<Stopp> forventedeStopp = HentStoppListe();
-            mockRepo.Setup(b => b.FinnMuligeStartStopp(innStopp)).ReturnsAsync(HentStoppListe());
+            mockRepo.Setup(b => b.FinnMuligeStartStopp(StoppModel)).ReturnsAsync(HentStoppListe());
 
             // Act
-            var resultat = await bussController.FinnMuligeStartStopp(innStopp) as OkObjectResult;
+            var resultat = await stoppController.FinnMuligeStartStopp(StoppModel) as OkObjectResult;
             List<Stopp> faktiskeStopp = (List<Stopp>)resultat.Value;
 
             // Assert
@@ -63,12 +79,12 @@ namespace NOR_WAY_Tests
         public async Task FinnMuligeStartStopp_TomListe()
         {
             // Arrange 
-            InnStopp innStopp = HentInnStopp();
+            StoppModel StoppModel = HentInnStopp();
             List<Stopp> tomStoppListe = new List<Stopp>();
-            mockRepo.Setup(b => b.FinnMuligeStartStopp(innStopp)).ReturnsAsync(tomStoppListe);
+            mockRepo.Setup(b => b.FinnMuligeStartStopp(StoppModel)).ReturnsAsync(tomStoppListe);
 
             // Act
-            var resultat = await bussController.FinnMuligeStartStopp(innStopp) as NotFoundObjectResult;
+            var resultat = await stoppController.FinnMuligeStartStopp(StoppModel) as NotFoundObjectResult;
 
             // Assert
             Assert.Equal("Ingen mulige StartStopp ble funnet", resultat.Value);
@@ -79,16 +95,16 @@ namespace NOR_WAY_Tests
         public async Task FinnMuligeStartStopp_RegEx()
         {
             // Arrange 
-            InnStopp innStopp = HentUgyldigInnStopp();
+            StoppModel StoppModel = HentUgyldigInnStopp();
             List<Stopp> forventedeStopp = HentStoppListe();
-            mockRepo.Setup(b => b.FinnMuligeStartStopp(innStopp)).ReturnsAsync(forventedeStopp);
-            bussController.ModelState.AddModelError("StartStopp", "Feil i inputvalideringen på server");
-            bussController.ModelState.AddModelError("SluttStopp", "Feil i inputvalideringen på server");
-            bussController.ModelState.AddModelError("Dato", "Feil i inputvalideringen på server");
-            bussController.ModelState.AddModelError("Tidspunkt", "Feil i inputvalideringen på server");
+            mockRepo.Setup(b => b.FinnMuligeStartStopp(StoppModel)).ReturnsAsync(forventedeStopp);
+            stoppController.ModelState.AddModelError("StartStopp", "Feil i inputvalideringen på server");
+            stoppController.ModelState.AddModelError("SluttStopp", "Feil i inputvalideringen på server");
+            stoppController.ModelState.AddModelError("Dato", "Feil i inputvalideringen på server");
+            stoppController.ModelState.AddModelError("Tidspunkt", "Feil i inputvalideringen på server");
 
             // Act
-            var resultat = await bussController.FinnMuligeStartStopp(innStopp) as BadRequestObjectResult;
+            var resultat = await stoppController.FinnMuligeStartStopp(StoppModel) as BadRequestObjectResult;
 
             // Assert
             Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
@@ -104,11 +120,11 @@ namespace NOR_WAY_Tests
         {
             // Arrange
             List<Stopp> forventet = HentStoppListe();
-            InnStopp innStopp = new InnStopp { Navn = "Bergen" };
-            mockRepo.Setup(b => b.FinnMuligeSluttStopp(innStopp)).ReturnsAsync(HentStoppListe());
+            StoppModel StoppModel = new StoppModel { Navn = "Bergen" };
+            mockRepo.Setup(b => b.FinnMuligeSluttStopp(StoppModel)).ReturnsAsync(HentStoppListe());
 
             // Act
-            var resultat = await bussController.FinnMuligeSluttStopp(innStopp) as OkObjectResult;
+            var resultat = await stoppController.FinnMuligeSluttStopp(StoppModel) as OkObjectResult;
             List<Stopp> faktisk = (List<Stopp>)resultat.Value;
 
             // Assert
@@ -126,12 +142,12 @@ namespace NOR_WAY_Tests
         public async Task FinnMuligeSluttStopp_TomListe()
         {
             // Arrange 
-            InnStopp innStopp = HentInnStopp();
+            StoppModel StoppModel = HentInnStopp();
             List<Stopp> tomStoppListe = new List<Stopp>();
-            mockRepo.Setup(b => b.FinnMuligeSluttStopp(innStopp)).ReturnsAsync(tomStoppListe);
+            mockRepo.Setup(b => b.FinnMuligeSluttStopp(StoppModel)).ReturnsAsync(tomStoppListe);
 
             // Act
-            var resultat = await bussController.FinnMuligeSluttStopp(innStopp) as NotFoundObjectResult;
+            var resultat = await stoppController.FinnMuligeSluttStopp(StoppModel) as NotFoundObjectResult;
 
             // Assert
             Assert.Equal("Ingen mulige SluttStopp ble funnet", resultat.Value);
@@ -142,16 +158,16 @@ namespace NOR_WAY_Tests
         public async Task FinnMuligeSluttStopp_RegEx()
         {
             // Arrange 
-            InnStopp innStopp = HentUgyldigInnStopp();
+            StoppModel StoppModel = HentUgyldigInnStopp();
             List<Stopp> forventedeStopp = HentStoppListe();
-            mockRepo.Setup(b => b.FinnMuligeSluttStopp(innStopp)).ReturnsAsync(forventedeStopp);
-            bussController.ModelState.AddModelError("StartStopp", "Feil i inputvalideringen på server");
-            bussController.ModelState.AddModelError("SluttStopp", "Feil i inputvalideringen på server");
-            bussController.ModelState.AddModelError("Dato", "Feil i inputvalideringen på server");
-            bussController.ModelState.AddModelError("Tidspunkt", "Feil i inputvalideringen på server");
+            mockRepo.Setup(b => b.FinnMuligeSluttStopp(StoppModel)).ReturnsAsync(forventedeStopp);
+            stoppController.ModelState.AddModelError("StartStopp", "Feil i inputvalideringen på server");
+            stoppController.ModelState.AddModelError("SluttStopp", "Feil i inputvalideringen på server");
+            stoppController.ModelState.AddModelError("Dato", "Feil i inputvalideringen på server");
+            stoppController.ModelState.AddModelError("Tidspunkt", "Feil i inputvalideringen på server");
 
             // Act
-            var resultat = await bussController.FinnMuligeSluttStopp(innStopp) as BadRequestObjectResult;
+            var resultat = await stoppController.FinnMuligeSluttStopp(StoppModel) as BadRequestObjectResult;
 
             // Assert
             Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
@@ -168,15 +184,15 @@ namespace NOR_WAY_Tests
             return new List<Stopp> { stopp1, stopp2, stopp3, stopp4 };
         }
 
-        private InnStopp HentInnStopp()
+        private StoppModel HentInnStopp()
         {
-            return new InnStopp { Navn = "Bergen" };
+            return new StoppModel { Navn = "Bergen" };
         }
 
-        // Returnerer et InnStopp-objekt med ugyldig Navn
-        private InnStopp HentUgyldigInnStopp()
+        // Returnerer et StoppModel-objekt med ugyldig Navn
+        private StoppModel HentUgyldigInnStopp()
         {
-            return new InnStopp { Navn = "" };
+            return new StoppModel { Navn = "" };
         }
 
 

@@ -27,9 +27,14 @@ namespace NOR_WAY.Controllers
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult> HentAlleRuter()
+        public async Task<ActionResult> HentAlleRuter()
         {
-            throw new NotImplementedException();
+            List<Ruter> rutene = await _db.HentAlleRuter();
+            if (rutene == null) {
+                _log.LogInformation("Rutene ble ikke funnet");
+                return NotFound("Rutene ble ikke funnet");
+            }
+            return Ok(rutene);
         }
 
         public async Task<ActionResult> HentRuterMedStopp()

@@ -25,9 +25,27 @@ namespace NOR_WAY.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<Ruter>> HentAlleRuter()
+        public async Task<List<Ruter>> HentAlleRuter()
         {
-            throw new NotImplementedException();
+            try
+            {
+                // Henter alle rutene fra DB
+                List<Ruter> alleRutene = await _db.Ruter.Select(r => new Ruter
+                {
+                    Linjekode = r.Linjekode,
+                    Rutenavn = r.Rutenavn,
+                    TilleggPerStopp = r.TilleggPerStopp,
+                    Startpris = r.Startpris,
+                    Kapasitet = r.Kapasitet
+                }).ToListAsync();
+
+                return alleRutene;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return null;
+            }
         }
 
         public async Task<List<RuteMedStopp>> HentRuterMedStopp()
@@ -37,13 +55,7 @@ namespace NOR_WAY.DAL.Repositories
                 List<RuteMedStopp> RuteDataene = new List<RuteMedStopp>();
 
                 // Henter alle rutene fra DB
-                List<Ruter> AlleRutene = await _db.Ruter.Select(r => new Ruter
-                {
-                    Linjekode = r.Linjekode,
-                    Rutenavn = r.Rutenavn,
-                    TilleggPerStopp = r.TilleggPerStopp,
-                    Startpris = r.Startpris
-                }).ToListAsync();
+                List<Ruter> AlleRutene = await HentAlleRuter();
 
                 // Lopper gjennom alle rutene i DB
                 foreach (Ruter rute in AlleRutene)
@@ -58,6 +70,7 @@ namespace NOR_WAY.DAL.Repositories
                         Startpris = rute.Startpris
                     };
 
+                    // TODO: bytte ut denne koden med et kall til HentRuteStopp(string linjekode) i RuteStopp
                     // Henter alle ruteStopp som hører til spesifikk rute
                     List<RuteStopp> ruteStopp = await _db.RuteStopp
                         .Where(rs => rs.Rute.Linjekode == rute.Linjekode)

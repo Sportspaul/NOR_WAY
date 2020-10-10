@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NOR_WAY.Controllers;
+using NOR_WAY.DAL;
 using NOR_WAY.DAL.Interfaces;
 using NOR_WAY.Model;
 using Xunit;
@@ -24,12 +25,12 @@ namespace NOR_WAY_Tests
             ruterController = new RuterController(mockRepo.Object, mockLogCtr.Object);
         }
 
-        /* Enhetstester for HentAlleRuter */
+        /* Enhetstester for HentRuterMedStop */
 
         /* Tester at ikke listen med Stopp fra BussRepo endrer seg i controlleren
            for HentRuterMedStopp() */
         [Fact]
-        public async Task HentAlleRuter_RiktigeVerdier()
+        public async Task HentRuterMedStopp_RiktigeVerdier()
         {
             // Arrange
             List<RuteMedStopp> forventet = HentRuteMedStoppListe();
@@ -54,13 +55,54 @@ namespace NOR_WAY_Tests
         }
 
         [Fact]
-        public async Task HentAlleRuter_Null()
+        public async Task HentRuterMedStopp_Null()
         {
             // Arrange 
             mockRepo.Setup(b => b.HentRuterMedStopp()).ReturnsAsync(() => null);
 
             //Act
             var resultat = await ruterController.HentRuterMedStopp() as NotFoundObjectResult;
+
+            // Assert
+            Assert.Equal("Rutene ble ikke funnet", resultat.Value);
+        }
+
+        /* Enhetstester for HentAlleRuter */
+
+        /* Tester at ikke listen fra BussRepo endrer seg i controlleren
+           for HentAlleRuter() */
+        [Fact]
+        public async Task HentAlleRuter_RiktigeVerdier()
+        {
+            // Arrange
+            List<Ruter> forventet = HentRuterListe();
+            mockRepo.Setup(b => b.HentAlleRuter()).ReturnsAsync(HentRuterListe());
+
+            // Act
+            var resultat = await ruterController.HentAlleRuter() as OkObjectResult;
+            List<Ruter> faktisk = (List<Ruter>)resultat.Value;
+
+            // Assert
+            Assert.Equal(forventet.Count, faktisk.Count);   // Tester om listene er like lange
+            // Tester om alle verdiene er like i alle elementene
+            for (int i = 0; i < forventet.Count; i++)
+            {
+                Assert.Equal(forventet[i].Linjekode, faktisk[i].Linjekode);
+                Assert.Equal(forventet[i].Rutenavn, faktisk[i].Rutenavn);
+                Assert.Equal(forventet[i].Startpris, faktisk[i].Startpris);
+                Assert.Equal(forventet[i].TilleggPerStopp, faktisk[i].TilleggPerStopp);
+                Assert.Equal(forventet[i].Kapasitet, faktisk[i].Kapasitet);
+            }
+        }
+
+        [Fact]
+        public async Task HentAlleRuter_Null()
+        {
+            // Arrange 
+            mockRepo.Setup(b => b.HentAlleRuter()).ReturnsAsync(() => null);
+
+            //Act
+            var resultat = await ruterController.HentAlleRuter() as NotFoundObjectResult;
 
             // Assert
             Assert.Equal("Rutene ble ikke funnet", resultat.Value);
@@ -79,6 +121,15 @@ namespace NOR_WAY_Tests
             RuteMedStopp RuteMedStopp2 = new RuteMedStopp { Stoppene = stoppene2, MinutterTilNesteStopp = minuttListe2, Linjekode = "NW600", Rutenavn = "Ekspressruta", Startpris = 100, TilleggPerStopp = 15 };
             RuteMedStopp RuteMedStopp3 = new RuteMedStopp { Stoppene = stoppene3, MinutterTilNesteStopp = minuttListe3, Linjekode = "NW007", Rutenavn = "Bondespressen", Startpris = 50, TilleggPerStopp = 35 };
             return new List<RuteMedStopp> { RuteMedStopp1, RuteMedStopp2, RuteMedStopp3 };
+        }
+
+        // Returnerer en List med Ruter-objekter
+        private List<Ruter> HentRuterListe()
+        {
+            var rute1 = new Ruter() { Linjekode = "NW431", Rutenavn = "Fjordekspressen", Startpris = 79, TilleggPerStopp = 30, Kapasitet = 55 };
+            var rute2 = new Ruter() { Linjekode = "NW194", Rutenavn = "Grenlandsekspressen", Startpris = 50, TilleggPerStopp = 35, Kapasitet = 45 };
+            var rute3 = new Ruter() { Linjekode = "NW180", Rutenavn = "Haukeliekspressen", Startpris = 149, TilleggPerStopp = 20, Kapasitet = 65 };
+            return new List<Ruter> { rute1, rute2, rute3 };
         }
     }
 }

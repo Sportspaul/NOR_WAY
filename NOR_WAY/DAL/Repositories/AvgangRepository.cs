@@ -86,9 +86,34 @@ namespace NOR_WAY.DAL.Repositories
             return utAvgang;
         }
 
-        public Task<bool> FjernAvgang(int Id)
+        public async Task<bool> FjernAvgang(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Avganger avgang = await _db.Avganger.FindAsync(id); // Avgangen som skal slettes
+
+                // Sletter alle Ordre og Ordrelinjer som tilhører Avgangen fra DB
+                List<Ordre> ordre = await _db.Ordre.Where(o => o.Avgang == avgang).ToListAsync();
+                foreach (Ordre o in ordre)
+                {
+                    List<Ordrelinjer> ordrelinjer = await _db.Ordrelinjer.Where(ol => ol.Ordre == o).ToListAsync();
+                    foreach (Ordrelinjer ol in ordrelinjer)
+                    {
+                        _db.Ordrelinjer.Remove(ol);
+                    }
+                    _db.Ordre.Remove(o);
+                }
+
+                _db.Avganger.Remove(avgang);    // Sletter Avganger-objekter fra DB
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return false;
+            }
+            
         }
 
         public async Task<List<Avganger>> HentAvganger(string linjekode, int sidenummer)

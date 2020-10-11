@@ -14,8 +14,8 @@ namespace NOR_WAY.DAL.Interfaces
 
         Task<List<Avganger>> HentAvganger(string linjekode, int sidenummer);
 
-        Task<bool> OppdaterAvgang(int Id, Avganger oppdaterAvgang);
+        Task<bool> OppdaterAvgang(int id, Avganger oppdaterAvgang);
 
-        Task<bool> FjernAvgang(int Id);
+        Task<bool> FjernAvgang(int id);
     }
 }

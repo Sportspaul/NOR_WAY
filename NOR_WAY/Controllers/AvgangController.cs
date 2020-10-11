@@ -39,9 +39,21 @@ namespace NOR_WAY.Controllers
             return BadRequest("Feil i inputvalideringen på server");
         }
 
-        public Task<ActionResult> FjernAvgang(int Id)
+        public async Task<ActionResult> FjernAvgang(int id)
         {
-            throw new NotImplementedException();
+            // TODO: Legg til sjekk for Unauthorized
+            if (ModelState.IsValid)
+            {
+                bool returOK = await _db.FjernAvgang(id);
+                if (!returOK)
+                {
+                    _log.LogInformation("Avgangen kunne ikke slettes!");
+                    return BadRequest("Avgangen kunne ikke slettes!");
+                }
+                return Ok("Avgangen ble slettet!");
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalidering på server");
         }
 
         public async Task<ActionResult> HentAvganger(string linjekode, int sidenummer)

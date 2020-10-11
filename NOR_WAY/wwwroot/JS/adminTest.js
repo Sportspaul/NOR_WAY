@@ -56,3 +56,8 @@ function HentAvganger(linjekode, sidenummer) {
     const url = `Avgang/HentAvganger?linjekode=${linjekode}&sidenummer=${sidenummer}`
     $.get(url);
 }
+
+function FjernAvgang(id) {
+    const url = `Avgang/FjernAvgang?id=${id}`;
+    $.get(url);
+}

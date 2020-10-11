@@ -52,10 +52,30 @@ namespace NOR_WAY.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        //TODO: Midlertidig til vi vet om denne skal ligge her
-        public Task<bool> NyAdmin(BrukerModel bruker)
+        public async Task<bool> NyAdmin(BrukerModel bruker)
         {
-            throw new NotImplementedException();
+            try
+            {
+                byte[] salt = LagSalt();
+                byte[] passordHash = LagHash(bruker.Passord, salt);
+
+                Brukere nyAdmin = new Brukere
+                {
+                    Brukernavn = bruker.Brukernavn,
+                    Passord = passordHash,
+                    Salt = salt,
+                    Tilgang = "Admin"
+                };
+
+                _db.Brukere.Add(nyAdmin);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return false;
+            }
         }
 
         /* Forelesers kode */

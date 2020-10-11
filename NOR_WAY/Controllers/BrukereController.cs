@@ -40,10 +40,20 @@ namespace NOR_WAY.Controllers
             throw new NotImplementedException();
         }
 
-        //TODO: Midlertidig til vi vet om denne skal ligge her
-        public Task<ActionResult> NyAdmin(string brukernavn, string passord)
+        public async Task<ActionResult> NyAdmin(BrukerModel bruker)
         {
-            throw new NotImplementedException();
+            if (ModelState.IsValid)
+            {
+                bool returOk = await _db.NyAdmin(bruker);
+                if (!returOk)
+                {
+                    _log.LogInformation("Ny bruker kunne ikke lagres!");
+                    return BadRequest("Ny bruker kunne ikke lagres");
+                }
+                return Ok("Ny bruker ble lagret");
+            }
+            _log.LogInformation("Feil i inputvalidering");
+            return BadRequest("Feil i inputvalidering på server");
         }
     }
 }

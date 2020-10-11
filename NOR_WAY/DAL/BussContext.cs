@@ -88,8 +88,8 @@ namespace NOR_WAY.DAL
     [ExcludeFromCodeCoverage]
     public class Brukere
     {
-        [Key]
-        public int BrukerId { get; set; } //PK
+        public int Id { get; set; } //PK
+
         public string Brukernavn { get; set; }
 
         public byte[] Passord { get; set; }

@@ -100,7 +100,6 @@ namespace NOR_WAY.DAL
                 Brukere admin = new Brukere();
                 admin.Brukernavn = "Admin";
                 admin.Tilgang = "Admin";
-                admin.BrukerId = 1;
                 string passord = "Admin";
 
                 byte[] salt = BrukereRepository.LagSalt();

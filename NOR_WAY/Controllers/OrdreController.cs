@@ -34,7 +34,7 @@ namespace NOR_WAY.Controllers
                 }
                 return Ok("Ordren ble lagret!");
             }
-            _log.LogInformation("Feil i inputvalideringen på server");
+            _log.LogInformation("Feil i inputvalideringen");
             return BadRequest("Feil i inputvalidering på server");
         }
 

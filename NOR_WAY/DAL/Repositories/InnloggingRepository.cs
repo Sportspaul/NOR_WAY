@@ -4,6 +4,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL.Interfaces;
 using NOR_WAY.Model;
 
@@ -11,9 +13,37 @@ namespace NOR_WAY.DAL.Repositories
 {
     public class InnloggingRepository : IInnloggingRepository
     {
-        public Task<bool> LoggInn(string brukernavn, string passord)
+        private readonly BussContext _db;
+        private readonly ILogger<InnloggingRepository> _log;
+
+        public InnloggingRepository(BussContext db, ILogger<InnloggingRepository> log)
         {
-            throw new NotImplementedException();
+            _db = db;
+            _log = log;
+        }
+
+        public async Task<bool> LoggInn(BrukerModel bruker)
+        {
+            try
+            {
+                // Henter brukeren som matcher input-brukernavnet
+                Brukere funnetBruker = await _db.Brukere
+                    .FirstOrDefaultAsync(bruker => bruker.Brukernavn == bruker.Brukernavn);
+
+                // Sjekker om input-passord + salt matcher passordet + salt i DB 
+                byte[] hash = LagHash(bruker.Passord, funnetBruker.Salt);
+                bool ok = hash.SequenceEqual(funnetBruker.Passord);
+                if (ok)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return false;
+            }
         }
 
         public Task<bool> LoggUt()
@@ -22,7 +52,7 @@ namespace NOR_WAY.DAL.Repositories
         }
 
         //TODO: Midlertidig til vi vet om denne skal ligge her
-        public Task<bool> NyAdmin(string brukernavn, string passord)
+        public Task<bool> NyAdmin(BrukerModel bruker)
         {
             throw new NotImplementedException();
         }

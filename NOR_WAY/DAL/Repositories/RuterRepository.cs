@@ -135,9 +135,59 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
-        public Task<bool> NyRute(Ruter nyRute, List<RuteStoppModel> nyeRuteStopp)
+        // Metode for å legge til en ny rute i DB
+        public async Task<bool> NyRute(RuteModel ruteModel)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // Nytt Ruter-Objekt
+                Ruter nyRute = new Ruter
+                {
+                    Linjekode = ruteModel.Linjekode,
+                    Rutenavn = ruteModel.Rutenavn,
+                    Startpris = ruteModel.Startpris,
+                    TilleggPerStopp = ruteModel.TilleggPerStopp,
+                    Kapasitet = ruteModel.Kapasitet
+                };
+                _db.Ruter.Add(nyRute);
+
+                // Looper gjennom alle nye RuteStopp som skal legges til
+                foreach (var ruteStopp in ruteModel.RuteStopp)
+                {
+                    // Nytt RuteStopp-objekt
+                    RuteStopp nyttRuteStopp = new RuteStopp
+                    {
+                        StoppNummer = ruteStopp.StoppNummer,
+                        MinutterTilNesteStopp = ruteStopp.MinutterTilNesteStopp,
+                        Rute = nyRute
+                    };
+
+                    // Sjekker om det allerede eksisterer et stopp med tilsvarende navn i DB
+                    Stopp eksisterendeStopp = await _db.Stopp
+                        .Where(s => s.Navn == ruteStopp.Stoppnavn).SingleOrDefaultAsync();
+
+                    // Hvis det eksiterer blir dette Stopp-objektet brukt
+                    if (eksisterendeStopp != null) 
+                    {
+                        nyttRuteStopp.Stopp = eksisterendeStopp;
+                    }
+                    // Hvis det ikke eksiterer blir et nytt Stopp-okbjekt lagt til 
+                    else
+                    {
+                        Stopp nyttStopp = new Stopp { Navn = ruteStopp.Stoppnavn };
+                        nyttRuteStopp.Stopp = nyttStopp;
+                    }
+                    _db.RuteStopp.Add(nyttRuteStopp);
+                }
+                _db.SaveChanges();  // Lagrer endringene
+                return true;        
+            }
+            catch (Exception e)    
+            {
+                _log.LogInformation(e.Message);
+                return false;
+            }
+            
         }
 
         public Task<bool> OppdaterRute(string linjekode, Ruter rute)

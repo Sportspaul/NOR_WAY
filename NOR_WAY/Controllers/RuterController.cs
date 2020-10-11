@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL;
@@ -16,16 +17,17 @@ namespace NOR_WAY.Controllers
     {
         private readonly IRuterRepository _db;
         private ILogger<RuterController> _log;
+        private const string _innlogget = "Innlogget";
 
         public RuterController(IRuterRepository db, ILogger<RuterController> log)
         {
             _db = db;
             _log = log;
         }
-
-        // TODO: Legg til Autorisering for å kunne kalle denne metoden
+        
         public async Task<ActionResult> FjernRute(LinjekodeModel linjekodeModel)
         {
+            // TODO: Legg til sjekk for Unauthorized
             if (ModelState.IsValid)
             {
                 bool returOK = await _db.FjernRute(linjekodeModel.Linjekode);
@@ -61,10 +63,21 @@ namespace NOR_WAY.Controllers
             return Ok(rutene);
         }
 
-
-        public Task<ActionResult> NyRute(Ruter nyRute, List<RuteStoppModel> nyeRuteStopp)
+        public async Task<ActionResult> NyRute(RuteModel ruteModel)
         {
-            throw new NotImplementedException();
+            // TODO: Legg til sjekk for Unauthorized
+            if (ModelState.IsValid)
+            {
+                bool returOK = await _db.NyRute(ruteModel);
+                if (!returOK)
+                {
+                    _log.LogInformation("Ny rute kunne ikke lagres!");
+                    return BadRequest("Ny rute kunne ikke lagres!");
+                }
+                return Ok("Ny rute ble lagret!");
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalidering på server");
         }
 
         public Task<ActionResult> OppdaterRute(string linjekode, Ruter oppdatertRute)

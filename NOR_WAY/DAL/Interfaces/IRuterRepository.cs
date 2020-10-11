@@ -8,7 +8,7 @@ namespace NOR_WAY.DAL.Interfaces
 {
     public interface IRuterRepository
     {
-        Task<bool> NyRute(Ruter nyRute, List<RuteStoppModel> nyeRuteStopp);
+        Task<bool> NyRute(RuteModel ruteModel);
 
         Task<List<Ruter>> HentAlleRuter();
 

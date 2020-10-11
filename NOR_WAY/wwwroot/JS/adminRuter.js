@@ -10,7 +10,7 @@ function FjernRute(linjekode) {
 }
 
 // Test av NyRute
-function TestNyRute() {
+function NyRute() {
 
     const ruteStopp1 = {
         StoppNummer: 1,
@@ -38,4 +38,16 @@ function TestNyRute() {
     }
 
     $.post("Ruter/NyRute", rute);
+}
+
+function OppdaterRute(linjekode) {
+    const rute = {
+        Linjekode: linjekode,
+        Rutenavn: "Melkeruta",
+        Startpris: 750,
+        TilleggPerStopp: 50,
+        Kapasitet: 245
+    }
+
+    $.post("Ruter/OppdaterRute", rute);
 }

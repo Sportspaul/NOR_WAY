@@ -14,7 +14,7 @@ namespace NOR_WAY.DAL.Interfaces
 
         Task<List<RuteMedStopp>> HentRuterMedStopp();
 
-        Task<bool> OppdaterRute(string linjekode, Ruter endretRute);
+        Task<bool> OppdaterRute(Ruter endretRute);
 
         Task<bool> FjernRute(string linjekode);
     }

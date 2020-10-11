@@ -80,9 +80,21 @@ namespace NOR_WAY.Controllers
             return BadRequest("Feil i inputvalidering på server");
         }
 
-        public Task<ActionResult> OppdaterRute(string linjekode, Ruter oppdatertRute)
+        public async Task<ActionResult> OppdaterRute(Ruter endretRute)
         {
-            throw new NotImplementedException();
+            // TODO: Legg til sjekk for Unauthorized
+            if (ModelState.IsValid)
+            {
+                bool returOK = await _db.OppdaterRute(endretRute);
+                if (!returOK)
+                {
+                    _log.LogInformation("Endringen kunne ikke utføres");
+                    return NotFound($"Endringen av rute: { endretRute.Linjekode }, kunne ikke utføres");
+                }
+                return Ok($"Rute: { endretRute.Linjekode }, ble endret");
+            }
+            _log.LogInformation("Feil i inputvalidering");
+            return BadRequest("Feil i inputvalidering på server");
         }
     }
 }

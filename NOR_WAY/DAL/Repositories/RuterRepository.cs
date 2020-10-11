@@ -190,9 +190,25 @@ namespace NOR_WAY.DAL.Repositories
             
         }
 
-        public Task<bool> OppdaterRute(string linjekode, Ruter rute)
+        // Metode for å oppdaterer rutedetaljer
+        public async Task<bool> OppdaterRute(Ruter endretRute)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // Finner ruten som skal oppdateres og oppdaterer verdiene
+                Ruter gammelRute = await _db.Ruter.FindAsync(endretRute.Linjekode);
+                gammelRute.Rutenavn = endretRute.Rutenavn;
+                gammelRute.Startpris = endretRute.Startpris;
+                gammelRute.TilleggPerStopp = endretRute.TilleggPerStopp;
+                gammelRute.Kapasitet = endretRute.Kapasitet;
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return false;
+            }
         }
     }
 }

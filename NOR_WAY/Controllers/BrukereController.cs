@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL.Interfaces;
@@ -12,6 +13,7 @@ namespace NOR_WAY.Controllers
     {
         private readonly IBrukereRepository _db;
         private ILogger<BrukereController> _log;
+        private const string _innlogget = "Innlogget";
 
         public BrukereController(IBrukereRepository db, ILogger<BrukereController> log)
         {
@@ -26,22 +28,28 @@ namespace NOR_WAY.Controllers
                 bool returOk = await _db.LoggInn(bruker);
                 if (!returOk)
                 {
+                    HttpContext.Session.SetString(_innlogget, "");
                     _log.LogInformation("Innlogging feilet for bruker: " + bruker.Brukernavn);
                     return BadRequest("Innlogging feilet for bruker: " + bruker.Brukernavn);
                 }
+                HttpContext.Session.SetString(_innlogget, "Innlogget");
                 return Ok(true);
             }
             _log.LogInformation("Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering på server");
         }
 
-        public Task<ActionResult> LoggUt()
+        public void LoggUt()
         {
-            throw new NotImplementedException();
+            HttpContext.Session.SetString(_innlogget, "");
         }
 
         public async Task<ActionResult> NyAdmin(BrukerModel bruker)
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized();
+            }
             if (ModelState.IsValid)
             {
                 bool returOk = await _db.NyAdmin(bruker);

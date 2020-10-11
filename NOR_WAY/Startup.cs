@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +32,17 @@ namespace NOR_WAY
             services.AddScoped<IRuterRepository, RuterRepository>();
             services.AddScoped<IRuteStoppRepository, RuteStoppRepository>();
             services.AddScoped<IStoppRepository, StoppRepository>();
+
+            // SESSION
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = ".AdventureWorks.Session";
+                // Session times ut hvis bruker er Idle i 30 min
+                options.IdleTimeout = TimeSpan.FromSeconds(1800); 
+                options.Cookie.IsEssential = true;
+            });
+            services.AddDistributedMemoryCache();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +57,9 @@ namespace NOR_WAY
             }
 
             app.UseRouting();
+
+            // SESSION
+            app.UseSession();
 
             // HTML (wwwroot)
             app.UseStaticFiles();

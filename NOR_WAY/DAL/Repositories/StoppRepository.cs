@@ -13,9 +13,11 @@ namespace NOR_WAY.DAL.Repositories
     {
         private readonly BussContext _db;
         private readonly ILogger<StoppRepository> _log;
+        private readonly HjelpeRepository _hjelp;
 
         public StoppRepository(BussContext db, ILogger<StoppRepository> log)
         {
+            _hjelp = new HjelpeRepository(db, log);
             _db = db;
             _log = log;
         }
@@ -25,12 +27,12 @@ namespace NOR_WAY.DAL.Repositories
             try
             {
                 Stopp stopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == startStopp.Navn);
-                List<Ruter> ruter = await FinnRuter(stopp);
+                List<Ruter> ruter = await _hjelp.FinnRuteneTilStopp(stopp);
 
                 List<Stopp> stoppListe = new List<Stopp>();
                 foreach (Ruter rute in ruter)
                 {
-                    int stoppNummer = await FinnStoppNummer(stopp, rute);
+                    int stoppNummer = await _hjelp.FinnStoppNummer(stopp, rute);
                     List<Stopp> tempListe = await _db.RuteStopp
                         .Where(rs => rs.StoppNummer < stoppNummer && rs.Rute == rute)
                         .Select(rs => rs.Stopp).ToListAsync();
@@ -51,12 +53,12 @@ namespace NOR_WAY.DAL.Repositories
             try
             {
                 Stopp stopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == sluttStopp.Navn);
-                List<Ruter> ruter = await FinnRuter(stopp);
+                List<Ruter> ruter = await _hjelp.FinnRuteneTilStopp(stopp);
 
                 List<Stopp> stoppListe = new List<Stopp>();
                 foreach (Ruter rute in ruter)
                 {
-                    int stoppNummer = await FinnStoppNummer(stopp, rute);
+                    int stoppNummer = await _hjelp.FinnStoppNummer(stopp, rute);
                     List<Stopp> tempListe = await _db.RuteStopp
                         .Where(rs => rs.StoppNummer > stoppNummer && rs.Rute == rute)
                         .Select(rs => rs.Stopp).ToListAsync();
@@ -64,48 +66,6 @@ namespace NOR_WAY.DAL.Repositories
                 }
 
                 return stoppListe;
-            }
-            catch (Exception e)
-            {
-                _log.LogInformation(e.Message);
-                return null;
-            }
-        }
-
-        // TODO: Duplikatkode fra BussReiseRepository, finn en løsning
-        // Hjelpemetode som finner stoppnummeret til et spesifikt stopp i en spesifikk rute
-        private async Task<int> FinnStoppNummer(Stopp stopp, Ruter fellesRute)
-        {
-            try
-            {
-                RuteStopp ruteStopp = await _db.RuteStopp
-              .FirstOrDefaultAsync(rs => rs.Stopp == stopp && rs.Rute == fellesRute);
-                if (ruteStopp == null)
-                {
-                    _log.LogInformation("Stoppet er ikke på ruten");
-                    return -1;
-                }
-                return ruteStopp.StoppNummer;
-            }
-            catch (Exception e)
-            {
-                _log.LogInformation(e.Message);
-                return -1;
-            }
-        }
-
-        // TODO: Duplikatkode fra BussReiseRepository, finn en løsning
-        /* Hjelpemetode som tar inn et Stopp-objekt og returnerer en
-       liste med ruter som innholder stoppet */
-
-        private async Task<List<Ruter>> FinnRuter(Stopp stopp)
-        {
-            try
-            {
-                return await _db.RuteStopp
-                    .Where(rs => rs.Stopp == stopp)
-                    .Select(rs => rs.Rute)
-                    .ToListAsync();
             }
             catch (Exception e)
             {

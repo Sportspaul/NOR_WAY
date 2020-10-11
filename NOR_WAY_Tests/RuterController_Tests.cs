@@ -108,6 +108,52 @@ namespace NOR_WAY_Tests
             Assert.Equal("Rutene ble ikke funnet", resultat.Value);
         }
 
+        // Tester at FullforOrdre returnerer forventet verdi
+        [Fact]
+        public async Task FjernRute_RiktigeVerdier()
+        {
+            // Arrange
+            var linjekodeModel = new LinjekodeModel { Linjekode = "NW431" };
+            mockRepo.Setup(br => br.FjernRute(linjekodeModel.Linjekode)).ReturnsAsync(true);
+
+            // Act
+            var resultat = await ruterController.FjernRute(linjekodeModel) as OkObjectResult;
+
+            // Assert
+            Assert.Equal("Ruten ble slettet!", resultat.Value);
+        }
+
+        [Fact]
+        public async Task FjernRute_IkkeOK()
+        {
+            // Arrange
+            var linjekodeModel = new LinjekodeModel { Linjekode = "NW431" };
+            mockRepo.Setup(br => br.FjernRute(linjekodeModel.Linjekode)).ReturnsAsync(false);
+
+            // Act
+            var resultat = await ruterController.FjernRute(linjekodeModel) as BadRequestObjectResult;
+
+            // Assert
+            Assert.Equal("Ruten kunne ikke slettes!", resultat.Value);
+        }
+
+        // Tester at FullforOrdre i controlleren håndterer InvalidModelState
+        [Fact]
+        public async Task FjernRute_RegEx()
+        {
+            // Arrange
+            var linjekodeModel = new LinjekodeModel { Linjekode = "" };
+            mockRepo.Setup(br => br.FjernRute(linjekodeModel.Linjekode)).ReturnsAsync(false);
+            ruterController.ModelState.AddModelError("Linjekode", "Feil i inputvalideringen på server");
+
+            // Act
+            var resultat = await ruterController.FjernRute(linjekodeModel) as BadRequestObjectResult;
+
+            // Assert
+            Assert.Equal("Feil i inputvalidering på server", resultat.Value);
+        }
+
+
         // Returnerer en List med RuteMedStopp-objekter
         private List<RuteMedStopp> HentRuteMedStoppListe()
         {

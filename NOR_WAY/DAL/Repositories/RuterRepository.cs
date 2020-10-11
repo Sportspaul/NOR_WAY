@@ -20,9 +20,44 @@ namespace NOR_WAY.DAL.Repositories
             _log = log;
         }
 
-        public Task<bool> FjernRute(string linjekode)
+        public async Task<bool> FjernRute(string linjekode)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // Heter Ruter-objektet og tilhørende RuteStopp, Ordre og Avganger fra DB
+                Ruter rute = await _db.Ruter.FindAsync(linjekode);
+                List<RuteStopp> ruteStopp = await _db.RuteStopp.Where(rs => rs.Rute == rute).ToListAsync();
+                List<Ordre> ordre = await _db.Ordre.Where(o => o.Rute == rute).ToListAsync();
+                List<Avganger> avganger = await _db.Avganger.Where(a => a.Rute == rute).ToListAsync();
+
+                // Fjerner alle tilhørende rutestopp fra DB
+                foreach (var rs in ruteStopp)
+                {
+                    _db.RuteStopp.Remove(rs);
+                }
+
+                // Fjerner alle tilhørende ordre fra DB
+                foreach (var o in ordre)
+                {
+                    _db.Ordre.Remove(o);
+                }
+
+                // Fjerner alle tilhørende avganer fra DB
+                foreach (var a in avganger)
+                {
+                    _db.Avganger.Remove(a);
+                }
+
+                // Fjerner ruten, lagrer endringen og returnere true hvis alt gikk fint
+                _db.Ruter.Remove(rute); 
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return false;
+            }
         }
 
         public async Task<List<Ruter>> HentAlleRuter()

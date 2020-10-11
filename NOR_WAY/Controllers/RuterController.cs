@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -22,9 +23,21 @@ namespace NOR_WAY.Controllers
             _log = log;
         }
 
-        public Task<ActionResult> FjernRute(string linjekode)
+        // TODO: Legg til Autorisering for å kunne kalle denne metoden
+        public async Task<ActionResult> FjernRute(LinjekodeModel linjekodeModel)
         {
-            throw new NotImplementedException();
+            if (ModelState.IsValid)
+            {
+                bool returOK = await _db.FjernRute(linjekodeModel.Linjekode);
+                if (!returOK)
+                {
+                    _log.LogInformation("Ruten kunne ikke slettes!");
+                    return BadRequest("Ruten kunne ikke slettes!");
+                }
+                return Ok("Ruten ble slettet!");
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalidering på server");
         }
 
         public async Task<ActionResult> HentAlleRuter()

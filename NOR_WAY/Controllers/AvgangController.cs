@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -43,9 +44,24 @@ namespace NOR_WAY.Controllers
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult> HentAvganger(string linjekode, int side)
+        public async Task<ActionResult> HentAvganger(string linjekode, int sidenummer)
         {
-            throw new NotImplementedException();
+            // TODO: Legg til sjekk for Unauthorized
+            if (ModelState.IsValid) { 
+                Regex linjekodeRegex = new Regex(@"(NW)[0-9]{1,4}");
+                if (linjekodeRegex.IsMatch(linjekode))
+                {
+                    List<Avganger> avganger = await _db.HentAvganger(linjekode, sidenummer);
+                    if (avganger == null)
+                    {
+                        _log.LogInformation("Listen med avganger ble ikke funnet");
+                        return NotFound("Listen med avganger ble ikke funnet");
+                    }
+                    return Ok(avganger);
+                }
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalideringen på server");
         }
 
         public Task<ActionResult> NyAvgang(AvgangModel nyAvgang)

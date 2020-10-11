@@ -91,9 +91,22 @@ namespace NOR_WAY.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Avganger> HentAvganger(string linjekode, int side)
+        public async Task<List<Avganger>> HentAvganger(string linjekode, int sidenummer)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // TODO: Kan justere til et annet tall enn 20 for å se best mulig ut på frontend
+                int hoppOver = sidenummer * 20;   // Antall elementer som skal hoppes over
+                // Sorterer etter Avreise, hopper over (sidenummer * 20) elementer og henter 20 elementer
+                List<Avganger> avganger = await _db.Avganger.Where(a => a.Rute.Linjekode == linjekode)
+                    .OrderBy(a => a.Avreise).Skip(hoppOver).Take(20).ToListAsync();
+                return avganger;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return null;
+            }
         }
 
         public Task<bool> NyAvgang(AvgangModel nyAvgang)

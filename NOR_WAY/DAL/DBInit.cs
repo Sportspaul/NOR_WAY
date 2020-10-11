@@ -111,17 +111,17 @@ namespace NOR_WAY.DAL
                 
                 // Injiserer Avganger
                 DateTime idag = DateTime.Now;
-                InjiserAvganger(idag, NW431Rute, 2.00, 100, context);
-                InjiserAvganger(idag, NW194Rute, 2.00, 100, context);
-                InjiserAvganger(idag, NW180Rute, 2.00, 100, context);
-                InjiserAvganger(idag, NW194Rute, 2.00, 100, context);
-                InjiserAvganger(idag, NW192Rute, 2.00, 100, context);
-                InjiserAvganger(idag, NW400Rute, 2.00, 100, context);
-                InjiserAvganger(idag, NW420Rute, 2.00, 100, context);
-                InjiserAvganger(idag, NW182Rute, 2.00, 100, context);
-                InjiserAvganger(idag, NW130Rute, 2.00, 100, context);
-                InjiserAvganger(idag, NW160Rute, 2.00, 100, context);
-                InjiserAvganger(idag, NW162Rute, 2.00, 100, context);
+                InjiserAvganger(idag, NW431Rute, 2.00, 110, context);
+                InjiserAvganger(idag, NW194Rute, 2.00, 110, context);
+                InjiserAvganger(idag, NW180Rute, 2.00, 110, context);
+                InjiserAvganger(idag, NW194Rute, 2.00, 110, context);
+                InjiserAvganger(idag, NW192Rute, 2.00, 110, context);
+                InjiserAvganger(idag, NW400Rute, 2.00, 110, context);
+                InjiserAvganger(idag, NW420Rute, 2.00, 110, context);
+                InjiserAvganger(idag, NW182Rute, 2.00, 110, context);
+                InjiserAvganger(idag, NW130Rute, 2.00, 110, context);
+                InjiserAvganger(idag, NW160Rute, 2.00, 110, context);
+                InjiserAvganger(idag, NW162Rute, 2.00, 110, context);
 
                 // Lagrer all seedet data
                 context.SaveChanges();

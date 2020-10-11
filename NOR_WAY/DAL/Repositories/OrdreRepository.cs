@@ -23,22 +23,22 @@ namespace NOR_WAY.DAL.Repositories
         }
 
         // Fullfør ordre
-        public async Task<bool> FullforOrdre(OrdreModel kundeOrdreParam)
+        public async Task<bool> FullforOrdre(OrdreModel ordreModel)
         {
             try
             {
-                // Henter ut ruten som tilhører kundeOrdreParam
-                Ruter rute = await _db.Ruter.FirstOrDefaultAsync(r => r.Linjekode == kundeOrdreParam.Linjekode);
+                // Henter ut ruten som tilhører OrdreModel
+                Ruter rute = await _db.Ruter.FirstOrDefaultAsync(r => r.Linjekode == ordreModel.Linjekode);
 
                 // Henter Avgangens Id
-                Avganger avgang = await _db.Avganger.FirstOrDefaultAsync(a => a.Id == kundeOrdreParam.AvgangId);
+                Avganger avgang = await _db.Avganger.FirstOrDefaultAsync(a => a.Id == ordreModel.AvgangId);
 
                 // Finner startStopp, og finner stoppnummeret i ruten
-                Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == kundeOrdreParam.StartStopp);
+                Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == ordreModel.StartStopp);
                 int stoppNummer1 = await _hjelp.FinnStoppNummer(startStopp, rute);
 
                 // Finner sluttStopp, og finner stoppnummeret i ruten
-                Stopp sluttStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == kundeOrdreParam.SluttStopp);
+                Stopp sluttStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == ordreModel.SluttStopp);
                 int stoppNummer2 = await _hjelp.FinnStoppNummer(sluttStopp, rute);
 
                 // Regner ut antall stopp
@@ -46,12 +46,12 @@ namespace NOR_WAY.DAL.Repositories
 
                 // Finner summen for reisen
                 // antallStopp, rute, liste med billettype
-                int sum = await _hjelp.BeregnPris(rute, antallStopp, kundeOrdreParam.Billettyper);
+                int sum = await _hjelp.BeregnPris(rute, antallStopp, ordreModel.Billettyper);
 
-                // Lager en ordre basert på kundeOrdreParam, rute og avgang
+                // Lager en ordre basert på ordreModel, rute og avgang
                 var ordre = new Ordre
                 {
-                    Epost = kundeOrdreParam.Epost,
+                    Epost = ordreModel.Epost,
                     StartStopp = startStopp,
                     SluttStopp = sluttStopp,
                     Sum = sum,
@@ -66,7 +66,7 @@ namespace NOR_WAY.DAL.Repositories
                 Avganger dbAvgang = _db.Avganger.Find(avgang.Id);
 
                 // Går gjennom listen med billettyper
-                foreach (string billettype in kundeOrdreParam.Billettyper)
+                foreach (string billettype in ordreModel.Billettyper)
                 {
                     // Henter ut en billettype i listen
                     Billettyper billettypeObjekt = await _db.Billettyper.FirstOrDefaultAsync(a => a.Billettype == billettype);

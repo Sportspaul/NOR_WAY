@@ -12,7 +12,7 @@ namespace NOR_WAY.DAL.Interfaces
 
         Task<bool> NyAvgang(AvgangModel nyAvgang);
 
-        Task<Avganger> HentAvganger(string linjekode, int side);
+        Task<List<Avganger>> HentAvganger(string linjekode, int sidenummer);
 
         Task<bool> OppdaterAvgang(int Id, Avganger oppdaterAvgang);
 

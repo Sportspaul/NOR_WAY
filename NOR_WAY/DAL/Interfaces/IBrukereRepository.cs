@@ -8,11 +8,10 @@ namespace NOR_WAY.DAL.Interfaces
 {
     public interface IBrukereRepository
     {
-        Task<bool> LoggInn(string brukernavn, string passord);
+        Task<bool> LoggInn(BrukerModel bruker);
 
         Task<bool> LoggUt();
 
-        //TODO: Midlertidig til vi vet om denne skal ligge her
-        Task<bool> NyAdmin(string brukernavn, string passord);
+        Task<bool> NyAdmin(BrukerModel bruker);
     }
 }

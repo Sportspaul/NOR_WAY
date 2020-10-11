@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL.Interfaces;
+using NOR_WAY.Model;
 
 namespace NOR_WAY.Controllers
 {
@@ -18,9 +19,20 @@ namespace NOR_WAY.Controllers
             _log = log;
         }
 
-        public Task<ActionResult> LoggInn(string brukernavn, string passord)
+        public async Task<ActionResult> LoggInn(BrukerModel bruker)
         {
-            throw new NotImplementedException();
+            if (ModelState.IsValid)
+            {
+                bool returOk = await _db.LoggInn(bruker);
+                if (!returOk)
+                {
+                    _log.LogInformation("Innlogging feilet for bruker: " + bruker.Brukernavn);
+                    return BadRequest("Innlogging feilet for bruker: " + bruker.Brukernavn);
+                }
+                return Ok(true);
+            }
+            _log.LogInformation("Feil i inputvalidering");
+            return BadRequest("Feil i inputvalidering på server");
         }
 
         public Task<ActionResult> LoggUt()

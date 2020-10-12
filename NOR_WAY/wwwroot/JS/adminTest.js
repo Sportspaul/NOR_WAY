@@ -9,8 +9,7 @@ function FjernRute(linjekode) {
     }
 
     // Kaller C# Metoden FullforOrdre()
-    $.post("Ruter/FjernRute", rute)
-    .done(function () {
+    $.post("Ruter/FjernRute", rute, function () {
         console.log("%c Ruten ble fjernet", green);
     })
     .fail(function () {
@@ -46,8 +45,7 @@ function NyRute() {
         RuteStopp: [ ruteStopp1, ruteStopp2, ruteStopp3 ]
     }
 
-    $.post("Ruter/NyRute", rute)
-    .done(function (avganger) {
+    $.post("Ruter/NyRute", rute, function (avganger) {
         console.log("%c Ny rute ble lagt til", green);
     })
     .fail(function () {
@@ -60,12 +58,11 @@ function OppdaterRute(linjekode) {
         Linjekode: linjekode,
         Rutenavn: "Melkeruta",
         Startpris: 750,
-        TilleggPerStopp: 50,
-        Kapasitet: 245
+        TilleggPerStopp: 200,
+        Kapasitet: 99
     }
 
-    $.post("Ruter/OppdaterRute", rute)
-    .done(function () {
+    $.post("Ruter/OppdaterRute", rute, function () {
         console.log("%c Ruten ble oppdatert", green)
     })
     .fail(function () {
@@ -75,8 +72,7 @@ function OppdaterRute(linjekode) {
 
 function HentAvganger(linjekode, sidenummer) {
     const url = `Avgang/HentAvganger?linjekode=${linjekode}&sidenummer=${sidenummer}`
-    $.get(url)
-    .done(function (avganger) {
+    $.get(url, function (avganger) {
         console.table(avganger);
     })
     .fail(function () {
@@ -86,8 +82,7 @@ function HentAvganger(linjekode, sidenummer) {
 
 function FjernAvgang(id) {
     const url = `Avgang/FjernAvgang?id=${id}`;
-    $.get(url)   
-    .done(function () {
+    $.get(url, function () {
         console.log("%c Avgangen ble slettet", green);
     })
     .fail(function () {
@@ -103,8 +98,7 @@ function NyAvgang() {
         Linjekode: "NW431"
     }
 
-    $.post("Avgang/NyAvgang", avgang)   
-    .done(function () {
+    $.post("Avgang/NyAvgang", avgang, function () {
         console.log("%c Ny avgang ble lagt til", green);
     })
     .fail(function () {
@@ -112,19 +106,18 @@ function NyAvgang() {
     });
 }
 
-function OppdaterAvgang() {
+function OppdaterAvgang(id) {
     const avreisetid = {
-        Id: 1,
+        Id: id,
         Dato: "2028-10-20",
         Tidspunkt: "17:00"
     }
 
-    $.post("Avgang/OppdaterAvgang", avreisetid)
-    .done(function () {
+    $.post("Avgang/OppdaterAvgang", avreisetid, function(){
         console.log("%c Avgangen ble oppdatert", green);
     })
-    .fail(function () {
-        console.log("%c Avgangen ble ikke oppdatert", red);
+    .fail(function (feil) {
+        console.log("%c" + feil.responseText, red);
     });
 }
 

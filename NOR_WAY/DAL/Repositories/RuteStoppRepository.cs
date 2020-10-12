@@ -20,9 +20,31 @@ namespace NOR_WAY.DAL.Repositories
             _log = log;
         }
 
-        public Task<bool> FjernRuteStopp(int stoppNummer, string linjekode)
+        public async Task<bool> FjernRuteStopp(int stoppNummer, string linjekode)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // Fjerner aktuelt RuteStopp
+                RuteStopp ruteStoppTilFjerning = await _db.RuteStopp
+                    .SingleOrDefaultAsync(rs => rs.StoppNummer == stoppNummer && rs.Rute.Linjekode == linjekode);
+                _db.Remove(ruteStoppTilFjerning);
+
+                // Henter alle RuteStopp fra samme rute som har likt eller høyre stoppnummer enn det som ble fjernet
+                List<RuteStopp> endreStoppNummer = await LiktEllerSenereStoppNummer(stoppNummer, linjekode);
+
+                // Subtraherer alle med stoppnummer som er større eller lik det fjernede rutestoppet med 1
+                foreach (RuteStopp rs in endreStoppNummer)
+                {
+                    rs.StoppNummer--;
+                }
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return false;
+            }
         }
 
         public Task<List<RuteStoppModel>> HentAlleRuteStopp()
@@ -61,11 +83,10 @@ namespace NOR_WAY.DAL.Repositories
             try
             {
                 // Henter alle RuteStopp fra samme rute som har likt eller høyre stoppnummer enn det nye stoppet
-                List<RuteStopp> itererStoppNummer = await _db.RuteStopp
-                    .Where(rs => rs.StoppNummer >= innRuteStopp.StoppNummer && rs.Rute.Linjekode == innRuteStopp.Linjekode).ToListAsync();
+                List<RuteStopp> endreStoppNummer = await LiktEllerSenereStoppNummer(innRuteStopp.StoppNummer, innRuteStopp.Linjekode);
 
                 // Adderer alle med stoppnummer som er større eller lik det nye rutestoppet med 1
-                foreach (RuteStopp rs in itererStoppNummer)
+                foreach (RuteStopp rs in endreStoppNummer)
                 {
                     rs.StoppNummer++;
                 }
@@ -113,6 +134,13 @@ namespace NOR_WAY.DAL.Repositories
         public Task<bool> OppdaterRuteStopp(int stoppNumer, string linjekode, RuteStoppModel oppdatertRuteStopp)
         {
             throw new NotImplementedException();
+        }
+
+        // Henter alle RuteStopp fra samme rute som har likt eller høyre stoppnummer
+        private async Task<List<RuteStopp>> LiktEllerSenereStoppNummer(int stoppNummer, string linjekode)
+        {
+            return await _db.RuteStopp
+                .Where(rs => rs.StoppNummer >= stoppNummer && rs.Rute.Linjekode == linjekode).ToListAsync();
         }
     }
 }

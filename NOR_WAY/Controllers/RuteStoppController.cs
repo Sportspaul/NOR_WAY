@@ -22,9 +22,21 @@ namespace NOR_WAY.Controllers
             _log = log;
         }
 
-        public Task<ActionResult> FjernRuteStopp(int stoppNummer, string linjekode)
+        public async Task<ActionResult> FjernRuteStopp(int stoppNummer, string linjekode)
         {
-            throw new NotImplementedException();
+            // TODO: Legg til sjekk for Unauthorized
+            if (ModelState.IsValid)
+            {
+                bool returOK = await _db.FjernRuteStopp(stoppNummer, linjekode);
+                if (!returOK)
+                {
+                    _log.LogInformation("RuteStopp kunne ikke slettes!");
+                    return BadRequest("Rutestoppet kunne ikke slettes!");
+                }
+                return Ok("Rutestoppet ble slettet!");
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalidering på server");
         }
 
         public Task<ActionResult> HentAlleRuteStopp()

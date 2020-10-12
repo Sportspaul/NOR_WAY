@@ -150,3 +150,13 @@ function NyRuteStopp(linjekode) {
     });
 }
 
+function FjernRuteStopp(stoppNummer, linjekode) {
+    const url = `RuteStopp/FjernRuteStopp?stoppNummer=${stoppNummer}&linjekode=${linjekode}`;
+    $.get(url, function () {
+        console.log("%c RuteStopp ble slettet", green);
+    })
+    .fail(function () {
+        console.log("%c RuteStopp ble IKKE slettet", red);
+    });
+}
+

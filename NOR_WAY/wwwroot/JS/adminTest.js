@@ -1,6 +1,12 @@
 ﻿const red = "color: #f94e4f";
 const green = "color: #28a745";
 
+function HentAlleRuter() {
+    $.get("Ruter/HentAlleRuter", function(alleRuter) {
+        console.table(alleRuter)
+    })
+}
+
 // Test av FjernRute
 function FjernRute(linjekode) {
 

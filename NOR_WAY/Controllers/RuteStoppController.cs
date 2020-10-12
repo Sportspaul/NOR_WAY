@@ -72,9 +72,21 @@ namespace NOR_WAY.Controllers
             return BadRequest("Feil i inputvalidering på server");
         }
 
-        public Task<ActionResult> OppdaterStoppNavn(int stoppNumer, string linjekode, RuteStoppModel oppdatertRuteStopp)
+        public async Task<ActionResult> OppdaterRuteStopp(RuteStoppOppdatert ruteStoppOppdater)
         {
-            throw new NotImplementedException();
+            // TODO: Legg til sjekk for Unauthorized
+            if (ModelState.IsValid)
+            {
+                bool returOK = await _db.OppdaterRuteStopp(ruteStoppOppdater);
+                if (!returOK)
+                {
+                    _log.LogInformation("Endringen av RuteStopp kunne ikke utføres");
+                    return NotFound("Endringen av rutestoppet kunne ikke utføres");
+                }
+                return Ok("Rutestoppet ble endret");
+            }
+            _log.LogInformation("Feil i inputvalidering");
+            return BadRequest("Feil i inputvalidering på server");
         }
     }
 }

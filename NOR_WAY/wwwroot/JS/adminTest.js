@@ -160,3 +160,20 @@ function FjernRuteStopp(stoppNummer, linjekode) {
     });
 }
 
+function OppdaterRuteStopp() {
+    const ruteStoppOppdatert = {
+        GammeltStoppNummer: 1,
+        NyttStoppNummer: 11,
+        MinutterTilNesteStopp: 10,
+        Stoppnavn: "Bergen",
+        Linjekode: "NW431"
+    }
+
+    $.post("RuteStopp/OppdaterRuteStopp", ruteStoppOppdatert, function(){
+        console.log("%c RuteStopp ble endret", green);
+    })
+    .fail(function (feil) {
+        console.log("%c" + feil.responseText, red);
+    });
+}
+

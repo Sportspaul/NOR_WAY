@@ -131,9 +131,35 @@ namespace NOR_WAY.DAL.Repositories
 
         }
 
-        public Task<bool> OppdaterRuteStopp(int stoppNumer, string linjekode, RuteStoppModel oppdatertRuteStopp)
+        // Metode for å oppdatere verdeiene i et RuteStopp
+        public async Task<bool> OppdaterRuteStopp(RuteStoppOppdatert oppdatertRuteStopp)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // Returnerer false hvis nyttStoppNummer er mindre enn det minste eller større en det største som allerede eksisterer
+                int antallRuteStopp = await _db.RuteStopp.Where(rs => rs.Rute.Linjekode == oppdatertRuteStopp.Linjekode).CountAsync();
+                int nyttStoppNummer = oppdatertRuteStopp.NyttStoppNummer;
+                if (nyttStoppNummer > antallRuteStopp || nyttStoppNummer <= 0) { return false; }
+
+                // Fjerner RuteStopp-objektet som skal endres
+                bool slettOk = await FjernRuteStopp(oppdatertRuteStopp.GammeltStoppNummer, oppdatertRuteStopp.Linjekode);
+                RuteStoppModel ruteStoppModel = new RuteStoppModel {
+                    StoppNummer = oppdatertRuteStopp.NyttStoppNummer,
+                    MinutterTilNesteStopp = oppdatertRuteStopp.MinutterTilNesteStopp,
+                    Stoppnavn = oppdatertRuteStopp.Stoppnavn,
+                    Linjekode = oppdatertRuteStopp.Linjekode
+                };
+                bool nyOk = await NyRuteStopp(ruteStoppModel);  // Legger til et nytt RuteStopp
+                if (slettOk && nyOk) {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return false;
+            }
         }
 
         // Henter alle RuteStopp fra samme rute som har likt eller høyre stoppnummer

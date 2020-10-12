@@ -10,8 +10,6 @@ namespace NOR_WAY.DAL.Interfaces
     {
         Task<bool> LoggInn(BrukerModel bruker);
 
-        Task<bool> LoggUt();
-
         Task<bool> NyAdmin(BrukerModel bruker);
     }
 }

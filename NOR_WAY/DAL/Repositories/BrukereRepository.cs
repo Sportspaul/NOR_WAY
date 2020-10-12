@@ -47,11 +47,6 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
-        public Task<bool> LoggUt()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<bool> NyAdmin(BrukerModel bruker)
         {
             try

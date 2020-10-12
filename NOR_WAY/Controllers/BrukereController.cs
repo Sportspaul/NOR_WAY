@@ -48,7 +48,7 @@ namespace NOR_WAY.Controllers
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
             {
-                return Unauthorized();
+                return Unauthorized("Ikke innlogget");
             }
             if (ModelState.IsValid)
             {

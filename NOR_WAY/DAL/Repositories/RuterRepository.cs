@@ -36,9 +36,14 @@ namespace NOR_WAY.DAL.Repositories
                     _db.RuteStopp.Remove(rs);
                 }
 
-                // Fjerner alle tilhørende ordre fra DB
+                // Fjerner alle tilhørende ordre og ordrelinjer fra DB
                 foreach (var o in ordre)
                 {
+                    List<Ordrelinjer> ordrelinjer = await _db.Ordrelinjer.Where(ol => ol.Ordre == o).ToListAsync();
+                    foreach (Ordrelinjer ol in ordrelinjer)
+                    {
+                        _db.Ordrelinjer.Remove(ol);
+                    }
                     _db.Ordre.Remove(o);
                 }
 

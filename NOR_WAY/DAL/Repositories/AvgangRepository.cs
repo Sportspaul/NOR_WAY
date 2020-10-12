@@ -158,9 +158,21 @@ namespace NOR_WAY.DAL.Repositories
 
         }
 
-        public Task<bool> OppdaterAvgang(int Id, Avganger oppdaterAvgang)
+        public async Task<bool> OppdaterAvgang(Avreisetid nyAvreisetid)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Avganger gammelAvgang = await _db.Avganger.FindAsync(nyAvreisetid.Id);
+                DateTime nyAvreise = _hjelp.StringTilDateTime(nyAvreisetid.Dato, nyAvreisetid.Tidspunkt);
+                gammelAvgang.Avreise = nyAvreise;
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return false;
+            }
         }
     }
 }

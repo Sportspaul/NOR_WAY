@@ -72,3 +72,14 @@ function NyAvgang() {
 
     $.post("Avgang/NyAvgang", avgang);
 }
+
+function OppdaterAvgang() {
+    const avreisetid = {
+        Id: 1,
+        Dato: "2028-10-20",
+        Tidspunkt: "17:00"
+    }
+
+    $.post("Avgang/OppdaterAvgang", avreisetid);
+}
+

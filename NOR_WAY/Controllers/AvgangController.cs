@@ -93,9 +93,21 @@ namespace NOR_WAY.Controllers
             return BadRequest("Feil i inputvalidering på server");
     }
 
-        public Task<ActionResult> OppdaterAvgang(int Id, Avganger oppdaterAvgang)
+        public async Task<ActionResult> OppdaterAvgang(Avreisetid avreisetid)
         {
-            throw new NotImplementedException();
+            // TODO: Legg til sjekk for Unauthorized
+            if (ModelState.IsValid)
+            {
+                bool returOK = await _db.OppdaterAvgang(avreisetid);
+                if (!returOK)
+                {
+                    _log.LogInformation("Endringen kunne ikke utføres");
+                    return NotFound($"Endringen av avgang med Id: { avreisetid.Id }, kunne ikke utføres");
+                }
+                return Ok($"Avgang med Id: { avreisetid.Id }, ble endret");
+            }
+            _log.LogInformation("Feil i inputvalidering");
+            return BadRequest("Feil i inputvalidering på server");
         }
     }
 }

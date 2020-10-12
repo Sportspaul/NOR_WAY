@@ -11,7 +11,7 @@ function loggInn() {
         }
         $.post("Brukere/LoggInn", bruker, function (OK) {
             if (OK) {
-                window.location.href = 'index.html';
+                window.location.href = 'ruteoversikt.html';
             }
             else {
                 $("#feil").html("Feil brukernavn eller passord");

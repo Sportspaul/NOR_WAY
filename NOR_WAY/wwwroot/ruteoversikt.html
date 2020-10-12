@@ -13,17 +13,26 @@
     <!-- CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="Style/template.css">
-    <link rel="stylesheet" href="Style/adminRuter.css">
+    <link rel="stylesheet" href="Style/ruteoversikt.css">
 
     <!-- Javascript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="JS/Components/NavBar.js?n=1" defer></script>
+    <script src="JS/Components/AdminNav.js" defer></script>
     <script src="JS/Hjelpemetoder.js"></script>
-    <script src="JS/adminRuter.js?n=1"></script>
+    <script src="JS/ruteoversikt.js?n=1"></script>
 </head>
 <body>
     <div id="overlay">
         <nav-bar> <!-- Web Component, Components/Navbar.js--> </nav-bar>
-    </div>
+        <div class="shadowBox">
+            <admin-nav></admin-nav>
+            <br />
+            <br />
+            <input type="button" id="nyRute" class="btn btn-md btn-primary mt-3 font-weight-bold shadow antialised" value="Legg til ny rute" />
+
+
+        </div>
+        </div>
 </body>
 </html>

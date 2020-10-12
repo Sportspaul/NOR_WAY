@@ -105,7 +105,7 @@ namespace NOR_WAY.DAL.Repositories
                 }
 
                 _db.Avganger.Remove(avgang);    // Sletter Avganger-objekter fra DB
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
                 return true;
             }
             catch (Exception e)
@@ -134,9 +134,28 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
-        public Task<bool> NyAvgang(AvgangModel nyAvgang)
+        public async Task<bool> NyAvgang(AvgangModel nyAvgang)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Ruter rute = await _db.Ruter.FindAsync(nyAvgang.Linjekode);
+                Avganger avgang = new Avganger
+                {
+                    Avreise = _hjelp.StringTilDateTime(nyAvgang.Dato, nyAvgang.Tidspunkt),
+                    SolgteBilletter = nyAvgang.SolgteBilletter,
+                    Rute = rute
+                };
+                _db.Avganger.Add(avgang);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return false;
+            }
+
+
         }
 
         public Task<bool> OppdaterAvgang(int Id, Avganger oppdaterAvgang)

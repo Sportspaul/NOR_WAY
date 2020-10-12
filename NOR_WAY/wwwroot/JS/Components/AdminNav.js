@@ -31,9 +31,9 @@ adminNav.innerHTML = `
 
 <ul>
     <li><a href="ruteoversikt.html">Ruteoversikt</a></li>
-    <li><a href="ruteoversikt.html">Avganger</a></li>
-    <li><a href="ruteoversikt.html">Billettyper</a></li>
-    <li><a href="ruteoversikt.html">Ordre</a></li>
+    <li><a href="billettyper.html">Billettyper</a></li>
+    <li><a href="stopp.html">Stopp</a></li>
+    <li><a href="ordre.html">Ordre</a></li>
 </ul>`
 
 class AdminNav extends HTMLElement {

@@ -32,19 +32,19 @@ template.innerHTML = `
         color: rgb(190,190,190);
     }
 </style>
-<a href="index.html">
+<a href="../index.html">
     <img
-        src="/Bilder/logo.svg"
+        src="../Bilder/logo.svg"
         alt="NOR-WAY sin logo. NOR i bold rødt og WAY i bold kursiv blått.
         De to ordene skilles av en rød prikk"
     />
 </a>
 <ul>
-    <li><a href="index.html">Kjøp Billett</a></li>
+    <li><a href="../index.html">Kjøp Billett</a></li>
     <li>|</li>
-    <li><a href="ruter.html">Ruter</a></li>
+    <li><a href="../ruter.html">Ruter</a></li>
     <li>|</li>
-    <li><a href="loggInn.html">Logg Inn</a></li>
+    <li><a href="../loggInn.html">Logg Inn</a></li>
 </ul>`
 
 class NavBar extends HTMLElement {

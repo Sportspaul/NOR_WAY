@@ -3,7 +3,7 @@
 <head>
     <!-- Tittel og favicon -->
     <title>NOR-WAY</title>
-    <link rel="icon" href="Bilder/favicon.png">
+    <link rel="icon" href="../Bilder/favicon.png">
 
     <!-- Metadata -->
     <meta charset="utf-8" />
@@ -12,23 +12,23 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="Style/template.css">
-    <link rel="stylesheet" href="Style/ruteoversikt.css">
+    <link rel="stylesheet" href="../Style/template.css">
 
     <!-- Javascript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="JS/Components/NavBar.js?n=1" defer></script>
-    <script src="JS/Components/AdminNav.js" defer></script>
-    <script src="JS/Hjelpemetoder.js"></script>
-    <script src="JS/ruteoversikt.js?n=1"></script>
+    <script src="../JS/Components/NavBar.js?n=1" defer></script>
+    <script src="../JS/Components/AdminNav.js" defer></script>
+    <script src="../JS/Hjelpemetoder.js"></script>
+    <script src="../JS/Admin/ruteoversikt.js?n=1"></script>
 </head>
 <body>
     <div id="overlay">
         <nav-bar> <!-- Web Component, Components/Navbar.js--> </nav-bar>
         <div class="shadowBox">
-            <admin-nav></admin-nav>
+            <admin-nav><!-- Web Component, Components/AdminNav.js--></admin-nav>
             <br />
             <br />
+            <h1>Ruteoversikt</h1>
             <input type="button" id="nyRute" class="btn btn-md btn-primary mt-3 font-weight-bold shadow antialised" value="Legg til ny rute" />
 
 

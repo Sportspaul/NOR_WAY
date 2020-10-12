@@ -13,24 +13,25 @@
     <!-- CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="../Style/template.css">
-    <link rel="stylesheet" href="../Style/loggInn.css">
-    <link rel="stylesheet" href="../Style/index.css?n=14">
 
     <!-- Javascript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="../JS/Components/NavBar.js?n=1" defer></script>
-    <script src="../JS/Hjelpemetoder.js" defer></script>
-    <script src="../JS/loggInn.js" defer></script>
-    <script src="../JS/validering.js?n=14" defer></script>
+    <script src="../JS/Components/AdminNav.js" defer></script>
+    <script src="../JS/Hjelpemetoder.js"></script>
+    <script src="../JS/Admin/stopp.js"></script>
 </head>
 <body>
     <div id="overlay">
         <nav-bar> <!-- Web Component, Components/Navbar.js--> </nav-bar>
         <div class="shadowBox">
-            <input type="text" id="brukernavn" placeholder="Skriv inn brukernavn" class="form-control shadow-sm">
-            <input type="password" id="passord" placeholder="Skriv inn passord" class="form-control shadow-sm">
-            <div id="feil" class="mt-1 rodTekst"></div>
-            <input type="button"  class="btn btn-md btn-primary mt-3 form-control  font-weight-bold shadow antialised" value="Logg inn" onclick="loggInn()" />
+            <admin-nav><!-- Web Component, Components/AdminNav.js--></admin-nav>
+            <br />
+            <br />
+            <h1>Stopp</h1>
+            <input type="text" id="sokStopp" class=" form-control mt-3 font-weight-bold shadow antialised" placeholder="Skriv stoppnavn" />
+
+
         </div>
     </div>
 </body>

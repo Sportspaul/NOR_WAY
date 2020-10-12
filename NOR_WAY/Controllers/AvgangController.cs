@@ -76,10 +76,22 @@ namespace NOR_WAY.Controllers
             return BadRequest("Feil i inputvalideringen på server");
         }
 
-        public Task<ActionResult> NyAvgang(AvgangModel nyAvgang)
+        public async Task<ActionResult> NyAvgang(AvgangModel nyAvgang)
         {
-            throw new NotImplementedException();
-        }
+            // TODO: Legg til sjekk for Unauthorized
+            if (ModelState.IsValid)
+            {
+                bool returOK = await _db.NyAvgang(nyAvgang);
+                if (!returOK)
+                {
+                    _log.LogInformation("Ny avgang kunne ikke lagres!");
+                    return BadRequest("Ny avgang kunne ikke lagres!");
+                }
+                return Ok("Ny avgang ble lagret!");
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalidering på server");
+    }
 
         public Task<ActionResult> OppdaterAvgang(int Id, Avganger oppdaterAvgang)
         {

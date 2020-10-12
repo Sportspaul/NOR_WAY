@@ -61,3 +61,14 @@ function FjernAvgang(id) {
     const url = `Avgang/FjernAvgang?id=${id}`;
     $.get(url);
 }
+
+function NyAvgang() {
+    const avgang = {
+        Dato: "2028-10-20",
+        Tidspunkt: "17:00",
+        SolgteBilletter: 0,
+        Linjekode: "NW431"
+    }
+
+    $.post("Avgang/NyAvgang", avgang);
+}

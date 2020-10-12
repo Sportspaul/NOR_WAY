@@ -8,8 +8,9 @@
       
 # Del 2
   # Forutsetninger i prosjektet:
-    - Admin kan ikke oppdatere ordre/ordrelinjer
-    - Admin kan ikke opprette ordre/ordrelinjer
+    - Admin har ikke mulighet til å oppdatere eller oprette Ordre og Ordrelinjer
+    - Ved sletting av en Rute blir alle tilhørende Avganger, Ordre og Ordrelinjer også slettet 
+    - Ved sletting av en Avgang blir alle tilhørende Ordre og Ordrelinger også slettet
     
     Brukernavn: Admin
     Passord: Admin123

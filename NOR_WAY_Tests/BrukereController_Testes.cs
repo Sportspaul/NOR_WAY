@@ -159,6 +159,21 @@ namespace NOR_WAY_Tests
             Assert.Equal("Ikke innlogget", resultat.Value);
         }
 
+        // Test for om utlogging nuller ut brukeren sin inloggings-session
+        [Fact]
+        public void LoggUt()
+        {
+            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
+            mockSession[_innlogget] = _ikkeInnlogget;
+            brukereController.ControllerContext.HttpContext = mockHttpContext.Object;
+
+            // Act
+            brukereController.LoggUt();
+
+            // Assert
+            Assert.Equal(_ikkeInnlogget, mockSession[_innlogget]);
+        }
+
         // Hjelpemetode som returnerer et BrukerModel-objekt
         private BrukerModel HentEnBrukerModel()
         {

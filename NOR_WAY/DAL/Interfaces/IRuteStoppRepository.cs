@@ -9,7 +9,7 @@ namespace NOR_WAY.DAL.Interfaces
     public interface IRuteStoppRepository
     {
 
-        Task<bool> NyRuteStopp(RuteStoppModel nyRuteStopp);
+        Task<bool> NyRuteStopp(RuteStoppModel innRuteStopp);
 
         Task<List<RuteStoppModel>> HentRuteStopp(string linjekode);
 

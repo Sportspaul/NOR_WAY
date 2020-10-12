@@ -56,9 +56,58 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
-        public Task<bool> NyRuteStopp(RuteStoppModel nyRuteStopp)
+        public async Task<bool> NyRuteStopp(RuteStoppModel innRuteStopp)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // Henter alle RuteStopp fra samme rute som har likt eller høyre stoppnummer enn det nye stoppet
+                List<RuteStopp> itererStoppNummer = await _db.RuteStopp
+                    .Where(rs => rs.StoppNummer >= innRuteStopp.StoppNummer && rs.Rute.Linjekode == innRuteStopp.Linjekode).ToListAsync();
+
+                // Adderer alle med stoppnummer som er større eller lik det nye rutestoppet med 1
+                foreach (RuteStopp rs in itererStoppNummer)
+                {
+                    rs.StoppNummer++;
+                }
+
+                // Henter ruten til det nye RuteStopp-objektet
+                Ruter rute = await _db.Ruter.FindAsync(innRuteStopp.Linjekode);
+
+                // Nytt RuteStopp-objekt
+                RuteStopp nyttRuteStopp = new RuteStopp
+                {
+                    StoppNummer = innRuteStopp.StoppNummer,
+                    MinutterTilNesteStopp = innRuteStopp.MinutterTilNesteStopp,
+                    Rute = rute,
+                };
+
+                // Sjekker om det allerede eksisterer et stopp med tilsvarende navn i DB
+                Stopp eksisterendeStopp = await _db.Stopp
+                    .Where(s => s.Navn == innRuteStopp.Stoppnavn).SingleOrDefaultAsync();
+
+                // Hvis det eksiterer blir dette Stopp-objektet brukt
+                if (eksisterendeStopp != null)
+                {
+                    nyttRuteStopp.Stopp = eksisterendeStopp;
+                }
+                // Hvis det ikke eksiterer blir et nytt Stopp-okbjekt lagt til 
+                else
+                {
+                    Stopp nyttStopp = new Stopp { Navn = innRuteStopp.Stoppnavn };
+                    nyttRuteStopp.Stopp = nyttStopp;
+                }
+
+                _db.RuteStopp.Add(nyttRuteStopp);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return false;
+            }
+
+
         }
 
         public Task<bool> OppdaterRuteStopp(int stoppNumer, string linjekode, RuteStoppModel oppdatertRuteStopp)

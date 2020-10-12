@@ -128,3 +128,19 @@ function HentRuteStopp(linjekode) {
     });
 }
 
+function NyRuteStopp(linjekode) { 
+    const innRuteStopp = {
+        Stoppnummer: 5,
+        MinutterTilNesteStopp: 33,
+        Stoppnavn: "Oslo",
+        Linjekode: linjekode
+    }
+
+    $.post("RuteStopp/NyRuteStopp", innRuteStopp, function(){
+        console.log("%c Nytt RuteStopp ble lagt til", green);
+    })
+    .fail(function (feil) {
+        console.log("%c" + feil.responseText, red);
+    });
+}
+

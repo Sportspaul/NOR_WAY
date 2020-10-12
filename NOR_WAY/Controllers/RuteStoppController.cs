@@ -43,9 +43,21 @@ namespace NOR_WAY.Controllers
             return Ok(ruteStoppListe);
         }
 
-        public Task<ActionResult> NyRuteStopp(RuteStoppModel nyRuteStopp)
+        public async Task<ActionResult> NyRuteStopp(RuteStoppModel innRuteStopp)
         {
-            throw new NotImplementedException();
+            // TODO: Legg til sjekk for Unauthorized
+            if (ModelState.IsValid)
+            {
+                bool returOK = await _db.NyRuteStopp(innRuteStopp);
+                if (!returOK)
+                {
+                    _log.LogInformation("Nytt RuteStopp kunne ikke lagres!");
+                    return BadRequest("Nytt rutestopp kunne ikke lagres!");
+                }
+                return Ok("Nytt rutestopp ble lagret!");
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalidering på server");
         }
 
         public Task<ActionResult> OppdaterStoppNavn(int stoppNumer, string linjekode, RuteStoppModel oppdatertRuteStopp)

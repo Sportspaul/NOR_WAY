@@ -87,8 +87,8 @@ function validerStoppnavnSimple(input) {
 }
 
 // Dato-validering
-function validerDato(inId, utId) {
-    const input = $(inId).val();
+function validerDato(innId, utId) {
+    const input = $(innId).val();
     if (idagISO() > input) {
         $(utId).html("Du kan ikke reise tilbake i tid");
         endreBakgrunn();
@@ -104,6 +104,20 @@ function validerDato(inId, utId) {
 function validerNavn(innElmt, utId) {
     const regex = /^[a-åA-Å]([-']?[a-z]+)*( [a-åA-Å]([-']?[a-åA-Å]+)*)+$/
     const melding = "Ugyldig navn";
+    return feilmelding(testRegex(innElmt, regex), melding, utId);
+}
+
+function validerBrukernavn(innElmt, utId) {
+    console.log(innElmt);
+    const regex = /^[0-9a-zA-Z._]{4,15}$/
+    const melding = "";
+    return feilmelding(testRegex(innElmt, regex), melding, utId);
+}
+
+// Passord-validering
+function validerPassord(innElmt, utId) {
+    const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#\$%\&+=._-]{8,}$/;
+    const melding = "";
     return feilmelding(testRegex(innElmt, regex), melding, utId);
 }
 

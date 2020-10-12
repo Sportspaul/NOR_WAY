@@ -14,18 +14,23 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="Style/template.css">
     <link rel="stylesheet" href="Style/loggInn.css">
+    <link rel="stylesheet" href="Style/index.css?n=14">
 
     <!-- Javascript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="JS/Components/NavBar.js?n=1" defer></script>
-    <script src="JS/Hjelpemetoder.js"></script>
-    <script src="JS/loggInn.js"></script>
+    <script src="JS/Hjelpemetoder.js" defer></script>
+    <script src="JS/loggInn.js" defer></script>
+    <script src="JS/validering.js?n=14" defer></script>
 </head>
 <body>
     <div id="overlay">
         <nav-bar> <!-- Web Component, Components/Navbar.js--> </nav-bar>
         <div class="shadowBox">
-            <h2 class="antialised">Innlogging kommer snart...</h2>
+            <input type="text" id="brukernavn" placeholder="Skriv inn brukernavn" class="form-control shadow-sm">
+            <input type="password" id="passord" placeholder="Skriv inn passord" class="form-control shadow-sm">
+            <div id="feil" class="mt-1 rodTekst"></div>
+            <button class="btn btn-md btn-primary mt-3 form-control font-weight-bold shadow antialised" onclick="loggInn()">Logg inn</button>
         </div>
     </div>
 </body>

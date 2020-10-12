@@ -1,4 +1,7 @@
-﻿// Test av FjernRute
+﻿const red = "color: #f94e4f";
+const green = "color: #28a745";
+
+// Test av FjernRute
 function FjernRute(linjekode) {
 
     const rute = {
@@ -6,7 +9,13 @@ function FjernRute(linjekode) {
     }
 
     // Kaller C# Metoden FullforOrdre()
-    $.post("Ruter/FjernRute", rute);
+    $.post("Ruter/FjernRute", rute)
+    .done(function () {
+        console.log("%c Ruten ble fjernet", green);
+    })
+    .fail(function () {
+        console.log("%c Ruten ble IKKE fjernet", red);
+    });;
 }
 
 // Test av NyRute
@@ -37,7 +46,13 @@ function NyRute() {
         RuteStopp: [ ruteStopp1, ruteStopp2, ruteStopp3 ]
     }
 
-    $.post("Ruter/NyRute", rute);
+    $.post("Ruter/NyRute", rute)
+    .done(function (avganger) {
+        console.log("%c Ny rute ble lagt til", green);
+    })
+    .fail(function () {
+        console.log("%c Ny rute ble ikke lagt til", red);
+    });;
 }
 
 function OppdaterRute(linjekode) {
@@ -49,17 +64,35 @@ function OppdaterRute(linjekode) {
         Kapasitet: 245
     }
 
-    $.post("Ruter/OppdaterRute", rute);
+    $.post("Ruter/OppdaterRute", rute)
+    .done(function () {
+        console.log("%c Ruten ble oppdatert", green)
+    })
+    .fail(function () {
+        console.log("%c Ruten ble IKKE oppdatert", red);
+    });;
 }
 
 function HentAvganger(linjekode, sidenummer) {
     const url = `Avgang/HentAvganger?linjekode=${linjekode}&sidenummer=${sidenummer}`
-    $.get(url);
+    $.get(url)
+    .done(function (avganger) {
+        console.table(avganger);
+    })
+    .fail(function () {
+        console.log("Avgangen ble ikke oppdatert");
+    });
 }
 
 function FjernAvgang(id) {
     const url = `Avgang/FjernAvgang?id=${id}`;
-    $.get(url);
+    $.get(url)   
+    .done(function () {
+        console.log("%c Avgangen ble slettet", green);
+    })
+    .fail(function () {
+        console.log("%c Avgangen ble IKKE slettet", red);
+    });
 }
 
 function NyAvgang() {
@@ -70,7 +103,13 @@ function NyAvgang() {
         Linjekode: "NW431"
     }
 
-    $.post("Avgang/NyAvgang", avgang);
+    $.post("Avgang/NyAvgang", avgang)   
+    .done(function () {
+        console.log("%c Ny avgang ble lagt til", green);
+    })
+    .fail(function () {
+        console.log("%c Ny avgang ble IKKE lagt til", red);
+    });
 }
 
 function OppdaterAvgang() {
@@ -80,6 +119,19 @@ function OppdaterAvgang() {
         Tidspunkt: "17:00"
     }
 
-    $.post("Avgang/OppdaterAvgang", avreisetid);
+    $.post("Avgang/OppdaterAvgang", avreisetid)
+    .done(function () {
+        console.log("%c Avgangen ble oppdatert", green);
+    })
+    .fail(function () {
+        console.log("%c Avgangen ble ikke oppdatert", red);
+    });
+}
+
+function HentRuteStopp(linjekode) {
+    const url = `RuteStopp/HentRuteStopp?linjekode=${linjekode}`;
+    $.get(url, function(ruteStoppListe){
+        console.table(ruteStoppListe);
+    });
 }
 

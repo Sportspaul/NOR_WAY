@@ -32,9 +32,15 @@ namespace NOR_WAY.Controllers
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult> HentRuteStopp(string linjekode)
+        public async Task<ActionResult> HentRuteStopp(string linjekode)
         {
-            throw new NotImplementedException();
+            List<RuteStoppModel> ruteStoppListe = await _db.HentRuteStopp(linjekode);
+            if (ruteStoppListe.Count == 0)
+            {
+                _log.LogInformation("Ingen RuteStopp ble funnet");
+                return NotFound("Ingen Rute stoppene ble funnet");
+            }
+            return Ok(ruteStoppListe);
         }
 
         public Task<ActionResult> NyRuteStopp(RuteStoppModel nyRuteStopp)

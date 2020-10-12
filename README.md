@@ -12,6 +12,6 @@
     - Admin kan ikke opprette ordre/ordrelinjer
     
     Brukernavn: Admin
-    Passord: Admin
+    Passord: Admin123
     
     

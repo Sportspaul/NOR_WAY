@@ -212,8 +212,9 @@ function fullforOrdre() {
     }
     else {
         // Kaller C# Metoden FullforOrdre()
-        $.post("Ordre/FullforOrdre", kundeordre);
-        window.location.replace("index.html?bestilling=ok");
+        $.post("Ordre/FullforOrdre", kundeordre, function(){
+            window.location.replace("index.html?bestilling=ok");
+        });
     }
 }
 

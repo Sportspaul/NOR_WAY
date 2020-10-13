@@ -10,11 +10,11 @@ https://github.com/Sportspaul/NOR_WAY.git
     - Kortnummer, Utløpsdato og CVC har ingen andre annen funksjon enn at man ikke får lov å 
       utføre bestillingen før man har fylt dem ut med "gyldig" informasjon. 
 
-
 # Del 2
-# Forutsetninger i prosjektet:
-    - Admin kan ikke oppdatere ordre/ordrelinjer
-    - Admin kan ikke opprette ordre/ordrelinjer
-
-Brukernavn: Admin
-Passord: Admin
+  # Forutsetninger i prosjektet:
+    - Admin har ikke mulighet til å oppdatere eller oprette Ordre og Ordrelinjer
+    - Ved sletting av en Rute blir alle tilhørende Avganger, Ordre og Ordrelinjer også slettet 
+    - Ved sletting av en Avgang blir alle tilhørende Ordre og Ordrelinjer også slettet
+    
+    Brukernavn: Admin
+    Passord: Admin123

@@ -98,7 +98,7 @@ namespace NOR_WAY.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> OppdaterStoppnavn(Stopp oppdatertStoppnavn)
+        public Task<bool> OppdaterStoppnavn(string id)
         {
             throw new NotImplementedException();
         }

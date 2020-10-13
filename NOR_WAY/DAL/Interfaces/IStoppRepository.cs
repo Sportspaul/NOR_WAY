@@ -16,6 +16,6 @@ namespace NOR_WAY.DAL.Interfaces
 
         Task<List<StoppMedLinjekoder>> HentAlleStoppMedRuter();
 
-        Task<bool> OppdaterStoppnavn(Stopp oppdatertStoppnavn);
+        Task<bool> OppdaterStoppnavn(string id);
     }
 }

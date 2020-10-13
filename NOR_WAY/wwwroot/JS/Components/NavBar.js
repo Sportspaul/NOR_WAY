@@ -44,7 +44,7 @@ template.innerHTML = `
     <li>|</li>
     <li><a href="../ruter.html">Ruter</a></li>
     <li>|</li>
-    <li><a href="../loggInn.html">Logg Inn</a></li>
+    <li><slot name="innlogging"></slot></li>
 </ul>`
 
 class NavBar extends HTMLElement {

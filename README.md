@@ -8,7 +8,7 @@
       
 # Del 2
   # Forutsetninger i prosjektet:
-    - Admin har ikke mulighet til å oppdatere eller oprette Ordre og Ordrelinjer
+    - Admin har ikke mulighet til å oppdatere eller opprette Ordre og Ordrelinjer
     - Ved sletting av en Rute blir alle tilhørende Avganger, Ordre og Ordrelinjer også slettet 
     - Ved sletting av en Avgang blir alle tilhørende Ordre og Ordrelinjer også slettet
     

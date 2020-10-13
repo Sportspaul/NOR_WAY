@@ -29,7 +29,7 @@ namespace NOR_WAY.DAL.Repositories
             {
                 // Henter brukeren som matcher input-brukernavnet
                 Brukere funnetBruker = await _db.Brukere
-                    .FirstOrDefaultAsync(bruker => bruker.Brukernavn == bruker.Brukernavn);
+                    .FirstOrDefaultAsync(b => b.Brukernavn == bruker.Brukernavn);
 
                 // Sjekker om input-passord + salt matcher passordet + salt i DB 
                 byte[] hash = LagHash(bruker.Passord, funnetBruker.Salt);

@@ -22,9 +22,21 @@ namespace NOR_WAY.Controllers
             _log = log;
         }
 
-        public Task<ActionResult> NyBillettType(Billettyper nyBillettype)
+        public async Task<ActionResult> NyBillettype(Billettyper innBillettype)
         {
-            throw new NotImplementedException();
+            // TODO: Legg til sjekk for Unauthorized
+            if (ModelState.IsValid)
+            {
+                bool returOK = await _db.NyBillettype(innBillettype);
+                if (!returOK)
+                {
+                    _log.LogInformation("Nytt Billettype kunne ikke lagres!");
+                    return BadRequest("Nytt billettype kunne ikke lagres!");
+                }
+                return Ok("Nytt billettype ble lagret!");
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalidering på server");
         }
 
         public async Task<ActionResult> HentAlleBillettyper()

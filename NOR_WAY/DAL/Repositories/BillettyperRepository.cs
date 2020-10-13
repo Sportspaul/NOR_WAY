@@ -20,9 +20,24 @@ namespace NOR_WAY.DAL.Repositories
             _log = log;
         }
 
-        public Task<bool> NyBillettType(Billettyper nyBillettype)
+        public async Task<bool> NyBillettype(Billettyper innBillettype)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Billettyper nyBillettype = new Billettyper
+                {
+                    Billettype = innBillettype.Billettype,
+                    Rabattsats = innBillettype.Rabattsats
+                };
+                _db.Billettyper.Add(nyBillettype);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return false;
+            }
         }
 
         public async Task<List<Billettyper>> HentAlleBillettyper()
@@ -49,7 +64,7 @@ namespace NOR_WAY.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> FjernBillettType(string navn)
+        public Task<bool> FjernBillettype(string navn)
         {
             throw new NotImplementedException();
         }

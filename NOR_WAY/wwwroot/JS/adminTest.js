@@ -177,3 +177,17 @@ function OppdaterRuteStopp() {
     });
 }
 
+function NyBillettype() {
+    const billettype = {
+        Billettype: "Ufør",
+        Rabattsats: 90,
+    }
+
+    $.post("Billettyper/NyBillettype", billettype, function(){
+        console.log("%c Ny Billettype ble lagret", green);
+    })
+    .fail(function (feil) {
+        console.log("%c" + feil.responseText, red);
+    });
+}
+

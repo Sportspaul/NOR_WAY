@@ -7,12 +7,12 @@ namespace NOR_WAY.DAL.Interfaces
 {
     public interface IBillettyperRepository
     {
-        Task<bool> NyBillettType(Billettyper nyBillettype);
+        Task<bool> NyBillettype(Billettyper nyBillettype);
 
         Task<List<Billettyper>> HentAlleBillettyper();
 
         Task<bool> OppdaterRabattsats(Billettyper oppdatertRabattsats);
 
-        Task<bool> FjernBillettType(string navn);
+        Task<bool> FjernBillettype(string navn);
     }
 }

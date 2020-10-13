@@ -8,9 +8,8 @@ namespace NOR_WAY.Model
     [ExcludeFromCodeCoverage]
     public class OrdreModel
     {
-        // TODO: Lagt til OrdreId, modifiser koden så det funker
         [RegularExpression(@"[1-9][0-9]{0,8}")]
-        public int OrdreId { get; set; } = 1;
+        public int Id { get; set; }
 
         [RegularExpression(@"^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-z]{2,4}$")]
         public string Epost { get; set; }
@@ -20,6 +19,9 @@ namespace NOR_WAY.Model
 
         [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,50}")]
         public string SluttStopp { get; set; }
+
+        [RegularExpression(@"[0-9]{0,7}")]
+        public string Sum { get; set; }
 
         [RegularExpression(@"(NW)[0-9]{1,4}")]
         public string Linjekode { get; set; }

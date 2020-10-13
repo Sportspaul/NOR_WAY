@@ -23,7 +23,7 @@ namespace NOR_WAY.DAL.Repositories
         }
 
         // Fullfør ordre
-        public async Task<bool> FullforOrdre(OrdreModel ordreModel)
+        public async Task<bool> FullforOrdre(NyOrdre ordreModel)
         {
             try
             {

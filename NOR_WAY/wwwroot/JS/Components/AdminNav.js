@@ -6,15 +6,15 @@ adminNav.innerHTML = `
         list-style: none;
         display: inline;
         color: rgb(255,255,255);
-        margin-left: 2vw;
+        margin-right: 2vw;
         font-weight: bold;
         -webkit-font-smoothing: antialiased !important;
     }
 
     ul {
-        position: absolute;
         display: inline;
         margin-bottom: 2vw;
+        padding: 0;
     }
 
     ul li a {
@@ -25,7 +25,7 @@ adminNav.innerHTML = `
 
     ul li a:hover {
         text-decoration: none;
-        color: rgb(190,190,190);
+        color: rgb(100,100,100);
     }
 </style>
 

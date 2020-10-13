@@ -47,15 +47,15 @@ ul {
     display: inline;
 }
 
-    ul li a {
-        -webkit-font-smoothing: antialiased !important;
-        color: white;
-    }
+nav-bar a {
+    -webkit-font-smoothing: antialiased !important;
+    color: white;
+}
 
-        ul li a:hover {
-            text-decoration: none;
-            color: rgb(190,190,190);
-        }
+nav-bar a:hover {
+    text-decoration: none;
+    color: rgb(190,190,190);
+}
 
 .shadowBox {
     margin: auto;

@@ -191,3 +191,17 @@ function NyBillettype() {
     });
 }
 
+function EndreRabattsats() {
+    const oppdatertRabattsats = {
+        Billettype: "Student",
+        Rabattsats: 75
+    }
+
+    $.post("Billettyper/OppdaterRabattsats", oppdatertRabattsats, function () {
+        console.log("%c Rabattsatsen ble oppdatert", green)
+    })
+    .fail(function () {
+        console.log("%c Rabattsatsen ble IKKE oppdatert", red);
+    });;
+}
+

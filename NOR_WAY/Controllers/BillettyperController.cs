@@ -30,10 +30,10 @@ namespace NOR_WAY.Controllers
                 bool returOK = await _db.NyBillettype(innBillettype);
                 if (!returOK)
                 {
-                    _log.LogInformation("Nytt Billettype kunne ikke lagres!");
-                    return BadRequest("Nytt billettype kunne ikke lagres!");
+                    _log.LogInformation("Ny Billettype kunne ikke lagres!");
+                    return BadRequest("Ny billettype kunne ikke lagres!");
                 }
-                return Ok("Nytt billettype ble lagret!");
+                return Ok("Ny billettype ble lagret!");
             }
             _log.LogInformation("Feil i inputvalideringen på server");
             return BadRequest("Feil i inputvalidering på server");
@@ -45,14 +45,21 @@ namespace NOR_WAY.Controllers
             return Ok(billettypene);
         }
 
-        public Task<ActionResult> OppdaterRabattsats(Billettyper oppdatertRabattsats)
+        public async Task<ActionResult> OppdaterRabattsats(Billettyper oppdatertRabattsats)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<ActionResult> FjernBillettType(string navn)
-        {
-            throw new NotImplementedException();
+            // TODO: Legg til sjekk for Unauthorized
+            if (ModelState.IsValid)
+            {
+                bool returOK = await _db.OppdaterRabattsats(oppdatertRabattsats);
+                if (!returOK)
+                {
+                    _log.LogInformation("Endringen av Rabattsats kunne ikke utføres");
+                    return NotFound("Endringen av rabattsats kunne ikke utføres");
+                }
+                return Ok("Rabattsats ble endret");
+            }
+            _log.LogInformation("Feil i inputvalidering");
+            return BadRequest("Feil i inputvalidering på server");
         }
     }
 }

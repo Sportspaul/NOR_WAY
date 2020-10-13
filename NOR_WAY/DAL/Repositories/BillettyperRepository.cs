@@ -59,14 +59,21 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
-        public Task<bool> OppdaterRabattsats(Billettyper oppdatertRabattsats)
+        public async Task<bool> OppdaterRabattsats(Billettyper oppdatertRabattsats)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Billettyper billettype = await _db.Billettyper
+                    .SingleOrDefaultAsync(bt => bt.Billettype == oppdatertRabattsats.Billettype);
+                billettype.Rabattsats = oppdatertRabattsats.Rabattsats;
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return false;
+            }
         }
-
-        public Task<bool> FjernBillettype(string navn)
-        {
-            throw new NotImplementedException();
-        }
-}
+    }
 }

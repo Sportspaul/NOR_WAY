@@ -12,7 +12,5 @@ namespace NOR_WAY.DAL.Interfaces
         Task<List<Billettyper>> HentAlleBillettyper();
 
         Task<bool> OppdaterRabattsats(Billettyper oppdatertRabattsats);
-
-        Task<bool> FjernBillettype(string navn);
     }
 }

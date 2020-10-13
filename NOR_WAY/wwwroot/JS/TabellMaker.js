@@ -14,7 +14,7 @@
             console.log("update")
             for (let i = 0; i < JSONdataset.length; i++) {
                 for (let key in JSONdataset[i]) {
-                    JSONdataset[i].Oppdater = `<button type=button>${JSONdataset[i].linjekode}</button>`;
+                    JSONdataset[i].Oppdater = `<button value="${JSONdataset[i].linjekode}">Oppdater</button>`;
                 }
             }
         }
@@ -22,7 +22,7 @@
             console.log("delete")
             for (let i = 0; i < JSONdataset.length; i++) {
                 for (let key in JSONdataset[i]) {
-                    JSONdataset[i].Delete = `<button type=button>${JSONdataset[i].linjekode}</button>`;
+                    JSONdataset[i].Delete = `<button value="${JSONdataset[i].linjekode}">Slett</button>`;
                 }
             }
         }

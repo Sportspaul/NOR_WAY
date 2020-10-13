@@ -10,16 +10,10 @@ function loggInn() {
             passord: $("#passord").val()
         }
         $.post("Brukere/LoggInn", bruker, function (OK) {
-            if (OK) {
                 window.location.href = 'Adminsider/ruteoversikt.html';
-            }
-            else {
-                $("#feil").html("Feil brukernavn eller passord");
-            }
-        })
-            .fail(function (feil) {
-                $("#feil").html("Feil på server - prøv igjen senere: " + feil.responseText + " : " + feil.status + " : " + feil.statusText);
-            });
+        }).fail(function () {
+            $("#feil").html("Feil brukernavn eller passord");
+        });
     } else {
         $("#feil").html("Feil brukernavn eller passord");
     }

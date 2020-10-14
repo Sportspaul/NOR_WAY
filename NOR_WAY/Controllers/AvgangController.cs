@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL;
@@ -16,6 +17,7 @@ namespace NOR_WAY.Controllers
     {
         private readonly IAvgangRepository _db;
         private ILogger<AvgangController> _log;
+        private const string _innlogget = "Innlogget";
 
         public AvgangController(IAvgangRepository db, ILogger<AvgangController> log)
         {
@@ -60,23 +62,19 @@ namespace NOR_WAY.Controllers
         {
             // TODO: Legg til sjekk for Unauthorized
             if (ModelState.IsValid) { 
-                Regex linjekodeRegex = new Regex(@"(NW)[0-9]{1,4}");
-                if (linjekodeRegex.IsMatch(linjekode))
+                List<AvgangModel> avganger = await _db.HentAvganger(linjekode, sidenummer);
+                if (avganger == null)
                 {
-                    List<Avganger> avganger = await _db.HentAvganger(linjekode, sidenummer);
-                    if (avganger == null)
-                    {
-                        _log.LogInformation("Listen med avganger ble ikke funnet");
-                        return NotFound("Listen med avganger ble ikke funnet");
-                    }
-                    return Ok(avganger);
+                    _log.LogInformation("Listen med avganger ble ikke funnet");
+                    return NotFound("Listen med avganger ble ikke funnet");
                 }
+                return Ok(avganger);
             }
             _log.LogInformation("Feil i inputvalideringen på server");
             return BadRequest("Feil i inputvalideringen på server");
         }
 
-        public async Task<ActionResult> NyAvgang(AvgangModel nyAvgang)
+        public async Task<ActionResult> NyAvgang(NyAvgang nyAvgang)
         {
             // TODO: Legg til sjekk for Unauthorized
             if (ModelState.IsValid)

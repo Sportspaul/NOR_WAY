@@ -9,14 +9,12 @@ namespace NOR_WAY.DAL.Interfaces
     public interface IRuteStoppRepository
     {
 
-        Task<bool> NyRuteStopp(RuteStoppModel innRuteStopp);
+        Task<bool> NyRuteStopp(NyRuteStopp innRuteStopp);
 
         Task<List<RuteStoppModel>> HentRuteStopp(string linjekode);
 
-        Task<bool> OppdaterRuteStopp(RuteStoppOppdatert ruteStoppOppdatert);
+        Task<bool> OppdaterRuteStopp(NyRuteStopp ruteStoppOppdatert);
 
-        Task<List<RuteStoppModel>> HentAlleRuteStopp();
-
-        Task<bool> FjernRuteStopp(int stoppNummer, string linjekode);
+        Task<bool> FjernRuteStopp(int Id);
     }
 }

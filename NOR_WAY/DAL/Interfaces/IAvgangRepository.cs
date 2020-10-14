@@ -10,9 +10,9 @@ namespace NOR_WAY.DAL.Interfaces
     {
         Task<Reisedetaljer> FinnNesteAvgang(Avgangkriterier kriterier);
 
-        Task<bool> NyAvgang(AvgangModel nyAvgang);
+        Task<bool> NyAvgang(NyAvgang nyAvgang);
 
-        Task<List<Avganger>> HentAvganger(string linjekode, int sidenummer);
+        Task<List<AvgangModel>> HentAvganger(string linjekode, int sidenummer);
 
         Task<bool> OppdaterAvgang(Avreisetid avreisetid);
 

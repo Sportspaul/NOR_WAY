@@ -78,9 +78,8 @@ namespace NOR_WAY.DAL
     [ExcludeFromCodeCoverage]
     public class Billettyper
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public string Billettype { get; set; } // PK
+        public int Id { get; set; } // PK
+        public string Billettype { get; set; }
 
         public int Rabattsats { get; set; }
     }

@@ -136,9 +136,9 @@ function HentRuteStopp(linjekode) {
 
 function NyRuteStopp(linjekode) { 
     const innRuteStopp = {
-        Stoppnummer: 5,
+        Stoppnummer: 1,
         MinutterTilNesteStopp: 33,
-        Stoppnavn: "Oslo",
+        Stoppnavn: "Bergersvingen",
         Linjekode: linjekode
     }
 
@@ -150,8 +150,8 @@ function NyRuteStopp(linjekode) {
     });
 }
 
-function FjernRuteStopp(stoppNummer, linjekode) {
-    const url = `RuteStopp/FjernRuteStopp?stoppNummer=${stoppNummer}&linjekode=${linjekode}`;
+function FjernRuteStopp(id) {
+    const url = `RuteStopp/FjernRuteStopp?id=${id}`;
     $.get(url, function () {
         console.log("%c RuteStopp ble slettet", green);
     })
@@ -162,11 +162,11 @@ function FjernRuteStopp(stoppNummer, linjekode) {
 
 function OppdaterRuteStopp() {
     const ruteStoppOppdatert = {
-        GammeltStoppNummer: 1,
-        NyttStoppNummer: 11,
+        Id: 111,
+        StoppNummer: 2,
         MinutterTilNesteStopp: 10,
-        Stoppnavn: "Bergen",
-        Linjekode: "NW431"
+        Stoppnavn: "Bergersen",
+        Linjekode: "NW625"
     }
 
     $.post("RuteStopp/OppdaterRuteStopp", ruteStoppOppdatert, function(){
@@ -191,13 +191,21 @@ function NyBillettype() {
     });
 }
 
-function EndreRabattsats() {
-    const oppdatertRabattsats = {
+function HentAlleBillettyper() 
+{
+    $.get("Billettyper/HentAlleBillettyper", function(billettyper) {
+        console.table(billettyper)
+    })
+}
+
+function OppdaterBillettype() {
+    const oppdatertBillettype = {
+        Id: 1,
         Billettype: "Student",
         Rabattsats: 75
     }
 
-    $.post("Billettyper/OppdaterRabattsats", oppdatertRabattsats, function () {
+    $.post("Billettyper/OppdaterBillettype", oppdatertBillettype, function () {
         console.log("%c Rabattsatsen ble oppdatert", green)
     })
     .fail(function () {

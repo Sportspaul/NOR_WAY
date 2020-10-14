@@ -50,18 +50,18 @@ namespace NOR_WAY.Controllers
             return Ok(billettypene);
         }
 
-        public async Task<ActionResult> OppdaterRabattsats(Billettyper oppdatertRabattsats)
+        public async Task<ActionResult> OppdaterBillettype(Billettyper oppdatertBillettype)
         {
             // TODO: Legg til sjekk for Unauthorized
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && oppdatertBillettype.Rabattsats < 100 && oppdatertBillettype.Rabattsats >= 0)
             {
-                bool returOK = await _db.OppdaterRabattsats(oppdatertRabattsats);
+                bool returOK = await _db.OppdaterBillettype(oppdatertBillettype);
                 if (!returOK)
                 {
-                    _log.LogInformation("Endringen av Rabattsats kunne ikke utføres");
-                    return NotFound("Endringen av rabattsats kunne ikke utføres");
+                    _log.LogInformation("Endringen av Billettype kunne ikke utføres");
+                    return NotFound("Endringen av billettype kunne ikke utføres");
                 }
-                return Ok("Rabattsats ble endret");
+                return Ok("Billettypen ble endret");
             }
             _log.LogInformation("Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering på server");

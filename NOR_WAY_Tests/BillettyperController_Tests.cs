@@ -72,9 +72,9 @@ namespace NOR_WAY_Tests
         }
 
 
-        /* Enhetstester for OppdaterRabattsats */
+        /* Enhetstester for OppdaterBillettype */
 
-        // Tester at OppdaterRabattsats returnerer forventet verdi
+        // Tester at OppdaterBillettype returnerer forventet verdi
         [Fact]
         public async Task NyBillettype_RiktigeVerdier()
         {
@@ -106,7 +106,7 @@ namespace NOR_WAY_Tests
             Assert.Equal("Ny billettype kunne ikke lagres!", resultat.Value);
         }
 
-        // Tester at NyBillettype i controlleren håndterer InvalidModelState
+        // Tester at NyBillettype håndterer InvalidModelState i controlleren 
         [Fact]
         public async Task NyBillettype_RegEx()
         {
@@ -141,68 +141,68 @@ namespace NOR_WAY_Tests
         }
 
 
-        /* Enhetstester for OppdaterRabattsats */
+        /* Enhetstester for OppdaterBillettype */
 
-        // Tester at OppdaterRabattsats returnerer forventet verdi
+        // Tester at OppdaterBillettype returnerer forventet verdi
         [Fact]
-        public async Task OppdaterRabattsats_RiktigeVerdier()
+        public async Task OppdaterBillettype_RiktigeVerdier()
         {
             // Arrange
             var billettype = HentEnBillettype();
-            mockRepo.Setup(br => br.OppdaterRabattsats(billettype)).ReturnsAsync(true);
+            mockRepo.Setup(br => br.OppdaterBillettype(billettype)).ReturnsAsync(true);
 
             // Act
             SimulerInnlogget();
-            var resultat = await billettyperController.OppdaterRabattsats(billettype) as OkObjectResult;
+            var resultat = await billettyperController.OppdaterBillettype(billettype) as OkObjectResult;
 
             // Assert
-            Assert.Equal("Rabattsats ble endret", resultat.Value);
+            Assert.Equal("Billettypen ble endret", resultat.Value);
         }
 
-        // Test for om retur verdi: false blir håndtert korrekt for OppdaterRabattsats()
+        // Test for om retur verdi: false blir håndtert korrekt for OppdaterBillettype()
         [Fact]
-        public async Task OppdaterRabattsats_IkkeOK()
+        public async Task OppdaterBillettype_IkkeOK()
         {
             // Arrange
             var billettype = HentEnBillettype();
-            mockRepo.Setup(br => br.OppdaterRabattsats(billettype)).ReturnsAsync(false);
+            mockRepo.Setup(br => br.OppdaterBillettype(billettype)).ReturnsAsync(false);
 
             // Act
             SimulerInnlogget();
-            var resultat = await billettyperController.OppdaterRabattsats(billettype) as NotFoundObjectResult;
+            var resultat = await billettyperController.OppdaterBillettype(billettype) as NotFoundObjectResult;
 
             // Assert
-            Assert.Equal("Endringen av rabattsats kunne ikke utføres", resultat.Value);
+            Assert.Equal("Endringen av billettype kunne ikke utføres", resultat.Value);
         }
 
-        // Tester at OppdaterRabattsats i controlleren håndterer InvalidModelState
+        // Tester at OppdaterBillettype i controlleren håndterer InvalidModelState
         [Fact]
-        public async Task OppdaterRabattsats_RegEx()
+        public async Task OppdaterBillettype_RegEx()
         {
             // Arrange
             var billettype = HentEnBillettype();
-            mockRepo.Setup(br => br.OppdaterRabattsats(billettype)).ReturnsAsync(false);
+            mockRepo.Setup(br => br.OppdaterBillettype(billettype)).ReturnsAsync(false);
             billettyperController.ModelState.AddModelError("Billettype", "Feil i inputvalideringen på server");
 
             // Act
             SimulerInnlogget();
-            var resultat = await billettyperController.OppdaterRabattsats(billettype) as BadRequestObjectResult;
+            var resultat = await billettyperController.OppdaterBillettype(billettype) as BadRequestObjectResult;
 
             // Assert
             Assert.Equal("Feil i inputvalidering på server", resultat.Value);
         }
 
-        // Test på at OppdaterRabattsats håndterer tilfelle hvor bruker ikke er logget inn
+        // Test på at OppdaterBillettype håndterer tilfelle hvor bruker ikke er logget inn
         [Fact]
-        public async Task OppdaterRabattsats_IkkeInnlogget()
+        public async Task OppdaterBillettype_IkkeInnlogget()
         {
             // Arrange
             var billettype = HentEnBillettype();
-            mockRepo.Setup(br => br.OppdaterRabattsats(billettype)).ReturnsAsync(true);
+            mockRepo.Setup(br => br.OppdaterBillettype(billettype)).ReturnsAsync(true);
 
             // Act
             SimulerUtlogget();
-            var resultat = await billettyperController.OppdaterRabattsats(billettype) as UnauthorizedObjectResult;
+            var resultat = await billettyperController.OppdaterBillettype(billettype) as UnauthorizedObjectResult;
 
             // Assert 
             Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);

@@ -22,12 +22,12 @@ namespace NOR_WAY.Controllers
             _log = log;
         }
 
-        public async Task<ActionResult> FjernRuteStopp(int stoppNummer, string linjekode)
+        public async Task<ActionResult> FjernRuteStopp(int id)
         {
             // TODO: Legg til sjekk for Unauthorized
             if (ModelState.IsValid)
             {
-                bool returOK = await _db.FjernRuteStopp(stoppNummer, linjekode);
+                bool returOK = await _db.FjernRuteStopp(id);
                 if (!returOK)
                 {
                     _log.LogInformation("RuteStopp kunne ikke slettes!");
@@ -55,7 +55,7 @@ namespace NOR_WAY.Controllers
             return Ok(ruteStoppListe);
         }
 
-        public async Task<ActionResult> NyRuteStopp(RuteStoppModel innRuteStopp)
+        public async Task<ActionResult> NyRuteStopp(NyRuteStopp innRuteStopp)
         {
             // TODO: Legg til sjekk for Unauthorized
             if (ModelState.IsValid)
@@ -72,7 +72,7 @@ namespace NOR_WAY.Controllers
             return BadRequest("Feil i inputvalidering på server");
         }
 
-        public async Task<ActionResult> OppdaterRuteStopp(RuteStoppOppdatert ruteStoppOppdater)
+        public async Task<ActionResult> OppdaterRuteStopp(NyRuteStopp ruteStoppOppdater)
         {
             // TODO: Legg til sjekk for Unauthorized
             if (ModelState.IsValid)

@@ -20,17 +20,19 @@ namespace NOR_WAY.DAL.Repositories
             _log = log;
         }
 
-        public async Task<bool> FjernRuteStopp(int stoppNummer, string linjekode)
+        public async Task<bool> FjernRuteStopp(int Id)
         {
             try
             {
                 // Fjerner aktuelt RuteStopp
-                RuteStopp ruteStoppTilFjerning = await _db.RuteStopp
-                    .SingleOrDefaultAsync(rs => rs.StoppNummer == stoppNummer && rs.Rute.Linjekode == linjekode);
+                RuteStopp ruteStoppTilFjerning = await _db.RuteStopp.FindAsync(Id);
                 _db.Remove(ruteStoppTilFjerning);
+                int stoppNummer = ruteStoppTilFjerning.StoppNummer;
+                string linjekode = ruteStoppTilFjerning.Rute.Linjekode;
 
                 // Henter alle RuteStopp fra samme rute som har likt eller høyre stoppnummer enn det som ble fjernet
-                List<RuteStopp> endreStoppNummer = await LiktEllerSenereStoppNummer(stoppNummer, linjekode);
+                List<RuteStopp> endreStoppNummer =
+                    await LiktEllerSenereStoppNummer(stoppNummer, linjekode);
 
                 // Subtraherer alle med stoppnummer som er større eller lik det fjernede rutestoppet med 1
                 foreach (RuteStopp rs in endreStoppNummer)
@@ -47,11 +49,6 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
-        public Task<List<RuteStoppModel>> HentAlleRuteStopp()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<List<RuteStoppModel>> HentRuteStopp(string linjekode)
         {
             try
@@ -62,10 +59,10 @@ namespace NOR_WAY.DAL.Repositories
                 {
                     RuteStoppModel rsm = new RuteStoppModel
                     {
-                        StoppNummer = rs.StoppNummer,
+                        Id = rs.Id,
                         Stoppnavn = rs.Stopp.Navn,
+                        StoppNummer = rs.StoppNummer,
                         MinutterTilNesteStopp = rs.MinutterTilNesteStopp,
-                        Linjekode = rs.Rute.Linjekode
                     };
                     utRuteStopp.Add(rsm);
                 }
@@ -78,7 +75,7 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
-        public async Task<bool> NyRuteStopp(RuteStoppModel innRuteStopp)
+        public async Task<bool> NyRuteStopp(NyRuteStopp innRuteStopp)
         {
             try
             {
@@ -97,9 +94,10 @@ namespace NOR_WAY.DAL.Repositories
                 // Nytt RuteStopp-objekt
                 RuteStopp nyttRuteStopp = new RuteStopp
                 {
+                    Id = innRuteStopp.Id,
                     StoppNummer = innRuteStopp.StoppNummer,
                     MinutterTilNesteStopp = innRuteStopp.MinutterTilNesteStopp,
-                    Rute = rute,
+                    Rute = rute
                 };
 
                 // Sjekker om det allerede eksisterer et stopp med tilsvarende navn i DB
@@ -132,24 +130,18 @@ namespace NOR_WAY.DAL.Repositories
         }
 
         // Metode for å oppdatere verdeiene i et RuteStopp
-        public async Task<bool> OppdaterRuteStopp(RuteStoppOppdatert oppdatertRuteStopp)
+        public async Task<bool> OppdaterRuteStopp(NyRuteStopp oppdatertRuteStopp)
         {
             try
             {
                 // Returnerer false hvis nyttStoppNummer er mindre enn det minste eller større en det største som allerede eksisterer
                 int antallRuteStopp = await _db.RuteStopp.Where(rs => rs.Rute.Linjekode == oppdatertRuteStopp.Linjekode).CountAsync();
-                int nyttStoppNummer = oppdatertRuteStopp.NyttStoppNummer;
+                int nyttStoppNummer = oppdatertRuteStopp.StoppNummer;
                 if (nyttStoppNummer > antallRuteStopp || nyttStoppNummer <= 0) { return false; }
 
                 // Fjerner RuteStopp-objektet som skal endres
-                bool slettOk = await FjernRuteStopp(oppdatertRuteStopp.GammeltStoppNummer, oppdatertRuteStopp.Linjekode);
-                RuteStoppModel ruteStoppModel = new RuteStoppModel {
-                    StoppNummer = oppdatertRuteStopp.NyttStoppNummer,
-                    MinutterTilNesteStopp = oppdatertRuteStopp.MinutterTilNesteStopp,
-                    Stoppnavn = oppdatertRuteStopp.Stoppnavn,
-                    Linjekode = oppdatertRuteStopp.Linjekode
-                };
-                bool nyOk = await NyRuteStopp(ruteStoppModel);  // Legger til et nytt RuteStopp
+                bool slettOk = await FjernRuteStopp(oppdatertRuteStopp.Id);
+                bool nyOk = await NyRuteStopp(oppdatertRuteStopp);  // Legger til et nytt RuteStopp
                 if (slettOk && nyOk) {
                     return true;
                 }

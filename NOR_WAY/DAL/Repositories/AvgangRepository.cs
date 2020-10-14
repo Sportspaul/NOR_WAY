@@ -116,7 +116,7 @@ namespace NOR_WAY.DAL.Repositories
             
         }
 
-        public async Task<List<Avganger>> HentAvganger(string linjekode, int sidenummer)
+        public async Task<List<AvgangModel>> HentAvganger(string linjekode, int sidenummer)
         {
             try
             {
@@ -125,7 +125,22 @@ namespace NOR_WAY.DAL.Repositories
                 // Sorterer etter Avreise, hopper over (sidenummer * 20) elementer og henter 20 elementer
                 List<Avganger> avganger = await _db.Avganger.Where(a => a.Rute.Linjekode == linjekode)
                     .OrderBy(a => a.Avreise).Skip(hoppOver).Take(20).ToListAsync();
-                return avganger;
+
+                // Konverter hvert Avganger-objekt til AvagnModel og legger de i en liste
+                List<AvgangModel> utAvganger = new List<AvgangModel>();
+                foreach (Avganger a in avganger)
+                {
+                    utAvganger.Add(
+                        new AvgangModel
+                        {
+                            Id = a.Id,
+                            Avreise = a.Avreise.ToString("dd-MM-yyyy HH:mm"),
+                            SolgteBilletter = a.SolgteBilletter
+                        }
+                    );
+                }
+
+                return utAvganger;
             }
             catch (Exception e)
             {
@@ -134,7 +149,7 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
-        public async Task<bool> NyAvgang(AvgangModel nyAvgang)
+        public async Task<bool> NyAvgang(NyAvgang nyAvgang)
         {
             try
             {

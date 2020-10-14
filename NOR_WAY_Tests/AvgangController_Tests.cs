@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -13,9 +16,16 @@ namespace NOR_WAY_Tests
 {
     public class AvgangControllerTests
     {
+        private const string _innlogget = "Innlogget";
+        private const string _ikkeInnlogget = "";
+
         private readonly Mock<IAvgangRepository> mockRepo = new Mock<IAvgangRepository>();
         private readonly Mock<ILogger<AvgangController>> mockLogCtr = new Mock<ILogger<AvgangController>>();
         private readonly AvgangController avgangController;
+
+        // Session
+        private readonly Mock<HttpContext> mockHttpContext = new Mock<HttpContext>();
+        private readonly MockHttpSession mockSession = new MockHttpSession();
 
         public AvgangControllerTests()
         {
@@ -47,6 +57,7 @@ namespace NOR_WAY_Tests
             Assert.Equal(forventetAvgang.Reisetid, faktiskAvgang.Reisetid);
         }
 
+        // Tester at returverdi: null blir håndtert korrekt for FinnNesteAvgang()
         [Fact]
         public async Task FinnNesteAvgang_Null()
         {
@@ -79,6 +90,96 @@ namespace NOR_WAY_Tests
             Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
         }
 
+        // Test for at FjernAvgang() håndterer riktig returnverdier på korrekt måte
+        [Fact]
+        public async Task FjernAvgang_RiktigeVerdier()
+        {
+            // Arrange
+            int id = 1;
+            mockRepo.Setup(br => br.FjernAvgang(id)).ReturnsAsync(true);
+
+            // Act
+            SimulerInnlogget();
+            var resultat = await avgangController.FjernAvgang(id) as OkObjectResult;
+
+            // Assert
+            Assert.Equal("Avgangen ble slettet!", resultat.Value);
+        }
+
+        // Test for at FjernAvgang() håndtrer feil returverdi på korrekt måte
+        [Fact]
+        public async Task FjernAvgang_IkkeOK()
+        {
+            // Arrange
+            int id = 1;
+            mockRepo.Setup(br => br.FjernAvgang(id)).ReturnsAsync(false);
+
+            // Act
+            SimulerInnlogget();
+            var resultat = await avgangController.FjernAvgang(id) as BadRequestObjectResult;
+
+            // Assert
+            Assert.Equal("Avgangen kunne ikke slettes!", resultat.Value);
+        }
+
+        // Tester at FjernAvgang håndterer InvalidModelState i controlleren 
+        [Fact]
+        public async Task FjernAvgang_Regex()
+        {
+            // Arrange
+            int id = 1;
+            avgangController.ModelState.AddModelError("id", "Feil i inputvalideringen på server");
+
+            // Act
+            SimulerInnlogget();
+            var resultat = await avgangController.FjernAvgang(id) as BadRequestObjectResult;
+
+            // Assert
+            Assert.Equal("Feil i inputvalidering på server", resultat.Value);
+        }
+
+        // Test på at FjernAvgang håndterer tilfelle hvor bruker ikke er logget inn
+        [Fact]
+        public async Task NyBillettypen_IkkeInnlogget()
+        {
+            // Arrange
+            int id = 1;
+
+            // Act
+            SimulerUtlogget();
+            var resultat = await avgangController.FjernAvgang(id) as UnauthorizedObjectResult;
+
+            // Assert 
+            Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
+            Assert.Equal("Ikke innlogget", resultat.Value);
+        }
+
+        [Fact]
+        public async Task HentAvganger_RiktigeVerdier()
+        {
+            // Arrange
+            string linjekode = "NW431";
+            int sidenummer = 0;
+            List<AvgangModel> forventet = HentAvgangModelListe();
+
+            mockRepo.Setup(br => br.HentAvganger(linjekode, sidenummer)).ReturnsAsync(HentAvgangModelListe());
+
+            // Act
+            SimulerInnlogget();
+            var resultat = await avgangController.HentAvganger(linjekode, sidenummer) as OkObjectResult;
+            List<AvgangModel> faktisk = (List<AvgangModel>)resultat.Value;
+
+            // Assert
+            Assert.Equal(forventet.Count, faktisk.Count);
+            for (int i = 0; i < forventet.Count; i++)
+            {
+                Assert.Equal(forventet[i].Id, faktisk[i].Id);
+                Assert.Equal(forventet[i].Avreise, faktisk[i].Avreise);
+                Assert.Equal(forventet[i].SolgteBilletter, faktisk[i].SolgteBilletter);
+            }
+        }
+
+
         // Returnerer et AvgangParam-objekt
         private Avgangkriterier HentAvgangParam()
         {
@@ -94,6 +195,32 @@ namespace NOR_WAY_Tests
         private Reisedetaljer HentAvgang()
         {
             return new Reisedetaljer { AvgangId = 1, Rutenavn = "Fjordekspressen", Linjekode = "NW431", Pris = 100, Avreise = "2020-11-25 17:00", Ankomst = "2020-11-25 18:20", Reisetid = 80 };
+        }
+
+        private List<AvgangModel> HentAvgangModelListe()
+        {
+            AvgangModel avgang1 = new AvgangModel { Id = 1, Avreise = "2020-10-10 17:00", SolgteBilletter = 0 };
+            AvgangModel avgang2 = new AvgangModel { Id = 2, Avreise = "2020-10-12 17:00", SolgteBilletter = 0 };
+            AvgangModel avgang3 = new AvgangModel { Id = 3, Avreise = "2020-10-14 17:00", SolgteBilletter = 0 };
+            return new List<AvgangModel> { avgang1, avgang2, avgang3 };
+        }
+
+        private void SimulerInnlogget()
+        {
+            mockSession[_innlogget] = _innlogget;
+            EndreSession(mockSession);
+        }
+
+        private void SimulerUtlogget()
+        {
+            mockSession[_innlogget] = _ikkeInnlogget;
+            EndreSession(mockSession);
+        }
+
+        private void EndreSession(MockHttpSession mockSession)
+        {
+            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
+            avgangController.ControllerContext.HttpContext = mockHttpContext.Object;
         }
     }
 }

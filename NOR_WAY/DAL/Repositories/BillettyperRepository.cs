@@ -46,6 +46,7 @@ namespace NOR_WAY.DAL.Repositories
             {
                 List<Billettyper> alleBillettyper = await _db.Billettyper.Select(b => new Billettyper
                 {
+                    Id = b.Id,
                     Billettype = b.Billettype,
                     Rabattsats = b.Rabattsats
                 }).ToListAsync();
@@ -59,13 +60,13 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
-        public async Task<bool> OppdaterRabattsats(Billettyper oppdatertRabattsats)
+        public async Task<bool> OppdaterBillettype(Billettyper opdatertBillettype)
         {
             try
             {
-                Billettyper billettype = await _db.Billettyper
-                    .SingleOrDefaultAsync(bt => bt.Billettype == oppdatertRabattsats.Billettype);
-                billettype.Rabattsats = oppdatertRabattsats.Rabattsats;
+                Billettyper billettype = await _db.Billettyper.FindAsync(opdatertBillettype.Id);
+                billettype.Billettype = opdatertBillettype.Billettype;
+                billettype.Rabattsats = opdatertBillettype.Rabattsats;
                 await _db.SaveChangesAsync();
                 return true;
             }

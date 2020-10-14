@@ -22,7 +22,7 @@ namespace NOR_WAY.Controllers
             _log = log;
         }
 
-        public async Task<ActionResult> FullforOrdre(OrdreModel ordre)
+        public async Task<ActionResult> FullforOrdre(NyOrdre ordre)
         {
             if (ModelState.IsValid)
             {

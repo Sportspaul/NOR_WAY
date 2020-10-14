@@ -40,9 +40,7 @@ namespace NOR_WAY_Tests
             mockRepo.Setup(br => br.LoggInn(bruker)).ReturnsAsync(true);
 
             // Act
-            mockSession[_innlogget] = _innlogget;
-            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
-            brukereController.ControllerContext.HttpContext = mockHttpContext.Object;
+            SimulerUtlogget();
             var resultat = await brukereController.LoggInn(bruker) as OkObjectResult;
 
             // Assert
@@ -58,9 +56,7 @@ namespace NOR_WAY_Tests
             mockRepo.Setup(br => br.LoggInn(bruker)).ReturnsAsync(false);
 
             // Act
-            mockSession[_innlogget] = _innlogget;
-            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
-            brukereController.ControllerContext.HttpContext = mockHttpContext.Object;
+            SimulerUtlogget();
             var resultat = await brukereController.LoggInn(bruker) as BadRequestObjectResult;
 
             // Assert
@@ -93,9 +89,7 @@ namespace NOR_WAY_Tests
             mockRepo.Setup(br => br.NyAdmin(bruker)).ReturnsAsync(true);
 
             // Act
-            mockSession[_innlogget] = _innlogget;
-            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
-            brukereController.ControllerContext.HttpContext = mockHttpContext.Object;
+            SimulerInnlogget();
             var resultat = await brukereController.NyAdmin(bruker) as OkObjectResult;
 
             // Assert
@@ -112,9 +106,7 @@ namespace NOR_WAY_Tests
             mockRepo.Setup(br => br.NyAdmin(bruker)).ReturnsAsync(false);
 
             // Act
-            mockSession[_innlogget] = _innlogget;
-            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
-            brukereController.ControllerContext.HttpContext = mockHttpContext.Object;
+            SimulerInnlogget();
             var resultat = await brukereController.NyAdmin(bruker) as BadRequestObjectResult;
 
             // Assert
@@ -132,9 +124,7 @@ namespace NOR_WAY_Tests
             brukereController.ModelState.AddModelError("Passord", "Feil i inputvalideringen på server");
 
             // Act
-            mockSession[_innlogget] = _innlogget;
-            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
-            brukereController.ControllerContext.HttpContext = mockHttpContext.Object;
+            SimulerInnlogget();
             var resultat = await brukereController.NyAdmin(bruker) as BadRequestObjectResult;
 
             // Assert
@@ -149,9 +139,7 @@ namespace NOR_WAY_Tests
             mockRepo.Setup(br => br.NyAdmin(bruker)).ReturnsAsync(true);
 
             // Act
-            mockSession[_innlogget] = _ikkeInnlogget;
-            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
-            brukereController.ControllerContext.HttpContext = mockHttpContext.Object;
+            SimulerUtlogget();
             var resultat = await brukereController.NyAdmin(bruker) as UnauthorizedObjectResult;
 
             // Assert 
@@ -179,6 +167,22 @@ namespace NOR_WAY_Tests
         {
             BrukerModel bruker = new BrukerModel { Brukernavn = "Admin", Passord = "Admin123" };
             return bruker;
+        }
+
+        private void SimulerInnlogget() {
+            mockSession[_innlogget] = _innlogget;
+            EndreSession(mockSession);
+        }
+
+        private void SimulerUtlogget()
+        {
+            mockSession[_innlogget] = _ikkeInnlogget;
+            EndreSession(mockSession);
+        }
+
+        private void EndreSession(MockHttpSession mockSession) {
+            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
+            brukereController.ControllerContext.HttpContext = mockHttpContext.Object;
         }
     }
 }

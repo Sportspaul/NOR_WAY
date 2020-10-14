@@ -42,6 +42,11 @@ namespace NOR_WAY.Controllers
         public async Task<ActionResult> HentAlleBillettyper()
         {
             List<Billettyper> billettypene = await _db.HentAlleBillettyper();
+            if (billettypene == null)
+            {
+                _log.LogInformation("Ingen Billettyper ble funnet");
+                return NotFound("Ingen billettyper ble funnet");
+            }
             return Ok(billettypene);
         }
 

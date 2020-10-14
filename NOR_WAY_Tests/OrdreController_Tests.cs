@@ -23,6 +23,8 @@ namespace NOR_WAY_Tests
         {
             ordreController = new OrdreController(mockRepo.Object, mockLogCtr.Object);
         }
+
+
         /* Enhetstester for FullforOrdre */
 
         // Tester at FullforOrdre returnerer forventet verdi
@@ -30,7 +32,7 @@ namespace NOR_WAY_Tests
         public async Task FullforOrdre_RiktigeVerdier()
         {
             // Arrange
-            var kundeOrdre = HentEnKundeOrdre();
+            var kundeOrdre = HentEnNyOrdre();
             mockRepo.Setup(br => br.FullforOrdre(kundeOrdre)).ReturnsAsync(true);
 
             // Act
@@ -44,7 +46,7 @@ namespace NOR_WAY_Tests
         public async Task FullforOrdre_IkkeOK()
         {
             // Arrange
-            var kundeOrdre = HentEnKundeOrdre();
+            var kundeOrdre = HentEnNyOrdre();
             mockRepo.Setup(br => br.FullforOrdre(kundeOrdre)).ReturnsAsync(false);
 
             // Act
@@ -59,7 +61,7 @@ namespace NOR_WAY_Tests
         public async Task FullforOrdre_RegEx()
         {
             // Arrange
-            var kundeOrdre = HentEnKundeOrdre();
+            var kundeOrdre = HentEnNyOrdre();
             mockRepo.Setup(br => br.FullforOrdre(kundeOrdre)).ReturnsAsync(false);
             ordreController.ModelState.AddModelError("Epost", "Feil i inputvalideringen på server");
 
@@ -74,9 +76,9 @@ namespace NOR_WAY_Tests
         /* Private metoder som instansierer objekter til brukes i testmetodene */
 
         // Returnerer et KundeOrdre-objekt
-        private OrdreModel HentEnKundeOrdre()
+        private NyOrdre HentEnNyOrdre()
         {
-            return new OrdreModel { Epost = "hvrustad@gmail.com", StartStopp = "Bergen", SluttStopp = "Trondheim", Linjekode = "NW431", AvgangId = 2, Billettyper = HentBillettyperStringListe() };
+            return new NyOrdre { Epost = "hvrustad@gmail.com", StartStopp = "Bergen", SluttStopp = "Trondheim", Linjekode = "NW431", AvgangId = 2, Billettyper = HentBillettyperStringListe() };
         }
 
         // Returnerer en List med string billettypenavn

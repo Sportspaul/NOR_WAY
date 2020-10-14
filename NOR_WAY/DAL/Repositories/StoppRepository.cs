@@ -98,9 +98,18 @@ namespace NOR_WAY.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> OppdaterStoppnavn(Stopp innStopp)
+        public async Task<bool> OppdaterStoppnavn(Stopp innStopp)
         {
-            throw new NotImplementedException();
+            if(innStopp == null)
+            {
+                _log.LogInformation("Det er ikke noe stoppobjekt å endre navn på!");
+                return false;
+            }
+            Stopp stopp = await _db.Stopp.FindAsync(innStopp.Id);
+            stopp.Navn = innStopp.Navn;
+            await _db.SaveChangesAsync();
+            return true;
+
         }
     }
 }

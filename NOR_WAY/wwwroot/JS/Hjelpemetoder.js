@@ -35,7 +35,7 @@ class Hjelpemetoder {
 
     // Setter stor forbokstav og fjerner mellomrom forran og bak strengen
     static rensStoppInput(input) {
-        return input.charAt(0).toUpperCase() + input.slice(1)).trim();
+        return input.charAt(0).toUpperCase() + input.slice(1).trim();
     }
 
     // Formaterer reisetid (eks: argument 90, return "1 time og 30 minutter")

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL;
@@ -15,6 +16,7 @@ namespace NOR_WAY.Controllers
     {
         private readonly IStoppRepository _db;
         private ILogger<StoppController> _log;
+        private const string _innlogget = "Innlogget";
 
         public StoppController(IStoppRepository db, ILogger<StoppController> log)
         {
@@ -61,9 +63,24 @@ namespace NOR_WAY.Controllers
             return Ok(alleStopp); // returnerer alltid OK, null ved tom DB
         }
 
-        public Task<ActionResult> OppdaterStoppnavn(Stopp innStopp)
+        public async Task<ActionResult> OppdaterStoppnavn(Stopp innStopp)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke logget inn");
+            }
+            if (ModelState.IsValid)
+            {
+                bool EndringOK = await _db.OppdaterStoppnavn(innStopp);
+                if (!EndringOK)
+                {
+                    _log.LogInformation("Stoppnavnet kunne ikke endres");
+                    return BadRequest("Stoppnavnet kunne ikke endres");
+                }
+                return Ok("Stoppnavnet er endret");
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalideringen på server");
         }
     }
 }

@@ -8,7 +8,7 @@ namespace NOR_WAY.DAL.Interfaces
 {
     public interface IOrdreRepository
     {
-        Task<bool> FullforOrdre(NyOrdre ordre);
+        Task<bool> FullforOrdre(OrdreModel ordre);
 
         Task<List<OrdreModel>> HentOrdre(string epost);
 

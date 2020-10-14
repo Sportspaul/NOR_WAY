@@ -40,9 +40,9 @@ template.innerHTML = `
     />
 </a>
 <ul>
-    <li><a href="../index.html">Kjøp Billett</a></li>
+    <li> <slot name="billett"></slot></li>
     <li>|</li>
-    <li><a href="../ruter.html">Ruter</a></li>
+    <li><slot name="ruter"></slot></li>
     <li>|</li>
     <li><slot name="innlogging"></slot></li>
 </ul>`

@@ -3,36 +3,41 @@ adminNav.innerHTML = `
 <style>
    
     ul li {
+        font-size: 2vh;
         list-style: none;
         display: inline;
-        color: rgb(255,255,255);
+        color: rgb(150,150,150);
         margin-right: 2vw;
         font-weight: bold;
         -webkit-font-smoothing: antialiased !important;
+        margin-bottom: 0;
     }
 
     ul {
-        display: inline;
-        margin-bottom: 2vw;
-        padding: 0;
+        padding: 0; 
+        margin-top: 0;
+        margin-bottom: 3vh;
     }
 
     ul li a {
         -webkit-font-smoothing: antialiased !important;
-        color: black;
+        color: rgb(65,65,65);
         text-decoration: none;
     }
 
     ul li a:hover {
         text-decoration: none;
-        color: rgb(100,100,100);
+        color: rgb(0,0,0);
     }
 </style>
 
 <ul>
-    <li><a href="ruteoversikt.html">Ruteoversikt</a></li>
+    <li><a href="ruter.html">Ruter</a></li>
+    <li>|</li>
     <li><a href="billettyper.html">Billettyper</a></li>
+    <li>|</li>
     <li><a href="stopp.html">Stopp</a></li>
+    <li>|</li>
     <li><a href="ordre.html">Ordre</a></li>
 </ul>`
 

@@ -1,4 +1,4 @@
-﻿async function lagTabell(res, CUD) {
+﻿async function lagTabell(res, CUD, link) {
         let data = await res;
         // Primary key fra JSON objektet
         let id;
@@ -9,27 +9,30 @@
 
         // Sjekker om tabellen skal inneholde en "Create" knapp
         if (CUD.includes("C")) {
-            const knapp = document.createElement("button");
-            knapp.innerHTML = `Legg til ny ${id}`;
-            knapp.value = id;
-            knapp.className = "btn btn-primary";
+            const knapp = `
+                <a href="${link}">
+                    <button class="btn btn-success btn-sm">Opprett ny</button>
+                </a>`;
 
             // Legger knappen til en container
-            const knappContainer = document.getElementById("knapp");
-            knappContainer.appendChild(knapp); 
+            const knappContainer = $("#knapp");
+            knappContainer.html(knapp); 
         }
 
         // Sjekker om tabellen skal inneholde en "Update" knapp
         if (CUD.includes("U")) {
             data.forEach((rad) => {
-                rad.oppdater = `<button class = "btn btn-primary" value="${rad[id]}">Oppdater</button>`;
+                rad.oppdater = `
+                    <a href="${link}?${rad[id]}">
+                        <button class="btn btn-primary btn-sm" value="${rad[id]}">Oppdater</button>
+                    </a>`;
             });
           
     }
         // Sjekker om tabellen skal inneholde en "Delete" knapp
         if (CUD.includes("D")) {    
             data.forEach((rad) => {
-                rad.slett = `<button class = "btn btn-primary" value="${rad[id]}">Slett</button>`;
+                rad.slett = `<button class="btn btn-danger btn-sm" value="${rad[id]}">Slett</button>`;
             })
         }
 
@@ -50,7 +53,7 @@
 
         // Lager tabell
         let tabell = document.createElement("table");
-        tabell.className = "table table-striped";
+        tabell.className = "table";
         tabell.id = "tabell";
 
         // Lager overskriftene i tabellen
@@ -79,19 +82,19 @@
         tabellContainer.appendChild(tabell);
 }
 
-async function lagRuteoversikt(res) {
+async function lagRuteoversikt(res, link) {
     let data = await res;
     let url;
     data.forEach((rad) => {
         url = `avganger.html?linjekode=${rad.linjekode}&side=0`
-        rad.avganger = `<a href = ${url}><button class = "btn btn-primary">Avganger</button></a>`;
+        rad.avganger = `<a href = ${url}><button class = "btn btn-dark btn-sm">Avganger</button></a>`;
     });
     data.forEach((rad) => {
         url = `ruteStopp.html?linjekode=${rad.linjekode}`;
-        rad.rutestopp = `<a href = ${url}><button class = "btn btn-primary">Rutestopp</button></a>`;
+        rad.rutestopp = `<a href = ${url}><button class = "btn btn-dark btn-sm">Rutestopp</button></a>`;
             
     });
-    lagTabell(data, "CUD");
+    lagTabell(data, "CUD", link);
 }
 
 async function lagStoppoversikt(res) {

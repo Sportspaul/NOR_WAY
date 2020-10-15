@@ -10,7 +10,7 @@ function loggInn() {
             passord: $("#passord").val()
         }
         $.post("Brukere/LoggInn", bruker, function (OK) {
-                window.location.href = 'Adminsider/ruteoversikt.html';
+                window.location.href = 'Adminsider/ruter.html';
         }).fail(function () {
             $("#feil").html("Feil brukernavn eller passord");
         });

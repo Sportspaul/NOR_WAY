@@ -1,11 +1,11 @@
 ﻿// Kalles når siden laster inn
 $(function () {
+    Hjelpemetoder.settKorrektNavigering();
     hentAlleStopp();
     hentAlleBillettyper();
     Hjelpemetoder.leggTilDato();
     Hjelpemetoder.leggTilTidspunkt()
     Hjelpemetoder.endreBakgrunn();
-    Hjelpemetoder.settKorrektNavigering();
     if (window.location.href.includes("bestilling=ok")) {
         Swal.fire(
             "Bestillingen var vellykket",

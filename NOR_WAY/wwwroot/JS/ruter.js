@@ -1,7 +1,7 @@
 ﻿// Kalles når siden laster inn
 $(function () {
-    hentAlleRuter();
     Hjelpemetoder.settKorrektNavigering();
+    hentAlleRuter();
 });
 
 let ruteMatrise = new Array();

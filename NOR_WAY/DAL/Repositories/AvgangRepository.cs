@@ -121,10 +121,10 @@ namespace NOR_WAY.DAL.Repositories
             try
             {
                 // TODO: Kan justere til et annet tall enn 20 for å se best mulig ut på frontend
-                int hoppOver = sidenummer * 20;   // Antall elementer som skal hoppes over
+                int hoppOver = sidenummer * 10;   // Antall elementer som skal hoppes over
                 // Sorterer etter Avreise, hopper over (sidenummer * 20) elementer og henter 20 elementer
                 List<Avganger> avganger = await _db.Avganger.Where(a => a.Rute.Linjekode == linjekode)
-                    .OrderBy(a => a.Avreise).Skip(hoppOver).Take(20).ToListAsync();
+                    .OrderBy(a => a.Avreise).Skip(hoppOver).Take(10).ToListAsync();
 
                 // Konverter hvert Avganger-objekt til AvagnModel og legger de i en liste
                 List<AvgangModel> utAvganger = new List<AvgangModel>();

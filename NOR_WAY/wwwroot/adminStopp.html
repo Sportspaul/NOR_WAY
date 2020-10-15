@@ -27,8 +27,8 @@
         <nav-bar> <!-- Web Component, Components/Navbar.js--> </nav-bar>
     </div>
     <script>
-        var res = $.post("Ruter/HentAlleRuter");
-        lagRuteoversikt(res)
+        var res = $.post("Stopp/HentAlleStopp");
+        lagTabell(res, "U")
     </script>
     <div>
         <p id="knapp"></p>

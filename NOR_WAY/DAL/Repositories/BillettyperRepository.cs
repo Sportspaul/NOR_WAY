@@ -76,5 +76,18 @@ namespace NOR_WAY.DAL.Repositories
                 return false;
             }
         }
+
+        public async Task<Billettyper> HentEnBillettype(int id)
+        {
+            try
+            {
+                return await _db.Billettyper.FindAsync(id);
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return null;
+            }
+        }
     }
 }

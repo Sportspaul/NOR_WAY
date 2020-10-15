@@ -50,10 +50,27 @@ namespace NOR_WAY.Controllers
             return Ok(billettypene);
         }
 
+        public async Task<ActionResult> HentEnBillettype(int id)
+        {
+            // TODO: Legg til sjekk for Unauthorized
+            if (ModelState.IsValid)
+            {
+                Billettyper billettype = await _db.HentEnBillettype(id);
+                if (billettype == null)
+                {
+                    _log.LogInformation("Billettypen ble ikke funnet");
+                    return NotFound("Billettyper ble ikke funnet");
+                }
+                return Ok(billettype);
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalidering på server");
+        }
+
         public async Task<ActionResult> OppdaterBillettype(Billettyper oppdatertBillettype)
         {
             // TODO: Legg til sjekk for Unauthorized
-            if (ModelState.IsValid && oppdatertBillettype.Rabattsats < 100 && oppdatertBillettype.Rabattsats >= 0)
+            if (ModelState.IsValid && oppdatertBillettype.Rabattsats <= 100 && oppdatertBillettype.Rabattsats >= 0)
             {
                 bool returOK = await _db.OppdaterBillettype(oppdatertBillettype);
                 if (!returOK)

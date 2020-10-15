@@ -9,6 +9,8 @@ namespace NOR_WAY.DAL.Interfaces
     {
         Task<bool> NyBillettype(Billettyper nyBillettype);
 
+        Task<Billettyper> HentEnBillettype(int id);
+
         Task<List<Billettyper>> HentAlleBillettyper();
 
         Task<bool> OppdaterBillettype(Billettyper oppdatertBillettype);

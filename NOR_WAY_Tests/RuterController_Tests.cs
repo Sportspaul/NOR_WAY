@@ -113,11 +113,11 @@ namespace NOR_WAY_Tests
         public async Task FjernRute_RiktigeVerdier()
         {
             // Arrange
-            var linjekodeModel = new LinjekodeModel { Linjekode = "NW431" };
-            mockRepo.Setup(br => br.FjernRute(linjekodeModel.Linjekode)).ReturnsAsync(true);
+            string linjekode = "NW431";
+            mockRepo.Setup(br => br.FjernRute(linjekode)).ReturnsAsync(true);
 
             // Act
-            var resultat = await ruterController.FjernRute(linjekodeModel) as OkObjectResult;
+            var resultat = await ruterController.FjernRute(linjekode) as OkObjectResult;
 
             // Assert
             Assert.Equal("Ruten ble slettet!", resultat.Value);
@@ -127,11 +127,11 @@ namespace NOR_WAY_Tests
         public async Task FjernRute_IkkeOK()
         {
             // Arrange
-            var linjekodeModel = new LinjekodeModel { Linjekode = "NW431" };
-            mockRepo.Setup(br => br.FjernRute(linjekodeModel.Linjekode)).ReturnsAsync(false);
+            string linjekode = "NW431";
+            mockRepo.Setup(br => br.FjernRute(linjekode)).ReturnsAsync(false);
 
             // Act
-            var resultat = await ruterController.FjernRute(linjekodeModel) as BadRequestObjectResult;
+            var resultat = await ruterController.FjernRute(linjekode) as BadRequestObjectResult;
 
             // Assert
             Assert.Equal("Ruten kunne ikke slettes!", resultat.Value);
@@ -142,12 +142,12 @@ namespace NOR_WAY_Tests
         public async Task FjernRute_RegEx()
         {
             // Arrange
-            var linjekodeModel = new LinjekodeModel { Linjekode = "" };
-            mockRepo.Setup(br => br.FjernRute(linjekodeModel.Linjekode)).ReturnsAsync(false);
+            string linjekode = "" ;
+            mockRepo.Setup(br => br.FjernRute(linjekode)).ReturnsAsync(false);
             ruterController.ModelState.AddModelError("Linjekode", "Feil i inputvalideringen på server");
 
             // Act
-            var resultat = await ruterController.FjernRute(linjekodeModel) as BadRequestObjectResult;
+            var resultat = await ruterController.FjernRute(linjekode) as BadRequestObjectResult;
 
             // Assert
             Assert.Equal("Feil i inputvalidering på server", resultat.Value);

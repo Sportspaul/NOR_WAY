@@ -43,10 +43,10 @@
 </head>
 <body>
     <script>
-        var res = $.post("Stopp/HentAlleStopp");
+        $.get(`RuteStopp/HentRuteStopp?linjekode=${id}`);
         //lagTabell(res, "CUD");
         //lagRuteoversikt(res)
-        lagStoppoversikt(res);
+        //lagStoppoversikt(res);
     </script>
     <p id="knapp"></p>
     <p id="tabellContainer"></p>

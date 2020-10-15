@@ -27,8 +27,12 @@
         <nav-bar> <!-- Web Component, Components/Navbar.js--> </nav-bar>
     </div>
     <script>
-        var res = $.post("Ruter/HentAlleRuter");
-        lagRuteoversikt(res)
+        let url = window.location.href.split("=");
+        linjekode = url[1].split("&")
+        linjekode = linjekode[0];
+
+        let res = $.get(`RuteStopp/HentRuteStopp?linjekode=${linjekode}`);
+        lagTabell(res, "CUD");
     </script>
     <div class="shadowBox">
         <p id="knapp"></p>

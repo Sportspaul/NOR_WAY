@@ -83,13 +83,13 @@ async function lagRuteoversikt(res) {
     let data = await res;
     let url;
     data.forEach((rad) => {
-        url = `ruteStopp.html?linjekode=${rad.linjekode}&side=0`
-        rad.avganger = `<button class = "btn btn-primary" onclick="href = ${url}">Avganger</button>`;
+        url = `avganger.html?linjekode=${rad.linjekode}&side=0`
+        rad.avganger = `<a href = ${url}><button class = "btn btn-primary">Avganger</button></a>`;
     });
     data.forEach((rad) => {
         url = `ruteStopp.html?linjekode=${rad.linjekode}`;
         console.log(url);
-        rad.rutestopp = `<button class = "btn btn-primary" onclick="href = ${url}">Rutestopp</button>`;
+        rad.rutestopp = `<a href = ${url}><button class = "btn btn-primary">Rutestopp</button></a>`;
             
     });
     lagTabell(data, "CUD");

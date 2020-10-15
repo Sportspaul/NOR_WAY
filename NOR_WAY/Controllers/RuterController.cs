@@ -79,12 +79,12 @@ namespace NOR_WAY.Controllers
             return BadRequest("Feil i inputvalidering på server");
         }
 
-        public async Task<ActionResult> NyRute(RuteModel ruteModel)
+        public async Task<ActionResult> NyRute(Ruter rute)
         {
             // TODO: Legg til sjekk for Unauthorized
             if (ModelState.IsValid)
             {
-                bool returOK = await _db.NyRute(ruteModel);
+                bool returOK = await _db.NyRute(rute);
                 if (!returOK)
                 {
                     _log.LogInformation("Ny rute kunne ikke lagres!");

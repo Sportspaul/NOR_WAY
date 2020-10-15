@@ -44,6 +44,15 @@ namespace NOR_WAY.Controllers
             HttpContext.Session.SetString(_innlogget, "");
         }
 
+        public bool AdminTilgang()
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return false;
+            }
+            return true;
+        }
+
         public async Task<ActionResult> NyAdmin(BrukerModel bruker)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))

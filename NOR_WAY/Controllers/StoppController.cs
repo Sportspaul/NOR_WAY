@@ -82,5 +82,25 @@ namespace NOR_WAY.Controllers
             _log.LogInformation("Feil i inputvalideringen på server");
             return BadRequest("Feil i inputvalideringen på server");
         }
+
+        public async Task<ActionResult> HentAlleStoppMedRuter()
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke logget inn");
+            }
+            if (ModelState.IsValid)
+            {
+                List<StoppMedLinjekoder> stoppMedLinjekoder = await _db.HentAlleStoppMedRuter();
+                if (stoppMedLinjekoder == null)
+                {
+                    _log.LogInformation("Stoppene kunne ikke hentes");
+                    return BadRequest("Stoppnavnet kunne ikke hentes");
+                }
+                return Ok(stoppMedLinjekoder);
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalideringen på server");
+        }
     }
 }

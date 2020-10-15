@@ -40,11 +40,13 @@ template.innerHTML = `
     />
 </a>
 <ul>
-    <li> <slot name="billett"></slot></li>
+    <li><a href="../index.html">Kjøp Billett</a></li>
     <li>|</li>
-    <li><slot name="ruter"></slot></li>
+    <li><a href="../ruter.html">Ruter</a></li>
     <li>|</li>
     <li><slot name="innlogging"></slot></li>
+    <li><slot name="skille"></slot></li>
+    <li><slot name="admin"></slot></li>
 </ul>`
 
 class NavBar extends HTMLElement {

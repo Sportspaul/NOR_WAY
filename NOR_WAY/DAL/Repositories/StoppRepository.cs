@@ -93,9 +93,39 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
-        public Task<List<StoppMedLinjekoder>> HentAlleStoppMedRuter()
+        public async Task<List<StoppMedLinjekoder>> HentAlleStoppMedRuter()
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<RuteStopp> rutestopp = await _db.RuteStopp
+                        .Select(rs => new RuteStopp
+                        {
+                            Rute = rs.Rute,
+                            Stopp = rs.Stopp
+                        }).OrderBy(rs => rs.Stopp.Id).ToListAsync();
+                int startId = rutestopp[0].Stopp.Id;
+
+                List<StoppMedLinjekoder> stoppMedLinjekoder = new List<StoppMedLinjekoder>();
+                for (int i = 0; i < rutestopp.Count(); i++)
+                {
+                    List<string> linjekoder = new List<string>();
+                    int j = i;
+                    while (startId == rutestopp[j].Stopp.Id)
+                    {
+                        linjekoder.Add(rutestopp[j].Rute.Linjekode);
+                        j++;
+                    }
+                    startId++;
+                    StoppMedLinjekoder smlk = new StoppMedLinjekoder { Id = rutestopp[i].Stopp.Id, Stoppnavn = rutestopp[i].Stopp.Navn, Linjekoder = linjekoder };
+                    stoppMedLinjekoder.Add(smlk);
+                }
+                return stoppMedLinjekoder;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return null;
+            }
         }
 
         public async Task<bool> OppdaterStoppnavn(Stopp innStopp)

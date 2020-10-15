@@ -7,6 +7,24 @@ class Hjelpemetoder {
         $("#overlay").css('height', h);
     }
 
+    static settKorrektNavigering() {
+    $.get("Brukere/AdminTilgang", function (innlogget) {
+        if (!innlogget) {
+            $("nav-bar").append(`<a slot="innlogging" id="innlogging" href="../loggInn.html">Logg inn</a>`);
+            $("#innlogging").click(function () {
+                loggUt();
+            });
+        } else {
+            $("nav-bar").append(`<a slot="innlogging" id="innlogging" href="../index.html">Logg ut</a>`);
+            $("nav-bar").append(`<span slot="skille">|</span>`);
+            $("nav-bar").append(`<a slot="admin" href="Adminsider/Ruteoversikt.html">Admin</a>`);
+            $("#innlogging").click(function () {
+                loggUt();
+            });
+        }
+    });
+}
+
     // Legger til dagens dato i datofeltet
     static leggTilDato() {
         var dato = new Date().toISOString().substring(0, 10);

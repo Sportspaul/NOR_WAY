@@ -18,3 +18,4 @@ function loggInn() {
         $("#feil").html("Feil brukernavn eller passord");
     }
 }
+

@@ -88,7 +88,6 @@ async function lagRuteoversikt(res) {
     });
     data.forEach((rad) => {
         url = `ruteStopp.html?linjekode=${rad.linjekode}`;
-        console.log(url);
         rad.rutestopp = `<a href = ${url}><button class = "btn btn-primary">Rutestopp</button></a>`;
             
     });
@@ -98,7 +97,6 @@ async function lagRuteoversikt(res) {
 async function lagStoppoversikt(res) {
     let data = await res;
     data.forEach((rad) => {
-        console.log(rad);
     //    url = `ruteStopp.html?linjekode=${rad.linjekode}&side=0`
     //    rad.avganger ;
     });

@@ -21,7 +21,7 @@
     <script src="JS/validering.js?n=13" defer></script>
     <script src="JS/Stoppforslag.js?n?=7" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10" defer></script>
-    <script src="JS/TabellMaker.js?n?=1" defer></script>
+    <script src="JS/TabellMaker.js?n?=1"></script>
 
     <title>Convert JSON Data to HTML Table</title>
     <style>
@@ -43,10 +43,13 @@
 </head>
 <body>
     <script>
-        var JSONresponse = $.post("Ruter/HentAlleRuter");
+        var res = $.post("Stopp/HentAlleStopp");
+        //lagTabell(res, "CUD");
+        //lagRuteoversikt(res)
+        lagStoppoversikt(res);
     </script>
-    <input type="button" id="knapp" onclick="CreateTableFromJSON(JSONresponse, 'CUD')" value="Create Table From JSON" />
-    <p id="showData"></p>
+    <p id="knapp"></p>
+    <p id="tabellContainer"></p>
 </body>
 
 </html>

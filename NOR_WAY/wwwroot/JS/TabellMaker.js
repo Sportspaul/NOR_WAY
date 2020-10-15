@@ -1,48 +1,61 @@
-﻿function CreateTableFromJSON(JSONresponse, CUD) {
-    JSONresponse.then(function (JSONdataset) {        
-        console.log(JSONdataset);
+﻿async function lagTabell(res, CUD) {
+        let data = await res;
+        // Primary key fra JSON objektet
+        let id;
+        for (let key in data[0]) {
+            id = key;
+            break;
+        }
 
+        // Sjekker om tabellen skal inneholde en "Create" knapp
         if (CUD.includes("C")) {
-            console.log("create");
-            const button = document.createElement("button");
-            button.innerHTML = "Ny";
-            var body = document.getElementsByTagName("body")[0];
-            body.appendChild(button);
+            const knapp = document.createElement("button");
+            knapp.innerHTML = `Legg til ny ${id}`;
+            knapp.value = id;
+            knapp.className = "btn btn-primary";
 
-            }
+            // Legger knappen til en container
+            const knappContainer = document.getElementById("knapp");
+            knappContainer.appendChild(knapp); 
+        }
+
+        // Sjekker om tabellen skal inneholde en "Update" knapp
         if (CUD.includes("U")) {
-            console.log("update")
-            for (let i = 0; i < JSONdataset.length; i++) {
-                for (let key in JSONdataset[i]) {
-                    JSONdataset[i].Oppdater = `<button value="${JSONdataset[i].linjekode}">Oppdater</button>`;
-                }
-            }
-        }
-        if (CUD.includes("D")) {
-            console.log("delete")
-            for (let i = 0; i < JSONdataset.length; i++) {
-                for (let key in JSONdataset[i]) {
-                    JSONdataset[i].Delete = `<button value="${JSONdataset[i].linjekode}">Slett</button>`;
-                }
-            }
+            data.forEach((rad) => {
+                rad.oppdater = `<button class = "btn btn-primary" value="${rad[id]}">Oppdater</button>`;
+            });
+          
+    }
+        // Sjekker om tabellen skal inneholde en "Delete" knapp
+        if (CUD.includes("D")) {    
+            data.forEach((rad) => {
+                rad.slett = `<button class = "btn btn-primary" value="${rad[id]}">Slett</button>`;
+            })
         }
 
-        // Henter nøklene i JSON objektet for overskrift i tabell
+        // Henter nøklene i JSON objektet for overskrift i tabell. Ignorerer nøkler som heter "id"
         const kolonner = [];
-        for (let i = 0; i < JSONdataset.length; i++) {
-
-            for (let key in JSONdataset[i]) {
+        
+        data.forEach((rad) => {
+            for (let key in rad) {
                 if (kolonner.indexOf(key) === -1) {
-                    kolonner.push(key);
+                    if (key != "id") {
+                        kolonner.push(key);
+                    }
                 }
             }
-        }
+        });
+
+
 
         // Lager tabell
-        const tabell = document.createElement("table");
+        let tabell = document.createElement("table");
+        tabell.className = "table table-striped";
+        tabell.id = "tabell";
 
         // Lager overskriftene i tabellen
         let tr = tabell.insertRow(-1);
+        tr.id = "overskrifter";
 
         for (let i = 0; i < kolonner.length; i++) {
                 let th = document.createElement("th");
@@ -51,20 +64,43 @@
         }
 
         // Legger til all dataen fra JSON objektet i rader
-        for (let i = 0; i < JSONdataset.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             tr = tabell.insertRow(-1);
+            tr.id = i;
 
             for (let j = 0; j < kolonner.length; j++) {
                 let tabCell = tr.insertCell(-1);
-                tabCell.innerHTML = JSONdataset[i][kolonner[j]];
+                tabCell.innerHTML = data[i][kolonner[j]];
             }
         }
 
-
-
         // Legger tabellen til en container
-        const divContainer = document.getElementById("showData");
-        divContainer.innerHTML = "";
-        divContainer.appendChild(tabell);
+        const tabellContainer = document.getElementById("tabellContainer");
+        tabellContainer.appendChild(tabell);
+}
+
+async function lagRuteoversikt(res) {
+    let data = await res;
+    let url;
+    data.forEach((rad) => {
+        url = `ruteStopp.html?linjekode=${rad.linjekode}&side=0`
+        rad.avganger = `<button class = "btn btn-primary" onclick="href = ${url}">Avganger</button>`;
     });
+    data.forEach((rad) => {
+        url = `ruteStopp.html?linjekode=${rad.linjekode}`;
+        console.log(url);
+        rad.rutestopp = `<button class = "btn btn-primary" onclick="href = ${url}">Rutestopp</button>`;
+            
+    });
+    lagTabell(data, "CUD");
+}
+
+async function lagStoppoversikt(res) {
+    let data = await res;
+    data.forEach((rad) => {
+        console.log(rad);
+    //    url = `ruteStopp.html?linjekode=${rad.linjekode}&side=0`
+    //    rad.avganger ;
+    });
+    lagTabell(data, "U");
 }

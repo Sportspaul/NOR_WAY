@@ -10,7 +10,7 @@ namespace NOR_WAY.Model
         [RegularExpression(@"(NW)[0-9]{1,4}")]
         public string Linjekode { get; set; }
 
-        [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,20}")]
+        [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,50}")]
         public string Rutenavn { get; set; }
 
         [RegularExpression(@"[0-9]{1,4}")]

@@ -45,7 +45,21 @@ function validerBetalingsInput() {
     const cvc = validerCVC($("#CVC"), "#feilCVC");
 
     // Hvis alle valideringene over er gyldige
-    if (navn & epost & kortnummer & mm & aa & cvc) {
+    if (navn && epost && kortnummer && mm && aa && cvc) {
+        return true;
+    }
+    return false;
+}
+
+function validerRuteInput() {
+    const linjekode = validerLinjekode($("#linjekode"), "#feilLinjekode");
+    const rutenavn = validerRutenavn($("#rutenavn"), "#feilRutenavn");
+    const startpris = validerStartpris($("#startpris"), "#feilStartpris");
+    const tilleggPerStopp = validerTilleggPerStopp($("#tilleggPerStopp"), "#feilTilleggPerStopp");
+    const kapasitet = validerKapasitet($("#kapasitet"), "#feilKapasitet");
+
+    // Hvis alle valideringene over er gyldige
+    if (linjekode && rutenavn && startpris && tilleggPerStopp && kapasitet) {
         return true;
     }
     return false;
@@ -107,6 +121,7 @@ function validerNavn(innElmt, utId) {
     return feilmelding(testRegex(innElmt, regex), melding, utId);
 }
 
+// Brukernavn-validering
 function validerBrukernavn(innElmt, utId) {
     console.log(innElmt);
     const regex = /^[0-9a-zA-Z._]{4,15}$/
@@ -155,6 +170,49 @@ function validerCVC(innElmt, utId) {
     const melding = "Ugyldig CVC";
     return feilmelding(testRegex(innElmt, regex), melding, utId);
 }
+
+// Linjekode-validering
+function validerLinjekode(innElmt, utId) {
+    console.log(innElmt);
+    const regex = /^(NW)[0-9]{1,4}$/
+    const melding = "Linjekoden må starte med NW etterfulgt av 1-4 tall fra 0-9";
+    return feilmelding(testRegex(innElmt, regex), melding, utId);
+}
+
+// Rutenavn-validering
+function validerRutenavn(innElmt, utId) {
+    console.log(innElmt);
+    const regex = /^[a-zA-ZæøåÆØÅ. \-]{2,50}$/
+    const melding = "Ugydlig rutenavn";
+    return feilmelding(testRegex(innElmt, regex), melding, utId);
+}
+
+// Startpris-validering
+function validerStartpris(innElmt, utId) {
+    console.log(innElmt);
+    const regex = /^[0-9]{1,4}$/
+    const melding = "Startprisen må inneholde 1-4 siffer";
+    return feilmelding(testRegex(innElmt, regex), melding, utId);
+}
+
+// Tillegg per stopp-validering
+function validerTilleggPerStopp(innElmt, utId) {
+    console.log(innElmt);
+    const regex = /^[0-9]{1,4}$/
+    const melding = "Tillegg per stopp må inneholde 1-4 siffer";
+    return feilmelding(testRegex(innElmt, regex), melding, utId);
+}
+
+// Kapasitet-validering
+function validerKapasitet(innElmt, utId) {
+    console.log(innElmt);
+    const regex = /^[0-9]{1,3}$/
+    const melding = "Kapasitet må inneholde 1-3 siffer";
+    return feilmelding(testRegex(innElmt, regex), melding, utId);
+}
+
+
+
 
 // Finner dagens dato og formaterer i yyyy-mm-dd format
 function idagISO() {

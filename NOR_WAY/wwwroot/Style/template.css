@@ -15,6 +15,11 @@ body {
     background-size: cover;
 }
 
+.rodTekst {
+    color: #f94e4f;
+}
+
+
 .antialised {
     -webkit-font-smoothing: antialiased !important;
 }

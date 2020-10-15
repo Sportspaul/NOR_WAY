@@ -32,7 +32,7 @@
         // Sjekker om tabellen skal inneholde en "Delete" knapp
         if (CUD.includes("D")) {    
             data.forEach((rad) => {
-                rad.slett = `<button class="btn btn-danger btn-sm" value="${rad[id]}">Slett</button>`;
+                rad.slett = `<button class="btn btn-danger btn-sm" value="${rad[id]}" onclick="slettRad('${rad[id]}')">Slett</button>`;
             })
         }
 
@@ -48,8 +48,6 @@
                 }
             }
         });
-
-
 
         // Lager tabell
         let tabell = document.createElement("table");
@@ -69,7 +67,7 @@
         // Legger til all dataen fra JSON objektet i rader
         for (let i = 0; i < data.length; i++) {
             tr = tabell.insertRow(-1);
-            tr.id = i;
+            tr.id = data[i][id];
 
             for (let j = 0; j < kolonner.length; j++) {
                 let tabCell = tr.insertCell(-1);

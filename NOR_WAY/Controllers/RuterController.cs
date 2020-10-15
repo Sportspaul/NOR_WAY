@@ -25,12 +25,12 @@ namespace NOR_WAY.Controllers
             _log = log;
         }
         
-        public async Task<ActionResult> FjernRute(LinjekodeModel linjekodeModel)
+        public async Task<ActionResult> FjernRute(string linjekode)
         {
             // TODO: Legg til sjekk for Unauthorized
             if (ModelState.IsValid)
             {
-                bool returOK = await _db.FjernRute(linjekodeModel.Linjekode);
+                bool returOK = await _db.FjernRute(linjekode);
                 if (!returOK)
                 {
                     _log.LogInformation("Ruten kunne ikke slettes!");

@@ -49,6 +49,27 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
+        public async Task<NyRuteStopp> HentEtRuteStopp(int id)
+        {
+            try
+            {
+                RuteStopp ruteStopp = await _db.RuteStopp.FindAsync(id);
+                NyRuteStopp utRuteStopp = new NyRuteStopp
+                {
+                    Stoppnavn = ruteStopp.Stopp.Navn,
+                    StoppNummer = ruteStopp.StoppNummer,
+                    MinutterTilNesteStopp = ruteStopp.MinutterTilNesteStopp,
+                    Linjekode = ruteStopp.Rute.Linjekode
+                };
+                return utRuteStopp;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return null;
+            }
+        }
+
         public async Task<List<RuteStoppModel>> HentRuteStopp(string linjekode)
         {
             try

@@ -55,6 +55,17 @@ namespace NOR_WAY.Controllers
             return Ok(ruteStoppListe);
         }
 
+        public async Task<ActionResult> HentEtRuteStopp(int id)
+        {
+            NyRuteStopp ruteStopp = await _db.HentEtRuteStopp(id);
+            if (ruteStopp == null)
+            {
+                _log.LogInformation("RuteStoppet ble ikke funnet");
+                return NotFound("Rute stoppene ble ikke funnet");
+            }
+            return Ok(ruteStopp);
+        }
+
         public async Task<ActionResult> NyRuteStopp(NyRuteStopp innRuteStopp)
         {
             // TODO: Legg til sjekk for Unauthorized

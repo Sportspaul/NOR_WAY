@@ -13,6 +13,8 @@ namespace NOR_WAY.DAL.Interfaces
 
         Task<List<RuteStoppModel>> HentRuteStopp(string linjekode);
 
+        Task<NyRuteStopp> HentEtRuteStopp(int id);
+
         Task<bool> OppdaterRuteStopp(NyRuteStopp ruteStoppOppdatert);
 
         Task<bool> FjernRuteStopp(int Id);

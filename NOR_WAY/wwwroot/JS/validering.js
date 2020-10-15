@@ -69,8 +69,8 @@ function validerBillettypeInput() {
     const billettype = validerBillettype($("#billettype"), "#feilBillettype");
     const rabattsats = validerRabattsats($("#rabattsats"), "#feilRabattsats");
 
-     // Hvis alle valideringene over er gyldige
-     if (billettype && rabattsats) {
+    // Hvis alle valideringene over er gyldige
+    if (billettype && rabattsats) {
         return true;
     }
     return false;
@@ -81,8 +81,21 @@ function validerAvgangInput() {
     const dato = validerDato($("#dato"), "#feilDato");
     const tidspunkt = validerTidspunkt($("#tidspunkt"), "#feilTidspunkt");
 
-     // Hvis alle valideringene over er gyldige
-     if (linjekode && dato && tidspunkt) {
+    // Hvis alle valideringene over er gyldige
+    if (linjekode && dato && tidspunkt) {
+        return true;
+    }
+    return false;
+}
+
+function validerRuteStoppInput() {
+    const linjekode = validerLinjekode($("#linjekode"), "#feilLinjekode");
+    const stoppnavn = validerEtStoppnavn($("#stoppnavn"), "#feilStoppnavn");
+    const stoppnummer = validerStoppnummer($("#stoppnummer"), "#feilStoppnummer");
+    const minutterTilNesteStopp = validerMinutterTilNesteStopp($("#minutterTilNesteStopp"), "#feilMinutterTilNesteStopp");
+
+    // Hvis alle valideringene over er gyldige
+    if (linjekode && stoppnavn && stoppnummer && minutterTilNesteStopp) {
         return true;
     }
     return false;
@@ -116,7 +129,7 @@ function validerStoppnavn(innElmt, utId) {
 // Stoppnavn-validering simple versjon
 function validerStoppnavnSimple(input) {
     const stoppnavn = Hjelpemetoder.rensStoppInput(input);  // Renser Input i inputfeltet
-    const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
+    const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,50}$/;
     const stoppFins = StoppListe.includes(input);
     const ok = regex.test(input);
     if (ok && stoppFins) { return true; }
@@ -245,6 +258,24 @@ function validerRabattsats(innElmt, utId) {
 function validerTidspunkt(innElmt, utId) {
     const regex = /^([0-9]{2})[:]([0-9]{2})$/
     const melding = "Ugyldig tidspunkt";
+    return feilmelding(testRegex(innElmt, regex), melding, utId);
+}
+
+function validerEtStoppnavn(innElmt, utId) {
+    const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,50}$/; 
+    const melding = "Ugyldig stoppnavn";
+    return feilmelding(testRegex(innElmt, regex), melding, utId);
+}
+
+function validerStoppnummer(innElmt, utId) {
+    const regex = /^[0-9]{1,2}$/
+    const melding = "Stoppnummer må inneholde 1-2 siffer";
+    return feilmelding(testRegex(innElmt, regex), melding, utId);
+}
+
+function validerMinutterTilNesteStopp(innElmt, utId) {
+    const regex = /^[0-9]{1,3}$/
+    const melding = "Minutter til neste stopp må inneholde 1-3 siffer";
     return feilmelding(testRegex(innElmt, regex), melding, utId);
 }
 

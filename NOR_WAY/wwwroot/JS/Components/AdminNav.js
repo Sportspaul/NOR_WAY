@@ -3,7 +3,6 @@ adminNav.innerHTML = `
 <style>
    
     ul li {
-        font-size: 2vh;
         list-style: none;
         display: inline;
         color: rgb(150,150,150);

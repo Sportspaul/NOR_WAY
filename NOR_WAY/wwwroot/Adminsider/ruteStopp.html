@@ -21,7 +21,7 @@
     <script src="../JS/Components/AdminNav.js" defer></script>
     <script src="../JS/Hjelpemetoder.js"></script>
     <script src="../JS/TabellMaker.js"></script>
-    <script src="../JS/Admin/ruteoversikt.js?n=1"></script>
+    <script src="../JS/Admin/ruteStopp.js?n=1"></script>
 
 </head>
 <body>
@@ -34,15 +34,6 @@
         <div class="shadowBox">
             <admin-nav><!-- Web Component, Components/AdminNav.js--></admin-nav>
             <h1>Rutestopp</h1>
-            <script>
-                let url = window.location.href.split("=");
-                linjekode = url[1].split("&")
-                linjekode = linjekode[0];
-
-                let res = $.get(`../RuteStopp/HentRuteStopp?linjekode=${linjekode}`);
-                lagTabell(res, "CUD");
-            </script>
-
             <div id="knapp"></div>
             <div id="tabellContainer"></div>
         </div>

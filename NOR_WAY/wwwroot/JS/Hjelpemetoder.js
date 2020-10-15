@@ -10,10 +10,7 @@ class Hjelpemetoder {
     static settKorrektNavigering() {
     $.get("Brukere/AdminTilgang", function (innlogget) {
         if (!innlogget) {
-            $("nav-bar").append(`<a slot="innlogging" id="innlogging" href="../loggInn.html">Logg inn</a>`);
-            $("#innlogging").click(function () {
-                loggUt();
-            });
+            $("nav-bar").append(`<a slot="innlogging" href="../loggInn.html">Logg inn</a>`);
         } else {
             $("nav-bar").append(`<a slot="innlogging" id="innlogging" href="../index.html">Logg ut</a>`);
             $("nav-bar").append(`<span slot="skille">|</span>`);

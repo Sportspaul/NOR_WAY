@@ -74,6 +74,23 @@ namespace NOR_WAY.Controllers
             return BadRequest("Feil i inputvalideringen på server");
         }
 
+        public async Task<ActionResult> HentEnAvgang(int id)
+        {
+            // TODO: Legg til sjekk for Unauthorized
+            if (ModelState.IsValid)
+            {
+                NyAvgang avganger = await _db.HentEnAvgang(id);
+                if (avganger == null)
+                {
+                    _log.LogInformation("Avgangen ble ikke funnet");
+                    return NotFound("Avganger ble ikke funnet");
+                }
+                return Ok(avganger);
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalideringen på server");
+        }
+
         public async Task<ActionResult> NyAvgang(NyAvgang nyAvgang)
         {
             // TODO: Legg til sjekk for Unauthorized

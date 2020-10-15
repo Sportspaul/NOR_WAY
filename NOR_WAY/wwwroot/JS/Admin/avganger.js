@@ -5,5 +5,14 @@ $(function () {
     linjekode = linjekode[0];
     
     let res = $.get(`../Avgang/HentAvganger?linjekode=${linjekode}&sidenummer=${sidenummer}`);
-    lagTabell(res, "CUD");
+    lagTabell(res, "CUD", `nyAvgang.html?${linjekode}`);
 });
+
+function slettRad(id) {
+    $.get(`../Avgang/FjernAvgang?id=${id}`, function () {
+        $(`#${id}`).remove();
+    })
+    .fail(function () {
+        console.log("Avgangen ble IKKE fjernet");
+    });;
+}

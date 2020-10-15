@@ -40,7 +40,7 @@ function oppdaterRute(){
     if(validerRuteInput()){ 
         const rute = lagRuteObjekt();
         $.post("../Ruter/OppdaterRute", rute, function () {
-            location.replace("ruter.html?nyRute");
+            location.replace("ruter.html?ruteOppdatert");
         })
     }
 }
@@ -50,7 +50,7 @@ function nyRute()
     if(validerRuteInput()){
         const rute = lagRuteObjekt();
         $.post("../Ruter/NyRute", rute, function () {
-            location.replace("ruter.html?ruteOppdatert");
+            location.replace("ruter.html?nyRute");
         })
     }
 }

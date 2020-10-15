@@ -149,6 +149,27 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
+        public async Task<NyAvgang> HentEnAvgang(int id)
+        {
+            try
+            {
+                Avganger avgang = await _db.Avganger.FindAsync(id);
+                NyAvgang utAvgang = new NyAvgang
+                {
+                    Dato = avgang.Avreise.ToString("yyyy-MM-dd"),
+                    Tidspunkt = avgang.Avreise.ToString("HH:mm"),
+                    SolgteBilletter = avgang.SolgteBilletter,
+                    Linjekode = avgang.Rute.Linjekode
+                };
+                return utAvgang;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return null;
+            }
+        }
+
         public async Task<bool> NyAvgang(NyAvgang nyAvgang)
         {
             try

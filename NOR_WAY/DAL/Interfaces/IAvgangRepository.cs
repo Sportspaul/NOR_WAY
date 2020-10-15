@@ -14,6 +14,8 @@ namespace NOR_WAY.DAL.Interfaces
 
         Task<List<AvgangModel>> HentAvganger(string linjekode, int sidenummer);
 
+        Task<NyAvgang> HentEnAvgang(int id);
+
         Task<bool> OppdaterAvgang(Avreisetid avreisetid);
 
         Task<bool> FjernAvgang(int id);

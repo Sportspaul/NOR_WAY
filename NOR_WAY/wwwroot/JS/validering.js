@@ -76,6 +76,18 @@ function validerBillettypeInput() {
     return false;
 }
 
+function validerAvgangInput() {
+    const linjekode = validerLinjekode($("#linjekode"), "#feilLinjekode");
+    const dato = validerDato($("#dato"), "#feilDato");
+    const tidspunkt = validerTidspunkt($("#tidspunkt"), "#feilTidspunkt");
+
+     // Hvis alle valideringene over er gyldige
+     if (linjekode && dato && tidspunkt) {
+        return true;
+    }
+    return false;
+}
+
 // Stoppnavn-validering
 function validerStoppnavn(innElmt, utId) {
     const stoppnavn = Hjelpemetoder.rensStoppInput(innElmt.val());  // Renser Input i inputfeltet
@@ -115,7 +127,7 @@ function validerStoppnavnSimple(input) {
 function validerDato(innId, utId) {
     const input = $(innId).val();
     if (idagISO() > input) {
-        $(utId).html("Du kan ikke reise tilbake i tid");
+        $(utId).html("Ugyldig dato");
         endreBakgrunn();
         return false;
     } else {
@@ -134,7 +146,6 @@ function validerNavn(innElmt, utId) {
 
 // Brukernavn-validering
 function validerBrukernavn(innElmt, utId) {
-    console.log(innElmt);
     const regex = /^[0-9a-zA-Z._]{4,15}$/
     const melding = "";
     return feilmelding(testRegex(innElmt, regex), melding, utId);
@@ -184,7 +195,6 @@ function validerCVC(innElmt, utId) {
 
 // Linjekode-validering
 function validerLinjekode(innElmt, utId) {
-    console.log(innElmt);
     const regex = /^(NW)[0-9]{1,4}$/
     const melding = "Linjekoden må starte med NW etterfulgt av 1-4 tall fra 0-9";
     return feilmelding(testRegex(innElmt, regex), melding, utId);
@@ -192,7 +202,6 @@ function validerLinjekode(innElmt, utId) {
 
 // Rutenavn-validering
 function validerRutenavn(innElmt, utId) {
-    console.log(innElmt);
     const regex = /^[a-zA-ZæøåÆØÅ. \-]{2,50}$/
     const melding = "Ugydlig rutenavn";
     return feilmelding(testRegex(innElmt, regex), melding, utId);
@@ -200,7 +209,6 @@ function validerRutenavn(innElmt, utId) {
 
 // Startpris-validering
 function validerStartpris(innElmt, utId) {
-    console.log(innElmt);
     const regex = /^[0-9]{1,4}$/
     const melding = "Startprisen må inneholde 1-4 siffer";
     return feilmelding(testRegex(innElmt, regex), melding, utId);
@@ -208,7 +216,6 @@ function validerStartpris(innElmt, utId) {
 
 // Tillegg per stopp-validering
 function validerTilleggPerStopp(innElmt, utId) {
-    console.log(innElmt);
     const regex = /^[0-9]{1,4}$/
     const melding = "Tillegg per stopp må inneholde 1-4 siffer";
     return feilmelding(testRegex(innElmt, regex), melding, utId);
@@ -216,7 +223,6 @@ function validerTilleggPerStopp(innElmt, utId) {
 
 // Kapasitet-validering
 function validerKapasitet(innElmt, utId) {
-    console.log(innElmt);
     const regex = /^[0-9]{1,3}$/
     const melding = "Kapasitet må inneholde 1-3 siffer";
     return feilmelding(testRegex(innElmt, regex), melding, utId);
@@ -224,7 +230,6 @@ function validerKapasitet(innElmt, utId) {
 
 // Kapasitet-validering
 function validerBillettype(innElmt, utId) {
-    console.log(innElmt);
     const regex = /^[a-zA-ZæøåÆØÅ. \-]{2,50}$/
     const melding = "Ugydlig navn på billettype";
     return feilmelding(testRegex(innElmt, regex), melding, utId);
@@ -232,14 +237,16 @@ function validerBillettype(innElmt, utId) {
 
 // Kapasitet-validering
 function validerRabattsats(innElmt, utId) {
-    console.log(innElmt);
     const regex = /^[0-9]{1,3}$/
     const melding = "Rabattsats må inneholde 1-3 siffer";
     return feilmelding(testRegex(innElmt, regex), melding, utId);
 }
 
-
-
+function validerTidspunkt(innElmt, utId) {
+    const regex = /^([0-9]{2})[:]([0-9]{2})$/
+    const melding = "Ugyldig tidspunkt";
+    return feilmelding(testRegex(innElmt, regex), melding, utId);
+}
 
 // Finner dagens dato og formaterer i yyyy-mm-dd format
 function idagISO() {

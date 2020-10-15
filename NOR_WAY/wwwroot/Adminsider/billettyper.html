@@ -26,8 +26,8 @@
 <body>
     <div id="overlay">
         <nav-bar>
-            <a slot="billett" href="../index.html" onclick="return confirm(`Du blir nå logget ut.\nKlikk avbryt for å forsette med adminoppgaver`);">Kjøp Billett</a>
-            <a slot="ruter" href="../ruter.html" onclick="return confirm(`Du blir nå logget ut.\nKlikk avbryt for å forsette med adminoppgaver`);">Ruter</a>
+            <a slot="billett" href="../index.html">Kjøp Billett</a>
+            <a slot="ruter" href="../ruter.html">Ruter</a>
             <a slot="innlogging" href="../index.html">Logg Ut</a>
         </nav-bar>
         <div class="shadowBox">
@@ -35,7 +35,7 @@
             <h1>Billettyper</h1>
             <script>
                 let res = $.post("../Billettyper/HentAlleBillettyper");
-                lagTabell(res, "CUD");
+                lagTabell(res, "CUD", "nyBillettype.html");
             </script>
 
             <div id="knapp"></div>

@@ -7,7 +7,6 @@ class NyRuteEvents {
         this.kapasitetInput($(id5));
     }
 
-    // Hinder brukeren å skrive tall i inputfeltet
     linjekodeInput(elmt) {
         elmt.blur(function () {
             validerLinjekode(elmt, '#feilLinjekode');
@@ -20,8 +19,6 @@ class NyRuteEvents {
         });
     }
 
-    /* Hindere brukeren å skrive inn annet enn tall, og legger til mellomrom for hvert fjerde tall
-     * eks. "1234 1234 1234 1234" */
     startprisInput(elmt) {
         elmt.blur(function () {
             validerStartpris(elmt, '#feilStartpris');

@@ -65,6 +65,17 @@ function validerRuteInput() {
     return false;
 }
 
+function validerBillettypeInput() {
+    const billettype = validerBillettype($("#billettype"), "#feilBillettype");
+    const rabattsats = validerRabattsats($("#rabattsats"), "#feilRabattsats");
+
+     // Hvis alle valideringene over er gyldige
+     if (billettype && rabattsats) {
+        return true;
+    }
+    return false;
+}
+
 // Stoppnavn-validering
 function validerStoppnavn(innElmt, utId) {
     const stoppnavn = Hjelpemetoder.rensStoppInput(innElmt.val());  // Renser Input i inputfeltet
@@ -208,6 +219,22 @@ function validerKapasitet(innElmt, utId) {
     console.log(innElmt);
     const regex = /^[0-9]{1,3}$/
     const melding = "Kapasitet må inneholde 1-3 siffer";
+    return feilmelding(testRegex(innElmt, regex), melding, utId);
+}
+
+// Kapasitet-validering
+function validerBillettype(innElmt, utId) {
+    console.log(innElmt);
+    const regex = /^[a-zA-ZæøåÆØÅ. \-]{2,50}$/
+    const melding = "Ugydlig navn på billettype";
+    return feilmelding(testRegex(innElmt, regex), melding, utId);
+}
+
+// Kapasitet-validering
+function validerRabattsats(innElmt, utId) {
+    console.log(innElmt);
+    const regex = /^[0-9]{1,3}$/
+    const melding = "Rabattsats må inneholde 1-3 siffer";
     return feilmelding(testRegex(innElmt, regex), melding, utId);
 }
 

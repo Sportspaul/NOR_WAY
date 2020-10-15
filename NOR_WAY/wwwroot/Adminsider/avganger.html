@@ -20,7 +20,8 @@
     <script src="../JS/Components/AdminNav.js" defer></script>
     <script src="../JS/Hjelpemetoder.js"></script>
     <script src="../JS/TabellMaker.js"></script>
-    <script src="../JS/Admin/ordre.js"></script>
+    <script src="../JS/Admin/ruteoversikt.js?n=1"></script>
+    
 </head>
 <body>
     <div id="overlay">
@@ -31,13 +32,24 @@
         </nav-bar>
         <div class="shadowBox">
             <admin-nav><!-- Web Component, Components/AdminNav.js--></admin-nav>
-            <br />
-            <br />
-            <h1>Ordre</h1>
-            <h5 class="mt-4 antialised">Skriv inn e-postadressen knyttet til en ordre</h5>
-            <input type="text" id="ordreEpost" class="form-control mt-3 font-weight-bold shadow-sm antialised" placeholder="Skriv inn e-postadresse" />
-            <input type="button" id="sokOrdre" onclick="sokEtterOrdre()" class="btn btn-md btn-primary form-control mt-3 font-weight-bold shadow antialised" value="Søk" />
+            <script>
+                let url = window.location.href.split("=");
+                sidenummer = url[2];
+                linjekode = url[1].split("&")
+                linjekode = linjekode[0];
+
+                let res = $.get(`../Avgang/HentAvganger?linjekode=${linjekode}&sidenummer=${sidenummer}`);
+                lagTabell(res, "CUD");
+            </script>
+
+            <p id="knapp"></p>
             <p id="tabellContainer"></p>
+
+            <!--<br />
+            <br />
+            <h1>Ruteoversikt</h1>
+            <input type="button" id="nyRute" class="btn btn-md btn-primary mt-3 font-weight-bold shadow antialised" value="Legg til ny rute" />-->
+
 
         </div>
     </div>

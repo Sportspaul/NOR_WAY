@@ -19,6 +19,7 @@
     <script src="../JS/Components/NavBar.js?n=1" defer></script>
     <script src="../JS/Components/AdminNav.js" defer></script>
     <script src="../JS/Hjelpemetoder.js"></script>
+    <script src="../JS/TabellMaker.js"></script>
     <script src="../JS/Admin/stopp.js"></script>
 </head>
 <body>
@@ -34,8 +35,13 @@
             <br />
             <h1>Stopp</h1>
             <input type="text" id="sokStopp" class=" form-control mt-3 font-weight-bold shadow-sm antialised" placeholder="Skriv stoppnavn" />
+            <script>
+                let res = $.post("../Stopp/HentAlleStopp");
+                lagTabell(res, "U");
+            </script>
 
-
+            <p id="knapp"></p>
+            <p id="tabellContainer"></p>
         </div>
     </div>
 </body>

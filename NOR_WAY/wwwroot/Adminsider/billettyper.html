@@ -19,6 +19,7 @@
     <script src="../JS/Components/NavBar.js" defer></script>
     <script src="../JS/Components/AdminNav.js" defer></script>
     <script src="../JS/Hjelpemetoder.js"></script>
+    <script src="../JS/TabellMaker.js"></script>
     <script src="../JS/Admin/billettyper.js"></script>
 </head>
 <body>
@@ -30,10 +31,18 @@
         </nav-bar>
         <div class="shadowBox">
             <admin-nav></admin-nav>
-            <br />
-            <br />
-            <h1>Billettyper</h1>
-            <input type="button" id="nyBillettype" class="btn btn-md btn-primary mt-3 font-weight-bold shadow antialised" value="Legg til ny billettype" />
+            <script>
+                let res = $.post("../Billettyper/HentAlleBillettyper");
+                lagTabell(res, "CUD");
+            </script>
+
+            <p id="knapp"></p>
+            <p id="tabellContainer"></p>
+
+            <!--<br />
+    <br />
+    <h1>Billettyper</h1>
+    <input type="button" id="nyBillettype" class="btn btn-md btn-primary mt-3 font-weight-bold shadow antialised" value="Legg til ny billettype" />-->
 
 
         </div>

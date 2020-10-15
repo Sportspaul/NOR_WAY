@@ -63,6 +63,22 @@ namespace NOR_WAY.Controllers
             return Ok(rutene);
         }
 
+        public async Task<ActionResult> HentEnRute(string linjekode)
+        {
+            if (ModelState.IsValid)
+            {
+                Ruter rute = await _db.HentEnRute(linjekode);
+                if (rute == null)
+                {
+                    _log.LogInformation("Ruten ble ikke funnet");
+                    return NotFound("Ruten ble ikke funnet");
+                }
+                return Ok(rute);
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalidering på server");
+        }
+
         public async Task<ActionResult> NyRute(RuteModel ruteModel)
         {
             // TODO: Legg til sjekk for Unauthorized

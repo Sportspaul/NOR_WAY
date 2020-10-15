@@ -88,6 +88,20 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
+        public async Task<Ruter> HentEnRute(string linjekode)
+        {
+            try
+            {
+                Ruter rute = await _db.Ruter.FindAsync(linjekode);
+                return rute;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return null;
+            }
+        }
+
         public async Task<List<RuteMedStopp>> HentRuterMedStopp()
         {
             try

@@ -186,7 +186,6 @@ class Hjelpemetoder {
 
     // Gjør om fra CamelCasing til vanlig 
     static fjernCamelCasing(string) {
-
         string = string.replace(/([A-Z])/g, ' $1').trim()
         string = string.toLowerCase();
         string = string.charAt(0).toUpperCase() + string.slice(1);

@@ -20,7 +20,7 @@ function feilmelding(ok, melding, utId) {
 }
 
 // Validerer alle feltene knyttet til avngang
-function validerAvgangInput() {
+function validerReisevalgInput() {
     const startStopp = validerStoppnavn($("#startStopp"), "#feilStartStopp");
     const sluttStopp = validerStoppnavn($("#sluttStopp"), "#feilSluttStopp");
     const dato = validerDato("#dato");

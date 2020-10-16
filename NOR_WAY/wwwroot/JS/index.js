@@ -93,7 +93,7 @@ function finnMuligeStartStopp(input) {
 
 // Henter neste avgang fra server og skriver det ut til dokumentet
 function finnNesteAvgang() {
-    if (validerAvgangInput()) {
+    if (validerReisevalgInput()) {
         const avgangElmt = $("#avgang");
         const feilAvgangElmt = $("#feilAvgang");
         avgangParam = new AvgangParam();

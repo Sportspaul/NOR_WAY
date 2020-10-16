@@ -59,8 +59,8 @@
         tr.id = "overskrifter";
 
         for (let i = 0; i < kolonner.length; i++) {
-                let th = document.createElement("th");
-                th.innerHTML = kolonner[i];
+            let th = document.createElement("th");
+            th.innerHTML = Hjelpemetoder.fjernCamelCasing(kolonner[i]);
                 tr.appendChild(th);
         }
 

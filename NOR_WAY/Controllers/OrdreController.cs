@@ -40,7 +40,7 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentOrdre(string epost)
         {
-            var billetter = new List<string> { "Student", "Voksen" };
+            var billetter = new List<string> { "Student", "Student", "Student", "Voksen", "Voksen", "Honnør", "Barn" };
             var ordre1 = new OrdreModel
             {
                 Id = 1,

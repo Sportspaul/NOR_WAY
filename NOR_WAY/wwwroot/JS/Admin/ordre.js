@@ -4,6 +4,9 @@
 
 async function sokEtterOrdre() {
     const epost = $("#ordreEpost").val();
-    let res = $.get(`../Ordre/HentOrdre?epost=${epost}`);
-    lagTabell(res, "D");
+    let data = await $.get(`../Ordre/HentOrdre?epost=${epost}`);
+    data.forEach((rad) => {
+        rad.billettyper = Hjelpemetoder.formaterValgteBillettyper(rad.billettyper);
+    });
+    lagTabell(data, "D");
 }

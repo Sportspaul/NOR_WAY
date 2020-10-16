@@ -100,14 +100,8 @@ async function lagRuteoversikt(res, link) {
 
 async function lagAvgangOversikt(res, CUD, link) {
     let data = await res;
-    let dato;
     data.forEach((rad) => {
         rad.avreise = Hjelpemetoder.formaterDatoOgTid(rad.avreise, "dato") + " " + Hjelpemetoder.formaterDatoOgTid(rad.avreise, "tid");
     });
     lagTabell(data, CUD, link);
-}
-
-async function lagStoppoversikt(res) {
-    let data = await res;
-    lagTabell(data, "U");
 }

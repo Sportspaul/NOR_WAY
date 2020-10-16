@@ -1,6 +1,7 @@
 ﻿$(function () {
+    let url = "nyStopp.html";
     let res = $.post("../Stopp/HentAlleStopp");
-    lagTabell(res, "U");
+    lagTabell(res, "U", url);
     filterStoppListe();
     Hjelpemetoder.endreBakgrunn();
 });

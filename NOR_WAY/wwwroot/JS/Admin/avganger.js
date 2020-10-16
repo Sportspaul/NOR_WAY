@@ -3,7 +3,6 @@ $(function () {
     sidenummer = url[2];
     linjekode = url[1].split("&")
     linjekode = linjekode[0];
-    
     let res = $.get(`../Avgang/HentAvganger?linjekode=${linjekode}&sidenummer=${sidenummer}`);
     lagAvgangOversikt(res, "CUD", `nyAvgang.html?${linjekode}`);
 });

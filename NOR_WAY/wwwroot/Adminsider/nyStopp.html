@@ -13,33 +13,35 @@
     <!-- CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="../Style/template.css">
+    <link rel="stylesheet" href="../Style/admin.css">
 
     <!-- Javascript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="../JS/Components/NavBar.js?n=1" defer></script>
     <script src="../JS/Components/AdminNav.js" defer></script>
-    <script src="../JS/Hjelpemetoder.js"></script>
-    <script src="../JS/Admin/ruteoversikt.js?n=1"></script>
-    <script src="../JS/TabellMaker.js"></script>
+    <script src="../JS/Hjelpemetoder.js" defer></script>
+    <script src="../JS/Admin/nyStopp.js" defer></script>
+    <script src="../JS/Events/NyStoppEvents.js" defer></script>
+    <script src="../JS/validering.js" defer></script>
 </head>
 <body>
     <div id="overlay">
         <nav-bar>
-            <a slot="billett" href="../index.html" onclick="return confirm(`Du blir nå logget ut.\nKlikk avbryt for å forsette med adminoppgaver`);">Kjøp Billett</a>
+            <a slot="avgang" href="../index.html" onclick="return confirm(`Du blir nå logget ut.\nKlikk avbryt for å forsette med adminoppgaver`);">Kjøp Billett</a>
             <a slot="ruter" href="../ruter.html" onclick="return confirm(`Du blir nå logget ut.\nKlikk avbryt for å forsette med adminoppgaver`);">Ruter</a>
-            <a slot="innlogging" href="../index.html">Logg Ut</a>
+            <a slot="innlogging" href="../index.html">Logg ut</a>
         </nav-bar>
         <div class="shadowBox">
             <admin-nav><!-- Web Component, Components/AdminNav.js--></admin-nav>
-            <p id="knapp"></p>
-            <p id="tabellContainer"></p>
-
-            <!--<br />
-    <br />
-    <h1>Ruteoversikt</h1>
-    <input type="button" id="nyRute" class="btn btn-md btn-primary mt-3 font-weight-bold shadow antialised" value="Legg til ny rute" />-->
-
-
+            <h1 id="tittel"></h1>
+            
+            <div class="form-group mt-4">
+                <h5 class="antialised">Stoppnavn</h5>
+                <input type="text" id="stoppnavn" class="form-control shadow-sm" placeholder="Skriv inn stoppnavn" maxlength="6">
+                <div id="feilStoppnavn" class="mt-1 rodTekst"></div>
+            </div>
+            
+            <input type="button" id="lagre" class="form-control btn btn-md btn-success mt-3 font-weight-bold shadow antialised"/>
         </div>
         </div>
 </body>

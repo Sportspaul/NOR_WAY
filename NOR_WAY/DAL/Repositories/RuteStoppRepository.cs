@@ -74,7 +74,9 @@ namespace NOR_WAY.DAL.Repositories
         {
             try
             {
-                List<RuteStopp> ruteStopp = await _db.RuteStopp.Where(rs => rs.Rute.Linjekode == linjekode).ToListAsync();
+                List<RuteStopp> ruteStopp = await _db.RuteStopp
+                    .Where(rs => rs.Rute.Linjekode == linjekode)
+                    .OrderBy(rs => rs.StoppNummer).ToListAsync();
                 List<RuteStoppModel> utRuteStopp = new List<RuteStoppModel>();
                 foreach (RuteStopp rs in ruteStopp)
                 {

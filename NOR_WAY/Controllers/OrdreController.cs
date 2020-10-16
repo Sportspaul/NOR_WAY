@@ -38,9 +38,22 @@ namespace NOR_WAY.Controllers
             return BadRequest("Feil i inputvalidering på server");
         }
 
-        public Task<ActionResult> HentOrdre(string epost)
+        public async Task<ActionResult> HentOrdre(string epost)
         {
-            throw new NotImplementedException();
+            var billetter = new List<string> { "Student", "Voksen" };
+            var ordre1 = new OrdreModel
+            {
+                Id = 1,
+                Epost = "123@abc.no",
+                StartStopp = "Bergen",
+                SluttStopp = "Vadheim",
+                Sum = "999",
+                Linjekode = "NW431",
+                Billettyper = billetter
+            };
+
+            List<OrdreModel> utOrdre = new List<OrdreModel> { ordre1 };
+            return Ok(utOrdre);
         }
 
         public Task<ActionResult> SlettOrdre(int id)

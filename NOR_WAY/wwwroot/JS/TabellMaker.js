@@ -1,4 +1,5 @@
 ﻿async function lagTabell(res, CUD, link) {
+
     let data = await res;
     // Primary key fra JSON objektet
     let id;
@@ -109,10 +110,4 @@ async function lagAvgangOversikt(res, CUD, link) {
 async function lagStoppoversikt(res) {
     let data = await res;
     lagTabell(data, "U");
-}
-
-async function sokEtterOrdre() {
-    const epost = $("#ordreEpost").val();
-    let res = $.get(`../Ordre/HentOrdre?epost=${epost}`);
-    lagTabell(res, "D");
 }

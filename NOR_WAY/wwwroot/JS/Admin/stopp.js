@@ -1,4 +1,7 @@
 ﻿$(function () {
+    let res = $.post("../Stopp/HentAlleStopp");
+    lagTabell(res, "U");
+    filterStoppListe();
     Hjelpemetoder.endreBakgrunn();
 });
 
@@ -9,15 +12,13 @@ function filterStoppListe() {
         let brukerInput = e.target.value.toLowerCase();
         let stoppNavn = document.querySelectorAll("#navn");
 
-
-        stoppNavn.forEach((item) => {
-            if (item.textContent.toLowerCase().indexOf(brukerInput) != -1) {
-                console.log(item);
-                item.closest("tr").style.display = "block";
+        for(let i = 1; i < stoppNavn.length; i++){
+            if (stoppNavn[i].textContent.substr(0, brukerInput.length).toLowerCase() == brukerInput.toLowerCase()) {
+                stoppNavn[i].closest("tr").style.display = "";
             }
             else {
-                item.closest("tr").style.display = "none";
+                stoppNavn[i].closest("tr").style.display = "none";
             }
-        });
+        }
     });
 }

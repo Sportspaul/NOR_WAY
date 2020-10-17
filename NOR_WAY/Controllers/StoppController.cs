@@ -85,10 +85,10 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentAlleStoppMedRuter()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            /*if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
             {
                 return Unauthorized("Ikke logget inn");
-            }
+            } */
             if (ModelState.IsValid)
             {
                 List<StoppMedLinjekoder> stoppMedLinjekoder = await _db.HentAlleStoppMedRuter();

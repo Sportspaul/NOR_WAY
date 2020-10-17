@@ -210,6 +210,27 @@ function OppdaterBillettype() {
     })
     .fail(function () {
         console.log("%c Rabattsatsen ble IKKE oppdatert", red);
-    });;
+    });
+}
+
+
+function OppdaterStoppnavn() {
+    const oppdatertStopp = {
+        Id: 1,
+        Navn: "Oslo S"
+    }
+
+    $.post("Stopp/OppdaterStoppnavn", oppdatertStopp, function () {
+        console.log("%c Stoppnavnet ble oppdatert", green)
+    })
+    .fail(function () {
+            console.log("%c Stoppnavnet ble IKKE oppdatert", red);
+        });
+}
+
+function HentAlleStoppMedRuter() {
+    $.get("Stopp/HentAlleStoppMedRuter", function (stopplinje) {
+        console.table(stopplinje)
+    })
 }
 

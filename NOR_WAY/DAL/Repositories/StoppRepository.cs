@@ -103,19 +103,19 @@ namespace NOR_WAY.DAL.Repositories
                             Rute = rs.Rute,
                             Stopp = rs.Stopp
                         }).OrderBy(rs => rs.Stopp.Id).ToListAsync();
-                int startId = rutestopp[0].Stopp.Id;
+                
 
                 List<StoppMedLinjekoder> stoppMedLinjekoder = new List<StoppMedLinjekoder>();
                 for (int i = 0; i < rutestopp.Count(); i++)
                 {
                     List<string> linjekoder = new List<string>();
-                    int j = i;
-                    while (startId == rutestopp[j].Stopp.Id)
-                    {
-                        linjekoder.Add(rutestopp[j].Rute.Linjekode);
-                        j++;
-                    }
-                    startId++;
+                    //TODO: Feil implementert, rette opp
+                    /*
+                     * Alle rutestopp med felles stoppID, skal legges inn i et StoppMedLinjekoder-objekt
+                     */
+                    linjekoder.Add(rutestopp[i].Rute.Linjekode);
+                    
+                   
                     StoppMedLinjekoder smlk = new StoppMedLinjekoder { Id = rutestopp[i].Stopp.Id, Stoppnavn = rutestopp[i].Stopp.Navn, Linjekoder = linjekoder };
                     stoppMedLinjekoder.Add(smlk);
                 }

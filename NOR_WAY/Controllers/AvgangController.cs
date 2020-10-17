@@ -63,7 +63,7 @@ namespace NOR_WAY.Controllers
             // TODO: Legg til sjekk for Unauthorized
             if (ModelState.IsValid) { 
                 List<AvgangModel> avganger = await _db.HentAvganger(linjekode, sidenummer);
-                if (avganger == null)
+                if (avganger.Count == 0)
                 {
                     _log.LogInformation("Listen med avganger ble ikke funnet");
                     return NotFound("Listen med avganger ble ikke funnet");

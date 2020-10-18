@@ -57,15 +57,20 @@ namespace NOR_WAY.Controllers
         public async Task<ActionResult> HentAlleStopp()
         {
             List<Stopp> alleStopp = await _db.HentAlleStopp();
+            if (alleStopp == null)
+            {
+                _log.LogInformation("Ingen stopp ble funnet");
+                return NotFound("Ingen stopp ble funnet");
+            }
             return Ok(alleStopp); // returnerer alltid OK, null ved tom DB
         }
 
         public async Task<ActionResult> OppdaterStoppnavn(Stopp innStopp)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            /*if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
             {
                 return Unauthorized("Ikke logget inn");
-            }
+            } */
             if (ModelState.IsValid)
             {
                 bool EndringOK = await _db.OppdaterStoppnavn(innStopp);

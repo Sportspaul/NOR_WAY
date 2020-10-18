@@ -2,7 +2,7 @@
     width: 90vw;
 }
 
-h1{
+h1 {
     vertical-align: top;
     font-size: 3.5vh;
     display: inline-block;
@@ -13,7 +13,7 @@ h1{
     display: inline-block;
 }
 
-td{
+td {
     vertical-align: middle !important;
     padding: .65rem !important;
 }

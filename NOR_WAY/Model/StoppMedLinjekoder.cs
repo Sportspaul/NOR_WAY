@@ -12,6 +12,6 @@ namespace NOR_WAY.Model
         public string Stoppnavn { get; set; }
 
         [RegularExpression(@"(NW)[0-9]{1,4}")]
-        public List<string> Linjekoder{get; set;}
+        public List<string> Linjekoder { get; set; }
     }
-} 
+}

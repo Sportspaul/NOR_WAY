@@ -121,12 +121,12 @@ function finnNesteAvgang() {
                             Billetter:${Hjelpemetoder.formaterValgteBillettyper(Hjelpemetoder.hentValgteBillettyper())}
                         </h6>
                         <h6 class="mt-4">
-                            Pris: ${avgang.Pris} kr 
+                            Pris: ${avgang.Pris} kr
                         </h6>
                            <input id="endre"  class="btn btn-sm btn-primary mt-4 font-weight-bold shadow antialised" type="button" value="Endre" onclick="endreOrdre()">
                     </div>
                 </div>
-                
+
                 <form role="form" id="betaling">
                     <div class="form-group">
                         <label for="navn">Fullt navn</label>
@@ -213,13 +213,13 @@ function fullforOrdre() {
     }
     else {
         // Kaller C# Metoden FullforOrdre()
-        $.post("Ordre/FullforOrdre", kundeordre, function(){
+        $.post("Ordre/FullforOrdre", kundeordre, function () {
             window.location.replace("index.html?bestilling=ok");
         });
     }
 }
 
 function endreOrdre() {
-   window.location.replace("#"); 
-   $("#bestill").prop("value", "Oppdater reisen ");
+    window.location.replace("#");
+    $("#bestill").prop("value", "Oppdater reisen ");
 }

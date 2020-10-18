@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using NOR_WAY.DAL;
 using NOR_WAY.DAL.Interfaces;
 using NOR_WAY.Model;
 

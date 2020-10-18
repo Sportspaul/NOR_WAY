@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,7 +12,6 @@ namespace NOR_WAY_Tests
 {
     public class OrdreController_Tests
     {
-
         private readonly Mock<IOrdreRepository> mockRepo = new Mock<IOrdreRepository>();
         private readonly Mock<ILogger<OrdreController>> mockLogCtr = new Mock<ILogger<OrdreController>>();
         private readonly OrdreController ordreController;
@@ -23,7 +20,6 @@ namespace NOR_WAY_Tests
         {
             ordreController = new OrdreController(mockRepo.Object, mockLogCtr.Object);
         }
-
 
         /* Enhetstester for FullforOrdre */
 
@@ -71,7 +67,6 @@ namespace NOR_WAY_Tests
             // Assert
             Assert.Equal("Feil i inputvalidering på server", resultat.Value);
         }
-
 
         /* Private metoder som instansierer objekter til brukes i testmetodene */
 

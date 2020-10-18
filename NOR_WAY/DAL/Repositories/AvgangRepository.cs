@@ -113,7 +113,6 @@ namespace NOR_WAY.DAL.Repositories
                 _log.LogInformation(e.Message);
                 return false;
             }
-            
         }
 
         public async Task<List<AvgangModel>> HentAvganger(string linjekode, int sidenummer)
@@ -190,8 +189,6 @@ namespace NOR_WAY.DAL.Repositories
                 _log.LogInformation(e.Message);
                 return false;
             }
-
-
         }
 
         public async Task<bool> OppdaterAvgang(Avreisetid nyAvreisetid)

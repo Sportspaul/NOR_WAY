@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -7,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NOR_WAY.Controllers;
-using NOR_WAY.DAL;
 using NOR_WAY.DAL.Interfaces;
 using NOR_WAY.Model;
 using Xunit;
@@ -25,6 +23,7 @@ namespace NOR_WAY_Tests
 
         // Session
         private readonly Mock<HttpContext> mockHttpContext = new Mock<HttpContext>();
+
         private readonly MockHttpSession mockSession = new MockHttpSession();
 
         public AvgangControllerTests()
@@ -39,8 +38,8 @@ namespace NOR_WAY_Tests
         public async Task FinnNesteAvgang_RiktigeVerdier()
         {
             // Arrange
-           Avgangkriterier param = HentAvgangParam();
-           Reisedetaljer forventetAvgang = HentAvgang();
+            Avgangkriterier param = HentAvgangParam();
+            Reisedetaljer forventetAvgang = HentAvgang();
 
             // Act
             mockRepo.Setup(b => b.FinnNesteAvgang(param)).ReturnsAsync(HentAvgang());
@@ -67,7 +66,7 @@ namespace NOR_WAY_Tests
 
             // Act
             var resultat = await avgangController.FinnNesteAvgang(param) as NotFoundObjectResult;
-            
+
             // Assert
             Assert.Equal("Avgang ikke funnet", resultat.Value);
         }
@@ -85,7 +84,7 @@ namespace NOR_WAY_Tests
 
             // Act
             var resultat = await avgangController.FinnNesteAvgang(param) as BadRequestObjectResult;
-          
+
             // Assert
             Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
         }
@@ -122,7 +121,7 @@ namespace NOR_WAY_Tests
             Assert.Equal("Avgangen kunne ikke slettes!", resultat.Value);
         }
 
-        // Tester at FjernAvgang håndterer InvalidModelState i controlleren 
+        // Tester at FjernAvgang håndterer InvalidModelState i controlleren
         [Fact]
         public async Task FjernAvgang_Regex()
         {
@@ -149,7 +148,7 @@ namespace NOR_WAY_Tests
             SimulerUtlogget();
             var resultat = await avgangController.FjernAvgang(id) as UnauthorizedObjectResult;
 
-            // Assert 
+            // Assert
             Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
             Assert.Equal("Ikke innlogget", resultat.Value);
         }
@@ -178,7 +177,6 @@ namespace NOR_WAY_Tests
                 Assert.Equal(forventet[i].SolgteBilletter, faktisk[i].SolgteBilletter);
             }
         }
-
 
         // Returnerer et AvgangParam-objekt
         private Avgangkriterier HentAvgangParam()

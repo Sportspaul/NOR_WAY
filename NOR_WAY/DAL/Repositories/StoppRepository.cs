@@ -103,7 +103,6 @@ namespace NOR_WAY.DAL.Repositories
                             Rute = rs.Rute,
                             Stopp = rs.Stopp
                         }).OrderBy(rs => rs.Stopp.Id).ToListAsync();
-                
 
                 List<StoppMedLinjekoder> stoppMedLinjekoder = new List<StoppMedLinjekoder>();
                 for (int i = 0; i < rutestopp.Count(); i++)
@@ -114,8 +113,7 @@ namespace NOR_WAY.DAL.Repositories
                      * Alle rutestopp med felles stoppID, skal legges inn i et StoppMedLinjekoder-objekt
                      */
                     linjekoder.Add(rutestopp[i].Rute.Linjekode);
-                    
-                   
+
                     StoppMedLinjekoder smlk = new StoppMedLinjekoder { Id = rutestopp[i].Stopp.Id, Stoppnavn = rutestopp[i].Stopp.Navn, Linjekoder = linjekoder };
                     stoppMedLinjekoder.Add(smlk);
                 }
@@ -130,7 +128,7 @@ namespace NOR_WAY.DAL.Repositories
 
         public async Task<bool> OppdaterStoppnavn(Stopp innStopp)
         {
-            if(innStopp == null)
+            if (innStopp == null)
             {
                 _log.LogInformation("Det er ikke noe stoppobjekt å endre navn på!");
                 return false;
@@ -139,7 +137,6 @@ namespace NOR_WAY.DAL.Repositories
             stopp.Navn = innStopp.Navn;
             await _db.SaveChangesAsync();
             return true;
-
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿const adminNav = document.createElement('template');
 adminNav.innerHTML = `
 <style>
-   
+
     ul li {
         list-style: none;
         display: inline;
@@ -13,7 +13,7 @@ adminNav.innerHTML = `
     }
 
     ul {
-        padding: 0; 
+        padding: 0;
         margin-top: 0;
         margin-bottom: 3vh;
     }

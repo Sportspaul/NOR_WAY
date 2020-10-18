@@ -54,7 +54,7 @@ namespace NOR_WAY.DAL.Repositories
                 }
 
                 // Fjerner ruten, lagrer endringen og returnere true hvis alt gikk fint
-                _db.Ruter.Remove(rute); 
+                _db.Ruter.Remove(rute);
                 _db.SaveChanges();
                 return true;
             }
@@ -161,14 +161,13 @@ namespace NOR_WAY.DAL.Repositories
             {
                 _db.Ruter.Add(rute);
                 await _db.SaveChangesAsync();  // Lagrer endringene
-                return true;        
+                return true;
             }
-            catch (Exception e)    
+            catch (Exception e)
             {
                 _log.LogInformation(e.Message);
                 return false;
             }
-            
         }
 
         // Metode for å oppdaterer rutedetaljer

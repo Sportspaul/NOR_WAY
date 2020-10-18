@@ -19,7 +19,6 @@ body {
     color: #f94e4f;
 }
 
-
 .antialised {
     -webkit-font-smoothing: antialiased !important;
 }
@@ -57,10 +56,10 @@ nav-bar a {
     color: white;
 }
 
-nav-bar a:hover {
-    text-decoration: none;
-    color: rgb(190,190,190);
-}
+    nav-bar a:hover {
+        text-decoration: none;
+        color: rgb(190,190,190);
+    }
 
 .shadowBox {
     margin: auto;

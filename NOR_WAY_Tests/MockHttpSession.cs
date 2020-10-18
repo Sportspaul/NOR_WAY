@@ -10,7 +10,7 @@ namespace NOR_WAY_Tests
     // All kode i denne klassen er hentet fra Canvas
     public class MockHttpSession : ISession
     {
-        Dictionary<string, object> sessionStorage = new Dictionary<string, object>();
+        private Dictionary<string, object> sessionStorage = new Dictionary<string, object>();
 
         public object this[string name]
         {

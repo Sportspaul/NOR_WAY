@@ -61,7 +61,6 @@ namespace NOR_WAY.DAL
                 //Rute 182 - Telemarkekspressen
                 var NW182Rute = new Ruter() { Linjekode = "NW182", Rutenavn = "Telemarkekspressen", Startpris = 95, TilleggPerStopp = 16, Kapasitet = 85 };
                 string[] NW182Stopp = { "Flatdal", "Bø", "Ulefoss", "Skien", "Porsgrunn", "Langangenkrysset", "Ringdal", "Fokserød", "Sandefjord Lufthavn Torp" };
-                //TODO: Skien og Fokserød er mellomstopp på andre ruter
                 // Injiserer dataen inn i databasen og lagrer endringene
                 InjiserRute(NW182Rute, NW182Stopp, context);
                 context.SaveChanges();
@@ -96,7 +95,6 @@ namespace NOR_WAY.DAL
                 List<Billettyper> billettyper = new List<Billettyper> { voksen, honnor, student, barn };
                 InjiserBillettyper(billettyper, context);
 
-
                 Brukere admin = new Brukere();
                 admin.Brukernavn = "Admin";
                 admin.Tilgang = "Admin";
@@ -108,7 +106,6 @@ namespace NOR_WAY.DAL
                 admin.Salt = salt;
                 context.Brukere.Add(admin);
 
-                
                 // Injiserer Avganger
                 DateTime idag = DateTime.Now;
                 InjiserAvganger(idag, NW431Rute, 2.00, 110, context);

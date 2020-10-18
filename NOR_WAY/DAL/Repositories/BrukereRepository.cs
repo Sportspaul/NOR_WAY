@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -24,14 +23,13 @@ namespace NOR_WAY.DAL.Repositories
 
         public async Task<bool> LoggInn(BrukerModel bruker)
         {
-
             try
             {
                 // Henter brukeren som matcher input-brukernavnet
                 Brukere funnetBruker = await _db.Brukere
                     .FirstOrDefaultAsync(b => b.Brukernavn == bruker.Brukernavn);
 
-                // Sjekker om input-passord + salt matcher passordet + salt i DB 
+                // Sjekker om input-passord + salt matcher passordet + salt i DB
                 byte[] hash = LagHash(bruker.Passord, funnetBruker.Salt);
                 bool ok = hash.SequenceEqual(funnetBruker.Passord);
                 if (ok)
@@ -74,6 +72,7 @@ namespace NOR_WAY.DAL.Repositories
         }
 
         /* Forelesers kode */
+
         public static byte[] LagHash(string passord, byte[] salt)
         {
             return KeyDerivation.Pbkdf2(
@@ -85,6 +84,7 @@ namespace NOR_WAY.DAL.Repositories
         }
 
         /* Forelesers kode */
+
         public static byte[] LagSalt()
         {
             var csp = new RNGCryptoServiceProvider();

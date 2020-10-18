@@ -22,6 +22,7 @@ namespace NOR_WAY_Tests
 
         // Session
         private readonly Mock<HttpContext> mockHttpContext = new Mock<HttpContext>();
+
         private readonly MockHttpSession mockSession = new MockHttpSession();
 
         public BrukereController_Tests()
@@ -46,7 +47,6 @@ namespace NOR_WAY_Tests
             // Assert
             Assert.Equal(true, resultat.Value);
         }
-
 
         [Fact]
         public async Task LoggInn_IkkeOK()
@@ -133,7 +133,8 @@ namespace NOR_WAY_Tests
 
         // Test på at NyAdmin håndterer tilfelle hvor bruker ikke er logget inn
         [Fact]
-        public async Task NyAdmin_IkkeInnlogget() {
+        public async Task NyAdmin_IkkeInnlogget()
+        {
             // Arrange
             var bruker = HentEnBrukerModel();
             mockRepo.Setup(br => br.NyAdmin(bruker)).ReturnsAsync(true);
@@ -142,7 +143,7 @@ namespace NOR_WAY_Tests
             SimulerUtlogget();
             var resultat = await brukereController.NyAdmin(bruker) as UnauthorizedObjectResult;
 
-            // Assert 
+            // Assert
             Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
             Assert.Equal("Ikke innlogget", resultat.Value);
         }
@@ -169,7 +170,8 @@ namespace NOR_WAY_Tests
             return bruker;
         }
 
-        private void SimulerInnlogget() {
+        private void SimulerInnlogget()
+        {
             mockSession[_innlogget] = _innlogget;
             EndreSession(mockSession);
         }
@@ -180,7 +182,8 @@ namespace NOR_WAY_Tests
             EndreSession(mockSession);
         }
 
-        private void EndreSession(MockHttpSession mockSession) {
+        private void EndreSession(MockHttpSession mockSession)
+        {
             mockHttpContext.Setup(s => s.Session).Returns(mockSession);
             brukereController.ControllerContext.HttpContext = mockHttpContext.Object;
         }

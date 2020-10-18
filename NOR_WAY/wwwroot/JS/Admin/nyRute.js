@@ -1,4 +1,3 @@
-
 $(function () {
     Hjelpemetoder.endreBakgrunn();
     new NyRuteEvents('#linjekode', '#rutenavn', '#startpris', '#tilleggPerStopp', '#kapasitet');
@@ -8,25 +7,25 @@ const urlParameter = window.location.search;
 const id = urlParameter.substr(1);
 const lagre = $("#lagre");
 
-if(id != ""){
+if (id != "") {
     $("#tittel").html(`Oppdater Rute`);
     $("#linjekode").prop("readonly", true);
     lagre.val("Oppdater Rute");
-    
+
     const url = `../Ruter/HentEnRute?linjekode=${id}`
     $.get(url, function (rute) {
         fyllInputfelter(rute);
     })
-    lagre.click(()=> {
+    lagre.click(() => {
         oppdaterRute();
     })
 } else {
     $("#tittel").html("Ny Rute");
     lagre.val("Opprett ny rute")
-    lagre.click(()=> {
+    lagre.click(() => {
         nyRute();
     })
-} 
+}
 
 function fyllInputfelter(rute) {
     $("#linjekode").val(rute.linjekode);
@@ -36,8 +35,8 @@ function fyllInputfelter(rute) {
     $("#kapasitet").val(rute.kapasitet);
 }
 
-function oppdaterRute(){
-    if(validerRuteInput()){ 
+function oppdaterRute() {
+    if (validerRuteInput()) {
         const rute = lagRuteObjekt();
         $.post("../Ruter/OppdaterRute", rute, function () {
             location.replace("ruter.html?ruteOppdatert");
@@ -45,9 +44,8 @@ function oppdaterRute(){
     }
 }
 
-function nyRute() 
-{
-    if(validerRuteInput()){
+function nyRute() {
+    if (validerRuteInput()) {
         const rute = lagRuteObjekt();
         $.post("../Ruter/NyRute", rute, function () {
             location.replace("ruter.html?nyRute");
@@ -55,7 +53,7 @@ function nyRute()
     }
 }
 
-function lagRuteObjekt(){
+function lagRuteObjekt() {
     return {
         Linjekode: $("#linjekode").val(),
         Rutenavn: $("#rutenavn").val(),

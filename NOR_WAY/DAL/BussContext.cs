@@ -12,6 +12,7 @@ namespace NOR_WAY.DAL
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string Linjekode { get; set; } // PK
+
         public string Rutenavn { get; set; }
         public int Startpris { get; set; }
         public int TilleggPerStopp { get; set; }
@@ -113,7 +114,7 @@ namespace NOR_WAY.DAL
         public DbSet<Ordre> Ordre { get; set; }
         public DbSet<Ordrelinjer> Ordrelinjer { get; set; }
         public DbSet<Billettyper> Billettyper { get; set; }
-        public DbSet<Brukere>Brukere { get; set; }
+        public DbSet<Brukere> Brukere { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

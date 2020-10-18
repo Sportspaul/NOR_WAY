@@ -262,7 +262,7 @@ function validerTidspunkt(innElmt, utId) {
 }
 
 function validerEtStoppnavn(innElmt, utId) {
-    const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,50}$/; 
+    const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,50}$/;
     const melding = "Ugyldig stoppnavn";
     return feilmelding(testRegex(innElmt, regex), melding, utId);
 }

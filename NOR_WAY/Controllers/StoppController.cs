@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -55,7 +53,6 @@ namespace NOR_WAY.Controllers
             _log.LogInformation("Feil i inputvalideringen på server");
             return BadRequest("Feil i inputvalideringen på server");
         }
-
 
         public async Task<ActionResult> HentAlleStopp()
         {

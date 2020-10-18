@@ -2,14 +2,13 @@
 const green = "color: #28a745";
 
 function HentAlleRuter() {
-    $.get("Ruter/HentAlleRuter", function(alleRuter) {
+    $.get("Ruter/HentAlleRuter", function (alleRuter) {
         console.table(alleRuter)
     })
 }
 
 // Test av FjernRute
 function FjernRute(linjekode) {
-
     const rute = {
         Linjekode: linjekode
     }
@@ -18,14 +17,13 @@ function FjernRute(linjekode) {
     $.post("Ruter/FjernRute", rute, function () {
         console.log("%c Ruten ble fjernet", green);
     })
-    .fail(function () {
-        console.log("%c Ruten ble IKKE fjernet", red);
-    });;
+        .fail(function () {
+            console.log("%c Ruten ble IKKE fjernet", red);
+        });;
 }
 
 // Test av NyRute
 function NyRute() {
-
     const ruteStopp1 = {
         StoppNummer: 1,
         MinutterTilNesteStopp: 45,
@@ -48,15 +46,15 @@ function NyRute() {
         Startpris: 750,
         TilleggPerStopp: 50,
         Kapasitet: 245,
-        RuteStopp: [ ruteStopp1, ruteStopp2, ruteStopp3 ]
+        RuteStopp: [ruteStopp1, ruteStopp2, ruteStopp3]
     }
 
     $.post("Ruter/NyRute", rute, function (avganger) {
         console.log("%c Ny rute ble lagt til", green);
     })
-    .fail(function () {
-        console.log("%c Ny rute ble ikke lagt til", red);
-    });;
+        .fail(function () {
+            console.log("%c Ny rute ble ikke lagt til", red);
+        });;
 }
 
 function OppdaterRute(linjekode) {
@@ -71,9 +69,9 @@ function OppdaterRute(linjekode) {
     $.post("Ruter/OppdaterRute", rute, function () {
         console.log("%c Ruten ble oppdatert", green)
     })
-    .fail(function () {
-        console.log("%c Ruten ble IKKE oppdatert", red);
-    });;
+        .fail(function () {
+            console.log("%c Ruten ble IKKE oppdatert", red);
+        });;
 }
 
 function HentAvganger(linjekode, sidenummer) {
@@ -81,9 +79,9 @@ function HentAvganger(linjekode, sidenummer) {
     $.get(url, function (avganger) {
         console.table(avganger);
     })
-    .fail(function () {
-        console.log("Avgangen ble ikke oppdatert");
-    });
+        .fail(function () {
+            console.log("Avgangen ble ikke oppdatert");
+        });
 }
 
 function FjernAvgang(id) {
@@ -91,9 +89,9 @@ function FjernAvgang(id) {
     $.get(url, function () {
         console.log("%c Avgangen ble slettet", green);
     })
-    .fail(function () {
-        console.log("%c Avgangen ble IKKE slettet", red);
-    });
+        .fail(function () {
+            console.log("%c Avgangen ble IKKE slettet", red);
+        });
 }
 
 function NyAvgang() {
@@ -107,9 +105,9 @@ function NyAvgang() {
     $.post("Avgang/NyAvgang", avgang, function () {
         console.log("%c Ny avgang ble lagt til", green);
     })
-    .fail(function () {
-        console.log("%c Ny avgang ble IKKE lagt til", red);
-    });
+        .fail(function () {
+            console.log("%c Ny avgang ble IKKE lagt til", red);
+        });
 }
 
 function OppdaterAvgang(id) {
@@ -119,22 +117,22 @@ function OppdaterAvgang(id) {
         Tidspunkt: "17:00"
     }
 
-    $.post("Avgang/OppdaterAvgang", avreisetid, function(){
+    $.post("Avgang/OppdaterAvgang", avreisetid, function () {
         console.log("%c Avgangen ble oppdatert", green);
     })
-    .fail(function (feil) {
-        console.log("%c" + feil.responseText, red);
-    });
+        .fail(function (feil) {
+            console.log("%c" + feil.responseText, red);
+        });
 }
 
 function HentRuteStopp(linjekode) {
     const url = `RuteStopp/HentRuteStopp?linjekode=${linjekode}`;
-    $.get(url, function(ruteStoppListe){
+    $.get(url, function (ruteStoppListe) {
         console.table(ruteStoppListe);
     });
 }
 
-function NyRuteStopp(linjekode) { 
+function NyRuteStopp(linjekode) {
     const innRuteStopp = {
         Stoppnummer: 1,
         MinutterTilNesteStopp: 33,
@@ -142,12 +140,12 @@ function NyRuteStopp(linjekode) {
         Linjekode: linjekode
     }
 
-    $.post("RuteStopp/NyRuteStopp", innRuteStopp, function(){
+    $.post("RuteStopp/NyRuteStopp", innRuteStopp, function () {
         console.log("%c Nytt RuteStopp ble lagt til", green);
     })
-    .fail(function (feil) {
-        console.log("%c" + feil.responseText, red);
-    });
+        .fail(function (feil) {
+            console.log("%c" + feil.responseText, red);
+        });
 }
 
 function FjernRuteStopp(id) {
@@ -155,9 +153,9 @@ function FjernRuteStopp(id) {
     $.get(url, function () {
         console.log("%c RuteStopp ble slettet", green);
     })
-    .fail(function () {
-        console.log("%c RuteStopp ble IKKE slettet", red);
-    });
+        .fail(function () {
+            console.log("%c RuteStopp ble IKKE slettet", red);
+        });
 }
 
 function OppdaterRuteStopp() {
@@ -169,12 +167,12 @@ function OppdaterRuteStopp() {
         Linjekode: "NW625"
     }
 
-    $.post("RuteStopp/OppdaterRuteStopp", ruteStoppOppdatert, function(){
+    $.post("RuteStopp/OppdaterRuteStopp", ruteStoppOppdatert, function () {
         console.log("%c RuteStopp ble endret", green);
     })
-    .fail(function (feil) {
-        console.log("%c" + feil.responseText, red);
-    });
+        .fail(function (feil) {
+            console.log("%c" + feil.responseText, red);
+        });
 }
 
 function NyBillettype() {
@@ -183,17 +181,16 @@ function NyBillettype() {
         Rabattsats: 90,
     }
 
-    $.post("Billettyper/NyBillettype", billettype, function(){
+    $.post("Billettyper/NyBillettype", billettype, function () {
         console.log("%c Ny Billettype ble lagret", green);
     })
-    .fail(function (feil) {
-        console.log("%c" + feil.responseText, red);
-    });
+        .fail(function (feil) {
+            console.log("%c" + feil.responseText, red);
+        });
 }
 
-function HentAlleBillettyper() 
-{
-    $.get("Billettyper/HentAlleBillettyper", function(billettyper) {
+function HentAlleBillettyper() {
+    $.get("Billettyper/HentAlleBillettyper", function (billettyper) {
         console.table(billettyper)
     })
 }
@@ -208,11 +205,10 @@ function OppdaterBillettype() {
     $.post("Billettyper/OppdaterBillettype", oppdatertBillettype, function () {
         console.log("%c Rabattsatsen ble oppdatert", green)
     })
-    .fail(function () {
-        console.log("%c Rabattsatsen ble IKKE oppdatert", red);
-    });
+        .fail(function () {
+            console.log("%c Rabattsatsen ble IKKE oppdatert", red);
+        });
 }
-
 
 function OppdaterStoppnavn() {
     const oppdatertStopp = {
@@ -223,7 +219,7 @@ function OppdaterStoppnavn() {
     $.post("Stopp/OppdaterStoppnavn", oppdatertStopp, function () {
         console.log("%c Stoppnavnet ble oppdatert", green)
     })
-    .fail(function () {
+        .fail(function () {
             console.log("%c Stoppnavnet ble IKKE oppdatert", red);
         });
 }
@@ -233,4 +229,3 @@ function HentAlleStoppMedRuter() {
         console.table(stopplinje)
     })
 }
-

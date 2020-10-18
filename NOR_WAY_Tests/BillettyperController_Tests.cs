@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +23,7 @@ namespace NOR_WAY_Tests
 
         // Session
         private readonly Mock<HttpContext> mockHttpContext = new Mock<HttpContext>();
+
         private readonly MockHttpSession mockSession = new MockHttpSession();
 
         public BillettyperController_Tests()
@@ -32,11 +31,11 @@ namespace NOR_WAY_Tests
             billettyperController = new BillettyperController(mockRepo.Object, mockLog.Object);
         }
 
-
         /* Enhetstester for HentAlleBillettyper */
 
         /* Tester at ikke listen med Stopp fra BussRepo endrer seg i controlleren
            for HentAlleBillettyper() */
+
         [Fact]
         public async Task HentAlleBillettyper_RiktigeVerdier()
         {
@@ -60,7 +59,8 @@ namespace NOR_WAY_Tests
 
         // Tester at returverdi: null blir håndtert korrekt for HentAlleBillettyper()
         [Fact]
-        public async Task HentAlleBillettyper_Null() {
+        public async Task HentAlleBillettyper_Null()
+        {
             // Arrange
             mockRepo.Setup(b => b.HentAlleBillettyper()).ReturnsAsync(() => null);
 
@@ -70,7 +70,6 @@ namespace NOR_WAY_Tests
             // Assert
             Assert.Equal("Ingen billettyper ble funnet", resultat.Value);
         }
-
 
         /* Enhetstester for OppdaterBillettype */
 
@@ -106,7 +105,7 @@ namespace NOR_WAY_Tests
             Assert.Equal("Ny billettype kunne ikke lagres!", resultat.Value);
         }
 
-        // Tester at NyBillettype håndterer InvalidModelState i controlleren 
+        // Tester at NyBillettype håndterer InvalidModelState i controlleren
         [Fact]
         public async Task NyBillettype_RegEx()
         {
@@ -135,11 +134,10 @@ namespace NOR_WAY_Tests
             SimulerUtlogget();
             var resultat = await billettyperController.NyBillettype(billettype) as UnauthorizedObjectResult;
 
-            // Assert 
+            // Assert
             Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
             Assert.Equal("Ikke innlogget", resultat.Value);
         }
-
 
         /* Enhetstester for OppdaterBillettype */
 
@@ -204,11 +202,10 @@ namespace NOR_WAY_Tests
             SimulerUtlogget();
             var resultat = await billettyperController.OppdaterBillettype(billettype) as UnauthorizedObjectResult;
 
-            // Assert 
+            // Assert
             Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
             Assert.Equal("Ikke innlogget", resultat.Value);
         }
-
 
         // Returnerer en List med Billettyper-objekter
         private List<Billettyper> HentBillettyperListe()
@@ -219,7 +216,8 @@ namespace NOR_WAY_Tests
             return new List<Billettyper> { billettype1, billettype2, billettype3 };
         }
 
-        private Billettyper HentEnBillettype() {
+        private Billettyper HentEnBillettype()
+        {
             return new Billettyper { Billettype = "Ufør", Rabattsats = 90 };
         }
 

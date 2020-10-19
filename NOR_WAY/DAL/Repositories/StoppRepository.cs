@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL.Interfaces;
 using NOR_WAY.Model;
@@ -131,13 +133,27 @@ namespace NOR_WAY.DAL.Repositories
                     // Liste med linjekoder knyttet til et spesifikk stopp
                     List<string> linjekoder = rutestopp
                         .Where(s => s.Stopp.Id == stopp[i].Id)
-                        .Select(rs => rs.Rute.Linjekode).ToList();  
+                        .Select(rs => rs.Rute.Linjekode).ToList();
 
+                    //Formaterer linjekodene til en string
+                    int j;
+                    string linjekoderString = "";
+                    for (j = 0; j < linjekoder.Count; j++)
+                    {
+                        if (j != 0)
+                        {
+                            linjekoderString += ", " + linjekoder[j];
+                        }
+                        else
+                        {
+                            linjekoderString += linjekoder[j];
+                        }
+                    }
                     // Nytt StoppMedLinjekoder-objekt legges til returlisten
                     var smlk = new StoppMedLinjekoder {
                         Id = stopp[i].Id,
                         Stoppnavn = stopp[i].Navn,
-                        Linjekoder = linjekoder
+                        Linjekoder = linjekoderString
                     };
                     stoppMedLinjekoder.Add(smlk);
                 }

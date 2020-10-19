@@ -17,20 +17,20 @@
 
     <!-- Javascript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../JS/Admin/adminTilgang.js"></script>
     <script src="../JS/Components/NavBar.js?n=1" defer></script>
     <script src="../JS/Components/AdminNav.js" defer></script>
     <script src="../JS/Hjelpemetoder.js" defer></script>
     <script src="../JS/Admin/nyRuteStopp.js" defer></script>
     <script src="../JS/Events/NyRuteStoppEvents.js" defer></script>
     <script src="../JS/validering.js" defer></script>
-    <script src="../JS/Admin/adminTilgang.js"></script>
 </head>
 <body>
     <div id="overlay">
         <nav-bar>
-            <a slot="billett" href="../index.html" onclick="return confirm(`Du blir nå logget ut.\nKlikk avbryt for å forsette med adminoppgaver`);">Kjøp Billett</a>
-            <a slot="ruter" href="../ruter.html" onclick="return confirm(`Du blir nå logget ut.\nKlikk avbryt for å forsette med adminoppgaver`);">Ruter</a>
-            <a slot="innlogging" href="../index.html">Logg ut</a>
+            <a slot="billett" href="../index.html">Kjøp Billett</a>
+            <a slot="ruter" href="../ruter.html">Ruter</a>
+            <a slot="innlogging" id="loggUt" href="../index.html">Logg ut</a>
         </nav-bar>
         <div class="shadowBox">
             <admin-nav><!-- Web Component, Components/AdminNav.js--></admin-nav>

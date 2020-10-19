@@ -62,7 +62,6 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentEtStopp(int id)
         {
-            // TODO: Legg til sjekk for Unauthorized
             if (ModelState.IsValid)
             {
                 Stopp stopp = await _db.HentEtStopp(id);
@@ -93,10 +92,10 @@ namespace NOR_WAY.Controllers
         // TODO: Sjekke at dette stoppnavnet finnes alt
         public async Task<ActionResult> OppdaterStoppnavn(Stopp innStopp)
         {
-            /*if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
             {
-                return Unauthorized("Ikke logget inn");
-            } */
+                return Unauthorized("Ikke innlogget");
+            }
             if (ModelState.IsValid)
             {
                 bool EndringOK = await _db.OppdaterStoppnavn(innStopp);
@@ -117,10 +116,6 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentAlleStoppMedRuter()
         {
-            /*if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
-            {
-                return Unauthorized("Ikke logget inn");
-            } */
             if (ModelState.IsValid)
             {
                 List<StoppMedLinjekoder> stoppMedLinjekoder = await _db.HentAlleStoppMedRuter();

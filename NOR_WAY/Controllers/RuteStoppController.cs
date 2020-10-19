@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL.Interfaces;
@@ -13,6 +14,7 @@ namespace NOR_WAY.Controllers
     {
         private readonly IRuteStoppRepository _db;
         private ILogger<RuteStoppController> _log;
+        private const string _innlogget = "Innlogget";
         private string melding;
         private string ugyldigValidering = "Feil i inputvalideringen på server";
 
@@ -24,7 +26,10 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> FjernRuteStopp(int id)
         {
-            // TODO: Legg til sjekk for Unauthorized
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke innlogget");
+            }
             if (ModelState.IsValid)
             {
                 bool returOK = await _db.FjernRuteStopp(id);
@@ -40,11 +45,6 @@ namespace NOR_WAY.Controllers
             }
             _log.LogError(ugyldigValidering);
             return BadRequest(ugyldigValidering);
-        }
-
-        public Task<ActionResult> HentAlleRuteStopp()
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<ActionResult> HentRuteStopp(string linjekode)
@@ -81,7 +81,10 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> NyRuteStopp(NyRuteStopp innRuteStopp)
         {
-            // TODO: Legg til sjekk for Unauthorized
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke innlogget");
+            }
             if (ModelState.IsValid)
             {
                 bool returOK = await _db.NyRuteStopp(innRuteStopp);
@@ -101,7 +104,10 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> OppdaterRuteStopp(NyRuteStopp ruteStoppOppdater)
         {
-            // TODO: Legg til sjekk for Unauthorized
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke innlogget");
+            }
             if (ModelState.IsValid)
             {
                 bool returOK = await _db.OppdaterRuteStopp(ruteStoppOppdater);

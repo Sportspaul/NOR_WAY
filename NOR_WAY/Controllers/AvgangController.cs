@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL.Interfaces;
@@ -41,7 +42,10 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> FjernAvgang(int id)
         {
-            // TODO: Legg til sjekk for Unauthorized
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke innlogget");
+            }
             if (ModelState.IsValid)
             {
                 bool returOK = await _db.FjernAvgang(id);
@@ -61,7 +65,6 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentAvganger(string linjekode, int sidenummer)
         {
-            // TODO: Legg til sjekk for Unauthorized
             if (ModelState.IsValid)
             {
                 List<AvgangModel> avganger = await _db.HentAvganger(linjekode, sidenummer);
@@ -79,7 +82,6 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentEnAvgang(int id)
         {
-            // TODO: Legg til sjekk for Unauthorized
             if (ModelState.IsValid)
             {
                 NyAvgang avganger = await _db.HentEnAvgang(id);
@@ -97,7 +99,10 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> NyAvgang(NyAvgang nyAvgang)
         {
-            // TODO: Legg til sjekk for Unauthorized
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke innlogget");
+            }
             if (ModelState.IsValid)
             {
                 bool returOK = await _db.NyAvgang(nyAvgang);
@@ -117,7 +122,10 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> OppdaterAvgang(Avreisetid avreisetid)
         {
-            // TODO: Legg til sjekk for Unauthorized
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke innlogget");
+            }
             if (ModelState.IsValid)
             {
                 bool returOK = await _db.OppdaterAvgang(avreisetid);

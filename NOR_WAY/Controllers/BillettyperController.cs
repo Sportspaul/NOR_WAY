@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL;
@@ -12,6 +13,7 @@ namespace NOR_WAY.Controllers
     {
         private readonly IBillettyperRepository _db;
         private ILogger<BillettyperController> _log;
+        private const string _innlogget = "Innlogget";
         private string melding;
         private string ugyldigValidering = "Feil i inputvalideringen på server";
 
@@ -23,7 +25,10 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> NyBillettype(Billettyper innBillettype)
         {
-            // TODO: Legg til sjekk for Unauthorized
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke innlogget");
+            }
             if (ModelState.IsValid)
             {
                 bool returOK = await _db.NyBillettype(innBillettype);
@@ -55,7 +60,6 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentEnBillettype(int id)
         {
-            // TODO: Legg til sjekk for Unauthorized
             if (ModelState.IsValid)
             {
                 Billettyper billettype = await _db.HentEnBillettype(id);
@@ -73,7 +77,10 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> OppdaterBillettype(Billettyper oppdatertBillettype)
         {
-            // TODO: Legg til sjekk for Unauthorized
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke innlogget");
+            }
             if (ModelState.IsValid && oppdatertBillettype.Rabattsats <= 100 && oppdatertBillettype.Rabattsats >= 0)
             {
                 bool returOK = await _db.OppdaterBillettype(oppdatertBillettype);

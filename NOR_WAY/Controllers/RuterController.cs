@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL;
@@ -25,7 +26,10 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> FjernRute(string linjekode)
         {
-            // TODO: Legg til sjekk for Unauthorized
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke innlogget");
+            }
             if (ModelState.IsValid)
             {
                 bool returOK = await _db.FjernRute(linjekode);
@@ -86,7 +90,10 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> NyRute(Ruter rute)
         {
-            // TODO: Legg til sjekk for Unauthorized
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke innlogget");
+            }
             if (ModelState.IsValid)
             {
                 bool returOK = await _db.NyRute(rute);
@@ -106,7 +113,10 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> OppdaterRute(Ruter endretRute)
         {
-            // TODO: Legg til sjekk for Unauthorized
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke innlogget");
+            }
             if (ModelState.IsValid)
             {
                 bool returOK = await _db.OppdaterRute(endretRute);

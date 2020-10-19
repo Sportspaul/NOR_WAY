@@ -124,7 +124,6 @@ namespace NOR_WAY.DAL.Repositories
                         Startpris = rute.Startpris
                     };
 
-                    // TODO: bytte ut denne koden med et kall til HentRuteStopp(string linjekode) i RuteStopp
                     // Henter alle ruteStopp som hører til spesifikk rute
                     List<RuteStopp> ruteStopp = await _db.RuteStopp
                         .Where(rs => rs.Rute.Linjekode == rute.Linjekode)

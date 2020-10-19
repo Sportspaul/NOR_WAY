@@ -1,4 +1,3 @@
-
 $(function () {
     Hjelpemetoder.endreBakgrunn();
     new NyRuteStoppEvents('#linjekode', '#stoppnavn', '#stoppnummer', '#minutterTilNesteStopp');
@@ -11,15 +10,15 @@ id = id.split("?");
 const lagre = $("#lagre");
 $("#linjekode").prop("readonly", true);
 
-if(id.length == 2){
+if (id.length == 2) {
     $("#tittel").html(`Oppdater Rutestopp`);
     lagre.val("Oppdater Rutestopp");
-    
+
     const url = `../RuteStopp/HentEtRuteStopp?id=${id[1]}`
     $.get(url, function (ruteStopp) {
         fyllInputfelter(ruteStopp);
     })
-    lagre.click(()=> {
+    lagre.click(() => {
         console.log(1);
         oppdaterRuteStopp();
     })
@@ -27,10 +26,10 @@ if(id.length == 2){
     $("#tittel").html("Nytt Rutestopp");
     $("#linjekode").val(id[0]);
     lagre.val("Opprett nytt rutestopp")
-    lagre.click(()=> {
+    lagre.click(() => {
         nyttRuteStopp();
     })
-} 
+}
 
 function fyllInputfelter(ruteStopp) {
     $("#linjekode").val(ruteStopp.linjekode);
@@ -39,8 +38,8 @@ function fyllInputfelter(ruteStopp) {
     $("#minutterTilNesteStopp").val(ruteStopp.minutterTilNesteStopp);
 }
 
-function oppdaterRuteStopp(){
-    if(validerRuteStoppInput()){ 
+function oppdaterRuteStopp() {
+    if (validerRuteStoppInput()) {
         let ruteStopp = lagRuteStoppObjekt();
         ruteStopp.Id = id[1];
         $.post("../RuteStopp/OppdaterRuteStopp", ruteStopp, function () {
@@ -49,9 +48,8 @@ function oppdaterRuteStopp(){
     }
 }
 
-function nyttRuteStopp() 
-{
-    if(validerRuteStoppInput()){
+function nyttRuteStopp() {
+    if (validerRuteStoppInput()) {
         let ruteStopp = lagRuteStoppObjekt();
         $.post("../RuteStopp/NyRuteStopp", ruteStopp, function () {
             location.replace(`ruteStopp.html?linjekode=${id[0]}`);
@@ -59,7 +57,7 @@ function nyttRuteStopp()
     }
 }
 
-function lagRuteStoppObjekt(){
+function lagRuteStoppObjekt() {
     return {
         Stoppnavn: $("#stoppnavn").val(),
         StoppNummer: $("#stoppnummer").val(),

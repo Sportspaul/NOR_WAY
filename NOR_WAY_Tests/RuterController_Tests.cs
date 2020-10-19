@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,7 +13,6 @@ namespace NOR_WAY_Tests
 {
     public class RuterController_Tests
     {
-
         private readonly Mock<IRuterRepository> mockRepo = new Mock<IRuterRepository>();
         private readonly Mock<ILogger<RuterController>> mockLogCtr = new Mock<ILogger<RuterController>>();
         private readonly RuterController ruterController;
@@ -29,6 +26,7 @@ namespace NOR_WAY_Tests
 
         /* Tester at ikke listen med Stopp fra BussRepo endrer seg i controlleren
            for HentRuterMedStopp() */
+
         [Fact]
         public async Task HentRuterMedStopp_RiktigeVerdier()
         {
@@ -57,7 +55,7 @@ namespace NOR_WAY_Tests
         [Fact]
         public async Task HentRuterMedStopp_Null()
         {
-            // Arrange 
+            // Arrange
             mockRepo.Setup(b => b.HentRuterMedStopp()).ReturnsAsync(() => null);
 
             //Act
@@ -71,6 +69,7 @@ namespace NOR_WAY_Tests
 
         /* Tester at ikke listen fra BussRepo endrer seg i controlleren
            for HentAlleRuter() */
+
         [Fact]
         public async Task HentAlleRuter_RiktigeVerdier()
         {
@@ -98,7 +97,7 @@ namespace NOR_WAY_Tests
         [Fact]
         public async Task HentAlleRuter_Null()
         {
-            // Arrange 
+            // Arrange
             mockRepo.Setup(b => b.HentAlleRuter()).ReturnsAsync(() => null);
 
             //Act
@@ -142,7 +141,7 @@ namespace NOR_WAY_Tests
         public async Task FjernRute_RegEx()
         {
             // Arrange
-            string linjekode = "" ;
+            string linjekode = "";
             mockRepo.Setup(br => br.FjernRute(linjekode)).ReturnsAsync(false);
             ruterController.ModelState.AddModelError("Linjekode", "Feil i inputvalideringen på server");
 
@@ -152,7 +151,6 @@ namespace NOR_WAY_Tests
             // Assert
             Assert.Equal("Feil i inputvalidering på server", resultat.Value);
         }
-
 
         // Returnerer en List med RuteMedStopp-objekter
         private List<RuteMedStopp> HentRuteMedStoppListe()

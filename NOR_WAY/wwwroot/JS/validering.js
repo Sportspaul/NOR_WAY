@@ -20,7 +20,7 @@ function feilmelding(ok, melding, utId) {
 }
 
 // Validerer alle feltene knyttet til avngang
-function validerAvgangInput() {
+function validerReisevalgInput() {
     const startStopp = validerStoppnavn($("#startStopp"), "#feilStartStopp");
     const sluttStopp = validerStoppnavn($("#sluttStopp"), "#feilSluttStopp");
     const dato = validerDato("#dato");
@@ -262,7 +262,7 @@ function validerTidspunkt(innElmt, utId) {
 }
 
 function validerEtStoppnavn(innElmt, utId) {
-    const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,50}$/; 
+    const regex = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,50}$/;
     const melding = "Ugyldig stoppnavn";
     return feilmelding(testRegex(innElmt, regex), melding, utId);
 }

@@ -106,30 +106,39 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
+        // Metode for å hente alle stopp og en liste med linjekoder de er knyttet til
         public async Task<List<StoppMedLinjekoder>> HentAlleStoppMedRuter()
         {
             try
             {
+                // Henter alle RuteStopp
                 List<RuteStopp> rutestopp = await _db.RuteStopp
                         .Select(rs => new RuteStopp
                         {
                             Rute = rs.Rute,
                             Stopp = rs.Stopp
-                        }).OrderBy(rs => rs.Stopp.Id).ToListAsync();
-                int startId = rutestopp[0].Stopp.Id;
+                        }).ToListAsync();
 
-                List<StoppMedLinjekoder> stoppMedLinjekoder = new List<StoppMedLinjekoder>();
-                for (int i = 0; i < rutestopp.Count(); i++)
+                // Henter alle Stopp
+                List<Stopp> stopp = await HentAlleStopp(); 
+
+                // Listen som skal returneres
+                List<StoppMedLinjekoder> stoppMedLinjekoder = new List<StoppMedLinjekoder>();             
+
+                // Lopper gjennom alle stoppene
+                for (int i = 0; i < stopp.Count(); i++) 
                 {
-                    List<string> linjekoder = new List<string>();
-                    int j = i;
-                    while (startId == rutestopp[j].Stopp.Id)
-                    {
-                        linjekoder.Add(rutestopp[j].Rute.Linjekode);
-                        j++;
-                    }
-                    startId++;
-                    StoppMedLinjekoder smlk = new StoppMedLinjekoder { Id = rutestopp[i].Stopp.Id, Stoppnavn = rutestopp[i].Stopp.Navn, Linjekoder = linjekoder };
+                    // Liste med linjekoder knyttet til et spesifikk stopp
+                    List<string> linjekoder = rutestopp
+                        .Where(s => s.Stopp.Id == stopp[i].Id)
+                        .Select(rs => rs.Rute.Linjekode).ToList();  
+
+                    // Nytt StoppMedLinjekoder-objekt legges til returlisten
+                    var smlk = new StoppMedLinjekoder {
+                        Id = stopp[i].Id,
+                        Stoppnavn = stopp[i].Navn,
+                        Linjekoder = linjekoder
+                    };
                     stoppMedLinjekoder.Add(smlk);
                 }
                 return stoppMedLinjekoder;
@@ -143,7 +152,7 @@ namespace NOR_WAY.DAL.Repositories
 
         public async Task<bool> OppdaterStoppnavn(Stopp innStopp)
         {
-            if(innStopp == null)
+            if (innStopp == null)
             {
                 _log.LogInformation("Det er ikke noe stoppobjekt å endre navn på!");
                 return false;
@@ -152,7 +161,6 @@ namespace NOR_WAY.DAL.Repositories
             stopp.Navn = innStopp.Navn;
             await _db.SaveChangesAsync();
             return true;
-
         }
     }
 }

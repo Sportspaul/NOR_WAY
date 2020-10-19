@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL;
@@ -24,7 +20,7 @@ namespace NOR_WAY.Controllers
             _db = db;
             _log = log;
         }
-        
+
         public async Task<ActionResult> FjernRute(string linjekode)
         {
             // TODO: Legg til sjekk for Unauthorized
@@ -45,7 +41,8 @@ namespace NOR_WAY.Controllers
         public async Task<ActionResult> HentAlleRuter()
         {
             List<Ruter> rutene = await _db.HentAlleRuter();
-            if (rutene == null) {
+            if (rutene == null)
+            {
                 _log.LogInformation("Rutene ble ikke funnet");
                 return NotFound("Rutene ble ikke funnet");
             }

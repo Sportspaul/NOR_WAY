@@ -1,5 +1,4 @@
-﻿using System;
-namespace NOR_WAY.Model
+﻿namespace NOR_WAY.Model
 {
     //TODO: Legge til regex
     public class BrukerModel

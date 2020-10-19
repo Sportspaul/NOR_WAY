@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -23,10 +21,12 @@ namespace NOR_WAY_Tests
         {
             stoppController = new StoppController(mockRepo.Object, mockLogCtr.Object);
         }
+
         /* Enhetstester for HentAlleStopp */
 
         /* Tester at ikke listen med Stopp fra BussRepo endrer seg i controlleren
            for HentAlleStopp() */
+
         [Fact]
         public async Task HentAlleStopp_RiktigeVerdier()
         {
@@ -48,10 +48,26 @@ namespace NOR_WAY_Tests
             }
         }
 
+        [Fact]
+        public async Task HentAlleStopp_Null()
+        {
+            // Arrange
+            mockRepo.Setup(s => s.HentAlleStopp()).ReturnsAsync(() => null);
+
+            // Act
+            var resultat = await stoppController.HentAlleStopp() as NotFoundObjectResult;
+
+            // Assert
+            Assert.Equal("Ingen stopp ble funnet", resultat.Value);
+        }
+
+
+
         /* Enhetstester for FinnMuligeStartStopp */
 
         /* Tester at ikke listen med Stopp fra BussRepo endrer seg i controlleren
            for FinnMuligeStartStopp() */
+
         [Fact]
         public async Task FinnMuligStartStopp_RiktigeVerdier()
         {
@@ -78,7 +94,7 @@ namespace NOR_WAY_Tests
         [Fact]
         public async Task FinnMuligeStartStopp_TomListe()
         {
-            // Arrange 
+            // Arrange
             StoppModel StoppModel = HentInnStopp();
             List<Stopp> tomStoppListe = new List<Stopp>();
             mockRepo.Setup(b => b.FinnMuligeStartStopp(StoppModel)).ReturnsAsync(tomStoppListe);
@@ -94,7 +110,7 @@ namespace NOR_WAY_Tests
         [Fact]
         public async Task FinnMuligeStartStopp_RegEx()
         {
-            // Arrange 
+            // Arrange
             StoppModel StoppModel = HentUgyldigInnStopp();
             List<Stopp> forventedeStopp = HentStoppListe();
             mockRepo.Setup(b => b.FinnMuligeStartStopp(StoppModel)).ReturnsAsync(forventedeStopp);
@@ -110,11 +126,11 @@ namespace NOR_WAY_Tests
             Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
         }
 
-
         /* Enhetstester for FinnMuligeSluttStopp */
 
         /* Tester at ikke listen med Stopp fra BussRepo endrer seg i controlleren
            for FinnMuligeSluttStopp() */
+
         [Fact]
         public async Task FinnMuligSluttStopp_RiktigeVerdier()
         {
@@ -141,7 +157,7 @@ namespace NOR_WAY_Tests
         [Fact]
         public async Task FinnMuligeSluttStopp_TomListe()
         {
-            // Arrange 
+            // Arrange
             StoppModel StoppModel = HentInnStopp();
             List<Stopp> tomStoppListe = new List<Stopp>();
             mockRepo.Setup(b => b.FinnMuligeSluttStopp(StoppModel)).ReturnsAsync(tomStoppListe);
@@ -157,7 +173,7 @@ namespace NOR_WAY_Tests
         [Fact]
         public async Task FinnMuligeSluttStopp_RegEx()
         {
-            // Arrange 
+            // Arrange
             StoppModel StoppModel = HentUgyldigInnStopp();
             List<Stopp> forventedeStopp = HentStoppListe();
             mockRepo.Setup(b => b.FinnMuligeSluttStopp(StoppModel)).ReturnsAsync(forventedeStopp);
@@ -173,7 +189,50 @@ namespace NOR_WAY_Tests
             Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
         }
 
+        [Fact]
+        public async Task OppdaterStoppnavn_Ok()
+        {
+            //arrange
+            Stopp stopp = new Stopp { Id = 1, Navn = "Oslo" };
+            mockRepo.Setup(s => s.OppdaterStoppnavn(stopp)).ReturnsAsync(true);
+            //act
+            var resultat = await stoppController.OppdaterStoppnavn(stopp) as OkObjectResult;
+            //assert
+            Assert.Equal("Stoppnavnet er endret", resultat.Value);
+        }
 
+        [Fact]
+        public async Task OppdaterStoppnavn_Feil()
+        {
+            //arrange
+            Stopp stopp = new Stopp { Id = 1, Navn = "Oslo" };
+            mockRepo.Setup(s => s.OppdaterStoppnavn(stopp)).ReturnsAsync(false);
+            //act
+            var resultat = await stoppController.OppdaterStoppnavn(stopp) as BadRequestObjectResult;
+            //assert
+            Assert.Equal("Stoppnavnet kunne ikke endres", resultat.Value);
+        }
+
+        [Fact]
+        public async Task OppdaterStoppnavn_Regex()
+        {
+            //arrange
+            Stopp stopp = new Stopp { Id = 1, Navn = "Ox" };
+            mockRepo.Setup(s => s.OppdaterStoppnavn(stopp)).ReturnsAsync(true);
+            stoppController.ModelState.AddModelError("Navn", "Feil i inputvalideringen på server");
+            //act
+            var resultat = await stoppController.OppdaterStoppnavn(stopp) as BadRequestObjectResult;
+            //assert
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
+        }
+
+        //TODO: Legge til innlogget/ikke tilgang tester
+
+
+
+        /*
+         * Hjelpemetoder
+         */
         // Returnerer en List med Stopp-objekter
         private List<Stopp> HentStoppListe()
         {
@@ -194,8 +253,5 @@ namespace NOR_WAY_Tests
         {
             return new StoppModel { Navn = "" };
         }
-
-
-
     }
 }

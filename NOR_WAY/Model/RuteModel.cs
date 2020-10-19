@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using NOR_WAY.DAL;
 
 namespace NOR_WAY.Model
 {

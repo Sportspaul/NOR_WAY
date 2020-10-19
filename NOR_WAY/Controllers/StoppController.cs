@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -77,17 +75,22 @@ namespace NOR_WAY.Controllers
         public async Task<ActionResult> HentAlleStopp()
         {
             List<Stopp> alleStopp = await _db.HentAlleStopp();
+            if (alleStopp == null)
+            {
+                _log.LogInformation("Ingen stopp ble funnet");
+                return NotFound("Ingen stopp ble funnet");
+            }
             return Ok(alleStopp); // returnerer alltid OK, null ved tom DB
         }
 
         // TODO: Sjekke at dette stoppnavnet finnes alt
         public async Task<ActionResult> OppdaterStoppnavn(Stopp innStopp)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            /*if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
             {
                 return Unauthorized("Ikke logget inn");
-            }
-            if (ModelState.IsValid) 
+            } */
+            if (ModelState.IsValid)
             {
                 bool EndringOK = await _db.OppdaterStoppnavn(innStopp);
                 if (!EndringOK)
@@ -103,10 +106,10 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentAlleStoppMedRuter()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            /*if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
             {
                 return Unauthorized("Ikke logget inn");
-            }
+            } */
             if (ModelState.IsValid)
             {
                 List<StoppMedLinjekoder> stoppMedLinjekoder = await _db.HentAlleStoppMedRuter();

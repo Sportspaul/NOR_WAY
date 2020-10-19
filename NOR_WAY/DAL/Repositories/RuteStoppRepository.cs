@@ -74,7 +74,9 @@ namespace NOR_WAY.DAL.Repositories
         {
             try
             {
-                List<RuteStopp> ruteStopp = await _db.RuteStopp.Where(rs => rs.Rute.Linjekode == linjekode).ToListAsync();
+                List<RuteStopp> ruteStopp = await _db.RuteStopp
+                    .Where(rs => rs.Rute.Linjekode == linjekode)
+                    .OrderBy(rs => rs.StoppNummer).ToListAsync();
                 List<RuteStoppModel> utRuteStopp = new List<RuteStoppModel>();
                 foreach (RuteStopp rs in ruteStopp)
                 {
@@ -130,7 +132,7 @@ namespace NOR_WAY.DAL.Repositories
                 {
                     nyttRuteStopp.Stopp = eksisterendeStopp;
                 }
-                // Hvis det ikke eksiterer blir et nytt Stopp-okbjekt lagt til 
+                // Hvis det ikke eksiterer blir et nytt Stopp-okbjekt lagt til
                 else
                 {
                     Stopp nyttStopp = new Stopp { Navn = innRuteStopp.Stoppnavn };
@@ -146,8 +148,6 @@ namespace NOR_WAY.DAL.Repositories
                 _log.LogInformation(e.Message);
                 return false;
             }
-
-
         }
 
         // Metode for å oppdatere verdeiene i et RuteStopp
@@ -163,7 +163,8 @@ namespace NOR_WAY.DAL.Repositories
                 // Fjerner RuteStopp-objektet som skal endres
                 bool slettOk = await FjernRuteStopp(oppdatertRuteStopp.Id);
                 bool nyOk = await NyRuteStopp(oppdatertRuteStopp);  // Legger til et nytt RuteStopp
-                if (slettOk && nyOk) {
+                if (slettOk && nyOk)
+                {
                     return true;
                 }
                 return false;

@@ -7,21 +7,23 @@ class Hjelpemetoder {
         $("#overlay").css('height', h);
     }
 
+    /*
+     * TODO: Minimere serverkall, slik at Navbaren oppleves smoothere for brukeren
+     */ 
     static settKorrektNavigering() {
-    $.get("Brukere/AdminTilgang", function (innlogget) {
-        if (!innlogget) {
-            $("nav-bar").append(`<a slot="innlogging" id="innlogging" href="../loggInn.html">Logg inn</a>`);
-
-        } else {
-            $("nav-bar").append(`<a slot="innlogging" id="innlogging" href="../index.html">Logg ut</a>`);
-            $("nav-bar").append(`<span slot="skille">|</span>`);
-            $("nav-bar").append(`<a slot="admin" href="Adminsider/ruter.html">Admin</a>`);
-            $("#innlogging").click(function () {
-                loggUt();
-            });
-        }
-    });
-}
+        $.get("Brukere/AdminTilgang", function (innlogget) {
+            if (!innlogget) {
+                $("nav-bar").append(`<a slot="innlogging" id="innlogging" href="../loggInn.html">Logg inn</a>`);
+            } else {
+                $("nav-bar").append(`<a slot="innlogging" id="innlogging" href="../index.html">Logg ut</a>`);
+                $("nav-bar").append(`<span slot="skille">|</span>`);
+                $("nav-bar").append(`<a slot="admin" href="Adminsider/ruter.html">Admin</a>`);
+                $("#innlogging").click(function () {
+                    loggUt();
+                });
+            }
+        });
+    }
 
     // Legger til dagens dato i datofeltet
     static leggTilDato() {
@@ -184,7 +186,7 @@ class Hjelpemetoder {
         }
     }
 
-    // Gjør om fra CamelCasing til vanlig 
+    // Gjør om fra CamelCasing til vanlig
     static fjernCamelCasing(string) {
         string = string.replace(/([A-Z])/g, ' $1').trim()
         string = string.toLowerCase();

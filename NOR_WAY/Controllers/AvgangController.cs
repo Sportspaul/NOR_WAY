@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using NOR_WAY.DAL;
 using NOR_WAY.DAL.Interfaces;
 using NOR_WAY.Model;
 
@@ -61,9 +56,10 @@ namespace NOR_WAY.Controllers
         public async Task<ActionResult> HentAvganger(string linjekode, int sidenummer)
         {
             // TODO: Legg til sjekk for Unauthorized
-            if (ModelState.IsValid) { 
+            if (ModelState.IsValid)
+            {
                 List<AvgangModel> avganger = await _db.HentAvganger(linjekode, sidenummer);
-                if (avganger == null)
+                if (avganger.Count == 0)
                 {
                     _log.LogInformation("Listen med avganger ble ikke funnet");
                     return NotFound("Listen med avganger ble ikke funnet");
@@ -106,7 +102,7 @@ namespace NOR_WAY.Controllers
             }
             _log.LogInformation("Feil i inputvalideringen på server");
             return BadRequest("Feil i inputvalidering på server");
-    }
+        }
 
         public async Task<ActionResult> OppdaterAvgang(Avreisetid avreisetid)
         {

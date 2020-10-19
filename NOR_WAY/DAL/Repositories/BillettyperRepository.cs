@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL.Interfaces;
-using NOR_WAY.Model;
 
 namespace NOR_WAY.DAL.Repositories
 {

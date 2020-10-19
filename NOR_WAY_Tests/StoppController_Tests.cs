@@ -226,6 +226,42 @@ namespace NOR_WAY_Tests
             Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
         }
 
+
+        [Fact]
+        public async Task HentAlleStoppMedRuter_RiktigeVerdier()
+        {
+            // Arrange
+            List<StoppMedLinjekoder> forventedeStopp = HentStoppMedLinjekoderListe();
+            mockRepo.Setup(b => b.HentAlleStoppMedRuter()).ReturnsAsync(HentStoppMedLinjekoderListe());
+
+            // Act
+            var resultat = await stoppController.HentAlleStoppMedRuter() as OkObjectResult;
+            List<StoppMedLinjekoder> faktiskeStopp = (List<StoppMedLinjekoder>) resultat.Value;
+
+            // Assert
+            for(int i = 0; i < faktiskeStopp.Count; i++)
+            {
+                Assert.Equal(forventedeStopp[i].Linjekoder, faktiskeStopp[i].Linjekoder);
+                Assert.Equal(forventedeStopp[i].Id, faktiskeStopp[i].Id);
+                Assert.Equal(forventedeStopp[i].Stoppnavn, faktiskeStopp[i].Stoppnavn);
+            }
+        }
+
+        [Fact]
+        public async Task HentAlleStoppMedRuter_Null()
+        {
+            // Arrange
+            mockRepo.Setup(b => b.HentAlleStoppMedRuter()).ReturnsAsync(() => null);
+
+            // Act
+            var resultat = await stoppController.HentAlleStoppMedRuter() as BadRequestObjectResult;
+            
+            // Assert
+            Assert.Equal("Ingen Stopp ble funnet", resultat.Value);
+        }
+
+
+
         //TODO: Legge til innlogget/ikke tilgang tester
 
 
@@ -241,6 +277,15 @@ namespace NOR_WAY_Tests
             Stopp stopp3 = new Stopp { Id = 1, Navn = "Vadheim" };
             Stopp stopp4 = new Stopp { Id = 1, Navn = "Trondheim" };
             return new List<Stopp> { stopp1, stopp2, stopp3, stopp4 };
+        }
+
+        private List<StoppMedLinjekoder> HentStoppMedLinjekoderListe()
+        {
+            StoppMedLinjekoder stopp1 = new StoppMedLinjekoder { Id = 1, Stoppnavn = "Bergen", Linjekoder ="NW1"};
+            StoppMedLinjekoder stopp2 = new StoppMedLinjekoder { Id = 1, Stoppnavn = "Oslo", Linjekoder ="NW3" };
+            StoppMedLinjekoder stopp3 = new StoppMedLinjekoder { Id = 1, Stoppnavn = "Vadheim", Linjekoder ="NW1"};
+            StoppMedLinjekoder stopp4 = new StoppMedLinjekoder { Id = 1, Stoppnavn = "Trondheim", Linjekoder ="NW3" };
+            return new List<StoppMedLinjekoder> { stopp1, stopp2, stopp3, stopp4 };
         }
 
         private StoppModel HentInnStopp()

@@ -1,15 +1,14 @@
 ﻿$(function () {
-    Hjelpemetoder.endreBakgrunn();
     const res = $.post("../Ruter/HentAlleRuter");
     const link = "nyRute.html";
     lagRuteoversikt(res, link);
 });
 
 function slettRad(id) {
-    $.get(`../Ruter/FjernRute?linjekode=${id}`, function () {
+    $.get(`../Ruter/FjernRute?linjekode=${id}`, () => {
         $(`#${id}`).remove();
     })
-        .fail(function () {
-            console.log("Ruten ble IKKE fjernet");
-        });;
+    .fail( () => {
+        console.log("Ruten ble IKKE fjernet");
+    });;
 }

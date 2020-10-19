@@ -12,7 +12,7 @@ $("#tittel").html(`Oppdater Stoppnavn`);
 lagre.val("Oppdater Stoppnavn");
     
 const url = `../Stopp/HentEtStopp?id=${id}`
-$.get(url, function (stopp) {
+$.get(url, (stopp) => {
     fyllInputfelter(stopp);
 })
 lagre.click(()=> {
@@ -28,7 +28,7 @@ function oppdaterStoppnavn() {
         let stopp = lagStoppObjekt();
         console.log(stopp);
         stopp.id = id;
-        $.post("../stopp/oppdaterstoppnavn", stopp, function () {
+        $.post("../stopp/oppdaterstoppnavn", stopp, () => {
             location.replace("stopp.html?nystoppnavn");
         })
     }

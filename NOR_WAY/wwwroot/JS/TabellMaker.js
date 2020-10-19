@@ -79,6 +79,7 @@
     // Legger tabellen til en container
     const tabellContainer = document.getElementById("tabellContainer");
     tabellContainer.appendChild(tabell);
+    Hjelpemetoder.endreBakgrunn();
 }
 
 async function lagRuteoversikt(res, link) {

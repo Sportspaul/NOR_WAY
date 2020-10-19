@@ -1,9 +1,9 @@
 ﻿$(function () {
     let url = "nyStopp.html";
-    let res = $.post("../Stopp/HentAlleStoppMedRuter");
-    lagTabell(res, "U", url);
+    let res = $.get("../Stopp/HentAlleStoppMedRuter", () => {
+        lagTabell(res, "U", url);
+    });
     filterStoppListe();
-    Hjelpemetoder.endreBakgrunn();
 });
 
 function filterStoppListe() {

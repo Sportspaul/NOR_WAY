@@ -15,7 +15,7 @@ if (id.length == 2) {
     lagre.val("Oppdater Rutestopp");
 
     const url = `../RuteStopp/HentEtRuteStopp?id=${id[1]}`
-    $.get(url, function (ruteStopp) {
+    $.get(url, (ruteStopp) => {
         fyllInputfelter(ruteStopp);
     })
     lagre.click(() => {
@@ -42,7 +42,7 @@ function oppdaterRuteStopp() {
     if (validerRuteStoppInput()) {
         let ruteStopp = lagRuteStoppObjekt();
         ruteStopp.Id = id[1];
-        $.post("../RuteStopp/OppdaterRuteStopp", ruteStopp, function () {
+        $.post("../RuteStopp/OppdaterRuteStopp", ruteStopp, () => {
             location.replace(`ruteStopp.html?linjekode=${id[0]}`);
         })
     }
@@ -51,7 +51,7 @@ function oppdaterRuteStopp() {
 function nyttRuteStopp() {
     if (validerRuteStoppInput()) {
         let ruteStopp = lagRuteStoppObjekt();
-        $.post("../RuteStopp/NyRuteStopp", ruteStopp, function () {
+        $.post("../RuteStopp/NyRuteStopp", ruteStopp, () => {
             location.replace(`ruteStopp.html?linjekode=${id[0]}`);
         })
     }

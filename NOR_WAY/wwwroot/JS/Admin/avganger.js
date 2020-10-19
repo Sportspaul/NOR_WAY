@@ -1,6 +1,6 @@
 $(function () {
     $("#tittel").html(`Avganger for: ${linjekode}`);
-    let res = $.get(`../Avgang/HentAvganger?linjekode=${linjekode}&sidenummer=${sidenummer}`, function () {
+    let res = $.get(`../Avgang/HentAvganger?linjekode=${linjekode}&sidenummer=${sidenummer}`, () => {
         lagAvgangOversikt(res, "CUD", `nyAvgang.html?${linjekode}`);
     })
         .fail(function () {
@@ -19,7 +19,7 @@ let sidenummer = urlParam[2];
 let linjekode = urlParam[1].split("&")[0];
 
 function slettRad(id) {
-    $.get(`../Avgang/FjernAvgang?id=${id}`, function () {
+    $.get(`../Avgang/FjernAvgang?id=${id}`, () => {
         $(`#${id}`).remove();
     })
         .fail(function () {

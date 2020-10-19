@@ -12,7 +12,7 @@ if (id != "") {
     lagre.val("Oppdater Billettype");
 
     const url = `../Billettyper/HentEnBillettype?id=${id}`
-    $.get(url, function (billettype) {
+    $.get(url, (billettype) => {
         fyllInputfelter(billettype);
     })
     lagre.click(() => {
@@ -35,7 +35,7 @@ function oppdaterBillettype() {
     if (validerBillettypeInput()) {
         let billettype = lagBillettypeObjekt();
         billettype.Id = id;
-        $.post("../Billettyper/OppdaterBillettype", billettype, function () {
+        $.post("../Billettyper/OppdaterBillettype", billettype, () => {
             location.replace("billettyper.html?nyBillettype");
         })
     }
@@ -44,7 +44,7 @@ function oppdaterBillettype() {
 function nyBillettype() {
     if (validerBillettypeInput()) {
         const billettype = lagBillettypeObjekt();
-        $.post("../Billettyper/NyBillettype", billettype, function () {
+        $.post("../Billettyper/NyBillettype", billettype, () => {
             location.replace("billettyper.html?billettypeOppdatert");
         })
     }

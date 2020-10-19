@@ -1,8 +1,4 @@
-﻿$(function () {
-    Hjelpemetoder.endreBakgrunn();
-});
-
-async function sokEtterOrdre() {
+﻿async function sokEtterOrdre() {
     const epost = $("#ordreEpost").val();
     let data = await $.get(`../Ordre/HentOrdre?epost=${epost}`);
     data.forEach((rad) => {

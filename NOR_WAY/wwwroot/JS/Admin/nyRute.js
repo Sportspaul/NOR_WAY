@@ -13,7 +13,7 @@ if (id != "") {
     lagre.val("Oppdater Rute");
 
     const url = `../Ruter/HentEnRute?linjekode=${id}`
-    $.get(url, function (rute) {
+    $.get(url, (rute) => {
         fyllInputfelter(rute);
     })
     lagre.click(() => {
@@ -38,7 +38,7 @@ function fyllInputfelter(rute) {
 function oppdaterRute() {
     if (validerRuteInput()) {
         const rute = lagRuteObjekt();
-        $.post("../Ruter/OppdaterRute", rute, function () {
+        $.post("../Ruter/OppdaterRute", rute, () => {
             location.replace("ruter.html?ruteOppdatert");
         })
     }
@@ -47,7 +47,7 @@ function oppdaterRute() {
 function nyRute() {
     if (validerRuteInput()) {
         const rute = lagRuteObjekt();
-        $.post("../Ruter/NyRute", rute, function () {
+        $.post("../Ruter/NyRute", rute, () => {
             location.replace("ruter.html?nyRute");
         })
     }

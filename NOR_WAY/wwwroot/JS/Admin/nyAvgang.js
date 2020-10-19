@@ -15,7 +15,7 @@ if (id.length == 2) {
     lagre.val("Oppdater Avgang");
 
     const url = `../Avgang/HentEnAvgang?id=${id[1]}`
-    $.get(url, function (avgang) {
+    $.get(url, (avgang) => {
         fyllInputfelter(avgang);
     })
     lagre.click(() => {
@@ -40,7 +40,7 @@ function oppdaterAvgang() {
     if (validerAvgangInput()) {
         let avgang = lagAvgangObjekt();
         avgang.Id = id[1];
-        $.post("../Avgang/OppdaterAvgang", avgang, function () {
+        $.post("../Avgang/OppdaterAvgang", avgang, () => {
             location.replace("avganger.html?linjekode=NW431&side=0");
         })
     }
@@ -51,7 +51,7 @@ function nyAvgang() {
         let avgang = lagAvgangObjekt();
         avgang.Linjekode = $("#linjekode").val();
         avgang.SolgteBilletter = 0;
-        $.post("../Avgang/NyAvgang", avgang, function () {
+        $.post("../Avgang/NyAvgang", avgang, () => {
             location.replace("avganger.html?linjekode=NW431&side=0");
         })
     }

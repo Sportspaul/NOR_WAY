@@ -1,5 +1,5 @@
 ﻿$(function () {
-    Hjelpemetoder.endreBakgrunn();
-    let res = $.post("../Billettyper/HentAlleBillettyper");
-    lagTabell(res, "CU", "nyBillettype.html");
+    let res = $.get("../Billettyper/HentAlleBillettyper", () => {
+        lagTabell(res, "CU", "nyBillettype.html");
+    });
 });

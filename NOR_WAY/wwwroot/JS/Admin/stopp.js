@@ -11,9 +11,10 @@ function filterStoppListe() {
 
     filter.addEventListener("keyup", (e) => {
         let brukerInput = e.target.value.toLowerCase();
-        let stoppNavn = document.querySelectorAll("#navn");
+        let stoppNavn = document.querySelectorAll("#stoppnavn");
 
         for(let i = 1; i < stoppNavn.length; i++){
+            console.log(stoppNavn[i].textContent.substr(0, brukerInput.length).toLowerCase());
             if (stoppNavn[i].textContent.substr(0, brukerInput.length).toLowerCase() == brukerInput.toLowerCase()) {
                 stoppNavn[i].closest("tr").style.display = "";
             }

@@ -93,28 +93,39 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
+        // Metode for å hente alle stopp og en liste med linjekoder de er knyttet til
         public async Task<List<StoppMedLinjekoder>> HentAlleStoppMedRuter()
         {
             try
             {
+                // Henter alle RuteStopp
                 List<RuteStopp> rutestopp = await _db.RuteStopp
                         .Select(rs => new RuteStopp
                         {
                             Rute = rs.Rute,
                             Stopp = rs.Stopp
-                        }).OrderBy(rs => rs.Stopp.Id).ToListAsync();
+                        }).ToListAsync();
 
-                List<StoppMedLinjekoder> stoppMedLinjekoder = new List<StoppMedLinjekoder>();
-                for (int i = 0; i < rutestopp.Count(); i++)
+                // Henter alle Stopp
+                List<Stopp> stopp = await HentAlleStopp(); 
+
+                // Listen som skal returneres
+                List<StoppMedLinjekoder> stoppMedLinjekoder = new List<StoppMedLinjekoder>();             
+
+                // Lopper gjennom alle stoppene
+                for (int i = 0; i < stopp.Count(); i++) 
                 {
-                    List<string> linjekoder = new List<string>();
-                    //TODO: Feil implementert, rette opp
-                    /*
-                     * Alle rutestopp med felles stoppID, skal legges inn i et StoppMedLinjekoder-objekt
-                     */
-                    linjekoder.Add(rutestopp[i].Rute.Linjekode);
+                    // Liste med linjekoder knyttet til et spesifikk stopp
+                    List<string> linjekoder = rutestopp
+                        .Where(s => s.Stopp.Id == stopp[i].Id)
+                        .Select(rs => rs.Rute.Linjekode).ToList();  
 
-                    StoppMedLinjekoder smlk = new StoppMedLinjekoder { Id = rutestopp[i].Stopp.Id, Stoppnavn = rutestopp[i].Stopp.Navn, Linjekoder = linjekoder };
+                    // Nytt StoppMedLinjekoder-objekt legges til returlisten
+                    var smlk = new StoppMedLinjekoder {
+                        Id = stopp[i].Id,
+                        Stoppnavn = stopp[i].Navn,
+                        Linjekoder = linjekoder
+                    };
                     stoppMedLinjekoder.Add(smlk);
                 }
                 return stoppMedLinjekoder;

@@ -13,6 +13,8 @@ namespace NOR_WAY.Controllers
         private readonly IAvgangRepository _db;
         private ILogger<AvgangController> _log;
         private const string _innlogget = "Innlogget";
+        private string melding;
+        private string ugyldigValidering = "Feil i inputvalideringen på server";
 
         public AvgangController(IAvgangRepository db, ILogger<AvgangController> log)
         {
@@ -27,13 +29,14 @@ namespace NOR_WAY.Controllers
                 Reisedetaljer nesteAvgang = await _db.FinnNesteAvgang(kriterier);
                 if (nesteAvgang == null)
                 {
-                    _log.LogInformation("Avgang ikke funnet");
-                    return NotFound("Avgang ikke funnet");
+                    melding = $"Ingen avgang ble funnet med kriteriene: {kriterier}";
+                    _log.LogError(melding);
+                    return NotFound(melding);
                 }
                 return Ok(nesteAvgang);
             }
-            _log.LogInformation("Feil i inputvalideringen på server");
-            return BadRequest("Feil i inputvalideringen på server");
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
 
         public async Task<ActionResult> FjernAvgang(int id)
@@ -44,13 +47,16 @@ namespace NOR_WAY.Controllers
                 bool returOK = await _db.FjernAvgang(id);
                 if (!returOK)
                 {
-                    _log.LogInformation("Avgangen kunne ikke slettes!");
-                    return BadRequest("Avgangen kunne ikke slettes!");
+                    melding = $"Avgangen med id: {id}, kunne ikke slettes";
+                    _log.LogError(melding);
+                    return BadRequest(melding);
                 }
-                return Ok("Avgangen ble slettet!");
+                melding = $"Avgangen med id: {id}, ble slettet";
+                _log.LogInformation(melding);
+                return Ok(melding);
             }
-            _log.LogInformation("Feil i inputvalideringen på server");
-            return BadRequest("Feil i inputvalidering på server");
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
 
         public async Task<ActionResult> HentAvganger(string linjekode, int sidenummer)
@@ -61,13 +67,14 @@ namespace NOR_WAY.Controllers
                 List<AvgangModel> avganger = await _db.HentAvganger(linjekode, sidenummer);
                 if (avganger.Count == 0)
                 {
-                    _log.LogInformation("Listen med avganger ble ikke funnet");
-                    return NotFound("Listen med avganger ble ikke funnet");
+                    melding = $"Listen med avganger ble ikke funnet for linjekode: {linjekode} og sidenummer: {sidenummer}";
+                    _log.LogError(melding);
+                    return NotFound(melding);
                 }
                 return Ok(avganger);
             }
-            _log.LogInformation("Feil i inputvalideringen på server");
-            return BadRequest("Feil i inputvalideringen på server");
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
 
         public async Task<ActionResult> HentEnAvgang(int id)
@@ -78,13 +85,14 @@ namespace NOR_WAY.Controllers
                 NyAvgang avganger = await _db.HentEnAvgang(id);
                 if (avganger == null)
                 {
-                    _log.LogInformation("Avgangen ble ikke funnet");
-                    return NotFound("Avganger ble ikke funnet");
+                    melding = $"Avganen med id: {id}, kunne ikke hentes";
+                    _log.LogError(melding);
+                    return NotFound(melding);
                 }
                 return Ok(avganger);
             }
-            _log.LogInformation("Feil i inputvalideringen på server");
-            return BadRequest("Feil i inputvalideringen på server");
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
 
         public async Task<ActionResult> NyAvgang(NyAvgang nyAvgang)
@@ -95,13 +103,16 @@ namespace NOR_WAY.Controllers
                 bool returOK = await _db.NyAvgang(nyAvgang);
                 if (!returOK)
                 {
-                    _log.LogInformation("Ny avgang kunne ikke lagres!");
-                    return BadRequest("Ny avgang kunne ikke lagres!");
+                    melding = $"Ny avgang kunne ikke lagres med verdiene: {nyAvgang}";
+                    _log.LogError(melding);
+                    return BadRequest(melding);
                 }
-                return Ok("Ny avgang ble lagret!");
+                melding = $"Ny avgang ble lagret med verdiene: {nyAvgang}";
+                _log.LogInformation(melding);
+                return Ok(melding);
             }
-            _log.LogInformation("Feil i inputvalideringen på server");
-            return BadRequest("Feil i inputvalidering på server");
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
 
         public async Task<ActionResult> OppdaterAvgang(Avreisetid avreisetid)
@@ -112,13 +123,16 @@ namespace NOR_WAY.Controllers
                 bool returOK = await _db.OppdaterAvgang(avreisetid);
                 if (!returOK)
                 {
-                    _log.LogInformation("Endringen kunne ikke utføres");
-                    return NotFound($"Endringen av avgang med Id: { avreisetid.Id }, kunne ikke utføres");
+                    melding = $"Endring av Avgang kunne ikke utføres med verdiene: {avreisetid}";
+                    _log.LogError(melding);
+                    return NotFound(melding);
                 }
-                return Ok($"Avgang med Id: { avreisetid.Id }, ble endret");
+                melding = $"Endring av Avgang ble utført med verdiene: {avreisetid}";
+                _log.LogInformation(melding);
+                return Ok(melding);
             }
-            _log.LogInformation("Feil i inputvalidering");
-            return BadRequest("Feil i inputvalidering på server");
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
     }
 }

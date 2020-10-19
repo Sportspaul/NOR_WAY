@@ -13,6 +13,8 @@ namespace NOR_WAY.Controllers
     {
         private readonly IOrdreRepository _db;
         private ILogger<OrdreController> _log;
+        private string melding;
+        private string ugyldigValidering = "Feil i inputvalideringen på server";
 
         public OrdreController(IOrdreRepository db, ILogger<OrdreController> log)
         {
@@ -27,13 +29,16 @@ namespace NOR_WAY.Controllers
                 bool returOK = await _db.FullforOrdre(ordre);
                 if (!returOK)
                 {
-                    _log.LogInformation("Ordren kunne ikke lagres!");
-                    return BadRequest("Ordren kunne ikke lagres!");
+                    melding = $"Ny ordre kunne ikke lagres med verdiene: {ordre}";
+                    _log.LogError(melding);
+                    return BadRequest(melding);
                 }
-                return Ok("Ordren ble lagret!");
+                melding = $"Ny ordre ble lagret med verdiene: {ordre}";
+                _log.LogInformation(melding);
+                return Ok(melding);
             }
-            _log.LogInformation("Feil i inputvalideringen");
-            return BadRequest("Feil i inputvalidering på server");
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
 
         public async Task<ActionResult> HentOrdre(string epost)

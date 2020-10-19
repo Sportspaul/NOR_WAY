@@ -24,66 +24,73 @@ namespace NOR_WAY.DAL.Repositories
 
         public async Task<Reisedetaljer> FinnNesteAvgang(Avgangkriterier input)
         {
-            // Henter avgang- og påstigningsstoppet fra DB
-            Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == input.StartStopp);
-            Stopp sluttStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == input.SluttStopp);
-            if (startStopp.Equals(sluttStopp))
+            try
             {
-                _log.LogInformation("Sluttstopp kan ikke være lik startstopp!");
+                // Henter avgang- og påstigningsstoppet fra DB
+                Stopp startStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == input.StartStopp);
+                Stopp sluttStopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == input.SluttStopp);
+                if (startStopp.Equals(sluttStopp))
+                {
+                    _log.LogInformation("Sluttstopp kan ikke være lik startstopp!");
+                    return null;
+                }
+
+                // Finner alle Rutene som inkluderer påstigning og som inkluderer avstigning
+                List<Ruter> startStoppRuter = await _hjelp.FinnRuteneTilStopp(startStopp);
+                List<Ruter> sluttStoppRuter = await _hjelp.FinnRuteneTilStopp(sluttStopp);
+
+                // Finner ruten påstigning og avstigning har til felles
+                Ruter fellesRute = _hjelp.FinnFellesRute(startStoppRuter, sluttStoppRuter);
+                if (fellesRute == null) { return null; } // Hvis stoppene ikke har noen felles ruter
+
+                // Finne ut hvilket stoppNummer påstigning og avstigning har i den felles ruten
+                int stoppNummer1 = await _hjelp.FinnStoppNummer(startStopp, fellesRute);
+                int stoppNummer2 = await _hjelp.FinnStoppNummer(sluttStopp, fellesRute);
+                // Hvis første stopp kommer senere i ruten enn siste stopp
+                if (stoppNummer1 > stoppNummer2)
+                {
+                    _log.LogInformation("Seneste stopp har ikke lavere stoppnummer enn tidligste stopp!");
+                    return null;
+                }
+
+                int reisetid = await _hjelp.BeregnReisetid(stoppNummer1, stoppNummer2, fellesRute); // Beregner reisetiden fra stopp påstigning til avstigning
+                int antallBilletter = input.Billettyper.Count();    // antall billetter brukeren ønsker
+                DateTime innTid = _hjelp.StringTilDateTime(input.Dato, input.Tidspunkt);   // Konverterer fra strings til DateTime
+
+                // Finne neste avgang som passer, basert på brukerens input
+                Avganger nesteAvgang = await _hjelp.NesteAvgang(fellesRute, reisetid, input.AvreiseEtter, innTid, antallBilletter);
+                if (nesteAvgang == null) { return null; }  // Hvis ingen avgang ble funnet
+
+                // Beregner avreise og ankomst
+                DateTime avreise = await _hjelp.BeregnAvreisetid(nesteAvgang.Avreise, stoppNummer1, fellesRute);
+                DateTime ankomst = avreise.AddMinutes(reisetid);
+
+                // Konverterer avreise og ankomst fra DateTime til en strings
+                string utAvreise = avreise.ToString("dd-MM-yyyy HH:mm");
+                string utAnkomst = ankomst.ToString("dd-MM-yyyy HH:mm");
+
+                // Beregner prisen basert på startpris og antall stopp
+                int antallStopp = stoppNummer2 - stoppNummer1;
+                int pris = await _hjelp.BeregnPris(fellesRute, antallStopp, input.Billettyper);
+
+                // Opretter Avgang-objektet som skal sendes til klienten
+                Reisedetaljer utAvgang = new Reisedetaljer
+                {
+                    AvgangId = nesteAvgang.Id,
+                    Rutenavn = fellesRute.Rutenavn,
+                    Linjekode = fellesRute.Linjekode,
+                    Pris = pris,
+                    Avreise = utAvreise,
+                    Ankomst = utAnkomst,
+                    Reisetid = reisetid
+                };
+
+                return utAvgang;
+            }
+            catch (Exception e) {
+                _log.LogError(e.Message);
                 return null;
             }
-
-            // Finner alle Rutene som inkluderer påstigning og som inkluderer avstigning
-            List<Ruter> startStoppRuter = await _hjelp.FinnRuteneTilStopp(startStopp);
-            List<Ruter> sluttStoppRuter = await _hjelp.FinnRuteneTilStopp(sluttStopp);
-
-            // Finner ruten påstigning og avstigning har til felles
-            Ruter fellesRute = _hjelp.FinnFellesRute(startStoppRuter, sluttStoppRuter);
-            if (fellesRute == null) { return null; } // Hvis stoppene ikke har noen felles ruter
-
-            // Finne ut hvilket stoppNummer påstigning og avstigning har i den felles ruten
-            int stoppNummer1 = await _hjelp.FinnStoppNummer(startStopp, fellesRute);
-            int stoppNummer2 = await _hjelp.FinnStoppNummer(sluttStopp, fellesRute);
-            // Hvis første stopp kommer senere i ruten enn siste stopp
-            if (stoppNummer1 > stoppNummer2)
-            {
-                _log.LogInformation("Seneste stopp har ikke lavere stoppnummer enn tidligste stopp!");
-                return null;
-            }
-
-            int reisetid = await _hjelp.BeregnReisetid(stoppNummer1, stoppNummer2, fellesRute); // Beregner reisetiden fra stopp påstigning til avstigning
-            int antallBilletter = input.Billettyper.Count();    // antall billetter brukeren ønsker
-            DateTime innTid = _hjelp.StringTilDateTime(input.Dato, input.Tidspunkt);   // Konverterer fra strings til DateTime
-
-            // Finne neste avgang som passer, basert på brukerens input
-            Avganger nesteAvgang = await _hjelp.NesteAvgang(fellesRute, reisetid, input.AvreiseEtter, innTid, antallBilletter);
-            if (nesteAvgang == null) { return null; }  // Hvis ingen avgang ble funnet
-
-            // Beregner avreise og ankomst
-            DateTime avreise = await _hjelp.BeregnAvreisetid(nesteAvgang.Avreise, stoppNummer1, fellesRute);
-            DateTime ankomst = avreise.AddMinutes(reisetid);
-
-            // Konverterer avreise og ankomst fra DateTime til en strings
-            string utAvreise = avreise.ToString("dd-MM-yyyy HH:mm");
-            string utAnkomst = ankomst.ToString("dd-MM-yyyy HH:mm");
-
-            // Beregner prisen basert på startpris og antall stopp
-            int antallStopp = stoppNummer2 - stoppNummer1;
-            int pris = await _hjelp.BeregnPris(fellesRute, antallStopp, input.Billettyper);
-
-            // Opretter Avgang-objektet som skal sendes til klienten
-            Reisedetaljer utAvgang = new Reisedetaljer
-            {
-                AvgangId = nesteAvgang.Id,
-                Rutenavn = fellesRute.Rutenavn,
-                Linjekode = fellesRute.Linjekode,
-                Pris = pris,
-                Avreise = utAvreise,
-                Ankomst = utAnkomst,
-                Reisetid = reisetid
-            };
-
-            return utAvgang;
         }
 
         public async Task<bool> FjernAvgang(int id)

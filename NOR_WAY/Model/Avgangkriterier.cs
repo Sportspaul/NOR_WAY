@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace NOR_WAY.Model
 {
@@ -23,5 +26,16 @@ namespace NOR_WAY.Model
         public bool AvreiseEtter { get; set; }
 
         public List<string> Billettyper { get; set; }
+
+        public override string ToString()
+        {
+            string utString = $"StartStopp: {StartStopp}, " +
+                $"SluttStopp: {SluttStopp}, " +
+                $"Dato: {Dato}, " +
+                $"Tidspunkt: {Tidspunkt}, " +
+                $"AvreiseEtter: {AvreiseEtter}, " +
+                $"Billettyper: {string.Format(string.Join(", ", Billettyper))}";
+            return utString;
+        }
     }
 }

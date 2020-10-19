@@ -12,6 +12,8 @@ namespace NOR_WAY.Controllers
     {
         private readonly IBillettyperRepository _db;
         private ILogger<BillettyperController> _log;
+        private string melding;
+        private string ugyldigValidering = "Feil i inputvalideringen på server";
 
         public BillettyperController(IBillettyperRepository db, ILogger<BillettyperController> log)
         {
@@ -27,13 +29,16 @@ namespace NOR_WAY.Controllers
                 bool returOK = await _db.NyBillettype(innBillettype);
                 if (!returOK)
                 {
-                    _log.LogInformation("Ny Billettype kunne ikke lagres!");
-                    return BadRequest("Ny billettype kunne ikke lagres!");
+                    melding = $"Ny Billettype kunne ikke lagres med verdiene: {innBillettype}";
+                    _log.LogError(melding);
+                    return BadRequest(melding);
                 }
-                return Ok("Ny billettype ble lagret!");
+                melding = $"Ny billettype ble lagret med verdiene: {innBillettype}";
+                _log.LogInformation(melding);
+                return Ok(melding);
             }
-            _log.LogInformation("Feil i inputvalideringen på server");
-            return BadRequest("Feil i inputvalidering på server");
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
 
         public async Task<ActionResult> HentAlleBillettyper()
@@ -41,8 +46,9 @@ namespace NOR_WAY.Controllers
             List<Billettyper> billettypene = await _db.HentAlleBillettyper();
             if (billettypene == null)
             {
-                _log.LogInformation("Ingen Billettyper ble funnet");
-                return NotFound("Ingen billettyper ble funnet");
+                melding = "Ingen Billettyper ble funnet";
+                _log.LogError(melding);
+                return NotFound(melding);
             }
             return Ok(billettypene);
         }
@@ -55,13 +61,14 @@ namespace NOR_WAY.Controllers
                 Billettyper billettype = await _db.HentEnBillettype(id);
                 if (billettype == null)
                 {
-                    _log.LogInformation("Billettypen ble ikke funnet");
-                    return NotFound("Billettyper ble ikke funnet");
+                    melding = $"Billettypen med Id: {id}, ble ikke funnet";
+                    _log.LogError(melding);
+                    return NotFound(melding);
                 }
                 return Ok(billettype);
             }
-            _log.LogInformation("Feil i inputvalideringen på server");
-            return BadRequest("Feil i inputvalidering på server");
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
 
         public async Task<ActionResult> OppdaterBillettype(Billettyper oppdatertBillettype)
@@ -72,13 +79,16 @@ namespace NOR_WAY.Controllers
                 bool returOK = await _db.OppdaterBillettype(oppdatertBillettype);
                 if (!returOK)
                 {
-                    _log.LogInformation("Endringen av Billettype kunne ikke utføres");
-                    return NotFound("Endringen av billettype kunne ikke utføres");
+                    melding = $"Endringen av Billettype kunne ikke utføres med veridene: {oppdatertBillettype}";
+                    _log.LogError(melding);
+                    return NotFound(melding);
                 }
-                return Ok("Billettypen ble endret");
+                melding = $"Endringen av Billettype ble utført med verdiene: {oppdatertBillettype}";
+                _log.LogInformation(melding);
+                return Ok(melding);
             }
-            _log.LogInformation("Feil i inputvalidering");
-            return BadRequest("Feil i inputvalidering på server");
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
     }
 }

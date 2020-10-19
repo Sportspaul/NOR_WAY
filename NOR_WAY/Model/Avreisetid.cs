@@ -12,5 +12,11 @@ namespace NOR_WAY.Model
 
         [RegularExpression(@"([0-9]{2})[:]([0-9]{2})")]
         public string Tidspunkt { get; set; }
+
+        public override string ToString()
+        {
+            string utString = $"Id: {Id}, Dato: {Dato}, Tidspunkt: {Tidspunkt}";
+            return utString;
+        }
     }
 }

@@ -17,6 +17,16 @@ namespace NOR_WAY.DAL
         public int Startpris { get; set; }
         public int TilleggPerStopp { get; set; }
         public int Kapasitet { get; set; }
+
+        public override string ToString()
+        {
+            string utString = $"Linjekode: {Linjekode}, " +
+                $"Rutenavn: {Rutenavn}, " +
+                $"Startpris: {Startpris}, " +
+                $"TilleggPerStopp: {TilleggPerStopp}, " +
+                $"Kapasistet: {Kapasitet}";
+            return utString;
+        }
     }
 
     [ExcludeFromCodeCoverage]
@@ -24,6 +34,11 @@ namespace NOR_WAY.DAL
     {
         public int Id { get; set; } // PK
         public string Navn { get; set; }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}, Navn: {Navn}";
+        }
     }
 
     [ExcludeFromCodeCoverage]
@@ -83,6 +98,12 @@ namespace NOR_WAY.DAL
         public string Billettype { get; set; }
 
         public int Rabattsats { get; set; }
+
+        public override string ToString()
+        {
+            string utString = $"Id: {Id}, Billettype: {Billettype}, Rabattsats: {Rabattsats}";
+            return utString;
+        }
     }
 
     [ExcludeFromCodeCoverage]

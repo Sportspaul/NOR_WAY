@@ -24,5 +24,16 @@ namespace NOR_WAY.Model
         public int AvgangId { get; set; }
 
         public List<string> Billettyper { get; set; }
+
+        public override string ToString()
+        {
+            string utString = $"Epost: {Epost}, " +
+                $"StartStopp: {StartStopp}, " +
+                $"SluttStopp: {SluttStopp}, " +
+                $"Linjekode: {Linjekode}, " +
+                $"AvgangId {AvgangId}, " +
+                $"Billettyper: { string.Format(string.Join(", ", Billettyper))}";
+            return utString;
+        }
     }
 }

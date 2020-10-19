@@ -15,6 +15,8 @@ namespace NOR_WAY.Controllers
         private readonly IStoppRepository _db;
         private ILogger<StoppController> _log;
         private const string _innlogget = "Innlogget";
+        private string melding;
+        private string ugyldigValidering = "Feil i inputvalideringen på server";
 
         public StoppController(IStoppRepository db, ILogger<StoppController> log)
         {
@@ -22,36 +24,40 @@ namespace NOR_WAY.Controllers
             _log = log;
         }
 
-        public async Task<ActionResult> FinnMuligeStartStopp(StoppModel startStopp)
+        public async Task<ActionResult> FinnMuligeStartStopp(StoppModel sluttStopp)
         {
             if (ModelState.IsValid)
             {
-                List<Stopp> stoppListe = await _db.FinnMuligeStartStopp(startStopp);
+                List<Stopp> stoppListe = await _db.FinnMuligeStartStopp(sluttStopp);
                 if (stoppListe.Count == 0)
                 {
-                    _log.LogInformation("Ingen mulige StartStopp ble funnet");
-                    return NotFound("Ingen mulige StartStopp ble funnet");
+                    melding = $"Ingen mulige StartStopp ble funnet for SluttStopp: {sluttStopp}";
+                    _log.LogError(melding);
+                    return NotFound(melding);
                 }
                 return Ok(stoppListe); // returnerer alltid OK, null ved tom DB
             }
-            _log.LogInformation("Feil i inputvalideringen på server");
-            return BadRequest("Feil i inputvalideringen på server");
+            
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
 
-        public async Task<ActionResult> FinnMuligeSluttStopp(StoppModel sluttStopp)
+        public async Task<ActionResult> FinnMuligeSluttStopp(StoppModel startStopp)
         {
             if (ModelState.IsValid)
             {
-                List<Stopp> stoppListe = await _db.FinnMuligeSluttStopp(sluttStopp);
+                List<Stopp> stoppListe = await _db.FinnMuligeSluttStopp(startStopp);
                 if (stoppListe.Count == 0)
                 {
-                    _log.LogInformation("Ingen mulige SluttStopp ble funnet");
-                    return NotFound("Ingen mulige SluttStopp ble funnet");
+                    melding = $"Ingen mulige StartStopp ble funnet for StartStopp: {startStopp}";
+                    _log.LogError(melding);
+                    return NotFound(melding);
                 }
                 return Ok(stoppListe);
             }
-            _log.LogInformation("Feil i inputvalideringen på server");
-            return BadRequest("Feil i inputvalideringen på server");
+            
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
 
         public async Task<ActionResult> HentEtStopp(int id)
@@ -77,8 +83,9 @@ namespace NOR_WAY.Controllers
             List<Stopp> alleStopp = await _db.HentAlleStopp();
             if (alleStopp == null)
             {
-                _log.LogInformation("Ingen stopp ble funnet");
-                return NotFound("Ingen stopp ble funnet");
+                melding = "Ingen stopp ble funnet";
+                _log.LogError(melding);
+                return NotFound(melding);
             }
             return Ok(alleStopp); // returnerer alltid OK, null ved tom DB
         }
@@ -95,13 +102,17 @@ namespace NOR_WAY.Controllers
                 bool EndringOK = await _db.OppdaterStoppnavn(innStopp);
                 if (!EndringOK)
                 {
-                    _log.LogInformation("Stoppnavnet kunne ikke endres");
-                    return BadRequest("Stoppnavnet kunne ikke endres");
+                    melding = $"Endring av Stoppnavn kunne ikke utføres med verdiene: {innStopp}";
+                    _log.LogError(melding);
+                    return BadRequest(melding);
                 }
-                return Ok("Stoppnavnet er endret");
+                melding = $"Endring av Stoppnavn ble utført med verdiene: {innStopp}";
+                _log.LogInformation(melding);
+                return Ok(melding);
             }
-            _log.LogInformation("Feil i inputvalideringen på server");
-            return BadRequest("Feil i inputvalideringen på server");
+            
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
 
         public async Task<ActionResult> HentAlleStoppMedRuter()
@@ -115,13 +126,14 @@ namespace NOR_WAY.Controllers
                 List<StoppMedLinjekoder> stoppMedLinjekoder = await _db.HentAlleStoppMedRuter();
                 if (stoppMedLinjekoder == null)
                 {
-                    _log.LogInformation("Stoppene kunne ikke hentes");
-                    return BadRequest("Stoppnavnet kunne ikke hentes");
+                    melding = "Ingen Stopp ble funnet";
+                    _log.LogError(melding);
+                    return BadRequest(melding);
                 }
                 return Ok(stoppMedLinjekoder);
             }
-            _log.LogInformation("Feil i inputvalideringen på server");
-            return BadRequest("Feil i inputvalideringen på server");
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
     }
 }

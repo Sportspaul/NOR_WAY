@@ -13,6 +13,8 @@ namespace NOR_WAY.Controllers
     {
         private readonly IRuteStoppRepository _db;
         private ILogger<RuteStoppController> _log;
+        private string melding;
+        private string ugyldigValidering = "Feil i inputvalideringen på server";
 
         public RuteStoppController(IRuteStoppRepository db, ILogger<RuteStoppController> log)
         {
@@ -28,13 +30,16 @@ namespace NOR_WAY.Controllers
                 bool returOK = await _db.FjernRuteStopp(id);
                 if (!returOK)
                 {
-                    _log.LogInformation("RuteStopp kunne ikke slettes!");
-                    return BadRequest("Rutestoppet kunne ikke slettes!");
+                    melding = $"RuteStopp med id: {id}, kunne ikke slettes";
+                    _log.LogError(melding);
+                    return BadRequest(melding);
                 }
-                return Ok("Rutestoppet ble slettet!");
+                melding = $"RuteStopp med id: {id}, ble slettet";
+                _log.LogInformation(melding);
+                return Ok(melding);
             }
-            _log.LogInformation("Feil i inputvalideringen på server");
-            return BadRequest("Feil i inputvalidering på server");
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
 
         public Task<ActionResult> HentAlleRuteStopp()
@@ -44,24 +49,34 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentRuteStopp(string linjekode)
         {
-            List<RuteStoppModel> ruteStoppListe = await _db.HentRuteStopp(linjekode);
-            if (ruteStoppListe.Count == 0)
-            {
-                _log.LogInformation("Ingen RuteStopp ble funnet");
-                return NotFound("Ingen Rute stoppene ble funnet");
+            if (ModelState.IsValid) {
+                List<RuteStoppModel> ruteStoppListe = await _db.HentRuteStopp(linjekode);
+                if (ruteStoppListe.Count == 0) { 
+                    melding = $"Ingen RuteStopp ble funnet med linjekode: {linjekode}";
+                    _log.LogError(melding);
+                    return NotFound(melding);
+                }
+                return Ok(ruteStoppListe);
             }
-            return Ok(ruteStoppListe);
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
 
         public async Task<ActionResult> HentEtRuteStopp(int id)
         {
-            NyRuteStopp ruteStopp = await _db.HentEtRuteStopp(id);
-            if (ruteStopp == null)
+            if (ModelState.IsValid)
             {
-                _log.LogInformation("RuteStoppet ble ikke funnet");
-                return NotFound("Rute stoppene ble ikke funnet");
+                NyRuteStopp ruteStopp = await _db.HentEtRuteStopp(id);
+                if (ruteStopp == null)
+                {
+                    melding = $"RuteStoppet med id: {id}, bli ikke funnet";
+                    _log.LogError(melding);
+                    return NotFound(melding);
+                }
+                return Ok(ruteStopp);
             }
-            return Ok(ruteStopp);
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
 
         public async Task<ActionResult> NyRuteStopp(NyRuteStopp innRuteStopp)
@@ -72,13 +87,16 @@ namespace NOR_WAY.Controllers
                 bool returOK = await _db.NyRuteStopp(innRuteStopp);
                 if (!returOK)
                 {
-                    _log.LogInformation("Nytt RuteStopp kunne ikke lagres!");
-                    return BadRequest("Nytt rutestopp kunne ikke lagres!");
+                    melding = $"Nytt RuteStopp kunne ikke lagres med verdiene: {innRuteStopp}";
+                    _log.LogError(melding);
+                    return BadRequest(melding);
                 }
-                return Ok("Nytt rutestopp ble lagret!");
+                melding = $"Nytt RuteStopp ble lagret med verdiene: {innRuteStopp}";
+                _log.LogInformation(melding);
+                return Ok(melding);
             }
-            _log.LogInformation("Feil i inputvalideringen på server");
-            return BadRequest("Feil i inputvalidering på server");
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
 
         public async Task<ActionResult> OppdaterRuteStopp(NyRuteStopp ruteStoppOppdater)
@@ -89,13 +107,16 @@ namespace NOR_WAY.Controllers
                 bool returOK = await _db.OppdaterRuteStopp(ruteStoppOppdater);
                 if (!returOK)
                 {
-                    _log.LogInformation("Endringen av RuteStopp kunne ikke utføres");
-                    return NotFound("Endringen av rutestoppet kunne ikke utføres");
+                    melding = $"Endringen av RuteStopp kunne ikke utføres med verdiene : {ruteStoppOppdater}";
+                    _log.LogError(melding);
+                    return NotFound(melding);
                 }
-                return Ok("Rutestoppet ble endret");
+                melding = $"Endringen av RuteStopp ble utført med verdiene : {ruteStoppOppdater}";
+                _log.LogInformation(melding);
+                return Ok(melding);
             }
-            _log.LogInformation("Feil i inputvalidering");
-            return BadRequest("Feil i inputvalidering på server");
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
     }
 }

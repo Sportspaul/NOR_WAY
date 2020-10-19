@@ -13,6 +13,8 @@ namespace NOR_WAY.Controllers
         private readonly IBrukereRepository _db;
         private ILogger<BrukereController> _log;
         private const string _innlogget = "Innlogget";
+        private string melding;
+        private string ugyldigValidering = "Feil i inputvalideringen på server";
 
         public BrukereController(IBrukereRepository db, ILogger<BrukereController> log)
         {
@@ -28,14 +30,15 @@ namespace NOR_WAY.Controllers
                 if (!returOk)
                 {
                     HttpContext.Session.SetString(_innlogget, "");
-                    _log.LogInformation("Innlogging feilet for bruker: " + bruker.Brukernavn);
-                    return BadRequest("Innlogging feilet for bruker: " + bruker.Brukernavn);
+                    melding = $"Innlogging feilet for bruker: {bruker.Brukernavn}";
+                    _log.LogError(melding);
+                    return BadRequest(melding);
                 }
                 HttpContext.Session.SetString(_innlogget, "Innlogget");
                 return Ok(true);
             }
-            _log.LogInformation("Feil i inputvalidering");
-            return BadRequest("Feil i inputvalidering på server");
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
 
         public void LoggUt()
@@ -63,13 +66,16 @@ namespace NOR_WAY.Controllers
                 bool returOk = await _db.NyAdmin(bruker);
                 if (!returOk)
                 {
-                    _log.LogInformation("Ny bruker kunne ikke lagres!");
-                    return BadRequest("Ny bruker kunne ikke lagres");
+                    melding = $"Ny bruker kunne ikke lagres med brukernavn: {bruker.Brukernavn}";
+                    _log.LogError(melding);
+                    return BadRequest(melding);
                 }
-                return Ok("Ny bruker ble lagret");
+                melding = $"Ny bruker ble lagret med brukernavn: {bruker.Brukernavn}";
+                _log.LogInformation(melding);
+                return Ok(melding);
             }
-            _log.LogInformation("Feil i inputvalidering");
-            return BadRequest("Feil i inputvalidering på server");
+            _log.LogError(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
     }
 }

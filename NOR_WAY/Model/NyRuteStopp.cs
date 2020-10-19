@@ -17,5 +17,15 @@ namespace NOR_WAY.Model
 
         [RegularExpression(@"(NW)[0-9]{1,4}")]
         public string Linjekode { get; set; }
+
+        public override string ToString()
+        {
+            string utString = $"Id: {Id}, " +
+                $"StoppNummer: {StoppNummer}, " +
+                $"MinutterTilNesteStopp: {MinutterTilNesteStopp}, " +
+                $"Stoppnavn: {Stoppnavn}, " +
+                $"Linjekode: {Linjekode}";
+            return utString;
+        }
     }
 }

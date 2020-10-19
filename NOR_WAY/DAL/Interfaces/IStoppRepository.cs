@@ -11,6 +11,7 @@ namespace NOR_WAY.DAL.Interfaces
         Task<List<Stopp>> FinnMuligeStartStopp(StoppModel startStopp);
 
         Task<List<Stopp>> FinnMuligeSluttStopp(StoppModel sluttStopp);
+        Task<Stopp> HentEtStopp(int id);
 
         Task<List<Stopp>> HentAlleStopp();
 

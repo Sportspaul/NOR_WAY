@@ -56,6 +56,23 @@ namespace NOR_WAY.Controllers
             return BadRequest("Feil i inputvalideringen på server");
         }
 
+        public async Task<ActionResult> HentEtStopp(int id)
+        {
+            // TODO: Legg til sjekk for Unauthorized
+            if (ModelState.IsValid)
+            {
+                Stopp stopp = await _db.HentEtStopp(id);
+                if (stopp == null)
+                {
+                    _log.LogInformation("Stoppet ble ikke funnet");
+                    return NotFound("Stoppet ble ikke funnet");
+                }
+                return Ok(stopp);
+            }
+            _log.LogInformation("Feil i inputvalideringen på server");
+            return BadRequest("Feil i inputvalidering på server");
+        }
+
 
         public async Task<ActionResult> HentAlleStopp()
         {
@@ -63,13 +80,14 @@ namespace NOR_WAY.Controllers
             return Ok(alleStopp); // returnerer alltid OK, null ved tom DB
         }
 
+        // TODO: Sjekke at dette stoppnavnet finnes alt
         public async Task<ActionResult> OppdaterStoppnavn(Stopp innStopp)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
             {
                 return Unauthorized("Ikke logget inn");
             }
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) 
             {
                 bool EndringOK = await _db.OppdaterStoppnavn(innStopp);
                 if (!EndringOK)

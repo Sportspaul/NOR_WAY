@@ -74,6 +74,19 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
+        public async Task<Stopp> HentEtStopp(int id)
+        {
+            try
+            {
+                return await _db.Stopp.FindAsync(id);
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return null;
+            }
+        }
+
         public async Task<List<Stopp>> HentAlleStopp()
         {
             try

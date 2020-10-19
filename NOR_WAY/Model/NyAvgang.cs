@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NOR_WAY.Model
 {
+    [ExcludeFromCodeCoverage]
     public class NyAvgang
     {
         [RegularExpression(@"([0-9]{4})[-]([0-9]{2})[-]([0-9]{2})")]

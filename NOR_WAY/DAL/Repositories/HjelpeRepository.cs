@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace NOR_WAY.DAL.Repositories
 {
+    [ExcludeFromCodeCoverage]
     public class HjelpeRepository
     {
         private readonly BussContext _db;

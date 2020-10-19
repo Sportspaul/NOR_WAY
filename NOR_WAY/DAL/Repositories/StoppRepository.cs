@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using NOR_WAY.Model;
 
 namespace NOR_WAY.DAL.Repositories
 {
+    [ExcludeFromCodeCoverage]
     public class StoppRepository : IStoppRepository
     {
         private readonly BussContext _db;

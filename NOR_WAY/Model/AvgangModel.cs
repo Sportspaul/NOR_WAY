@@ -1,5 +1,8 @@
-﻿namespace NOR_WAY.Model
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace NOR_WAY.Model
 {
+    [ExcludeFromCodeCoverage]
     public class AvgangModel
     {
         //TODO: Regex

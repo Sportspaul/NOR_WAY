@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using NOR_WAY.Model;
 
 namespace NOR_WAY.DAL.Repositories
 {
+    [ExcludeFromCodeCoverage]
     public class BrukereRepository : IBrukereRepository
     {
         private readonly BussContext _db;

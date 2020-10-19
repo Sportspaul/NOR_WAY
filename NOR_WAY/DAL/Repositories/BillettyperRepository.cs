@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using NOR_WAY.DAL.Interfaces;
 
 namespace NOR_WAY.DAL.Repositories
 {
+    [ExcludeFromCodeCoverage]
     public class BillettyperRepository : IBillettyperRepository
     {
         private readonly BussContext _db;

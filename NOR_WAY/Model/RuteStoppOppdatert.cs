@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NOR_WAY.Model
 {
+    [ExcludeFromCodeCoverage]
     public class RuteStoppOppdatert
     {
         [RegularExpression(@"[0-9]{1,2}")]

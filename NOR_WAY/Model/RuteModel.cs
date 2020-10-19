@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NOR_WAY.Model
 {
+    [ExcludeFromCodeCoverage]
     public class RuteModel
     {
         [RegularExpression(@"(NW)[0-9]{1,4}")]

@@ -55,11 +55,11 @@
 
     // Lager overskriftene i tabellen
     let tr = tabell.insertRow(-1);
-    tr.id = "overskrifter";
+    tr.className = "overskrifter";
 
     kolonner.forEach((overskrift) => {
         let th = document.createElement("th");
-        th.id = overskrift;
+        th.className = overskrift;
         th.innerHTML = Hjelpemetoder.fjernCamelCasing(overskrift);
         tr.appendChild(th);
     });
@@ -67,12 +67,12 @@
     // Legger til all dataen fra JSON objektet i rader
     data.forEach((rad) => {
         tr = tabell.insertRow(-1);
-        tr.id = "rad"
+        tr.className = "rad"
 
         kolonner.forEach((overskrift) => {
             let celle = tr.insertCell(-1);
             celle.innerHTML = rad[overskrift];
-            celle.id = overskrift
+            celle.className = overskrift
         });
     });
 

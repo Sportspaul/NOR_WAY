@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NOR_WAY.Controllers;
@@ -8,6 +9,7 @@ using NOR_WAY.DAL;
 using NOR_WAY.DAL.Interfaces;
 using NOR_WAY.Model;
 using Xunit;
+using System.Net;
 
 namespace NOR_WAY_Tests
 {
@@ -16,6 +18,13 @@ namespace NOR_WAY_Tests
         private readonly Mock<IStoppRepository> mockRepo = new Mock<IStoppRepository>();
         private readonly Mock<ILogger<StoppController>> mockLogCtr = new Mock<ILogger<StoppController>>();
         private readonly StoppController stoppController;
+
+        private readonly Mock<HttpContext> mockHttpContext = new Mock<HttpContext>();
+        private readonly MockHttpSession mockSession = new MockHttpSession();
+
+        private const string _innlogget = "Innlogget";
+        private const string _ikkeInnlogget = "";
+
 
         public StoppController_Tests()
         {
@@ -103,7 +112,7 @@ namespace NOR_WAY_Tests
             var resultat = await stoppController.FinnMuligeStartStopp(StoppModel) as NotFoundObjectResult;
 
             // Assert
-            Assert.Equal("Ingen mulige StartStopp ble funnet", resultat.Value);
+            Assert.Equal($"Ingen mulige StartStopp ble funnet for StartStopp: {StoppModel.Navn}", resultat.Value);
         }
 
         // Tester at FinnMulgeStartStopp i controlleren håndterer InvalidModelState
@@ -166,7 +175,7 @@ namespace NOR_WAY_Tests
             var resultat = await stoppController.FinnMuligeSluttStopp(StoppModel) as NotFoundObjectResult;
 
             // Assert
-            Assert.Equal("Ingen mulige SluttStopp ble funnet", resultat.Value);
+            Assert.Equal($"Ingen mulige SluttStopp ble funnet for SluttStopp: {StoppModel.Navn }", resultat.Value);
         }
 
         // Tester at FinnMuligeSluttStopp i controlleren håndterer InvalidModelState
@@ -195,11 +204,30 @@ namespace NOR_WAY_Tests
             //arrange
             Stopp stopp = new Stopp { Id = 1, Navn = "Oslo" };
             mockRepo.Setup(s => s.OppdaterStoppnavn(stopp)).ReturnsAsync(true);
+
+            MockSession(_innlogget);
             //act
             var resultat = await stoppController.OppdaterStoppnavn(stopp) as OkObjectResult;
             //assert
-            Assert.Equal("Stoppnavnet er endret", resultat.Value);
+            Assert.Equal((int) HttpStatusCode.OK, resultat.StatusCode);
+            Assert.Equal($"Endring av Stoppnavn ble utført med verdiene: { stopp}", resultat.Value);
         }
+
+        [Fact]
+        public async Task OppdaterStoppnavn_IkkeTilgang()
+        {
+            //arrange
+            Stopp stopp = new Stopp { Id = 1, Navn = "Oslo" };
+            mockRepo.Setup(s => s.OppdaterStoppnavn(stopp)).ReturnsAsync(true);
+
+            MockSession(_ikkeInnlogget);
+            //act
+            var resultat = await stoppController.OppdaterStoppnavn(stopp) as UnauthorizedObjectResult;
+            //assert
+            Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
+        }
+
+
 
         [Fact]
         public async Task OppdaterStoppnavn_Feil()
@@ -207,10 +235,13 @@ namespace NOR_WAY_Tests
             //arrange
             Stopp stopp = new Stopp { Id = 1, Navn = "Oslo" };
             mockRepo.Setup(s => s.OppdaterStoppnavn(stopp)).ReturnsAsync(false);
+
+            MockSession(_innlogget);
             //act
             var resultat = await stoppController.OppdaterStoppnavn(stopp) as BadRequestObjectResult;
             //assert
-            Assert.Equal("Stoppnavnet kunne ikke endres", resultat.Value);
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
+            Assert.Equal($"Endring av Stoppnavn kunne ikke utføres med verdiene: { stopp}", resultat.Value);
         }
 
         [Fact]
@@ -219,10 +250,12 @@ namespace NOR_WAY_Tests
             //arrange
             Stopp stopp = new Stopp { Id = 1, Navn = "Ox" };
             mockRepo.Setup(s => s.OppdaterStoppnavn(stopp)).ReturnsAsync(true);
+            MockSession(_innlogget);
             stoppController.ModelState.AddModelError("Navn", "Feil i inputvalideringen på server");
             //act
             var resultat = await stoppController.OppdaterStoppnavn(stopp) as BadRequestObjectResult;
             //assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
             Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
         }
 
@@ -233,13 +266,14 @@ namespace NOR_WAY_Tests
             // Arrange
             List<StoppMedLinjekoder> forventedeStopp = HentStoppMedLinjekoderListe();
             mockRepo.Setup(b => b.HentAlleStoppMedRuter()).ReturnsAsync(HentStoppMedLinjekoderListe());
-
+            MockSession(_innlogget);
             // Act
             var resultat = await stoppController.HentAlleStoppMedRuter() as OkObjectResult;
             List<StoppMedLinjekoder> faktiskeStopp = (List<StoppMedLinjekoder>) resultat.Value;
 
             // Assert
-            for(int i = 0; i < faktiskeStopp.Count; i++)
+            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
+            for (int i = 0; i < faktiskeStopp.Count; i++)
             {
                 Assert.Equal(forventedeStopp[i].Linjekoder, faktiskeStopp[i].Linjekoder);
                 Assert.Equal(forventedeStopp[i].Id, faktiskeStopp[i].Id);
@@ -248,23 +282,98 @@ namespace NOR_WAY_Tests
         }
 
         [Fact]
+        public async Task HentAlleStoppMedRuter_IkkeTilgang()
+        {
+            // Arrange
+            List<StoppMedLinjekoder> forventedeStopp = HentStoppMedLinjekoderListe();
+            mockRepo.Setup(b => b.HentAlleStoppMedRuter()).ReturnsAsync(HentStoppMedLinjekoderListe());
+            MockSession(_ikkeInnlogget);
+            // Act
+            var resultat = await stoppController.HentAlleStoppMedRuter() as UnauthorizedObjectResult;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
+        }
+
+
+        [Fact]
         public async Task HentAlleStoppMedRuter_Null()
         {
             // Arrange
             mockRepo.Setup(b => b.HentAlleStoppMedRuter()).ReturnsAsync(() => null);
-
+            MockSession(_innlogget);
             // Act
             var resultat = await stoppController.HentAlleStoppMedRuter() as BadRequestObjectResult;
-            
+
             // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
             Assert.Equal("Ingen Stopp ble funnet", resultat.Value);
         }
 
 
+        [Fact]
+        public async Task HentEtStopp_Riktig()
+        {
+            // Arrange
+            Stopp forventetStopp = new Stopp { Id = 1, Navn= "Oslo" };
+            mockRepo.Setup(b => b.HentEtStopp(forventetStopp.Id)).ReturnsAsync(forventetStopp);
+            MockSession(_innlogget);
+            // Act
+            var resultat = await stoppController.HentEtStopp(forventetStopp.Id) as OkObjectResult;
+            Stopp faktiskStopp = (Stopp) resultat.Value;
 
-        //TODO: Legge til innlogget/ikke tilgang tester
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
+            Assert.Equal(forventetStopp, faktiskStopp);
+        }
+
+        [Fact]
+        public async Task HentEtStopp_Feil()
+        {
+            // Arrange
+            Stopp forventetStopp = new Stopp { Id = 1, Navn = "Oslo" };
+            mockRepo.Setup(b => b.HentEtStopp(forventetStopp.Id)).ReturnsAsync(() => null);
+            MockSession(_innlogget);
+            // Act
+            var resultat = await stoppController.HentEtStopp(forventetStopp.Id) as NotFoundObjectResult;
+            
+            // Assert
+            Assert.Equal((int)HttpStatusCode.NotFound, resultat.StatusCode);
+            Assert.Equal("Stoppet ble ikke funnet", resultat.Value);
+        }
+
+        [Fact]
+        public async Task HentEtStopp_Regex()
+        {
+            // Arrange
+            Stopp forventetStopp = new Stopp { Id = 1, Navn = "34" };
+            mockRepo.Setup(b => b.HentEtStopp(forventetStopp.Id)).ReturnsAsync(forventetStopp);
+            stoppController.ModelState.AddModelError("Navn", "Feil i inputvalidering på server");
+            MockSession(_innlogget);
+
+            // Act
+            var resultat = await stoppController.HentEtStopp(forventetStopp.Id) as BadRequestObjectResult;
+           
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
+            Assert.Equal("Feil i inputvalidering på server", resultat.Value);
+        }
 
 
+        [Fact]
+        public async Task HentEtStopp_IkkeTilgang()
+        {
+            // Arrange
+            Stopp forventetStopp = new Stopp { Id = 1, Navn = "Oslo" };
+            mockRepo.Setup(b => b.HentEtStopp(forventetStopp.Id)).ReturnsAsync(forventetStopp);
+            MockSession(_ikkeInnlogget);
+
+            // Act
+            var resultat = await stoppController.HentEtStopp(forventetStopp.Id) as UnauthorizedObjectResult;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
+        }
 
         /*
          * Hjelpemetoder
@@ -297,6 +406,13 @@ namespace NOR_WAY_Tests
         private StoppModel HentUgyldigInnStopp()
         {
             return new StoppModel { Navn = "" };
+        }
+
+        private void MockSession(string innlogging)
+        {
+            mockSession[_innlogget] = innlogging;
+            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
+            stoppController.ControllerContext.HttpContext = mockHttpContext.Object;
         }
     }
 }

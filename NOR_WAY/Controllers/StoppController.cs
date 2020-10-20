@@ -31,14 +31,13 @@ namespace NOR_WAY.Controllers
                 List<Stopp> stoppListe = await _db.FinnMuligeStartStopp(sluttStopp);
                 if (stoppListe.Count == 0)
                 {
-                    melding = $"Ingen mulige StartStopp ble funnet for SluttStopp: {sluttStopp.Navn}";
+                    melding = $"Ingen mulige StartStopp ble funnet for StartStopp: {sluttStopp.Navn}";
                     _log.LogError(melding);
                     return NotFound(melding);
                 }
                 return Ok(stoppListe); // returnerer alltid OK, null ved tom DB
-            }
-            
-            _log.LogError(ugyldigValidering);
+            }    
+             _log.LogError(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
 
@@ -49,7 +48,7 @@ namespace NOR_WAY.Controllers
                 List<Stopp> stoppListe = await _db.FinnMuligeSluttStopp(startStopp);
                 if (stoppListe.Count == 0)
                 {
-                    melding = $"Ingen mulige StartStopp ble funnet for StartStopp: {startStopp.Navn}";
+                    melding = $"Ingen mulige SluttStopp ble funnet for SluttStopp: {startStopp.Navn}";
                     _log.LogError(melding);
                     return NotFound(melding);
                 }
@@ -62,6 +61,11 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentEtStopp(int id)
         {
+            //TODO: Vet ikke om session-sjekk trengs her
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke innlogget");
+            }
             if (ModelState.IsValid)
             {
                 Stopp stopp = await _db.HentEtStopp(id);
@@ -116,6 +120,11 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentAlleStoppMedRuter()
         {
+            //TODO: Vet ikke om session-sjekk trengs her
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke innlogget");
+            }
             if (ModelState.IsValid)
             {
                 List<StoppMedLinjekoder> stoppMedLinjekoder = await _db.HentAlleStoppMedRuter();

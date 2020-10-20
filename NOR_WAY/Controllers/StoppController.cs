@@ -31,7 +31,7 @@ namespace NOR_WAY.Controllers
                 List<Stopp> stoppListe = await _db.FinnMuligeStartStopp(sluttStopp);
                 if (stoppListe.Count == 0)
                 {
-                    melding = $"Ingen mulige StartStopp ble funnet for StartStopp: {sluttStopp.Navn}";
+                    melding = $"Ingen mulige StartStopp ble funnet for SluttStopp: {sluttStopp.Navn}";
                     _log.LogError(melding);
                     return NotFound(melding);
                 }
@@ -48,7 +48,7 @@ namespace NOR_WAY.Controllers
                 List<Stopp> stoppListe = await _db.FinnMuligeSluttStopp(startStopp);
                 if (stoppListe.Count == 0)
                 {
-                    melding = $"Ingen mulige SluttStopp ble funnet for SluttStopp: {startStopp.Navn}";
+                    melding = $"Ingen mulige SluttStopp ble funnet for StartStopp: {startStopp.Navn}";
                     _log.LogError(melding);
                     return NotFound(melding);
                 }

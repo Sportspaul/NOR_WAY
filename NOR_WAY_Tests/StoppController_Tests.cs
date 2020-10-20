@@ -112,7 +112,7 @@ namespace NOR_WAY_Tests
             var resultat = await stoppController.FinnMuligeStartStopp(StoppModel) as NotFoundObjectResult;
 
             // Assert
-            Assert.Equal($"Ingen mulige StartStopp ble funnet for StartStopp: {StoppModel.Navn}", resultat.Value);
+            Assert.Equal($"Ingen mulige StartStopp ble funnet for SluttStopp: {StoppModel.Navn}", resultat.Value);
         }
 
         // Tester at FinnMulgeStartStopp i controlleren håndterer InvalidModelState
@@ -175,7 +175,7 @@ namespace NOR_WAY_Tests
             var resultat = await stoppController.FinnMuligeSluttStopp(StoppModel) as NotFoundObjectResult;
 
             // Assert
-            Assert.Equal($"Ingen mulige SluttStopp ble funnet for SluttStopp: {StoppModel.Navn }", resultat.Value);
+            Assert.Equal($"Ingen mulige SluttStopp ble funnet for StartStopp: {StoppModel.Navn }", resultat.Value);
         }
 
         // Tester at FinnMuligeSluttStopp i controlleren håndterer InvalidModelState

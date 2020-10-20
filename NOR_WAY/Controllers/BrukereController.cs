@@ -31,13 +31,13 @@ namespace NOR_WAY.Controllers
                 {
                     HttpContext.Session.SetString(_innlogget, "");
                     melding = $"Innlogging feilet for bruker: {bruker.Brukernavn}";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return BadRequest(melding);
                 }
                 HttpContext.Session.SetString(_innlogget, "Innlogget");
                 return Ok(true);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
 
@@ -67,14 +67,14 @@ namespace NOR_WAY.Controllers
                 if (!returOk)
                 {
                     melding = $"Ny bruker kunne ikke lagres med brukernavn: {bruker.Brukernavn}";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return BadRequest(melding);
                 }
                 melding = $"Ny bruker ble lagret med brukernavn: {bruker.Brukernavn}";
                 _log.LogInformation(melding);
                 return Ok(melding);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
     }

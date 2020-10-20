@@ -36,14 +36,14 @@ namespace NOR_WAY.Controllers
                 if (!returOK)
                 {
                     melding = $"RuteStopp med id: {id}, kunne ikke slettes";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return BadRequest(melding);
                 }
                 melding = $"RuteStopp med id: {id}, ble slettet";
                 _log.LogInformation(melding);
                 return Ok(melding);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
 
@@ -53,12 +53,12 @@ namespace NOR_WAY.Controllers
                 List<RuteStoppModel> ruteStoppListe = await _db.HentRuteStopp(linjekode);
                 if (ruteStoppListe.Count == 0) { 
                     melding = $"Ingen RuteStopp ble funnet med linjekode: {linjekode}";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return NotFound(melding);
                 }
                 return Ok(ruteStoppListe);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
 
@@ -70,12 +70,12 @@ namespace NOR_WAY.Controllers
                 if (ruteStopp == null)
                 {
                     melding = $"RuteStoppet med id: {id}, bli ikke funnet";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return NotFound(melding);
                 }
                 return Ok(ruteStopp);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
 
@@ -91,14 +91,14 @@ namespace NOR_WAY.Controllers
                 if (!returOK)
                 {
                     melding = $"Nytt RuteStopp kunne ikke lagres med verdiene: {innRuteStopp}";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return BadRequest(melding);
                 }
                 melding = $"Nytt RuteStopp ble lagret med verdiene: {innRuteStopp}";
                 _log.LogInformation(melding);
                 return Ok(melding);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
 
@@ -114,14 +114,14 @@ namespace NOR_WAY.Controllers
                 if (!returOK)
                 {
                     melding = $"Endringen av RuteStopp kunne ikke utføres med verdiene : {ruteStoppOppdater}";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return NotFound(melding);
                 }
                 melding = $"Endringen av RuteStopp ble utført med verdiene : {ruteStoppOppdater}";
                 _log.LogInformation(melding);
                 return Ok(melding);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
     }

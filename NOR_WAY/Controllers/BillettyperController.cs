@@ -35,14 +35,14 @@ namespace NOR_WAY.Controllers
                 if (!returOK)
                 {
                     melding = $"Ny Billettype kunne ikke lagres med verdiene: {innBillettype}";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return BadRequest(melding);
                 }
                 melding = $"Ny billettype ble lagret med verdiene: {innBillettype}";
                 _log.LogInformation(melding);
                 return Ok(melding);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
 
@@ -52,7 +52,7 @@ namespace NOR_WAY.Controllers
             if (billettypene == null)
             {
                 melding = "Ingen Billettyper ble funnet";
-                _log.LogError(melding);
+                _log.LogWarning(melding);
                 return NotFound(melding);
             }
             return Ok(billettypene);
@@ -66,12 +66,12 @@ namespace NOR_WAY.Controllers
                 if (billettype == null)
                 {
                     melding = $"Billettypen med Id: {id}, ble ikke funnet";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return NotFound(melding);
                 }
                 return Ok(billettype);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
 
@@ -87,14 +87,14 @@ namespace NOR_WAY.Controllers
                 if (!returOK)
                 {
                     melding = $"Endringen av Billettype kunne ikke utføres med veridene: {oppdatertBillettype}";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return NotFound(melding);
                 }
                 melding = $"Endringen av Billettype ble utført med verdiene: {oppdatertBillettype}";
                 _log.LogInformation(melding);
                 return Ok(melding);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
     }

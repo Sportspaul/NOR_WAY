@@ -36,14 +36,14 @@ namespace NOR_WAY.Controllers
                 if (!returOK)
                 {
                     melding = $"Ruten med linjekode: {linjekode}, kunne ikke slettes";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return BadRequest(melding);
                 }
                 melding = $"Ruten med linjekode: {linjekode}, kunne ble slettet";
                 _log.LogInformation(melding);
                 return Ok(melding);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
 
@@ -53,7 +53,7 @@ namespace NOR_WAY.Controllers
             if (rutene == null)
             {
                 melding = "Rutene ble ikke funnet";
-                _log.LogError(melding);
+                _log.LogWarning(melding);
                 return NotFound(melding);
             }
             return Ok(rutene);
@@ -65,7 +65,7 @@ namespace NOR_WAY.Controllers
             if (rutene == null)
             {
                 melding = "Rutene ble ikke funnet";
-                _log.LogError(melding);
+                _log.LogWarning(melding);
                 return NotFound(melding);
             }
             return Ok(rutene);
@@ -79,12 +79,12 @@ namespace NOR_WAY.Controllers
                 if (rute == null)
                 {
                     melding = "Ruten ble ikke funnet";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return NotFound(melding);
                 }
                 return Ok(rute);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
 
@@ -100,14 +100,14 @@ namespace NOR_WAY.Controllers
                 if (!returOK)
                 {
                     melding = $"Ny Rute kunne ikke lagres med verdiene: {rute}";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return BadRequest(melding);
                 }
                 melding = $"Ny Rute ble lagres med verdiene: {rute}";
                 _log.LogInformation(melding);
                 return Ok(melding);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
 
@@ -124,7 +124,7 @@ namespace NOR_WAY.Controllers
                 {
                     melding = $"Endringen av Ruten med linjekode: {endretRute.Linjekode}, " +
                         $"kunne ikke utføres med verdiene: {endretRute}";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return NotFound(melding);
                 }
                 melding = $"Endring av Ruten med linjekode: {endretRute.Linjekode}, " +
@@ -132,7 +132,7 @@ namespace NOR_WAY.Controllers
                 _log.LogInformation(melding);
                 return Ok(melding);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
     }

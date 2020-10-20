@@ -30,14 +30,14 @@ namespace NOR_WAY.Controllers
                 if (!returOK)
                 {
                     melding = $"Ny ordre kunne ikke lagres med verdiene: {ordre}";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return BadRequest(melding);
                 }
                 melding = $"Ny ordre ble lagret med verdiene: {ordre}";
                 _log.LogInformation(melding);
                 return Ok(melding);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
 

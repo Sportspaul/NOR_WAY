@@ -32,12 +32,12 @@ namespace NOR_WAY.Controllers
                 if (stoppListe.Count == 0)
                 {
                     melding = $"Ingen mulige StartStopp ble funnet for SluttStopp: {sluttStopp.Navn}";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return NotFound(melding);
                 }
                 return Ok(stoppListe); // returnerer alltid OK, null ved tom DB
             }    
-             _log.LogError(ugyldigValidering);
+             _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
 
@@ -49,13 +49,13 @@ namespace NOR_WAY.Controllers
                 if (stoppListe.Count == 0)
                 {
                     melding = $"Ingen mulige SluttStopp ble funnet for StartStopp: {startStopp.Navn}";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return NotFound(melding);
                 }
                 return Ok(stoppListe);
             }
             
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
 
@@ -87,7 +87,7 @@ namespace NOR_WAY.Controllers
             if (alleStopp == null)
             {
                 melding = "Ingen stopp ble funnet";
-                _log.LogError(melding);
+                _log.LogWarning(melding);
                 return NotFound(melding);
             }
             return Ok(alleStopp); // returnerer alltid OK, null ved tom DB
@@ -106,7 +106,7 @@ namespace NOR_WAY.Controllers
                 if (!EndringOK)
                 {
                     melding = $"Endring av Stoppnavn kunne ikke utføres med verdiene: {innStopp}";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return BadRequest(melding);
                 }
                 melding = $"Endring av Stoppnavn ble utført med verdiene: {innStopp}";
@@ -114,7 +114,7 @@ namespace NOR_WAY.Controllers
                 return Ok(melding);
             }
             
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
 
@@ -131,12 +131,12 @@ namespace NOR_WAY.Controllers
                 if (stoppMedLinjekoder == null)
                 {
                     melding = "Ingen Stopp ble funnet";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return BadRequest(melding);
                 }
                 return Ok(stoppMedLinjekoder);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
     }

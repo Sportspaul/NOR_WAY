@@ -31,12 +31,12 @@ namespace NOR_WAY.Controllers
                 if (nesteAvgang == null)
                 {
                     melding = $"Ingen avgang ble funnet med kriteriene: {kriterier}";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return NotFound(melding);
                 }
                 return Ok(nesteAvgang);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
 
@@ -52,14 +52,14 @@ namespace NOR_WAY.Controllers
                 if (!returOK)
                 {
                     melding = $"Avgangen med id: {id}, kunne ikke slettes";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return BadRequest(melding);
                 }
                 melding = $"Avgangen med id: {id}, ble slettet";
                 _log.LogInformation(melding);
                 return Ok(melding);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
 
@@ -71,12 +71,12 @@ namespace NOR_WAY.Controllers
                 if (avganger.Count == 0)
                 {
                     melding = $"Listen med avganger ble ikke funnet for linjekode: {linjekode} og sidenummer: {sidenummer}";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return NotFound(melding);
                 }
                 return Ok(avganger);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
 
@@ -88,12 +88,12 @@ namespace NOR_WAY.Controllers
                 if (avganger == null)
                 {
                     melding = $"Avganen med id: {id}, kunne ikke hentes";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return NotFound(melding);
                 }
                 return Ok(avganger);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
 
@@ -109,14 +109,14 @@ namespace NOR_WAY.Controllers
                 if (!returOK)
                 {
                     melding = $"Ny avgang kunne ikke lagres med verdiene: {nyAvgang}";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return BadRequest(melding);
                 }
                 melding = $"Ny avgang ble lagret med verdiene: {nyAvgang}";
                 _log.LogInformation(melding);
                 return Ok(melding);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
 
@@ -132,14 +132,14 @@ namespace NOR_WAY.Controllers
                 if (!returOK)
                 {
                     melding = $"Endring av Avgang kunne ikke utføres med verdiene: {avreisetid}";
-                    _log.LogError(melding);
+                    _log.LogWarning(melding);
                     return NotFound(melding);
                 }
                 melding = $"Endring av Avgang ble utført med verdiene: {avreisetid}";
                 _log.LogInformation(melding);
                 return Ok(melding);
             }
-            _log.LogError(ugyldigValidering);
+            _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);
         }
     }

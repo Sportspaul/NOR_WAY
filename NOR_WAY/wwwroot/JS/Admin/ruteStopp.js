@@ -1,4 +1,4 @@
-$(() => {
+$(function () {
 	let url = window.location.href.split("=");
 	linjekode = url[1].split("&");
 	linjekode = linjekode[0];
@@ -11,7 +11,7 @@ $(() => {
 function slettRad(id) {
 	$.get(`../RuteStopp/FjernRuteStopp?id=${id}`, () => {
 		$(`#${id}`).remove();
-	}).fail(() => {
+	}).fail(function () {
 		console.log("Ruten ble IKKE fjernet");
 	});
 }

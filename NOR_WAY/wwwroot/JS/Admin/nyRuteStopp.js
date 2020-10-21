@@ -1,4 +1,4 @@
-$(() => {
+$(function () {
 	Hjelpemetoder.endreBakgrunn();
 	new NyRuteStoppEvents(
 		"#linjekode",

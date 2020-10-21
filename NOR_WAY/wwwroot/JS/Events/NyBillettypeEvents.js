@@ -5,13 +5,13 @@ class NyBillettypeEvents {
 	}
 
 	billettypeInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			validerBillettype(elmt, "#feilBillettype");
 		});
 	}
 
 	rabattsatsInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			validerRabattsats(elmt, "#feilRabattsats");
 		});
 	}

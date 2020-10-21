@@ -1,4 +1,4 @@
-$(() => {
+$(function () {
 	$("#tittel").html(`Avganger for: ${linjekode}`);
 	let res = $.get(
 		`../Avgang/HentAvganger?linjekode=${linjekode}&sidenummer=${sidenummer}`,
@@ -23,7 +23,7 @@ let linjekode = urlParam[1].split("&")[0];
 function slettRad(id) {
 	$.get(`../Avgang/FjernAvgang?id=${id}`, () => {
 		$(`#${id}`).remove();
-	}).fail(() => {
+	}).fail(function () {
 		console.log("Avgangen ble IKKE fjernet");
 	});
 }

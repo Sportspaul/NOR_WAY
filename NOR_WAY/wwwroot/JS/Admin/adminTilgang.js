@@ -1,4 +1,4 @@
-﻿$(() => {
+﻿$(function () {
 	harAdminTilgang();
 	loggUt();
 });

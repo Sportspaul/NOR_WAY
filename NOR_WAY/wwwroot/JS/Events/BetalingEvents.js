@@ -10,16 +10,16 @@ class BetalingEvents {
 
 	// Hinder brukeren å skrive tall i inputfeltet
 	navnInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			validerNavn(elmt, "#feilNavn");
 		});
-		elmt.on("input", (e) => {
+		elmt.on("input", function (e) {
 			elmt.val(elmt.val().replace(/[^a-åA-Å- ]/, ""));
 		});
 	}
 
 	epostInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			validerEpost(elmt, "#feilEpost");
 		});
 	}
@@ -27,10 +27,10 @@ class BetalingEvents {
 	/* Hindere brukeren å skrive inn annet enn tall, og legger til mellomrom for hvert fjerde tall
 	 * eks. "1234 1234 1234 1234" */
 	kortnummerInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			validerKortnummer(elmt, "#feilKortnummer");
 		});
-		elmt.on("input", (e) => {
+		elmt.on("input", function (e) {
 			elmt.val(
 				$(elmt)
 					.val()
@@ -42,7 +42,7 @@ class BetalingEvents {
 	}
 
 	CVCInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			validerCVC(elmt, "#feilCVC");
 			elmt.val(
 				elmt
@@ -52,7 +52,7 @@ class BetalingEvents {
 					.trim()
 			);
 		});
-		$(elmt).keypress(() => {
+		$(elmt).keypress(function () {
 			if (this.value.length == 3) {
 				return false;
 			}
@@ -60,14 +60,14 @@ class BetalingEvents {
 	}
 
 	MMInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			if (this.value.length == 1) {
 				this.value = "0" + this.value.charAt(0);
 			}
 			validerMM(elmt, "#feilMM");
 		});
 		// Hvis 2 tall er fylt inn hopper vi til nesete felt
-		$(elmt).keyup(() => {
+		$(elmt).keyup(function () {
 			if (this.value.length == 2) {
 				$("#AA").focus();
 			}
@@ -76,12 +76,12 @@ class BetalingEvents {
 	}
 
 	AAInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			validerAA(elmt, "#feilAA");
 		});
 		this.toSiffer(elmt);
 		// Hvis siste tall i feltet blir fjernet hopper vi inn i forrige felt
-		$(elmt).keyup(() => {
+		$(elmt).keyup(function () {
 			let tast = event.keyCode;
 			if (tast == 8) {
 				if (this.value.length == 0) {
@@ -92,7 +92,7 @@ class BetalingEvents {
 	}
 
 	toSiffer(elmt) {
-		elmt.keypress(() => {
+		elmt.keypress(function () {
 			if (this.value.length == 2) return false;
 		});
 	}

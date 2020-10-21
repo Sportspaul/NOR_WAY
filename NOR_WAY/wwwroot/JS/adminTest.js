@@ -14,9 +14,9 @@ function FjernRute(linjekode) {
 	};
 
 	// Kaller C# Metoden FullforOrdre()
-	$.post("Ruter/FjernRute", rute, () => {
+	$.post("Ruter/FjernRute", rute, function () {
 		console.log("%c Ruten ble fjernet", green);
-	}).fail(() => {
+	}).fail(function () {
 		console.log("%c Ruten ble IKKE fjernet", red);
 	});
 }
@@ -50,7 +50,7 @@ function NyRute() {
 
 	$.post("Ruter/NyRute", rute, function (avganger) {
 		console.log("%c Ny rute ble lagt til", green);
-	}).fail(() => {
+	}).fail(function () {
 		console.log("%c Ny rute ble ikke lagt til", red);
 	});
 }
@@ -64,9 +64,9 @@ function OppdaterRute(linjekode) {
 		Kapasitet: 99,
 	};
 
-	$.post("Ruter/OppdaterRute", rute, () => {
+	$.post("Ruter/OppdaterRute", rute, function () {
 		console.log("%c Ruten ble oppdatert", green);
-	}).fail(() => {
+	}).fail(function () {
 		console.log("%c Ruten ble IKKE oppdatert", red);
 	});
 }
@@ -75,16 +75,16 @@ function HentAvganger(linjekode, sidenummer) {
 	const url = `Avgang/HentAvganger?linjekode=${linjekode}&sidenummer=${sidenummer}`;
 	$.get(url, function (avganger) {
 		console.table(avganger);
-	}).fail(() => {
+	}).fail(function () {
 		console.log("Avgangen ble ikke oppdatert");
 	});
 }
 
 function FjernAvgang(id) {
 	const url = `Avgang/FjernAvgang?id=${id}`;
-	$.get(url, () => {
+	$.get(url, function () {
 		console.log("%c Avgangen ble slettet", green);
-	}).fail(() => {
+	}).fail(function () {
 		console.log("%c Avgangen ble IKKE slettet", red);
 	});
 }
@@ -97,9 +97,9 @@ function NyAvgang() {
 		Linjekode: "NW431",
 	};
 
-	$.post("Avgang/NyAvgang", avgang, () => {
+	$.post("Avgang/NyAvgang", avgang, function () {
 		console.log("%c Ny avgang ble lagt til", green);
-	}).fail(() => {
+	}).fail(function () {
 		console.log("%c Ny avgang ble IKKE lagt til", red);
 	});
 }
@@ -111,7 +111,7 @@ function OppdaterAvgang(id) {
 		Tidspunkt: "17:00",
 	};
 
-	$.post("Avgang/OppdaterAvgang", avreisetid, () => {
+	$.post("Avgang/OppdaterAvgang", avreisetid, function () {
 		console.log("%c Avgangen ble oppdatert", green);
 	}).fail(function (feil) {
 		console.log("%c" + feil.responseText, red);
@@ -133,7 +133,7 @@ function NyRuteStopp(linjekode) {
 		Linjekode: linjekode,
 	};
 
-	$.post("RuteStopp/NyRuteStopp", innRuteStopp, () => {
+	$.post("RuteStopp/NyRuteStopp", innRuteStopp, function () {
 		console.log("%c Nytt RuteStopp ble lagt til", green);
 	}).fail(function (feil) {
 		console.log("%c" + feil.responseText, red);
@@ -142,9 +142,9 @@ function NyRuteStopp(linjekode) {
 
 function FjernRuteStopp(id) {
 	const url = `RuteStopp/FjernRuteStopp?id=${id}`;
-	$.get(url, () => {
+	$.get(url, function () {
 		console.log("%c RuteStopp ble slettet", green);
-	}).fail(() => {
+	}).fail(function () {
 		console.log("%c RuteStopp ble IKKE slettet", red);
 	});
 }
@@ -158,7 +158,7 @@ function OppdaterRuteStopp() {
 		Linjekode: "NW625",
 	};
 
-	$.post("RuteStopp/OppdaterRuteStopp", ruteStoppOppdatert, () => {
+	$.post("RuteStopp/OppdaterRuteStopp", ruteStoppOppdatert, function () {
 		console.log("%c RuteStopp ble endret", green);
 	}).fail(function (feil) {
 		console.log("%c" + feil.responseText, red);
@@ -171,7 +171,7 @@ function NyBillettype() {
 		Rabattsats: 90,
 	};
 
-	$.post("Billettyper/NyBillettype", billettype, () => {
+	$.post("Billettyper/NyBillettype", billettype, function () {
 		console.log("%c Ny Billettype ble lagret", green);
 	}).fail(function (feil) {
 		console.log("%c" + feil.responseText, red);
@@ -191,9 +191,9 @@ function OppdaterBillettype() {
 		Rabattsats: 75,
 	};
 
-	$.post("Billettyper/OppdaterBillettype", oppdatertBillettype, () => {
+	$.post("Billettyper/OppdaterBillettype", oppdatertBillettype, function () {
 		console.log("%c Rabattsatsen ble oppdatert", green);
-	}).fail(() => {
+	}).fail(function () {
 		console.log("%c Rabattsatsen ble IKKE oppdatert", red);
 	});
 }
@@ -204,9 +204,9 @@ function OppdaterStoppnavn() {
 		Navn: "Oslo S",
 	};
 
-	$.post("Stopp/OppdaterStoppnavn", oppdatertStopp, () => {
+	$.post("Stopp/OppdaterStoppnavn", oppdatertStopp, function () {
 		console.log("%c Stoppnavnet ble oppdatert", green);
-	}).fail(() => {
+	}).fail(function () {
 		console.log("%c Stoppnavnet ble IKKE oppdatert", red);
 	});
 }

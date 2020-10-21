@@ -1,5 +1,5 @@
 ﻿// Kalles når siden laster inn
-$(() => {
+$(function () {
 	Hjelpemetoder.settKorrektNavigering();
 	hentAlleStopp();
 	hentAlleBillettyper();
@@ -53,11 +53,11 @@ function hentAlleStopp() {
 
 // Henter alle billettypene i databasen
 function hentAlleBillettyper() {
-	$.get("Billettyper/HentAlleBillettyper", function (alleBillettyper) {
+	$.get("Billettyper/HentAlleBillettyper", (alleBillettyper) => {
 		// Fyller nedtrekksmenyen med billettypene som ble hentet
 		var nedtrekk = $("#billettype1");
 		billettyper = alleBillettyper;
-		$.each(alleBillettyper, () => {
+		$.each(alleBillettyper, function () {
 			nedtrekk.append(
 				$("<option />").val(this.billettype).text(this.billettype)
 			);
@@ -250,7 +250,7 @@ function finnNesteAvgang() {
 				"#AA",
 				"#CVC"
 			); // Gir inputfeltene EventListners
-		}).fail(() => {
+		}).fail(function () {
 			// Gir brukeren tilbakemelding hvis ingen avganger ble hentet
 			feilAvgangElmt.html(
 				"Vi finner desverre ingen avgang som oppfyller søkekriteriene dine"
@@ -280,7 +280,7 @@ function fullforOrdre() {
 		return;
 	} else {
 		// Kaller C# Metoden FullforOrdre()
-		$.post("Ordre/FullforOrdre", kundeordre, () => {
+		$.post("Ordre/FullforOrdre", kundeordre, function () {
 			window.location.replace("index.html?bestilling=ok");
 		});
 	}

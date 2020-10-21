@@ -120,10 +120,12 @@ class Hjelpemetoder {
 				"Desember",
 			];
 			// Gjør om mnd til formatert mnd
+
 			const mndFormatert = mnder[mnd - 1];
 
 			// Utskrift
 			const datoFormatert = dag + "." + " " + mndFormatert + " " + aar;
+
 			return datoFormatert;
 		}
 		// Formaterer tid om han har skrvet inn "tid" som input parameter

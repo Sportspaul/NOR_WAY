@@ -6,19 +6,19 @@ class NyAvgangEvents {
 	}
 
 	linjekodeInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			validerLinjekode(elmt, "#feilLinjekode");
 		});
 	}
 
 	datoInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			validerDato(elmt, "#feilDato");
 		});
 	}
 
 	tidspunktInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			validerTidspunkt(elmt, "#feilTidspunkt");
 		});
 	}

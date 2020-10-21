@@ -7,25 +7,25 @@ class NyRuteStoppEvents {
 	}
 
 	linjekodeInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			validerLinjekode(elmt, "#feilLinjekode");
 		});
 	}
 
 	stoppnavnInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			validerEtStoppnavn(elmt, "#feilStoppnavn");
 		});
 	}
 
 	stoppnummerInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			validerStoppnummer(elmt, "#feilStoppnummer");
 		});
 	}
 
 	minutterTilNesteStoppInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			validerMinutterTilNesteStopp(elmt, "#feilMinutterTilNesteStopp");
 		});
 	}

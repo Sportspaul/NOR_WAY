@@ -1,4 +1,4 @@
-﻿$(() => {
+﻿$(function () {
 	const res = $.post("../Ruter/HentAlleRuter");
 	const link = "nyRute.html";
 	lagRuteoversikt(res, link);

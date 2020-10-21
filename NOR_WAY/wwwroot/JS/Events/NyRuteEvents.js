@@ -8,31 +8,31 @@ class NyRuteEvents {
 	}
 
 	linjekodeInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			validerLinjekode(elmt, "#feilLinjekode");
 		});
 	}
 
 	rutenavnInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			validerRutenavn(elmt, "#feilRutenavn");
 		});
 	}
 
 	startprisInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			validerStartpris(elmt, "#feilStartpris");
 		});
 	}
 
 	tilleggPerStoppInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			validerTilleggPerStopp(elmt, "#feilTilleggPerStopp");
 		});
 	}
 
 	kapasitetInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			validerKapasitet(elmt, "#feilKapasitet");
 		});
 	}

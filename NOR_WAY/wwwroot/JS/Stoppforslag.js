@@ -5,7 +5,7 @@ class Stoppforslag {
 		var fokusert;
 
 		// Eventlisner på intput feltet
-		inputfelt.on("input", (e) => {
+		inputfelt.on("input", function (e) {
 			let stoppListe, stoppElement, i;
 			let val = this.value;
 
@@ -43,7 +43,7 @@ class Stoppforslag {
 						"<input type='hidden' value='" + stoppArray[i] + "'>";
 
 					// Event listner for om noen trykker på et av de foreslåtte stoppene
-					stoppElement.addEventListener("click", (e) => {
+					stoppElement.addEventListener("click", function (e) {
 						// Fyller input feltet med stoppet som brukeren trykker på
 						inputfelt.val(this.getElementsByTagName("input")[0].value);
 
@@ -59,7 +59,7 @@ class Stoppforslag {
 		});
 
 		// EventListener på om en tast blir trykket
-		inputfelt.on("keydown", (e) => {
+		inputfelt.on("keydown", function (e) {
 			var elmt = document.getElementById(this.id + "stoppListe");
 			if (elmt) {
 				elmt = elmt.getElementsByTagName("div");
@@ -131,7 +131,7 @@ class Stoppforslag {
 		}
 
 		// Lukker listen med stopp hvis bruker trykker utenfor listen
-		$(document).on("click", (e) => {
+		$(document).on("click", function (e) {
 			forlotFelt(e.target);
 		});
 

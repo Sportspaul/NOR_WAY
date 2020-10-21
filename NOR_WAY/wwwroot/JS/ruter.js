@@ -1,5 +1,5 @@
 ﻿// Kalles når siden laster inn
-$(() => {
+$(function () {
 	Hjelpemetoder.settKorrektNavigering();
 	hentAlleRuter();
 });

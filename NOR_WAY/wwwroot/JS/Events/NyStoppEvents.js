@@ -4,7 +4,7 @@ class NyStoppEvents {
 	}
 
 	stoppnavnInput(elmt) {
-		elmt.blur(() => {
+		elmt.blur(function () {
 			validerEtStoppnavn(elmt, "#feilStoppnavn");
 		});
 	}

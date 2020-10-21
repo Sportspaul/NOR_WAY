@@ -8,9 +8,9 @@ function loggInn() {
 			brukernavn: $("#brukernavn").val(),
 			passord: $("#passord").val(),
 		};
-		$.post("Brukere/LoggInn", bruker, (OK) => {
+		$.post("Brukere/LoggInn", bruker, function (OK) {
 			window.location.href = "Adminsider/ruter.html";
-		}).fail(() => {
+		}).fail(function () {
 			$("#feil").html("Feil brukernavn eller passord");
 		});
 	} else {

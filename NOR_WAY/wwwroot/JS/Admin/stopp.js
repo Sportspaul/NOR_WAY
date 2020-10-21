@@ -1,4 +1,4 @@
-﻿$(() => {
+﻿$(function () {
 	let url = "nyStopp.html";
 	let res = $.get("../Stopp/HentAlleStoppMedRuter", () => {
 		lagTabell(res, "U", url);
@@ -14,6 +14,9 @@ function filterStoppListe() {
 		let stoppNavn = document.querySelectorAll(".stoppnavn");
 
 		for (let i = 1; i < stoppNavn.length; i++) {
+			console.log(
+				stoppNavn[i].textContent.substr(0, brukerInput.length).toLowerCase()
+			);
 			if (
 				stoppNavn[i].textContent.substr(0, brukerInput.length).toLowerCase() ==
 				brukerInput.toLowerCase()

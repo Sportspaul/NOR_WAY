@@ -163,6 +163,30 @@ namespace NOR_WAY_Tests
             Assert.Equal(_ikkeInnlogget, mockSession[_innlogget]);
         }
 
+
+        /* Enhetstester for AdminTilgang() */
+
+        [Fact]
+        public void AdminTilgang_IkkeTilgang() {
+            // Act
+            SimulerUtlogget();
+            bool innlogget = brukereController.AdminTilgang();
+
+            // Assert
+            Assert.False(innlogget);
+        }
+
+        [Fact]
+        public void AdminTilgang_Tilgang()
+        {
+            // Act
+            SimulerInnlogget();
+            bool innlogget = brukereController.AdminTilgang();
+
+            // Assert
+            Assert.True(innlogget);
+        }
+
         // Hjelpemetode som returnerer et BrukerModel-objekt
         private BrukerModel HentEnBrukerModel()
         {

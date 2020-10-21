@@ -50,15 +50,16 @@ namespace NOR_WAY_Tests
         [Fact]
         public async Task HentEtRuteStopp_Null()
         {
+            int id = 1;
             // arrange
             NyRuteStopp utRuteStopp = nyttRuteStopp();
-            mockRepo.Setup(rs => rs.HentEtRuteStopp(1)).ReturnsAsync(() => null);
+            mockRepo.Setup(rs => rs.HentEtRuteStopp(id)).ReturnsAsync(() => null);
 
             //act 
-            var resultat = await ruteStoppController.HentEtRuteStopp(1) as NotFoundObjectResult;
+            var resultat = await ruteStoppController.HentEtRuteStopp(id) as NotFoundObjectResult;
             
             //assert
-            Assert.Equal($"RuteStoppet med id: {utRuteStopp.Id}, bli ikke funnet", resultat.Value);
+            Assert.Equal($"Rutestoppet ble ikke funnet", resultat.Value);
         }
 
         [Fact]
@@ -188,10 +189,129 @@ namespace NOR_WAY_Tests
             Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
         }
 
+        [Fact]
+        public async Task OppdaterRuteStopp_Riktig()
+        {
+            // arrange
+            NyRuteStopp innRuteStopp = nyttRuteStopp();
+            mockRepo.Setup(rs => rs.OppdaterRuteStopp(innRuteStopp)).ReturnsAsync(true);
+            MockSession(_innlogget);
+            //act 
+            var resultat = await ruteStoppController.OppdaterRuteStopp(innRuteStopp) as OkObjectResult;
 
+            //assert
+            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
+            Assert.Equal($"Endringen av RuteStopp ble utført med verdiene: {innRuteStopp}", resultat.Value);
+        }
 
+        [Fact]
+        public async Task OppdaterRuteStopp_IkkeTilgang()
+        {
+            // arrange
+            NyRuteStopp innRuteStopp = nyttRuteStopp();
+            mockRepo.Setup(rs => rs.OppdaterRuteStopp(innRuteStopp)).ReturnsAsync(true);
+            MockSession(_ikkeInnlogget);
+            //act 
+            var resultat = await ruteStoppController.OppdaterRuteStopp(innRuteStopp) as UnauthorizedObjectResult;
 
+            //assert
+            Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
+            Assert.Equal("Ikke innlogget", resultat.Value);
+        }
 
+        [Fact]
+        public async Task OppdaterRuteStopp_Feil()
+        {
+            // arrange
+            NyRuteStopp innRuteStopp = nyttRuteStopp();
+            mockRepo.Setup(rs => rs.OppdaterRuteStopp(innRuteStopp)).ReturnsAsync(false);
+            MockSession(_innlogget);
+            //act 
+            var resultat = await ruteStoppController.OppdaterRuteStopp(innRuteStopp) as NotFoundObjectResult;
+
+            //assert
+            Assert.Equal((int)HttpStatusCode.NotFound, resultat.StatusCode);
+            Assert.Equal($"Endringen av RuteStopp kunne ikke utføres med verdiene: {innRuteStopp}", resultat.Value);
+        }
+
+        [Fact]
+        public async Task OppdaterRuteStopp_Regex()
+        {
+            // arrange
+            NyRuteStopp innRuteStopp = nyttRuteStopp();
+            mockRepo.Setup(rs => rs.OppdaterRuteStopp(innRuteStopp)).ReturnsAsync(true);
+            ruteStoppController.ModelState.AddModelError("Linjekode", "Feil i inputvalideringen på server");
+            MockSession(_innlogget);
+
+            //act 
+            var resultat = await ruteStoppController.OppdaterRuteStopp(innRuteStopp) as BadRequestObjectResult;
+
+            //assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
+        }
+
+        [Fact]
+        public async Task NyRuteStopp_Riktig()
+        {
+            // arrange
+            NyRuteStopp innRuteStopp = nyttRuteStopp();
+            mockRepo.Setup(rs => rs.NyRuteStopp(innRuteStopp)).ReturnsAsync(true);
+            MockSession(_innlogget);
+            //act 
+            var resultat = await ruteStoppController.NyRuteStopp(innRuteStopp) as OkObjectResult;
+
+            //assert
+            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
+            Assert.Equal($"Nytt RuteStopp ble lagret med verdiene: {innRuteStopp}", resultat.Value);
+        }
+
+        [Fact]
+        public async Task NyRuteStopp_IkkeTilgang()
+        {
+            // arrange
+            NyRuteStopp innRuteStopp = nyttRuteStopp();
+            mockRepo.Setup(rs => rs.NyRuteStopp(innRuteStopp)).ReturnsAsync(true);
+            MockSession(_ikkeInnlogget);
+            //act 
+            var resultat = await ruteStoppController.NyRuteStopp(innRuteStopp) as UnauthorizedObjectResult;
+
+            //assert
+            Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
+            Assert.Equal("Ikke innlogget", resultat.Value);
+        }
+
+        [Fact]
+        public async Task NyRuteStopp_Feil()
+        {
+            // arrange
+            NyRuteStopp innRuteStopp = nyttRuteStopp();
+            mockRepo.Setup(rs => rs.NyRuteStopp(innRuteStopp)).ReturnsAsync(false);
+            MockSession(_innlogget);
+            //act 
+            var resultat = await ruteStoppController.NyRuteStopp(innRuteStopp) as BadRequestObjectResult;
+
+            //assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
+            Assert.Equal($"Nytt RuteStopp kunne ikke lagres med verdiene: {innRuteStopp}", resultat.Value);
+        }
+
+        [Fact]
+        public async Task NyRuteStopp_Regex()
+        {
+            // arrange
+            NyRuteStopp innRuteStopp = nyttRuteStopp();
+            mockRepo.Setup(rs => rs.NyRuteStopp(innRuteStopp)).ReturnsAsync(true);
+            ruteStoppController.ModelState.AddModelError("Linjekode", "Feil i inputvalideringen på server");
+            MockSession(_innlogget);
+
+            //act 
+            var resultat = await ruteStoppController.NyRuteStopp(innRuteStopp) as BadRequestObjectResult;
+
+            //assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
+        }
 
         //Hjelpemetoder
 
@@ -206,7 +326,6 @@ namespace NOR_WAY_Tests
                 Linjekode = "NW1"
             };
         }
-
         private List<RuteStoppModel> RuteStoppListe()
         {
             RuteStoppModel rsm1 = new RuteStoppModel

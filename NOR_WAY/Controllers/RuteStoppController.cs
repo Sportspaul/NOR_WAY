@@ -69,7 +69,7 @@ namespace NOR_WAY.Controllers
                 NyRuteStopp ruteStopp = await _db.HentEtRuteStopp(id);
                 if (ruteStopp == null)
                 {
-                    melding = $"Rutestoppet med id: {id}, bli ikke funnet";
+                    melding = $"Rutestoppet ble ikke funnet";
                     _log.LogWarning(melding);
                     return NotFound(melding);
                 }
@@ -113,11 +113,11 @@ namespace NOR_WAY.Controllers
                 bool returOK = await _db.OppdaterRuteStopp(ruteStoppOppdater);
                 if (!returOK)
                 {
-                    melding = $"Endringen av RuteStopp kunne ikke utføres med verdiene : {ruteStoppOppdater}";
+                    melding = $"Endringen av RuteStopp kunne ikke utføres med verdiene: {ruteStoppOppdater}";
                     _log.LogWarning(melding);
                     return NotFound(melding);
                 }
-                melding = $"Endringen av RuteStopp ble utført med verdiene : {ruteStoppOppdater}";
+                melding = $"Endringen av RuteStopp ble utført med verdiene: {ruteStoppOppdater}";
                 _log.LogInformation(melding);
                 return Ok(melding);
             }

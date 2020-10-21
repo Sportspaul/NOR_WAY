@@ -1,4 +1,4 @@
-﻿const adminNav = document.createElement('template');
+﻿const adminNav = document.createElement("template");
 adminNav.innerHTML = `
 <style>
 
@@ -38,13 +38,13 @@ adminNav.innerHTML = `
     <li><a href="stopp.html">Stopp</a></li>
     <li>|</li>
     <li><a href="ordre.html">Ordre</a></li>
-</ul>`
+</ul>`;
 
 class AdminNav extends HTMLElement {
-    constructor() {
-        super();
-        this.attachShadow({ mode: 'open' });
-        this.shadowRoot.appendChild(adminNav.content.cloneNode(true));
-    }
+	constructor() {
+		super();
+		this.attachShadow({ mode: "open" });
+		this.shadowRoot.appendChild(adminNav.content.cloneNode(true));
+	}
 }
-window.customElements.define('admin-nav', AdminNav);
+window.customElements.define("admin-nav", AdminNav);

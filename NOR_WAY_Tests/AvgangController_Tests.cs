@@ -127,6 +127,7 @@ namespace NOR_WAY_Tests
         {
             // Arrange
             int id = 1;
+            mockRepo.Setup(br => br.FjernAvgang(id)).ReturnsAsync(true);
             avgangController.ModelState.AddModelError("id", "Feil i inputvalideringen på server");
 
             // Act
@@ -139,11 +140,11 @@ namespace NOR_WAY_Tests
 
         // Test på at FjernAvgang håndterer tilfelle hvor bruker ikke er logget inn
         [Fact]
-        public async Task NyBillettypen_IkkeInnlogget()
+        public async Task FjernAvgang_IkkeInnlogget()
         {
             // Arrange
             int id = 1;
-
+            mockRepo.Setup(br => br.FjernAvgang(id)).ReturnsAsync(true);
             // Act
             SimulerUtlogget();
             var resultat = await avgangController.FjernAvgang(id) as UnauthorizedObjectResult;
@@ -166,9 +167,10 @@ namespace NOR_WAY_Tests
             // Act
             SimulerInnlogget();
             var resultat = await avgangController.HentAvganger(linjekode, sidenummer) as OkObjectResult;
-            List<AvgangModel> faktisk = (List<AvgangModel>)resultat.Value;
+            List<AvgangModel> faktisk = (List<AvgangModel>) resultat.Value;
 
             // Assert
+            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
             Assert.Equal(forventet.Count, faktisk.Count);
             for (int i = 0; i < forventet.Count; i++)
             {
@@ -177,6 +179,73 @@ namespace NOR_WAY_Tests
                 Assert.Equal(forventet[i].SolgteBilletter, faktisk[i].SolgteBilletter);
             }
         }
+
+        [Fact]
+        public async Task HentAvganger_IkkeTilgang()
+        {
+            // Arrange
+            string linjekode = "NW431";
+            int sidenummer = 0;
+            List<AvgangModel> forventet = HentAvgangModelListe();
+
+            mockRepo.Setup(br => br.HentAvganger(linjekode, sidenummer)).ReturnsAsync(HentAvgangModelListe());
+
+            // Act
+            SimulerUtlogget();
+            var resultat = await avgangController.HentAvganger(linjekode, sidenummer) as UnauthorizedObjectResult;
+            
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
+            Assert.Equal("Ikke innlogget", resultat.Value);
+        }
+
+        [Fact]
+        public async Task HentAvganger_IkkeFunnet()
+        {
+            // Arrange
+            string linjekode = "NW431";
+            int sidenummer = 0;
+            List<AvgangModel> forventet = new List<AvgangModel>();
+
+            mockRepo.Setup(br => br.HentAvganger(linjekode, sidenummer)).ReturnsAsync(forventet);
+
+            // Act
+            SimulerInnlogget();
+            var resultat = await avgangController.HentAvganger(linjekode, sidenummer) as NotFoundObjectResult;
+
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.NotFound, resultat.StatusCode);
+            Assert.Equal($"Listen med avganger ble ikke funnet for linjekode: {linjekode} og sidenummer: {sidenummer}", resultat.Value);
+        }
+
+
+        [Fact]
+        public async Task HentAvganger_Regex()
+        {
+            // Arrange
+            string linjekode = "NW431";
+            int sidenummer = 0;
+            List<AvgangModel> forventet = new List<AvgangModel>();
+
+            mockRepo.Setup(br => br.HentAvganger(linjekode, sidenummer)).ReturnsAsync(forventet);
+            avgangController.ModelState.AddModelError("Avreise", "Feil i inputvalideringen på server");
+            // Act
+            SimulerInnlogget();
+            var resultat = await avgangController.HentAvganger(linjekode, sidenummer) as BadRequestObjectResult;
+
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
+        }
+
+
+
+
+
+        //Hjelpemetoder
 
         // Returnerer et AvgangParam-objekt
         private Avgangkriterier HentAvgangParam()

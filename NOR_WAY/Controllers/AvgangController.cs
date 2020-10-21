@@ -65,6 +65,10 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentAvganger(string linjekode, int sidenummer)
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke innlogget");
+            }
             if (ModelState.IsValid)
             {
                 List<AvgangModel> avganger = await _db.HentAvganger(linjekode, sidenummer);
@@ -82,6 +86,10 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentEnAvgang(int id)
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke innlogget");
+            }
             if (ModelState.IsValid)
             {
                 NyAvgang avganger = await _db.HentEnAvgang(id);

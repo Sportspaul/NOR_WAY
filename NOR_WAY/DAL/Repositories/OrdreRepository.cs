@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -98,9 +99,45 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
-        public Task<List<OrdreModel>> HentOrdre(string epost)
+        public async Task<List<OrdreModel>> HentOrdre(string epost)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<Ordre> ordreListe = await _db.Ordre
+                    .Where(o => o.Epost == epost)
+                    .Select(o => o)
+                    .ToListAsync();
+
+                List<string> billettypeListe = new List<string>();
+                List<OrdreModel> ordreModelListe = new List<OrdreModel>();
+
+                foreach(Ordre ordre in ordreListe)
+                {
+                    billettypeListe = await _db.Ordrelinjer
+                        .Where(ol => ol.Ordre == ordre)
+                        .Select(ol => ol.Billettype.Billettype)
+                        .ToListAsync();
+
+                    OrdreModel ordreModel = new OrdreModel
+                    {
+                        Id = ordre.Id,
+                        Epost = ordre.Epost,
+                        StartStopp = ordre.StartStopp.Navn,
+                        SluttStopp = ordre.SluttStopp.Navn,
+                        Sum = ordre.Sum.ToString(),
+                        Linjekode = ordre.Rute.Linjekode,
+                        AvgangId = ordre.Avgang.Id,
+                        Billettyper = billettypeListe
+                    };
+                    ordreModelListe.Add(ordreModel);
+                }
+                return ordreModelListe;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return null;
+            }
         }
 
         public Task<bool> SlettOrdre(int id)

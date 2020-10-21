@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NOR_WAY.DAL.Interfaces;
@@ -43,20 +44,14 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentOrdre(string epost)
         {
-            var billetter = new List<string> { "Student", "Student", "Student", "Voksen", "Voksen", "Honnør", "Barn" };
-            var ordre1 = new OrdreModel
+            List<OrdreModel> ordreModelListe = await _db.HentOrdre(epost);
+            if (ordreModelListe.IsNullOrEmpty())
             {
-                Id = 1,
-                Epost = "123@abc.no",
-                StartStopp = "Bergen",
-                SluttStopp = "Vadheim",
-                Sum = "999",
-                Linjekode = "NW431",
-                Billettyper = billetter
-            };
-
-            List<OrdreModel> utOrdre = new List<OrdreModel> { ordre1 };
-            return Ok(utOrdre);
+                melding = "Ingen ordre ble funnet";
+                _log.LogWarning(melding);
+                return NotFound(melding);
+            }
+            return Ok(ordreModelListe);
         }
 
         public Task<ActionResult> SlettOrdre(int id)

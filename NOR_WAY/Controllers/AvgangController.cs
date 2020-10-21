@@ -30,7 +30,7 @@ namespace NOR_WAY.Controllers
                 Reisedetaljer nesteAvgang = await _db.FinnNesteAvgang(kriterier);
                 if (nesteAvgang == null)
                 {
-                    melding = $"Ingen avgang ble funnet med kriteriene: {kriterier}";
+                    melding = $"Ingen avgang ble funnet";
                     _log.LogWarning(melding);
                     return NotFound(melding);
                 }

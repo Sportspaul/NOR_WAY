@@ -105,7 +105,6 @@ namespace NOR_WAY.DAL.Repositories
             {
                 List<Ordre> ordreListe = await _db.Ordre
                     .Where(o => o.Epost == epost)
-                    .Select(o => o)
                     .ToListAsync();
 
                 List<string> billettypeListe = new List<string>();
@@ -140,9 +139,35 @@ namespace NOR_WAY.DAL.Repositories
             }
         }
 
-        public Task<bool> SlettOrdre(int id)
+        public async Task<bool> SlettOrdre(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // Finner ordren som skal slettes
+                Ordre ordre = await _db.Ordre.FindAsync(id);
+
+                // Finner ordrens tillhørende ordrelinjer og putter dem i en liste
+                List<Ordrelinjer> ordrelinjeListe = await _db.Ordrelinjer
+                    .Where(o => o.Ordre == ordre)
+                    .ToListAsync();
+
+                // Går gjennom listen, og sletter hver enkelt ordelinje
+                foreach (Ordrelinjer ordrelinje in ordrelinjeListe)
+                {
+                    _db.Ordrelinjer.Remove(ordrelinje);
+                }
+
+                // Sletter ordren
+                _db.Ordre.Remove(ordre);
+
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return false;
+            }
         }
     }
 }

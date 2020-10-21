@@ -10,7 +10,7 @@
 
 function slettRad(id) {
     $.get(`../Ordre/SlettOrdre?id=${id}`, () => {
-        $(`#rad${id}`).remove();
+        $(`#${id}`).remove();
     })
         .fail(() => {
             console.log("Ordren ble IKKE fjernet");

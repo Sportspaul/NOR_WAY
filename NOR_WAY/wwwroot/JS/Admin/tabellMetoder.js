@@ -69,7 +69,7 @@
         data.forEach((rad) => {
             tr = tabell.insertRow(-1);
             tr.className = "rad";
-            tr.id = `rad${rad.id}`;
+            tr.id = rad[id];
 
             kolonner.forEach((overskrift) => {
                 let celle = tr.insertCell(-1);

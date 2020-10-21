@@ -77,7 +77,7 @@ namespace NOR_WAY_Tests
             var resultat = await brukereController.LoggInn(bruker) as BadRequestObjectResult;
 
             // Assert
-            Assert.Equal("Feil i inputvalidering på server", resultat.Value);
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
         }
 
         // Test på at NyAdmin returnerer forventet verdi
@@ -94,7 +94,7 @@ namespace NOR_WAY_Tests
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
-            Assert.Equal("Ny bruker ble lagret", resultat.Value);
+            Assert.Equal($"Ny bruker ble lagret med brukernavn: {bruker.Brukernavn}", resultat.Value);
         }
 
         // Test på at NyAdmin håndterer returnverdi: false på korrekt måte
@@ -110,7 +110,7 @@ namespace NOR_WAY_Tests
             var resultat = await brukereController.NyAdmin(bruker) as BadRequestObjectResult;
 
             // Assert
-            Assert.Equal("Ny bruker kunne ikke lagres", resultat.Value);
+            Assert.Equal($"Ny bruker kunne ikke lagres med brukernavn: {bruker.Brukernavn}", resultat.Value);
         }
 
         // Tester på at NyAdmin i controlleren håndterer InvalidModelState
@@ -128,7 +128,7 @@ namespace NOR_WAY_Tests
             var resultat = await brukereController.NyAdmin(bruker) as BadRequestObjectResult;
 
             // Assert
-            Assert.Equal("Feil i inputvalidering på server", resultat.Value);
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
         }
 
         // Test på at NyAdmin håndterer tilfelle hvor bruker ikke er logget inn

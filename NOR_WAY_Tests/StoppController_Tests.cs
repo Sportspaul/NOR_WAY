@@ -310,6 +310,22 @@ namespace NOR_WAY_Tests
             Assert.Equal("Ingen Stopp ble funnet", resultat.Value);
         }
 
+        [Fact]
+        public async Task HentAlleStoppMedRuter_Regex()
+        {
+            // Arrange
+            List<StoppMedLinjekoder> forventedeStopp = HentStoppMedLinjekoderListe();
+            mockRepo.Setup(b => b.HentAlleStoppMedRuter()).ReturnsAsync(HentStoppMedLinjekoderListe());
+            stoppController.ModelState.AddModelError("Linjekoder", "Feil i inputvalideringen på server");
+            MockSession(_innlogget);
+            // Act
+            var resultat = await stoppController.HentAlleStoppMedRuter() as BadRequestObjectResult;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
+        }
+
 
         [Fact]
         public async Task HentEtStopp_Riktig()

@@ -12,7 +12,7 @@ using Xunit;
 
 namespace NOR_WAY_Tests
 {
-    public class AvgangControllerTests
+    public class AvgangController_Tests
     {
         private const string _innlogget = "Innlogget";
         private const string _ikkeInnlogget = "";
@@ -23,10 +23,9 @@ namespace NOR_WAY_Tests
 
         // Session
         private readonly Mock<HttpContext> mockHttpContext = new Mock<HttpContext>();
-
         private readonly MockHttpSession mockSession = new MockHttpSession();
 
-        public AvgangControllerTests()
+        public AvgangController_Tests()
         {
             avgangController = new AvgangController(mockRepo.Object, mockLogCtr.Object);
         }
@@ -66,9 +65,10 @@ namespace NOR_WAY_Tests
 
             // Act
             var resultat = await avgangController.FinnNesteAvgang(param) as NotFoundObjectResult;
+           
 
             // Assert
-            Assert.Equal("Avgang ikke funnet", resultat.Value);
+            Assert.Equal($"Ingen avgang ble funnet", resultat.Value);
         }
 
         // Tester at FinnNesteAvgang i controlleren håndterer InvalidModelState
@@ -102,7 +102,7 @@ namespace NOR_WAY_Tests
             var resultat = await avgangController.FjernAvgang(id) as OkObjectResult;
 
             // Assert
-            Assert.Equal("Avgangen ble slettet!", resultat.Value);
+            Assert.Equal($"Avgangen med id: {id}, ble slettet", resultat.Value);
         }
 
         // Test for at FjernAvgang() håndtrer feil returverdi på korrekt måte
@@ -118,7 +118,7 @@ namespace NOR_WAY_Tests
             var resultat = await avgangController.FjernAvgang(id) as BadRequestObjectResult;
 
             // Assert
-            Assert.Equal("Avgangen kunne ikke slettes!", resultat.Value);
+            Assert.Equal($"Avgangen med id: {id}, kunne ikke slettes", resultat.Value);
         }
 
         // Tester at FjernAvgang håndterer InvalidModelState i controlleren
@@ -134,7 +134,7 @@ namespace NOR_WAY_Tests
             var resultat = await avgangController.FjernAvgang(id) as BadRequestObjectResult;
 
             // Assert
-            Assert.Equal("Feil i inputvalidering på server", resultat.Value);
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
         }
 
         // Test på at FjernAvgang håndterer tilfelle hvor bruker ikke er logget inn

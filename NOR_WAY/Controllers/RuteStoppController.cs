@@ -69,7 +69,7 @@ namespace NOR_WAY.Controllers
                 NyRuteStopp ruteStopp = await _db.HentEtRuteStopp(id);
                 if (ruteStopp == null)
                 {
-                    melding = $"RuteStoppet med id: {id}, bli ikke funnet";
+                    melding = $"Rutestoppet med id: {id}, bli ikke funnet";
                     _log.LogWarning(melding);
                     return NotFound(melding);
                 }

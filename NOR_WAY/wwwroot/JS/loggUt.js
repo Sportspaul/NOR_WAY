@@ -1,5 +1,5 @@
 ﻿function loggUt() {
-    $.get("Brukere/LoggUt", function () {
-        window.location.href = 'index.html';
-    });
+	$.get("Brukere/LoggUt", () => {
+		window.location.href = "index.html";
+	});
 }

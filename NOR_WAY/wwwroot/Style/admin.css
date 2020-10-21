@@ -1,19 +1,19 @@
 .shadowBox {
-    width: 90vw;
+	width: 90vw;
 }
 
 h1 {
-    vertical-align: top;
-    font-size: 3.5vh;
-    display: inline-block;
+	vertical-align: top;
+	font-size: 3.5vh;
+	display: inline-block;
 }
 
 #knapp {
-    margin-left: 1vw;
-    display: inline-block;
+	margin-left: 1vw;
+	display: inline-block;
 }
 
 td {
-    vertical-align: middle !important;
-    padding: .65rem !important;
+	vertical-align: middle !important;
+	padding: 0.65rem !important;
 }

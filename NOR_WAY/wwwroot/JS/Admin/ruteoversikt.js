@@ -1,5 +1,5 @@
-﻿$(function () {
-    let res = $.get("../Ruter/HentAlleRuter", () => {
-        lagRuteoversikt(res);
-    });
+﻿$(() => {
+	let res = $.get("../Ruter/HentAlleRuter", () => {
+		lagRuteoversikt(res);
+	});
 });

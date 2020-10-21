@@ -1,4 +1,4 @@
-const template = document.createElement('template');
+const template = document.createElement("template");
 template.innerHTML = `
 <style>
     img {
@@ -47,13 +47,13 @@ template.innerHTML = `
     <li><slot name="innlogging"></slot></li>
     <li><slot name="skille"></slot></li>
     <li><slot name="admin"></slot></li>
-</ul>`
+</ul>`;
 
 class NavBar extends HTMLElement {
-    constructor() {
-        super();
-        this.attachShadow({ mode: 'open' });
-        this.shadowRoot.appendChild(template.content.cloneNode(true));
-    }
+	constructor() {
+		super();
+		this.attachShadow({ mode: "open" });
+		this.shadowRoot.appendChild(template.content.cloneNode(true));
+	}
 }
-window.customElements.define('nav-bar', NavBar);
+window.customElements.define("nav-bar", NavBar);

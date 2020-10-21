@@ -1,43 +1,67 @@
 ﻿<!DOCTYPE html>
 <html lang="no">
-<head>
-    <!-- Tittel og favicon -->
-    <title>NOR-WAY</title>
-    <link rel="icon" href="../Bilder/favicon.png">
+	<head>
+		<!-- Tittel og favicon -->
+		<title>NOR-WAY</title>
+		<link rel="icon" href="../Bilder/favicon.png" />
 
-    <!-- Metadata -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=10">
-    <meta name="description" content="Vi gir deg mulighet til å reise med buss i Norge. Kjøp bussbilletter, søk etter reisemuligheter, finn din rute og avganger, rutetabeller og ruteinfo.">
+		<!-- Metadata -->
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width,initial-scale=1,maximum-scale=10"
+		/>
+		<meta
+			name="description"
+			content="Vi gir deg mulighet til å reise med buss i Norge. Kjøp bussbilletter, søk etter reisemuligheter, finn din rute og avganger, rutetabeller og ruteinfo."
+		/>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="Style/template.css">
-    <link rel="stylesheet" href="Style/loggInn.css">
-    <link rel="stylesheet" href="Style/index.css?n=14">
+		<!-- CSS -->
+		<link
+			rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+		/>
+		<link rel="stylesheet" href="Style/template.css" />
+		<link rel="stylesheet" href="Style/loggInn.css" />
+		<link rel="stylesheet" href="Style/index.css?n=14" />
 
-    <!-- Javascript -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="JS/Components/NavBar.js?n=1" defer></script>
-    <script src="JS/Hjelpemetoder.js" defer></script>
-    <script src="JS/loggInn.js" defer></script>
-    <script src="JS/validering.js?n=14" defer></script>
-</head>
-<body>
-    <div id="overlay">
-        <!-- NavBar Component-->
-        <nav-bar>
-            <a slot="billett" href="../index.html">Kjøp Billett</a>
-            <a slot="ruter" href="../ruter.html">Ruter</a>
-            <a slot="innlogging" href="../loggInn.html">Logg inn</a>
-        </nav-bar>
-        <div class="shadowBox">
-            <h3 class="mb-3">Logg Inn</h3>
-            <input type="text" id="brukernavn" placeholder="Skriv inn brukernavn" class="form-control shadow-sm">
-            <input type="password" id="passord" placeholder="Skriv inn passord" class="form-control shadow-sm mt-2">
-            <div id="feil" class="mt-1 rodTekst"></div>
-            <input type="button" class="btn btn-md btn-primary mt-3 form-control  font-weight-bold shadow antialised" value="Logg inn" onclick="loggInn()" />
-        </div>
-    </div>
-</body>
+		<!-- Javascript -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="JS/Components/NavBar.js?n=1" defer></script>
+		<script src="JS/Hjelpemetoder.js" defer></script>
+		<script src="JS/loggInn.js" defer></script>
+		<script src="JS/validering.js?n=14" defer></script>
+	</head>
+	<body>
+		<div id="overlay">
+			<!-- NavBar Component-->
+			<nav-bar>
+				<a slot="billett" href="../index.html">Kjøp Billett</a>
+				<a slot="ruter" href="../ruter.html">Ruter</a>
+				<a slot="innlogging" href="../loggInn.html">Logg inn</a>
+			</nav-bar>
+			<div class="shadowBox">
+				<h3 class="mb-3">Logg Inn</h3>
+				<input
+					type="text"
+					id="brukernavn"
+					placeholder="Skriv inn brukernavn"
+					class="form-control shadow-sm"
+				/>
+				<input
+					type="password"
+					id="passord"
+					placeholder="Skriv inn passord"
+					class="form-control shadow-sm mt-2"
+				/>
+				<div id="feil" class="mt-1 rodTekst"></div>
+				<input
+					type="button"
+					class="btn btn-md btn-primary mt-3 form-control font-weight-bold shadow antialised"
+					value="Logg inn"
+					onclick="loggInn()"
+				/>
+			</div>
+		</div>
+	</body>
 </html>

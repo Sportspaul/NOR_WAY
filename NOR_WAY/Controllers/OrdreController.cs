@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using NOR_WAY.DAL;
 using NOR_WAY.DAL.Interfaces;
 using NOR_WAY.Model;
 
@@ -13,6 +15,7 @@ namespace NOR_WAY.Controllers
     {
         private readonly IOrdreRepository _db;
         private ILogger<OrdreController> _log;
+        private const string _innlogget = "Innlogget";
         private string melding;
         private string ugyldigValidering = "Feil i inputvalideringen på server";
 
@@ -43,25 +46,52 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentOrdre(string epost)
         {
-            var billetter = new List<string> { "Student", "Student", "Student", "Voksen", "Voksen", "Honnør", "Barn" };
-            var ordre1 = new OrdreModel
+            List<OrdreModel> ordreModelListe = await _db.HentOrdre(epost);
+            if (ordreModelListe.IsNullOrEmpty())
             {
-                Id = 1,
-                Epost = "123@abc.no",
-                StartStopp = "Bergen",
-                SluttStopp = "Vadheim",
-                Sum = "999",
-                Linjekode = "NW431",
-                Billettyper = billetter
-            };
+                melding = "Ingen ordre ble funnet";
+                _log.LogWarning(melding);
+                return NotFound(melding);
+            }
+            return Ok(ordreModelListe);
 
-            List<OrdreModel> utOrdre = new List<OrdreModel> { ordre1 };
-            return Ok(utOrdre);
+            //var billetter = new List<string> { "Student", "Student", "Student", "Voksen", "Voksen", "Honnør", "Barn" };
+            //var ordre1 = new OrdreModel
+            //{
+            //    Id = 1,
+            //    Epost = "123@abc.no",
+            //    StartStopp = "Bergen",
+            //    SluttStopp = "Vadheim",
+            //    Sum = "999",
+            //    Linjekode = "NW431",
+            //    Billettyper = billetter
+            //};
+
+            //List<OrdreModel> utOrdre = new List<OrdreModel> { ordre1 };
+            //return Ok(utOrdre);
         }
 
-        public Task<ActionResult> SlettOrdre(int id)
+        public async Task<ActionResult> SlettOrdre(int id)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke innlogget");
+            }
+            if (ModelState.IsValid)
+            {
+                bool returOK = await _db.SlettOrdre(id);
+                if (!returOK)
+                {
+                    melding = $"Ordren med id: {id}, kunne ikke slettes";
+                    _log.LogWarning(melding);
+                    return BadRequest(melding);
+                }
+                melding = $"Ordren med Id: {id}, ble slettet";
+                _log.LogInformation(melding);
+                return Ok(melding);
+            }
+            _log.LogWarning(ugyldigValidering);
+            return BadRequest(ugyldigValidering);
         }
     }
 }

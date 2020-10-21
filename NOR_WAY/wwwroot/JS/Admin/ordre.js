@@ -4,5 +4,15 @@
     data.forEach((rad) => {
         rad.billettyper = Hjelpemetoder.formaterValgteBillettyper(rad.billettyper);
     });
+    $("#tabellContainer").html("");
     lagTabell(data, "D");
+}
+
+function slettRad(id) {
+    $.get(`../Ordre/SlettOrdre?id=${id}`, () => {
+        $(`#rad${id}`).remove();
+    })
+        .fail(() => {
+            console.log("Ordren ble IKKE fjernet");
+        });;
 }

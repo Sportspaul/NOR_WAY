@@ -6,9 +6,10 @@ namespace NOR_WAY.DAL.Interfaces
 {
     public interface IStoppRepository
     {
-        Task<List<Stopp>> FinnMuligeStartStopp(StoppModel startStopp);
+        Task<List<Stopp>> FinnMuligeStartStopp(StoppModel sluttStopp);
 
-        Task<List<Stopp>> FinnMuligeSluttStopp(StoppModel sluttStopp);
+        Task<List<Stopp>> FinnMuligeSluttStopp(StoppModel startStopp);
+
         Task<Stopp> HentEtStopp(int id);
 
         Task<List<Stopp>> HentAlleStopp();

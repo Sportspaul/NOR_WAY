@@ -26,11 +26,11 @@ namespace NOR_WAY.DAL.Repositories
             _log = log;
         }
 
-        public async Task<List<Stopp>> FinnMuligeStartStopp(StoppModel startStopp)
+        public async Task<List<Stopp>> FinnMuligeStartStopp(StoppModel sluttStopp)
         {
             try
             {
-                Stopp stopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == startStopp.Navn);
+                Stopp stopp = await _db.Stopp.FirstOrDefaultAsync(s => s.Navn == sluttStopp.Navn);
                 List<Ruter> ruter = await _hjelp.FinnRuteneTilStopp(stopp);
 
                 List<Stopp> stoppListe = new List<Stopp>();

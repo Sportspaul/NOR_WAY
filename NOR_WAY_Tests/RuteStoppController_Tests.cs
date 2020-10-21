@@ -75,6 +75,53 @@ namespace NOR_WAY_Tests
             Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
         }
 
+        [Fact]
+        public async Task HentAlleRuteStopp_Riktig()
+        {
+            // arrange
+           List<RuteStoppModel> ruteStoppene = RuteStoppListe();
+            mockRepo.Setup(rs => rs.HentRuteStopp("NW2")).ReturnsAsync(RuteStoppListe());
+
+            //act 
+            var resultat = await ruteStoppController.HentRuteStopp("NW2") as OkObjectResult;
+            List<RuteStoppModel> faktiskRuteStoppene = (List<RuteStoppModel>) resultat.Value;
+
+            //assert
+            for (int i = 0; i < ruteStoppene.Count; i++)
+            {
+                Assert.Equal(ruteStoppene[i].ToString(), faktiskRuteStoppene[i].ToString());
+            }
+        }
+
+        [Fact]
+        public async Task HentAlleRuteStopp_IkkeFunnet()
+        {
+            // arrange
+            string linjekode = "NW2";
+            List<RuteStoppModel> ruteStoppene = new List<RuteStoppModel>();
+            mockRepo.Setup(rs => rs.HentRuteStopp(linjekode)).ReturnsAsync(ruteStoppene);
+
+            //act 
+            var resultat = await ruteStoppController.HentRuteStopp(linjekode) as NotFoundObjectResult;
+           
+            //assert
+            Assert.Equal($"Ingen RuteStopp ble funnet med linjekode: {linjekode}", resultat.Value);
+        }
+
+        [Fact]
+        public async Task HentAlleRuteStopp_Regex()
+        {
+            // arrange
+            List<RuteStoppModel> ruteStoppene = RuteStoppListe();
+            mockRepo.Setup(rs => rs.HentRuteStopp("NW2")).ReturnsAsync(RuteStoppListe());
+            ruteStoppController.ModelState.AddModelError("Stoppnavn", "Feil i inputvalideringen på server");
+            //act 
+            var resultat = await ruteStoppController.HentRuteStopp("NW2") as BadRequestObjectResult;
+           
+            //assert
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
+        }
+
 
 
 
@@ -90,6 +137,33 @@ namespace NOR_WAY_Tests
                 MinutterTilNesteStopp = 30,
                 Linjekode = "NW1"
             };
+        }
+
+        private List<RuteStoppModel> RuteStoppListe()
+        {
+            RuteStoppModel rsm1 = new RuteStoppModel
+            {
+                Id = 1,
+                Stoppnavn = "Bergen",
+                StoppNummer = 1,
+                MinutterTilNesteStopp = 30
+            };
+            RuteStoppModel rsm2 = new RuteStoppModel
+            {
+                Id = 2,
+                Stoppnavn = "Vadheim",
+                StoppNummer = 2,
+                MinutterTilNesteStopp = 30
+            };
+            RuteStoppModel rsm3 = new RuteStoppModel
+            {
+                Id = 3,
+                Stoppnavn = "Trondheim",
+                StoppNummer = 3,
+                MinutterTilNesteStopp = 30
+            };
+            List<RuteStoppModel> rutestoppene = new List<RuteStoppModel> { rsm1, rsm2, rsm3 };
+            return rutestoppene;
         }
 
         private void MockSession(string innlogging)

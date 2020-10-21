@@ -86,7 +86,7 @@ namespace NOR_WAY.Controllers
                 bool returOK = await _db.OppdaterBillettype(oppdatertBillettype);
                 if (!returOK)
                 {
-                    melding = $"Endringen av Billettype kunne ikke utføres med veridene: {oppdatertBillettype}";
+                    melding = $"Endringen av Billettype kunne ikke utføres med verdiene: {oppdatertBillettype}";
                     _log.LogWarning(melding);
                     return NotFound(melding);
                 }

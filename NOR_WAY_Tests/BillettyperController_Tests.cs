@@ -68,7 +68,7 @@ namespace NOR_WAY_Tests
             var resultat = await billettyperController.HentAlleBillettyper() as NotFoundObjectResult;
 
             // Assert
-            Assert.Equal("Ingen billettyper ble funnet", resultat.Value);
+            Assert.Equal("Ingen Billettyper ble funnet", resultat.Value);
         }
 
         /* Enhetstester for OppdaterBillettype */
@@ -84,9 +84,9 @@ namespace NOR_WAY_Tests
             // Act
             SimulerInnlogget();
             var resultat = await billettyperController.NyBillettype(billettype) as OkObjectResult;
-
+            string billettyper = (string) resultat.Value;
             // Assert
-            Assert.Equal("Ny billettype ble lagret!", resultat.Value);
+            Assert.Equal($"Ny billettype ble lagret med verdiene: {billettype}", billettyper);
         }
 
         // Test for om retur verdi: false blir håndtert korrekt for NyBillettype()
@@ -100,9 +100,9 @@ namespace NOR_WAY_Tests
             // Act
             SimulerInnlogget();
             var resultat = await billettyperController.NyBillettype(billettype) as BadRequestObjectResult;
-
+            string billettyper = (string) resultat.Value;
             // Assert
-            Assert.Equal("Ny billettype kunne ikke lagres!", resultat.Value);
+            Assert.Equal($"Ny Billettype kunne ikke lagres med verdiene: {billettype}", billettyper);
         }
 
         // Tester at NyBillettype håndterer InvalidModelState i controlleren
@@ -119,7 +119,7 @@ namespace NOR_WAY_Tests
             var resultat = await billettyperController.NyBillettype(billettype) as BadRequestObjectResult;
 
             // Assert
-            Assert.Equal("Feil i inputvalidering på server", resultat.Value);
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
         }
 
         // Test på at NyBillettype håndterer tilfelle hvor bruker ikke er logget inn
@@ -152,9 +152,9 @@ namespace NOR_WAY_Tests
             // Act
             SimulerInnlogget();
             var resultat = await billettyperController.OppdaterBillettype(billettype) as OkObjectResult;
-
+            string billettyper = (string) resultat.Value;
             // Assert
-            Assert.Equal("Billettypen ble endret", resultat.Value);
+            Assert.Equal($"Endringen av Billettype ble utført med verdiene: {billettype}", billettyper);
         }
 
         // Test for om retur verdi: false blir håndtert korrekt for OppdaterBillettype()
@@ -168,9 +168,9 @@ namespace NOR_WAY_Tests
             // Act
             SimulerInnlogget();
             var resultat = await billettyperController.OppdaterBillettype(billettype) as NotFoundObjectResult;
-
+            string billettyper = (string)resultat.Value;
             // Assert
-            Assert.Equal("Endringen av billettype kunne ikke utføres", resultat.Value);
+            Assert.Equal($"Endringen av Billettype kunne ikke utføres med verdiene: {billettype}", billettyper);
         }
 
         // Tester at OppdaterBillettype i controlleren håndterer InvalidModelState
@@ -187,7 +187,7 @@ namespace NOR_WAY_Tests
             var resultat = await billettyperController.OppdaterBillettype(billettype) as BadRequestObjectResult;
 
             // Assert
-            Assert.Equal("Feil i inputvalidering på server", resultat.Value);
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
         }
 
         // Test på at OppdaterBillettype håndterer tilfelle hvor bruker ikke er logget inn

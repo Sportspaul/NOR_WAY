@@ -61,7 +61,6 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentEtStopp(int id)
         {
-            //TODO: Vet ikke om session-sjekk trengs her
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
             {
                 return Unauthorized("Ikke innlogget");
@@ -120,7 +119,6 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentAlleStoppMedRuter()
         {
-            //TODO: Vet ikke om session-sjekk trengs her
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
             {
                 return Unauthorized("Ikke innlogget");

@@ -39,7 +39,7 @@ namespace NOR_WAY.Controllers
                     _log.LogWarning(melding);
                     return BadRequest(melding);
                 }
-                melding = $"Ruten med linjekode: {linjekode}, kunne ble slettet";
+                melding = $"Ruten med linjekode: {linjekode}, ble slettet";
                 _log.LogInformation(melding);
                 return Ok(melding);
             }

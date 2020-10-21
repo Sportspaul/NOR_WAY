@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -16,6 +17,13 @@ namespace NOR_WAY_Tests
         private readonly Mock<IRuterRepository> mockRepo = new Mock<IRuterRepository>();
         private readonly Mock<ILogger<RuterController>> mockLogCtr = new Mock<ILogger<RuterController>>();
         private readonly RuterController ruterController;
+
+        private readonly Mock<HttpContext> mockHttpContext = new Mock<HttpContext>();
+        private readonly MockHttpSession mockSession = new MockHttpSession();
+
+        private const string _innlogget = "Innlogget";
+        private const string _ikkeInnlogget = "";
+
 
         public RuterController_Tests()
         {
@@ -114,12 +122,13 @@ namespace NOR_WAY_Tests
             // Arrange
             string linjekode = "NW431";
             mockRepo.Setup(br => br.FjernRute(linjekode)).ReturnsAsync(true);
+            MockSession(_innlogget);
 
             // Act
             var resultat = await ruterController.FjernRute(linjekode) as OkObjectResult;
-
+            string fjernetRute = (string) resultat.Value;
             // Assert
-            Assert.Equal("Ruten ble slettet!", resultat.Value);
+            Assert.Equal($"Ruten med linjekode: {linjekode}, ble slettet", fjernetRute);
         }
 
         [Fact]
@@ -128,12 +137,13 @@ namespace NOR_WAY_Tests
             // Arrange
             string linjekode = "NW431";
             mockRepo.Setup(br => br.FjernRute(linjekode)).ReturnsAsync(false);
+            MockSession(_innlogget);
 
             // Act
             var resultat = await ruterController.FjernRute(linjekode) as BadRequestObjectResult;
 
             // Assert
-            Assert.Equal("Ruten kunne ikke slettes!", resultat.Value);
+            Assert.Equal($"Ruten med linjekode: {linjekode}, kunne ikke slettes", resultat.Value);
         }
 
         // Tester at FullforOrdre i controlleren håndterer InvalidModelState
@@ -143,13 +153,14 @@ namespace NOR_WAY_Tests
             // Arrange
             string linjekode = "";
             mockRepo.Setup(br => br.FjernRute(linjekode)).ReturnsAsync(false);
+            MockSession(_innlogget);
             ruterController.ModelState.AddModelError("Linjekode", "Feil i inputvalideringen på server");
 
             // Act
             var resultat = await ruterController.FjernRute(linjekode) as BadRequestObjectResult;
 
             // Assert
-            Assert.Equal("Feil i inputvalidering på server", resultat.Value);
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
         }
 
         // Returnerer en List med RuteMedStopp-objekter
@@ -174,6 +185,13 @@ namespace NOR_WAY_Tests
             var rute2 = new Ruter() { Linjekode = "NW194", Rutenavn = "Grenlandsekspressen", Startpris = 50, TilleggPerStopp = 35, Kapasitet = 45 };
             var rute3 = new Ruter() { Linjekode = "NW180", Rutenavn = "Haukeliekspressen", Startpris = 149, TilleggPerStopp = 20, Kapasitet = 65 };
             return new List<Ruter> { rute1, rute2, rute3 };
+        }
+
+        private void MockSession(string innlogging)
+        {
+            mockSession[_innlogget] = innlogging;
+            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
+            ruterController.ControllerContext.HttpContext = mockHttpContext.Object;
         }
     }
 }

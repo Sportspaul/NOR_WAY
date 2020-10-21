@@ -12,7 +12,7 @@ using Xunit;
 
 namespace NOR_WAY_Tests
 {
-    public class AvgangControllerTests
+    public class AvgangController_Tests
     {
         private const string _innlogget = "Innlogget";
         private const string _ikkeInnlogget = "";
@@ -25,7 +25,7 @@ namespace NOR_WAY_Tests
         private readonly Mock<HttpContext> mockHttpContext = new Mock<HttpContext>();
         private readonly MockHttpSession mockSession = new MockHttpSession();
 
-        public AvgangControllerTests()
+        public AvgangController_Tests()
         {
             avgangController = new AvgangController(mockRepo.Object, mockLogCtr.Object);
         }

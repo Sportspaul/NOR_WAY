@@ -207,6 +207,56 @@ namespace NOR_WAY_Tests
             Assert.Equal("Ikke innlogget", resultat.Value);
         }
 
+
+        /* Enhetstester for HentEnBillettype() */
+        [Fact]
+        public async Task HentEnBillettype_RiktigeVerdier()
+        {
+            // Arrange
+            int id = 1;
+            Billettyper forventet = HentEnBillettype();
+            mockRepo.Setup(b => b.HentEnBillettype(id)).ReturnsAsync(HentEnBillettype());
+
+            // Act
+            var resultat = await billettyperController.HentEnBillettype(id) as OkObjectResult;
+            Billettyper faktisk = (Billettyper)resultat.Value;
+
+            // Assert
+            // Tester om alle verdiene er like i alle elementene
+            Assert.Equal(forventet.Billettype, faktisk.Billettype);
+            Assert.Equal(forventet.Rabattsats, faktisk.Rabattsats);
+        }
+
+        // Tester at returverdi: null blir håndtert korrekt for HentAlleBillettyper()
+        [Fact]
+        public async Task HentEnBillettype_Null()
+        {
+            // Arrange
+            int id = 1;
+            mockRepo.Setup(b => b.HentEnBillettype(id)).ReturnsAsync(() => null);
+
+            // Act
+            var resultat = await billettyperController.HentEnBillettype(id) as NotFoundObjectResult;
+
+            // Assert
+            Assert.Equal($"Billettypen med Id: {id}, ble ikke funnet", resultat.Value);
+        }
+
+        // Tester at NyBillettype håndterer InvalidModelState i controlleren
+        [Fact]
+        public async Task HentEnBillettype_RegEx()
+        {
+            // Arrange
+            billettyperController.ModelState.AddModelError("id", "Feil i inputvalideringen på server");
+
+            // Act
+            var resultat = await billettyperController.HentEnBillettype(1) as BadRequestObjectResult;
+
+            // Assert
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
+        }
+
+
         // Returnerer en List med Billettyper-objekter
         private List<Billettyper> HentBillettyperListe()
         {

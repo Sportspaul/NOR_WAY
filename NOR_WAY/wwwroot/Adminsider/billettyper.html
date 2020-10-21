@@ -1,19 +1,28 @@
 ﻿<!DOCTYPE html>
 <html lang="no">
-<head>
+  <head>
     <!-- Tittel og favicon -->
     <title>NOR-WAY</title>
-    <link rel="icon" href="../Bilder/favicon.png">
+    <link rel="icon" href="../Bilder/favicon.png" />
 
     <!-- Metadata -->
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=10">
-    <meta name="description" content="Vi gir deg mulighet til å reise med buss i Norge. Kjøp bussbilletter, søk etter reisemuligheter, finn din rute og avganger, rutetabeller og ruteinfo.">
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=10"
+    />
+    <meta
+      name="description"
+      content="Vi gir deg mulighet til å reise med buss i Norge. Kjøp bussbilletter, søk etter reisemuligheter, finn din rute og avganger, rutetabeller og ruteinfo."
+    />
 
     <!-- CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../Style/template.css">
-    <link rel="stylesheet" href="../Style/admin.css">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../Style/template.css" />
+    <link rel="stylesheet" href="../Style/admin.css" />
 
     <!-- Javascript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -23,20 +32,20 @@
     <script src="../JS/Hjelpemetoder.js"></script>
     <script src="../JS/Admin/tabellMetoder.js"></script>
     <script src="../JS/Admin/billettyper.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <div id="overlay">
-        <nav-bar>
-            <a slot="billett" href="../index.html">Kjøp Billett</a>
-            <a slot="ruter" href="../ruter.html">Ruter</a>
-            <a slot="innlogging" id="loggUt" href="../index.html">Logg ut</a>
-        </nav-bar>
-        <div class="shadowBox">
-            <admin-nav></admin-nav>
-            <h1>Billettyper</h1>
-            <div id="knapp"></div>
-            <div id="tabellContainer"></div>
-        </div>
+      <nav-bar>
+        <a slot="billett" href="../index.html">Kjøp Billett</a>
+        <a slot="ruter" href="../ruter.html">Ruter</a>
+        <a slot="innlogging" id="loggUt" href="../index.html">Logg ut</a>
+      </nav-bar>
+      <div class="shadowBox">
+        <admin-nav></admin-nav>
+        <h1>Billettyper</h1>
+        <div id="knapp"></div>
+        <div id="tabellContainer"></div>
+      </div>
     </div>
-</body>
+  </body>
 </html>

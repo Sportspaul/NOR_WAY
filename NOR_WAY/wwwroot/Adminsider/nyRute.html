@@ -1,19 +1,28 @@
 ﻿<!DOCTYPE html>
 <html lang="no">
-<head>
+  <head>
     <!-- Tittel og favicon -->
     <title>NOR-WAY</title>
-    <link rel="icon" href="../Bilder/favicon.png">
+    <link rel="icon" href="../Bilder/favicon.png" />
 
     <!-- Metadata -->
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=10">
-    <meta name="description" content="Vi gir deg mulighet til å reise med buss i Norge. Kjøp bussbilletter, søk etter reisemuligheter, finn din rute og avganger, rutetabeller og ruteinfo.">
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=10"
+    />
+    <meta
+      name="description"
+      content="Vi gir deg mulighet til å reise med buss i Norge. Kjøp bussbilletter, søk etter reisemuligheter, finn din rute og avganger, rutetabeller og ruteinfo."
+    />
 
     <!-- CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../Style/template.css">
-    <link rel="stylesheet" href="../Style/admin.css">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../Style/template.css" />
+    <link rel="stylesheet" href="../Style/admin.css" />
 
     <!-- Javascript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -24,50 +33,81 @@
     <script src="../JS/Admin/nyRute.js" defer></script>
     <script src="../JS/Events/NyRuteEvents.js" defer></script>
     <script src="../JS/validering.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <div id="overlay">
-        <nav-bar>
-            <a slot="billett" href="../index.html">Kjøp Billett</a>
-            <a slot="ruter" href="../ruter.html">Ruter</a>
-            <a slot="innlogging" id="loggUt" href="../index.html">Logg ut</a>
-        </nav-bar>
-        <div class="shadowBox">
-            <admin-nav><!-- Web Component, Components/AdminNav.js--></admin-nav>
-            <h1 id="tittel"></h1>
+      <nav-bar>
+        <a slot="billett" href="../index.html">Kjøp Billett</a>
+        <a slot="ruter" href="../ruter.html">Ruter</a>
+        <a slot="innlogging" id="loggUt" href="../index.html">Logg ut</a>
+      </nav-bar>
+      <div class="shadowBox">
+        <admin-nav><!-- Web Component, Components/AdminNav.js--></admin-nav>
+        <h1 id="tittel"></h1>
 
-            <div class="form-group mt-4" id="linjekodeGruppe">
-                <h5 class="antialised">Linjekode</h5>
-                <input type="text" id="linjekode" class="form-control shadow-sm" placeholder="Skriv inn linjekode" maxlength="6">
-                <div id="feilLinjekode" class="mt-1 rodTekst"></div>
-            </div>
-
-            <div class="form-group mt-4">
-                <h5 class="antialised">Rutenavn</h5>
-                <input type="text" id="rutenavn" class="form-control shadow-sm" placeholder="Skriv inn rutenavn" maxlength="50">
-                <div id="feilRutenavn" class="mt-1 rodTekst"></div>
-            </div>
-
-            <div class="form-group mt-4">
-                <h5 class="antialised">Startpris</h5>
-                <input type="number" id="startpris" class="form-control shadow-sm" placeholder="Skriv inn startpris">
-                <div id="feilStartpris" class="mt-1 rodTekst"></div>
-            </div>
-
-            <div class="form-group mt-4">
-                <h5 class="antialised">Tillegg per stopp</h5>
-                <input type="number" id="tilleggPerStopp" class="form-control shadow-sm" placeholder="Skriv inn tillegg i pris per stopp">
-                <div id="feilTilleggPerStopp" class="mt-1 rodTekst"></div>
-            </div>
-
-            <div class="form-group mt-4">
-                <h5 class="antialised">Kapasitet</h5>
-                <input type="number" id="kapasitet" class="form-control shadow-sm" placeholder="Skriv inn antall passasjerer">
-                <div id="feilKapasitet" class="mt-1 rodTekst"></div>
-            </div>
-
-            <input type="button" id="lagre" class="form-control btn btn-md btn-success mt-3 font-weight-bold shadow antialised" />
+        <div class="form-group mt-4" id="linjekodeGruppe">
+          <h5 class="antialised">Linjekode</h5>
+          <input
+            type="text"
+            id="linjekode"
+            class="form-control shadow-sm"
+            placeholder="Skriv inn linjekode"
+            maxlength="6"
+          />
+          <div id="feilLinjekode" class="mt-1 rodTekst"></div>
         </div>
+
+        <div class="form-group mt-4">
+          <h5 class="antialised">Rutenavn</h5>
+          <input
+            type="text"
+            id="rutenavn"
+            class="form-control shadow-sm"
+            placeholder="Skriv inn rutenavn"
+            maxlength="50"
+          />
+          <div id="feilRutenavn" class="mt-1 rodTekst"></div>
+        </div>
+
+        <div class="form-group mt-4">
+          <h5 class="antialised">Startpris</h5>
+          <input
+            type="number"
+            id="startpris"
+            class="form-control shadow-sm"
+            placeholder="Skriv inn startpris"
+          />
+          <div id="feilStartpris" class="mt-1 rodTekst"></div>
+        </div>
+
+        <div class="form-group mt-4">
+          <h5 class="antialised">Tillegg per stopp</h5>
+          <input
+            type="number"
+            id="tilleggPerStopp"
+            class="form-control shadow-sm"
+            placeholder="Skriv inn tillegg i pris per stopp"
+          />
+          <div id="feilTilleggPerStopp" class="mt-1 rodTekst"></div>
+        </div>
+
+        <div class="form-group mt-4">
+          <h5 class="antialised">Kapasitet</h5>
+          <input
+            type="number"
+            id="kapasitet"
+            class="form-control shadow-sm"
+            placeholder="Skriv inn antall passasjerer"
+          />
+          <div id="feilKapasitet" class="mt-1 rodTekst"></div>
+        </div>
+
+        <input
+          type="button"
+          id="lagre"
+          class="form-control btn btn-md btn-success mt-3 font-weight-bold shadow antialised"
+        />
+      </div>
     </div>
-</body>
+  </body>
 </html>

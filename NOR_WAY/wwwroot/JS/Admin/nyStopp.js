@@ -1,7 +1,6 @@
-
-$(function () {
-    Hjelpemetoder.endreBakgrunn();
-    new NyStoppEvents('#stoppnavn');
+$(() => {
+	Hjelpemetoder.endreBakgrunn();
+	new NyStoppEvents("#stoppnavn");
 });
 
 const urlParameter = window.location.search;
@@ -10,32 +9,32 @@ const lagre = $("#lagre");
 
 $("#tittel").html(`Oppdater Stoppnavn`);
 lagre.val("Oppdater Stoppnavn");
-    
-const url = `../Stopp/HentEtStopp?id=${id}`
+
+const url = `../Stopp/HentEtStopp?id=${id}`;
 $.get(url, (stopp) => {
-    fyllInputfelter(stopp);
-})
-lagre.click(()=> {
-    oppdaterStoppnavn();
-})
+	fyllInputfelter(stopp);
+});
+lagre.click(() => {
+	oppdaterStoppnavn();
+});
 
 function fyllInputfelter(stopp) {
-    $("#stoppnavn").val(stopp.navn)
+	$("#stoppnavn").val(stopp.navn);
 }
 
 function oppdaterStoppnavn() {
-    if(validerEtStoppnavn($("#stoppnavn"), "#feilStoppnavn")){ 
-        let stopp = lagStoppObjekt();
-        console.log(stopp);
-        stopp.id = id;
-        $.post("../stopp/oppdaterstoppnavn", stopp, () => {
-            location.replace("stopp.html?nystoppnavn");
-        })
-    }
+	if (validerEtStoppnavn($("#stoppnavn"), "#feilStoppnavn")) {
+		let stopp = lagStoppObjekt();
+		console.log(stopp);
+		stopp.id = id;
+		$.post("../stopp/oppdaterstoppnavn", stopp, () => {
+			location.replace("stopp.html?nystoppnavn");
+		});
+	}
 }
 
-function lagStoppObjekt(){
-    return {
-        Navn: $("#stoppnavn").val()
-    }
-} 
+function lagStoppObjekt() {
+	return {
+		Navn: $("#stoppnavn").val(),
+	};
+}

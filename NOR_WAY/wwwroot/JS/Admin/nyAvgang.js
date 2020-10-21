@@ -1,6 +1,6 @@
-$(function () {
-    Hjelpemetoder.endreBakgrunn();
-    new NyAvgangEvents('#linjekode', '#dato');
+$(() => {
+	Hjelpemetoder.endreBakgrunn();
+	new NyAvgangEvents("#linjekode", "#dato");
 });
 
 const urlParameter = window.location.search;
@@ -11,55 +11,54 @@ const lagre = $("#lagre");
 $("#linjekode").prop("readonly", true);
 
 if (id.length == 2) {
-    $("#tittel").html(`Oppdater Avgang`);
-    lagre.val("Oppdater Avgang");
+	$("#tittel").html(`Oppdater Avgang`);
+	lagre.val("Oppdater Avgang");
 
-    const url = `../Avgang/HentEnAvgang?id=${id[1]}`
-    $.get(url, (avgang) => {
-        fyllInputfelter(avgang);
-    })
-    lagre.click(() => {
-        oppdaterAvgang();
-    })
+	const url = `../Avgang/HentEnAvgang?id=${id[1]}`;
+	$.get(url, (avgang) => {
+		fyllInputfelter(avgang);
+	});
+	lagre.click(() => {
+		oppdaterAvgang();
+	});
 } else {
-    $("#tittel").html("Ny Avgang");
-    $("#linjekode").val(id[0]);
-    lagre.val("Opprett ny avgang")
-    lagre.click(() => {
-        nyAvgang();
-    })
+	$("#tittel").html("Ny Avgang");
+	$("#linjekode").val(id[0]);
+	lagre.val("Opprett ny avgang");
+	lagre.click(() => {
+		nyAvgang();
+	});
 }
 
 function fyllInputfelter(avgang) {
-    $("#linjekode").val(avgang.linjekode);
-    $("#dato").val(avgang.dato),
-        $("#tidspunkt").val(avgang.tidspunkt)
+	$("#linjekode").val(avgang.linjekode);
+	$("#dato").val(avgang.dato), $("#tidspunkt").val(avgang.tidspunkt);
 }
 
 function oppdaterAvgang() {
-    if (validerAvgangInput()) {
-        let avgang = lagAvgangObjekt();
-        avgang.Id = id[1];
-        $.post("../Avgang/OppdaterAvgang", avgang, () => {
-            location.replace("avganger.html?linjekode=NW431&side=0");
-        })
-    }
+	if (validerAvgangInput()) {
+		let avgang = lagAvgangObjekt();
+		avgang.Id = id[1];
+		$.post("../Avgang/OppdaterAvgang", avgang, () => {
+			location.replace("avganger.html?linjekode=NW431&side=0");
+		});
+	}
 }
 
 function nyAvgang() {
-    if (validerAvgangInput()) {
-        let avgang = lagAvgangObjekt();
-        avgang.Linjekode = $("#linjekode").val();
-        avgang.SolgteBilletter = 0;
-        $.post("../Avgang/NyAvgang", avgang, () => {
-            location.replace("avganger.html?linjekode=NW431&side=0");
-        })
-    }
+	if (validerAvgangInput()) {
+		let avgang = lagAvgangObjekt();
+		avgang.Linjekode = $("#linjekode").val();
+		avgang.SolgteBilletter = 0;
+		$.post("../Avgang/NyAvgang", avgang, () => {
+			location.replace("avganger.html?linjekode=NW431&side=0");
+		});
+	}
 }
 
 function lagAvgangObjekt() {
-    return {
-        Dato: $("#dato").val(),
-        Tidspunkt: $("#tidspunkt").val(),
-    }
-} 
+	return {
+		Dato: $("#dato").val(),
+		Tidspunkt: $("#tidspunkt").val(),
+	};
+}

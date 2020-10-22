@@ -1,11 +1,16 @@
-﻿$(function () {
+﻿// Denne filen håndterer listing og filtrering av alle Stopp i DB
+$(function () {
+	Hjelpemetoder.endreBakgrunn(); // Tilpasser bakgrunn
+
+	// Lister ut alle stoppene i DB
 	let url = "nyStopp.html";
 	let res = $.get("../Stopp/HentAlleStoppMedRuter", () => {
 		lagTabell(res, "U", url);
 	});
-	filterStoppListe();
+	filterStoppListe(); // Setter eventlistner for filtrering av Stopp
 });
 
+// Function som filtrer stoppene basert på brukerinput
 function filterStoppListe() {
 	let filter = document.querySelector("#filterStopp");
 

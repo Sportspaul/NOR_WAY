@@ -1,7 +1,9 @@
-﻿$(() => {
+﻿// Denne filen håndterer listing og sletting av Ordre
+$(() => {
 	Hjelpemetoder.endreBakgrunn();
 });
 
+// Function som kaller HentOrdre(epost) på serveren og lister ut alle ordre som matcher eposten
 async function sokEtterOrdre() {
 	const epost = $("#ordreEpost").val();
 	$.get(`../Ordre/HentOrdre?epost=${epost}`, (data) => {
@@ -26,6 +28,7 @@ async function sokEtterOrdre() {
 	});
 }
 
+// Function som kaller slettOrdre(id) på server
 function slettRad(id) {
 	$.get(`../Ordre/SlettOrdre?id=${id}`, () => {
 		$(`#${id}`).remove();

@@ -111,6 +111,7 @@ async function sokEtterOrdre() {
 	lagTabell(res, "D");
 }
 
+// Function som lager en knapp for å opprette en ny rad i DB
 function lagNyknapp(link) {
 	const knapp = `
                 <a href="${link}">

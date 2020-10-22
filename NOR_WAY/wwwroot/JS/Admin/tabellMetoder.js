@@ -86,11 +86,11 @@ async function lagRuteoversikt(res, link) {
 	data.forEach((rad) => {
 		url = `avganger.html?linjekode=${rad.linjekode}&side=0`;
 		rad.avganger = `<a href = ${url}><button class = "btn btn-dark btn-sm">Avganger</button></a>`;
-	});
-	data.forEach((rad) => {
+
 		url = `ruteStopp.html?linjekode=${rad.linjekode}`;
 		rad.rutestopp = `<a href = ${url}><button class = "btn btn-dark btn-sm">Rutestopp</button></a>`;
 	});
+
 	lagTabell(data, "CUD", link);
 }
 

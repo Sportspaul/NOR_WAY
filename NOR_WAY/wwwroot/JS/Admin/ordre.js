@@ -9,7 +9,12 @@ async function sokEtterOrdre() {
 			rad.billettyper = Hjelpemetoder.formaterValgteBillettyper(
 				rad.billettyper
 			);
+			rad.avreise =
+				Hjelpemetoder.formaterDatoOgTid(rad.avreise, "dato") +
+				" " +
+				Hjelpemetoder.formaterDatoOgTid(rad.avreise, "tid");
 		});
+
 		$("#tabellContainer").html("");
 		lagTabell(data, "D");
 	}).fail(() => {

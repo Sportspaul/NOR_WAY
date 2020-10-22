@@ -13,7 +13,12 @@
     - Ved sletting av en Avgang blir alle tilhørende Ordre og Ordrelinjer også slettet
     - Admin har ikke mulighet til å slette en billettype, da rader i Ordrelinjer-tabell avhenger av dem
     
-    Brukernavn: Admin
-    Passord: Admin123
+    # Admin innlogging: 
+      Brukernavn: Admin
+      Passord: Admin123
+    
+    # E-postadresser brukt til seeding av ordre:
+      [ ola@nodmann.no, kari@nodmann.no, john@doe.no, jane@doe.no, peder@aas.no, lars@holm.no ]
+    
     
     

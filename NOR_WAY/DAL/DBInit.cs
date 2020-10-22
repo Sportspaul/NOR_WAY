@@ -119,6 +119,39 @@ namespace NOR_WAY.DAL
                 InjiserAvganger(idag, NW130Rute, 2.00, 110, context);
                 InjiserAvganger(idag, NW160Rute, 2.00, 110, context);
                 InjiserAvganger(idag, NW162Rute, 2.00, 110, context);
+                context.SaveChanges();
+
+                // Injiserer Ordre og Ordrelinjer for de 7 første rutene
+                Stopp sluttStopp;
+                Stopp startStopp;
+
+                startStopp = context.Stopp.FirstOrDefault(s => s.Navn == "Bergen");
+                sluttStopp = context.Stopp.FirstOrDefault(s => s.Navn == "Trondheim");
+                InjiserOrdre("ola@nordmann.no", startStopp, sluttStopp, NW431Rute, student, 5, context);
+
+                startStopp = context.Stopp.FirstOrDefault(s => s.Navn == "Oslo");
+                sluttStopp = context.Stopp.FirstOrDefault(s => s.Navn == "Skien");
+                InjiserOrdre("kari@nordmann.no", startStopp, sluttStopp, NW194Rute, voksen, 5, context);
+
+                startStopp = context.Stopp.FirstOrDefault(s => s.Navn == "Oslo");
+                sluttStopp = context.Stopp.FirstOrDefault(s => s.Navn == "Haugesund");
+                InjiserOrdre("john@doe.no", startStopp, sluttStopp, NW180Rute, voksen, 5, context);
+
+                startStopp = context.Stopp.FirstOrDefault(s => s.Navn == "Oslo");
+                sluttStopp = context.Stopp.FirstOrDefault(s => s.Navn == "Bergen");
+                InjiserOrdre("jane@doe.no", startStopp, sluttStopp, NW192Rute, voksen, 5, context);
+
+                startStopp = context.Stopp.FirstOrDefault(s => s.Navn == "Bergen");
+                sluttStopp = context.Stopp.FirstOrDefault(s => s.Navn == "Stavanger");
+                InjiserOrdre("peder@aas.no", startStopp, sluttStopp, NW400Rute, voksen, 5, context);
+
+                startStopp = context.Stopp.FirstOrDefault(s => s.Navn == "Bergen");
+                sluttStopp = context.Stopp.FirstOrDefault(s => s.Navn == "Sogndal");
+                InjiserOrdre("lars@holm.no", startStopp, sluttStopp, NW420Rute, voksen, 5, context);
+
+                startStopp = context.Stopp.FirstOrDefault(s => s.Navn == "Flatdal");
+                sluttStopp = context.Stopp.FirstOrDefault(s => s.Navn == "Ringdal");
+                InjiserOrdre("ola@nordmann.no", startStopp, sluttStopp, NW182Rute, voksen, 5, context);
 
                 // Lagrer all seedet data
                 context.SaveChanges();
@@ -206,6 +239,30 @@ namespace NOR_WAY.DAL
                 };
                 tilfeldigAvreise = tilfeldigAvreise.AddDays(hyppighet);
                 context.Avganger.Add(nyAvgang);
+            }
+        }
+
+        private static void InjiserOrdre(string epost, Stopp startStopp, Stopp sluttStopp, Ruter rute, Billettyper billettype, int antall, BussContext context) {
+            for (int i = 0; i < antall; i++) {
+                List<Avganger> avganger = context.Avganger.Where(a => a.Rute == rute)
+                    .OrderBy(a => a.Avreise).Take(antall).ToList(); ;
+                Ordre ordre = new Ordre
+                {
+                    Epost = epost,
+                    StartStopp = startStopp,
+                    SluttStopp = sluttStopp,
+                    Sum = 250,
+                    Rute = rute,
+                    Avgang = avganger[i]
+                };
+                Ordrelinjer ordrelinje = new Ordrelinjer
+                {
+                    Billettype = billettype,
+                    Ordre = ordre
+                };
+                avganger[i].SolgteBilletter++;
+                context.Ordre.Add(ordre);
+                context.Ordrelinjer.Add(ordrelinje);
             }
         }
     }

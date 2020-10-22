@@ -17,6 +17,7 @@ async function sokEtterOrdre() {
 
 		$("#tabellContainer").html("");
 		lagTabell(data, "D");
+		$("#feilEpost").html("");
 	}).fail(() => {
 		$("#tabellContainer").html("");
 		$("#feilEpost").html(

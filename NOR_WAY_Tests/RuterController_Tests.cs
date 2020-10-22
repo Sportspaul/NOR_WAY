@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -73,6 +74,8 @@ namespace NOR_WAY_Tests
             Assert.Equal("Rutene ble ikke funnet", resultat.Value);
         }
 
+
+        //Adminmetoder som krever innlogging
         /* Enhetstester for HentAlleRuter */
 
         /* Tester at ikke listen fra BussRepo endrer seg i controlleren
@@ -84,12 +87,14 @@ namespace NOR_WAY_Tests
             // Arrange
             List<Ruter> forventet = HentRuterListe();
             mockRepo.Setup(b => b.HentAlleRuter()).ReturnsAsync(HentRuterListe());
+            MockSession(_innlogget);
 
             // Act
             var resultat = await ruterController.HentAlleRuter() as OkObjectResult;
             List<Ruter> faktisk = (List<Ruter>)resultat.Value;
 
             // Assert
+            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
             Assert.Equal(forventet.Count, faktisk.Count);   // Tester om listene er like lange
             // Tester om alle verdiene er like i alle elementene
             for (int i = 0; i < forventet.Count; i++)
@@ -103,19 +108,107 @@ namespace NOR_WAY_Tests
         }
 
         [Fact]
+        public async Task HentAlleRuter_IkkeTilgang()
+        {
+            // Arrange
+            List<Ruter> forventet = HentRuterListe();
+            mockRepo.Setup(b => b.HentAlleRuter()).ReturnsAsync(HentRuterListe());
+            MockSession(_ikkeInnlogget);
+
+            // Act
+            var resultat = await ruterController.HentAlleRuter() as UnauthorizedObjectResult;
+
+            // Assert
+            Assert.Equal((int) HttpStatusCode.Unauthorized, resultat.StatusCode); 
+            Assert.Equal("Ikke innlogget", resultat.Value);
+               
+        }
+
+        [Fact]
         public async Task HentAlleRuter_Null()
         {
             // Arrange
             mockRepo.Setup(b => b.HentAlleRuter()).ReturnsAsync(() => null);
+            MockSession(_innlogget);
 
             //Act
             var resultat = await ruterController.HentAlleRuter() as NotFoundObjectResult;
 
             // Assert
+            Assert.Equal((int)HttpStatusCode.NotFound, resultat.StatusCode);
             Assert.Equal("Rutene ble ikke funnet", resultat.Value);
         }
 
-        // Tester at FullforOrdre returnerer forventet verdi
+        [Fact]
+        public async Task HentEnRute_RiktigeVerdier()
+        {
+            // Arrange
+            string linjekode = "NW431";
+            Ruter enRute = HentRuterListe()[0];
+            mockRepo.Setup(br => br.HentEnRute(linjekode)).ReturnsAsync(enRute);
+            MockSession(_innlogget);
+
+            // Act
+            var resultat = await ruterController.HentEnRute(linjekode) as OkObjectResult;
+            Ruter forventetRute = (Ruter) resultat.Value;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
+            Assert.Equal($"{enRute}", forventetRute.ToString());
+        }
+
+        [Fact]
+        public async Task HentEnRute_IkkeTilgang()
+        {
+            // Arrange
+            string linjekode = "NW431";
+            Ruter enRute = HentRuterListe()[0];
+            mockRepo.Setup(br => br.HentEnRute(linjekode)).ReturnsAsync(enRute);
+            MockSession(_ikkeInnlogget);
+
+            // Act
+            var resultat = await ruterController.HentEnRute(linjekode) as UnauthorizedObjectResult;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
+            Assert.Equal("Ikke innlogget", resultat.Value);
+        }
+
+        [Fact]
+        public async Task HentEnRute_IkkeOK()
+        {
+            // Arrange
+            string linjekode = "NW431";
+            mockRepo.Setup(br => br.HentEnRute(linjekode)).ReturnsAsync(() => null);
+            MockSession(_innlogget);
+
+            // Act
+            var resultat = await ruterController.HentEnRute(linjekode) as NotFoundObjectResult;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.NotFound, resultat.StatusCode);
+            Assert.Equal("Ruten ble ikke funnet", resultat.Value);
+        }
+
+        [Fact]
+        public async Task HentEnRute_RegEx()
+        {
+            // Arrange
+            string linjekode = "";
+            Ruter enRute = HentRuterListe()[0];
+            mockRepo.Setup(br => br.HentEnRute(linjekode)).ReturnsAsync(enRute);
+            MockSession(_innlogget);
+            ruterController.ModelState.AddModelError("Linjekode", "Feil i inputvalideringen på server");
+
+            // Act
+            var resultat = await ruterController.HentEnRute(linjekode) as BadRequestObjectResult;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
+        }
+
+
         [Fact]
         public async Task FjernRute_RiktigeVerdier()
         {
@@ -126,9 +219,26 @@ namespace NOR_WAY_Tests
 
             // Act
             var resultat = await ruterController.FjernRute(linjekode) as OkObjectResult;
-            string fjernetRute = (string) resultat.Value;
+
             // Assert
-            Assert.Equal($"Ruten med linjekode: {linjekode}, ble slettet", fjernetRute);
+            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
+            Assert.Equal($"Ruten med linjekode: {linjekode}, ble slettet", resultat.Value);
+        }
+
+        [Fact]
+        public async Task FjernRute_IkkeTilgang()
+        {
+            // Arrange
+            string linjekode = "NW431";
+            mockRepo.Setup(br => br.FjernRute(linjekode)).ReturnsAsync(true);
+            MockSession(_ikkeInnlogget);
+
+            // Act
+            var resultat = await ruterController.FjernRute(linjekode) as UnauthorizedObjectResult;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
+            Assert.Equal("Ikke innlogget", resultat.Value);
         }
 
         [Fact]
@@ -143,10 +253,10 @@ namespace NOR_WAY_Tests
             var resultat = await ruterController.FjernRute(linjekode) as BadRequestObjectResult;
 
             // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
             Assert.Equal($"Ruten med linjekode: {linjekode}, kunne ikke slettes", resultat.Value);
         }
 
-        // Tester at FullforOrdre i controlleren håndterer InvalidModelState
         [Fact]
         public async Task FjernRute_RegEx()
         {
@@ -160,8 +270,145 @@ namespace NOR_WAY_Tests
             var resultat = await ruterController.FjernRute(linjekode) as BadRequestObjectResult;
 
             // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
             Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
         }
+
+        [Fact]
+        public async Task OppdaterRute_RiktigeVerdier()
+        {
+            // Arrange
+            Ruter enRute = HentRuterListe()[0];
+            mockRepo.Setup(br => br.OppdaterRute(enRute)).ReturnsAsync(true);
+            MockSession(_innlogget);
+
+            // Act
+            var resultat = await ruterController.OppdaterRute(enRute) as OkObjectResult;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
+            Assert.Equal($"Endring av Ruten med linjekode: {enRute.Linjekode}, " +
+                    $"ble utfør med verdiene: {enRute}", resultat.Value);
+        }
+
+        [Fact]
+        public async Task OppdaterRute_IkkeTilgang()
+        {
+            // Arrange
+            Ruter enRute = HentRuterListe()[0];
+            mockRepo.Setup(br => br.OppdaterRute(enRute)).ReturnsAsync(true);
+            MockSession(_ikkeInnlogget);
+
+            // Act
+            var resultat = await ruterController.OppdaterRute(enRute) as UnauthorizedObjectResult;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
+            Assert.Equal("Ikke innlogget", resultat.Value);
+        }
+
+        [Fact]
+        public async Task OppdaterRute_IkkeOK()
+        {
+            // Arrange
+            Ruter enRute = HentRuterListe()[0];
+            mockRepo.Setup(br => br.OppdaterRute(enRute)).ReturnsAsync(false);
+            MockSession(_innlogget);
+
+            // Act
+            var resultat = await ruterController.OppdaterRute(enRute) as NotFoundObjectResult;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.NotFound, resultat.StatusCode);
+            Assert.Equal($"Endringen av Ruten med linjekode: {enRute.Linjekode}, " +
+                        $"kunne ikke utføres med verdiene: {enRute}", resultat.Value);
+        }
+
+        [Fact]
+        public async Task OppdaterRute_RegEx()
+        {
+            // Arrange
+            Ruter enRute = HentRuterListe()[0];
+            mockRepo.Setup(br => br.OppdaterRute(enRute)).ReturnsAsync(true);
+            MockSession(_innlogget);
+            ruterController.ModelState.AddModelError("Linjekode", "Feil i inputvalideringen på server");
+
+            // Act
+            var resultat = await ruterController.OppdaterRute(enRute) as BadRequestObjectResult;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
+        }
+
+        [Fact]
+        public async Task NyRute_RiktigeVerdier()
+        {
+            // Arrange
+            Ruter enRute = HentRuterListe()[0];
+            mockRepo.Setup(br => br.NyRute(enRute)).ReturnsAsync(true);
+            MockSession(_innlogget);
+
+            // Act
+            var resultat = await ruterController.NyRute(enRute) as OkObjectResult;
+         
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
+            Assert.Equal($"Ny Rute ble lagres med verdiene: {enRute}", resultat.Value);
+        }
+
+        [Fact]
+        public async Task NyRute_IkkeTilgang()
+        {
+            // Arrange
+            Ruter enRute = HentRuterListe()[0];
+            mockRepo.Setup(br => br.NyRute(enRute)).ReturnsAsync(true);
+            MockSession(_ikkeInnlogget);
+
+            // Act
+            var resultat = await ruterController.NyRute(enRute) as UnauthorizedObjectResult;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
+            Assert.Equal("Ikke innlogget", resultat.Value);
+        }
+
+        [Fact]
+        public async Task NyRute_IkkeOK()
+        {
+            // Arrange
+            Ruter enRute = HentRuterListe()[0];
+            mockRepo.Setup(br => br.NyRute(enRute)).ReturnsAsync(false);
+            MockSession(_innlogget);
+
+            // Act
+            var resultat = await ruterController.NyRute(enRute) as BadRequestObjectResult;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
+            Assert.Equal($"Ny Rute kunne ikke lagres med verdiene: {enRute}", resultat.Value);
+        }
+
+        [Fact]
+        public async Task NyRute_RegEx()
+        {
+            // Arrange
+            Ruter enRute = HentRuterListe()[0];
+            mockRepo.Setup(br => br.NyRute(enRute)).ReturnsAsync(true);
+            MockSession(_innlogget);
+            ruterController.ModelState.AddModelError("Linjekode", "Feil i inputvalideringen på server");
+
+            // Act
+            var resultat = await ruterController.NyRute(enRute) as BadRequestObjectResult;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
+        }
+
+
+
+        //Hjelpemetoder
 
         // Returnerer en List med RuteMedStopp-objekter
         private List<RuteMedStopp> HentRuteMedStoppListe()

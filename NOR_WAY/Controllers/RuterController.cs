@@ -50,6 +50,10 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentAlleRuter()
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke innlogget");
+            }
             List<Ruter> rutene = await _db.HentAlleRuter();
             if (rutene.IsNullOrEmpty())
             {
@@ -74,6 +78,10 @@ namespace NOR_WAY.Controllers
 
         public async Task<ActionResult> HentEnRute(string linjekode)
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke innlogget");
+            }
             if (ModelState.IsValid)
             {
                 Ruter rute = await _db.HentEnRute(linjekode);

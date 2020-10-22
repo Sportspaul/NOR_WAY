@@ -404,32 +404,30 @@ namespace NOR_WAY_Tests
         public async Task NyAvgang_RiktigeVerdier()
         {
             // Arrange
-            int id = 1;
             NyAvgang utAvgang = HentNyAvgang();
 
-            mockRepo.Setup(br => br.HentEnAvgang(id)).ReturnsAsync(utAvgang);
+            mockRepo.Setup(br => br.NyAvgang(utAvgang)).ReturnsAsync(true);
 
             // Act
             SimulerInnlogget();
-            var resultat = await avgangController.HentEnAvgang(id) as OkObjectResult;
+            var resultat = await avgangController.NyAvgang(utAvgang) as OkObjectResult;
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
-            Assert.Equal($"Avgangen {utAvgang} ble hentet", resultat.Value);
+            Assert.Equal($"Ny avgang ble lagret med verdiene: {utAvgang}", resultat.Value);
         }
 
         [Fact]
         public async Task NyAvgang_IkkeTilgang()
         {
             // Arrange
-            int id = 1;
             NyAvgang utAvgang = HentNyAvgang();
 
-            mockRepo.Setup(br => br.HentEnAvgang(id)).ReturnsAsync(utAvgang);
+            mockRepo.Setup(br => br.NyAvgang(utAvgang)).ReturnsAsync(true);
 
             // Act
             SimulerUtlogget();
-            var resultat = await avgangController.HentEnAvgang(id) as UnauthorizedObjectResult;
+            var resultat = await avgangController.NyAvgang(utAvgang) as UnauthorizedObjectResult;
 
 
             // Assert
@@ -441,17 +439,17 @@ namespace NOR_WAY_Tests
         public async Task NyAvgang_IkkeFunnet()
         {
             // Arrange
-            int id = 1;
-            mockRepo.Setup(br => br.HentEnAvgang(id)).ReturnsAsync(() => null);
+            NyAvgang utAvgang = HentNyAvgang();
+            mockRepo.Setup(br => br.NyAvgang(utAvgang)).ReturnsAsync(false);
 
             // Act
             SimulerInnlogget();
-            var resultat = await avgangController.HentEnAvgang(id) as NotFoundObjectResult;
+            var resultat = await avgangController.NyAvgang(utAvgang) as BadRequestObjectResult;
 
 
             // Assert
-            Assert.Equal((int)HttpStatusCode.NotFound, resultat.StatusCode);
-            Assert.Equal($"Avganen med id: {id}, kunne ikke hentes", resultat.Value);
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
+            Assert.Equal($"Ny avgang kunne ikke lagres med verdiene: {utAvgang}", resultat.Value);
         }
 
         [Fact]

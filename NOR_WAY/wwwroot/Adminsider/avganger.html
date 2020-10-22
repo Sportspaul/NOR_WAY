@@ -1,66 +1,66 @@
 ﻿<!DOCTYPE html>
 <html lang="no">
-  <head>
-    <!-- Tittel og favicon -->
-    <title>NOR-WAY</title>
-    <link rel="icon" href="../Bilder/favicon.png" />
+	<head>
+		<!-- Tittel og favicon -->
+		<title>NOR-WAY</title>
+		<link rel="icon" href="../Bilder/favicon.png" />
 
-    <!-- Metadata -->
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width,initial-scale=1,maximum-scale=10"
-    />
-    <meta
-      name="description"
-      content="Vi gir deg mulighet til å reise med buss i Norge. Kjøp bussbilletter, søk etter reisemuligheter, finn din rute og avganger, rutetabeller og ruteinfo."
-    />
+		<!-- Metadata -->
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width,initial-scale=1,maximum-scale=10"
+		/>
+		<meta
+			name="description"
+			content="Vi gir deg mulighet til å reise med buss i Norge. Kjøp bussbilletter, søk etter reisemuligheter, finn din rute og avganger, rutetabeller og ruteinfo."
+		/>
 
-    <!-- CSS -->
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
-    <link rel="stylesheet" href="../Style/template.css" />
-    <link rel="stylesheet" href="../Style/admin.css" />
+		<!-- CSS -->
+		<link
+			rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+		/>
+		<link rel="stylesheet" href="../Style/template.css?n=1" />
+		<link rel="stylesheet" href="../Style/admin.css?n=1" />
 
-    <!-- Javascript -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="../JS/Admin/adminTilgang.js"></script>
-    <script src="../JS/Components/NavBar.js?n=1" defer></script>
-    <script src="../JS/Components/AdminNav.js" defer></script>
-    <script src="../JS/Hjelpemetoder.js"></script>
-    <script src="../JS/Admin/tabellMetoder.js"></script>
-    <script src="../JS/Admin/avganger.js"></script>
-  </head>
-  <body>
-    <div id="overlay">
-      <nav-bar>
-        <a slot="billett" href="../index.html">Kjøp Billett</a>
-        <a slot="ruter" href="../ruter.html">Ruter</a>
-        <a slot="innlogging" id="loggUt" href="../index.html">Logg ut</a>
-      </nav-bar>
-      <div class="shadowBox">
-        <admin-nav><!-- Web Component, Components/AdminNav.js--></admin-nav>
-        <h1 id="tittel"></h1>
-        <div id="knapp"></div>
-        <div id="tabellContainer"></div>
-        <div id="ingenAvganger" class="rodTekst"></div>
-        <button
-          id="forrigeSide"
-          class="btn btn-primary mt-3 btn-sm"
-          onclick="forrigeSide()"
-        >
-          Forrige Side
-        </button>
-        <button
-          id="nesteSide"
-          class="btn btn-primary mt-3 btn-sm"
-          onclick="nesteSide()"
-        >
-          Neste Side
-        </button>
-      </div>
-    </div>
-  </body>
+		<!-- Javascript -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="../JS/Admin/adminTilgang.js?n=1"></script>
+		<script src="../JS/Components/NavBar.js?n=2" defer></script>
+		<script src="../JS/Components/AdminNav.js?n=1" defer></script>
+		<script src="../JS/Hjelpemetoder.js?n=1"></script>
+		<script src="../JS/Admin/tabellMetoder.js?n=1"></script>
+		<script src="../JS/Admin/avganger.js?n=1"></script>
+	</head>
+	<body>
+		<div id="overlay">
+			<nav-bar>
+				<a slot="billett" href="../index.html">Kjøp Billett</a>
+				<a slot="ruter" href="../ruter.html">Ruter</a>
+				<a slot="innlogging" id="loggUt" href="../index.html">Logg ut</a>
+			</nav-bar>
+			<div class="shadowBox">
+				<admin-nav><!-- Web Component, Components/AdminNav.js--></admin-nav>
+				<h1 id="tittel"></h1>
+				<div id="knapp"></div>
+				<div id="tabellContainer"></div>
+				<div id="ingenAvganger" class="rodTekst"></div>
+				<button
+					id="forrigeSide"
+					class="btn btn-primary mt-3 btn-sm"
+					onclick="forrigeSide()"
+				>
+					Forrige Side
+				</button>
+				<button
+					id="nesteSide"
+					class="btn btn-primary mt-3 btn-sm"
+					onclick="nesteSide()"
+				>
+					Neste Side
+				</button>
+			</div>
+		</div>
+	</body>
 </html>

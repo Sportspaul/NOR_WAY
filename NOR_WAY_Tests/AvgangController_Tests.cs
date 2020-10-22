@@ -245,13 +245,7 @@ namespace NOR_WAY_Tests
         {
             // Arrange
             int id = 1;
-            NyAvgang utAvgang = new NyAvgang
-            {
-                Dato = "2020-11-12",
-                Tidspunkt = "12:00",
-                SolgteBilletter = 3,
-                Linjekode = "NW1"
-            };
+            NyAvgang utAvgang = HentNyAvgang();
 
             mockRepo.Setup(br => br.HentEnAvgang(id)).ReturnsAsync(utAvgang);
 
@@ -269,13 +263,7 @@ namespace NOR_WAY_Tests
         {
             // Arrange
             int id = 1;
-            NyAvgang utAvgang = new NyAvgang
-            {
-                Dato = "2020-11-12",
-                Tidspunkt = "12:00",
-                SolgteBilletter = 3,
-                Linjekode = "NW1"
-            };
+            NyAvgang utAvgang = HentNyAvgang();
 
             mockRepo.Setup(br => br.HentEnAvgang(id)).ReturnsAsync(utAvgang);
 
@@ -294,8 +282,6 @@ namespace NOR_WAY_Tests
         {
             // Arrange
             int id = 1;
-           
-
             mockRepo.Setup(br => br.HentEnAvgang(id)).ReturnsAsync(() => null);
 
             // Act
@@ -313,19 +299,172 @@ namespace NOR_WAY_Tests
         {
             // Arrange
             int id = 1;
-            NyAvgang utAvgang = new NyAvgang
-            {
-                Dato = "2020-11-12",
-                Tidspunkt = "12:00",
-                SolgteBilletter =3,
-                Linjekode = "NW1"
-            };
+            NyAvgang utAvgang = HentNyAvgang();
 
             mockRepo.Setup(br => br.HentEnAvgang(id)).ReturnsAsync(utAvgang);
             avgangController.ModelState.AddModelError("Dato", "Feil i inputvalideringen på server");
             // Act
             SimulerInnlogget();
             var resultat = await avgangController.HentEnAvgang(id) as BadRequestObjectResult;
+
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
+        }
+
+
+        [Fact]
+        public async Task OppdaterAvgang_RiktigeVerdier()
+        {
+            // Arrange
+            Avreisetid avreise = new Avreisetid
+            {
+                Id = 1,
+                Dato = "2020-11-12",
+                Tidspunkt = "12:00"
+            };
+            mockRepo.Setup(br => br.OppdaterAvgang(avreise)).ReturnsAsync(true);
+            // Act
+            SimulerInnlogget();
+            var resultat = await avgangController.OppdaterAvgang(avreise) as OkObjectResult;
+
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
+            Assert.Equal($"Endring av Avgang ble utført med verdiene: {avreise}", resultat.Value);
+        }
+
+        [Fact]
+        public async Task OppdaterAvgang_IkkeTilgang()
+        {
+            // Arrange
+            Avreisetid avreise = new Avreisetid
+            {
+                Id = 1,
+                Dato = "2020-11-12",
+                Tidspunkt = "12:00"
+            };
+            mockRepo.Setup(br => br.OppdaterAvgang(avreise)).ReturnsAsync(true);
+            // Act
+            SimulerUtlogget();
+            var resultat = await avgangController.OppdaterAvgang(avreise) as UnauthorizedObjectResult;
+
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
+            Assert.Equal("Ikke innlogget", resultat.Value);
+        }
+
+        [Fact]
+        public async Task OppdaterAvgang_IkkeFunnet()
+        {
+            // Arrange
+            Avreisetid avreise = new Avreisetid
+            {
+                Id = 1,
+                Dato = "2020-11-12",
+                Tidspunkt = "12:00"
+            };
+            mockRepo.Setup(br => br.OppdaterAvgang(avreise)).ReturnsAsync(false);
+            // Act
+            SimulerInnlogget();
+            var resultat = await avgangController.OppdaterAvgang(avreise) as NotFoundObjectResult;
+
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.NotFound, resultat.StatusCode);
+            Assert.Equal($"Endring av Avgang kunne ikke utføres med verdiene: { avreise}", resultat.Value);
+        }
+
+        [Fact]
+        public async Task OppdaterAvgang_Regex()
+        {
+            // Arrange
+            Avreisetid avreise = new Avreisetid
+            {
+                Id = 1, 
+                Dato = "2020-11-12",
+                Tidspunkt = "12:00"
+            };
+
+            mockRepo.Setup(br => br.OppdaterAvgang(avreise)).ReturnsAsync(true);
+            avgangController.ModelState.AddModelError("Dato", "Feil i inputvalideringen på server");
+            // Act
+            SimulerInnlogget();
+            var resultat = await avgangController.OppdaterAvgang(avreise) as BadRequestObjectResult;
+
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
+            Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
+        }
+
+        [Fact]
+        public async Task NyAvgang_RiktigeVerdier()
+        {
+            // Arrange
+            int id = 1;
+            NyAvgang utAvgang = HentNyAvgang();
+
+            mockRepo.Setup(br => br.HentEnAvgang(id)).ReturnsAsync(utAvgang);
+
+            // Act
+            SimulerInnlogget();
+            var resultat = await avgangController.HentEnAvgang(id) as OkObjectResult;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
+            Assert.Equal($"Avgangen {utAvgang} ble hentet", resultat.Value);
+        }
+
+        [Fact]
+        public async Task NyAvgang_IkkeTilgang()
+        {
+            // Arrange
+            int id = 1;
+            NyAvgang utAvgang = HentNyAvgang();
+
+            mockRepo.Setup(br => br.HentEnAvgang(id)).ReturnsAsync(utAvgang);
+
+            // Act
+            SimulerUtlogget();
+            var resultat = await avgangController.HentEnAvgang(id) as UnauthorizedObjectResult;
+
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
+            Assert.Equal("Ikke innlogget", resultat.Value);
+        }
+
+        [Fact]
+        public async Task NyAvgang_IkkeFunnet()
+        {
+            // Arrange
+            int id = 1;
+            mockRepo.Setup(br => br.HentEnAvgang(id)).ReturnsAsync(() => null);
+
+            // Act
+            SimulerInnlogget();
+            var resultat = await avgangController.HentEnAvgang(id) as NotFoundObjectResult;
+
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.NotFound, resultat.StatusCode);
+            Assert.Equal($"Avganen med id: {id}, kunne ikke hentes", resultat.Value);
+        }
+
+        [Fact]
+        public async Task NyAvgang_Regex()
+        {
+            // Arrange
+            NyAvgang utAvgang = HentNyAvgang();
+
+            mockRepo.Setup(br => br.NyAvgang(utAvgang)).ReturnsAsync(true);
+            avgangController.ModelState.AddModelError("Dato", "Feil i inputvalideringen på server");
+            // Act
+            SimulerInnlogget();
+            var resultat = await avgangController.NyAvgang(utAvgang) as BadRequestObjectResult;
 
 
             // Assert
@@ -346,6 +485,17 @@ namespace NOR_WAY_Tests
         private Avgangkriterier HentUgyldigAvgangParam()
         {
             return new Avgangkriterier { StartStopp = "", SluttStopp = "Vadheim", Dato = "", Tidspunkt = "16:00", AvreiseEtter = true };
+        }
+
+        private NyAvgang HentNyAvgang()
+        {
+            return new NyAvgang
+            {
+                Dato = "2020-11-12",
+                Tidspunkt = "12:00",
+                SolgteBilletter = 3,
+                Linjekode = "NW1"
+            };
         }
 
         // Returnerer et Avgang-objekt

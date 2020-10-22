@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -49,7 +50,7 @@ namespace NOR_WAY.Controllers
         public async Task<ActionResult> HentAlleBillettyper()
         {
             List<Billettyper> billettypene = await _db.HentAlleBillettyper();
-            if (billettypene == null)
+            if (billettypene.IsNullOrEmpty())
             {
                 melding = "Ingen Billettyper ble funnet";
                 _log.LogWarning(melding);

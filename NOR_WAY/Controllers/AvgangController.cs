@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -72,7 +73,7 @@ namespace NOR_WAY.Controllers
             if (ModelState.IsValid)
             {
                 List<AvgangModel> avganger = await _db.HentAvganger(linjekode, sidenummer);
-                if (avganger.Count == 0)
+                if (avganger.IsNullOrEmpty())
                 {
                     melding = $"Listen med avganger ble ikke funnet for linjekode: {linjekode} og sidenummer: {sidenummer}";
                     _log.LogWarning(melding);

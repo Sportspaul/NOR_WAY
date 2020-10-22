@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -50,7 +51,7 @@ namespace NOR_WAY.Controllers
         public async Task<ActionResult> HentAlleRuter()
         {
             List<Ruter> rutene = await _db.HentAlleRuter();
-            if (rutene == null)
+            if (rutene.IsNullOrEmpty())
             {
                 melding = "Rutene ble ikke funnet";
                 _log.LogWarning(melding);
@@ -62,7 +63,7 @@ namespace NOR_WAY.Controllers
         public async Task<ActionResult> HentRuterMedStopp()
         {
             List<RuteMedStopp> rutene = await _db.HentRuterMedStopp();
-            if (rutene == null)
+            if (rutene.IsNullOrEmpty())
             {
                 melding = "Rutene ble ikke funnet";
                 _log.LogWarning(melding);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -51,7 +52,7 @@ namespace NOR_WAY.Controllers
         {
             if (ModelState.IsValid) {
                 List<RuteStoppModel> ruteStoppListe = await _db.HentRuteStopp(linjekode);
-                if (ruteStoppListe.Count == 0) { 
+                if (ruteStoppListe.IsNullOrEmpty()) { 
                     melding = $"Ingen RuteStopp ble funnet med linjekode: {linjekode}";
                     _log.LogWarning(melding);
                     return NotFound(melding);

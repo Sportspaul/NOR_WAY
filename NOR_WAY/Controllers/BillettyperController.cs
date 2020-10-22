@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -29,7 +30,8 @@ namespace NOR_WAY.Controllers
             {
                 return Unauthorized("Ikke innlogget");
             }
-            if (ModelState.IsValid)
+            int rabattsats = innBillettype.Rabattsats;
+            if (ModelState.IsValid && rabattsats <= 100 && rabattsats >= 0)
             {
                 bool returOK = await _db.NyBillettype(innBillettype);
                 if (!returOK)
@@ -49,7 +51,7 @@ namespace NOR_WAY.Controllers
         public async Task<ActionResult> HentAlleBillettyper()
         {
             List<Billettyper> billettypene = await _db.HentAlleBillettyper();
-            if (billettypene == null)
+            if (billettypene.IsNullOrEmpty())
             {
                 melding = "Ingen Billettyper ble funnet";
                 _log.LogWarning(melding);
@@ -81,7 +83,8 @@ namespace NOR_WAY.Controllers
             {
                 return Unauthorized("Ikke innlogget");
             }
-            if (ModelState.IsValid && oppdatertBillettype.Rabattsats <= 100 && oppdatertBillettype.Rabattsats >= 0)
+            int rabattsats = oppdatertBillettype.Rabattsats;
+            if (ModelState.IsValid && rabattsats <= 100 && rabattsats >= 0)
             {
                 bool returOK = await _db.OppdaterBillettype(oppdatertBillettype);
                 if (!returOK)

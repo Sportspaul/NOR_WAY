@@ -1,10 +1,14 @@
 $(function () {
+	Hjelpemetoder.endreBakgrunn();
 	let url = window.location.href.split("=");
 	linjekode = url[1].split("&");
 	linjekode = linjekode[0];
+	const link = `nyRuteStopp.html?${linjekode}`;
 
 	let res = $.get(`../RuteStopp/HentRuteStopp?linjekode=${linjekode}`, () => {
-		lagTabell(res, "CUD", "nyRuteStopp.html?NW431");
+		lagTabell(res, "CUD", link);
+	}).fail(() => {
+		lagNyknapp(link);
 	});
 });
 

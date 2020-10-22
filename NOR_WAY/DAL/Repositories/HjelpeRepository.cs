@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -43,7 +44,7 @@ namespace NOR_WAY.DAL.Repositories
         // Hjelpemetode som finner Rutern to lister med Ruter har til felles
         public Ruter FinnFellesRute(List<Ruter> startStoppRuter, List<Ruter> sluttStoppRuter)
         {
-            if (startStoppRuter == null || sluttStoppRuter == null)
+            if (startStoppRuter.IsNullOrEmpty() || sluttStoppRuter.IsNullOrEmpty())
             {
                 _log.LogInformation(" Ett eller begge oppgitte stopp har ingen rute");
                 return null;

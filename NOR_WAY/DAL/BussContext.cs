@@ -24,7 +24,7 @@ namespace NOR_WAY.DAL
                 $"Rutenavn: {Rutenavn}, " +
                 $"Startpris: {Startpris}, " +
                 $"TilleggPerStopp: {TilleggPerStopp}, " +
-                $"Kapasistet: {Kapasitet}";
+                $"Kapasitet: {Kapasitet}";
             return utString;
         }
     }

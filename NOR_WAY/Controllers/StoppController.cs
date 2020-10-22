@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -29,7 +30,7 @@ namespace NOR_WAY.Controllers
             if (ModelState.IsValid)
             {
                 List<Stopp> stoppListe = await _db.FinnMuligeStartStopp(sluttStopp);
-                if (stoppListe.Count == 0)
+                if (stoppListe.IsNullOrEmpty())
                 {
                     melding = $"Ingen mulige StartStopp ble funnet for SluttStopp: {sluttStopp.Navn}";
                     _log.LogWarning(melding);
@@ -46,7 +47,7 @@ namespace NOR_WAY.Controllers
             if (ModelState.IsValid)
             {
                 List<Stopp> stoppListe = await _db.FinnMuligeSluttStopp(startStopp);
-                if (stoppListe.Count == 0)
+                if (stoppListe.IsNullOrEmpty())
                 {
                     melding = $"Ingen mulige SluttStopp ble funnet for StartStopp: {startStopp.Navn}";
                     _log.LogWarning(melding);
@@ -83,7 +84,7 @@ namespace NOR_WAY.Controllers
         public async Task<ActionResult> HentAlleStopp()
         {
             List<Stopp> alleStopp = await _db.HentAlleStopp();
-            if (alleStopp == null)
+            if (alleStopp.IsNullOrEmpty())
             {
                 melding = "Ingen stopp ble funnet";
                 _log.LogWarning(melding);
@@ -126,7 +127,7 @@ namespace NOR_WAY.Controllers
             if (ModelState.IsValid)
             {
                 List<StoppMedLinjekoder> stoppMedLinjekoder = await _db.HentAlleStoppMedRuter();
-                if (stoppMedLinjekoder == null)
+                if (stoppMedLinjekoder.IsNullOrEmpty())
                 {
                     melding = "Ingen Stopp ble funnet";
                     _log.LogWarning(melding);

@@ -37,10 +37,10 @@ function fyllInputfelter(avgang) {
 
 function oppdaterAvgang() {
 	if (validerAvgangInput()) {
-		let avgang = lagAvgangObjekt();
+		const avgang = lagAvgangObjekt();
 		avgang.Id = id[1];
 		$.post("../Avgang/OppdaterAvgang", avgang, () => {
-			location.replace("avganger.html?linjekode=NW431&side=0");
+			location.replace(`avganger.html?linjekode=${id[0]}&side=0`);
 		});
 	}
 }
@@ -51,7 +51,7 @@ function nyAvgang() {
 		avgang.Linjekode = $("#linjekode").val();
 		avgang.SolgteBilletter = 0;
 		$.post("../Avgang/NyAvgang", avgang, () => {
-			location.replace("avganger.html?linjekode=NW431&side=0");
+			location.replace(`avganger.html?linjekode=${id[0]}&side=0`);
 		});
 	}
 }

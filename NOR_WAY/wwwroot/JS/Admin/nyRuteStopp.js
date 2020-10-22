@@ -1,5 +1,8 @@
+// Denne filen håndterer både ny RuteStopp og oppdater TuteStopp
 $(function () {
-	Hjelpemetoder.endreBakgrunn();
+	Hjelpemetoder.endreBakgrunn(); // Tilpasser bakgrunnen
+
+	// Setter eventlistners
 	new NyRuteStoppEvents(
 		"#linjekode",
 		"#stoppnavn",
@@ -8,6 +11,7 @@ $(function () {
 	);
 });
 
+// Henter og formaterer verdier fra url
 const urlParameter = window.location.search;
 let id = urlParameter.substr(1);
 id = id.split("?");
@@ -16,6 +20,7 @@ const lagre = $("#lagre");
 $("#linjekode").prop("readonly", true);
 
 if (id.length == 2) {
+	// Hvis bruker skal oppdatere RuteStopp
 	$("#tittel").html(`Oppdater Rutestopp`);
 	lagre.val("Oppdater Rutestopp");
 
@@ -28,6 +33,7 @@ if (id.length == 2) {
 		oppdaterRuteStopp();
 	});
 } else {
+	// Hvis bruker skal opprette ny RuteStopp
 	$("#tittel").html("Nytt Rutestopp");
 	$("#linjekode").val(id[0]);
 	lagre.val("Opprett nytt rutestopp");
@@ -36,6 +42,7 @@ if (id.length == 2) {
 	});
 }
 
+// Fyller inputfeltene med verdier fra eksisterende RuteStopp
 function fyllInputfelter(ruteStopp) {
 	$("#linjekode").val(ruteStopp.linjekode);
 	$("#stoppnavn").val(ruteStopp.stoppnavn);
@@ -43,6 +50,7 @@ function fyllInputfelter(ruteStopp) {
 	$("#minutterTilNesteStopp").val(ruteStopp.minutterTilNesteStopp);
 }
 
+// Function som kaller oppdaterRuteStopp() på server
 function oppdaterRuteStopp() {
 	if (validerRuteStoppInput()) {
 		let ruteStopp = lagRuteStoppObjekt();
@@ -53,6 +61,7 @@ function oppdaterRuteStopp() {
 	}
 }
 
+// Function som kaller nyRuteStopp() på server
 function nyttRuteStopp() {
 	if (validerRuteStoppInput()) {
 		let ruteStopp = lagRuteStoppObjekt();
@@ -62,6 +71,7 @@ function nyttRuteStopp() {
 	}
 }
 
+// Returnerer verdiene i inputfeltene
 function lagRuteStoppObjekt() {
 	return {
 		Stoppnavn: $("#stoppnavn").val(),

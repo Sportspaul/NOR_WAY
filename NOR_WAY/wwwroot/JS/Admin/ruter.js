@@ -1,7 +1,11 @@
 ﻿$(function () {
-	const res = $.post("../Ruter/HentAlleRuter");
+	Hjelpemetoder.endreBakgrunn();
 	const link = "nyRute.html";
-	lagRuteoversikt(res, link);
+	const res = $.post("../Ruter/HentAlleRuter", () => {
+		lagRuteoversikt(res, link);
+	}).fail(() => {
+		lagNyknapp(link);
+	});
 });
 
 function slettRad(id) {

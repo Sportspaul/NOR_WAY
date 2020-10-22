@@ -1,8 +1,10 @@
+// Denne filen håndterer både ny avgang og oppdater avgang
 $(function () {
-	Hjelpemetoder.endreBakgrunn();
-	new NyAvgangEvents("#linjekode", "#dato");
+	Hjelpemetoder.endreBakgrunn(); // Tilpasser bakgrunnen
+	new NyAvgangEvents("#linjekode", "#dato"); // Setter eventlistners
 });
 
+// Henter og formaterer verdier fra url
 const urlParameter = window.location.search;
 let id = urlParameter.substr(1);
 id = id.split("?");
@@ -11,6 +13,7 @@ const lagre = $("#lagre");
 $("#linjekode").prop("readonly", true);
 
 if (id.length == 2) {
+	// Hvis bruker skal oppdatere avgang
 	$("#tittel").html(`Oppdater Avgang`);
 	lagre.val("Oppdater Avgang");
 
@@ -22,6 +25,7 @@ if (id.length == 2) {
 		oppdaterAvgang();
 	});
 } else {
+	// Hvis bruker skal opprette ny avgang
 	$("#tittel").html("Ny Avgang");
 	$("#linjekode").val(id[0]);
 	lagre.val("Opprett ny avgang");
@@ -30,11 +34,13 @@ if (id.length == 2) {
 	});
 }
 
+// Fyller inputfeltene med verdier fra eksisterende avgang
 function fyllInputfelter(avgang) {
 	$("#linjekode").val(avgang.linjekode);
 	$("#dato").val(avgang.dato), $("#tidspunkt").val(avgang.tidspunkt);
 }
 
+// Function som kaller oppdaterAvgang() på server
 function oppdaterAvgang() {
 	if (validerAvgangInput()) {
 		const avgang = lagAvgangObjekt();
@@ -45,6 +51,7 @@ function oppdaterAvgang() {
 	}
 }
 
+// Function som kaller nyAvgang() på server
 function nyAvgang() {
 	if (validerAvgangInput()) {
 		let avgang = lagAvgangObjekt();
@@ -56,6 +63,7 @@ function nyAvgang() {
 	}
 }
 
+// Returnerer verdiene i inputfeltene
 function lagAvgangObjekt() {
 	return {
 		Dato: $("#dato").val(),

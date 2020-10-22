@@ -10,14 +10,7 @@
 
 		// Sjekker om tabellen skal inneholde en "Create" knapp
 		if (CUD.includes("C")) {
-			const knapp = `
-                <a href="${link}">
-                    <button class="btn btn-success btn-sm">Opprett ny</button>
-                </a>`;
-
-			// Legger knappen til en container
-			const knappContainer = $("#knapp");
-			knappContainer.html(knapp);
+			lagNyknapp(link);
 		}
 
 		// Sjekker om tabellen skal inneholde en "Update" knapp
@@ -125,4 +118,15 @@ async function sokEtterOrdre() {
 	const epost = $("#ordreEpost").val();
 	let res = $.get(`../Ordre/HentOrdre?epost=${epost}`);
 	lagTabell(res, "D");
+}
+
+function lagNyknapp(link) {
+	const knapp = `
+                <a href="${link}">
+                    <button class="btn btn-success btn-sm">Opprett ny</button>
+                </a>`;
+
+	// Legger knappen til en container
+	const knappContainer = $("#knapp");
+	knappContainer.html(knapp);
 }

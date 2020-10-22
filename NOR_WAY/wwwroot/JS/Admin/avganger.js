@@ -1,11 +1,13 @@
 $(function () {
+	const link = `nyAvgang.html?${linjekode}`;
 	$("#tittel").html(`Avganger for: ${linjekode}`);
 	let res = $.get(
 		`../Avgang/HentAvganger?linjekode=${linjekode}&sidenummer=${sidenummer}`,
 		() => {
-			lagAvgangOversikt(res, "CUD", `nyAvgang.html?${linjekode}`);
+			lagAvgangOversikt(res, "CUD", link);
 		}
 	).fail(function () {
+		lagNyknapp(link);
 		$("#nesteSide").remove();
 		$("#ingenAvganger").html("Ingen flere avganger å vise");
 	});
@@ -30,14 +32,12 @@ function slettRad(id) {
 
 function forrigeSide() {
 	sidenummer--;
-	console.log(sidenummer);
 	const url = `avganger.html?linjekode=${linjekode}&side=${sidenummer}`;
 	location.replace(url);
 }
 
 function nesteSide() {
 	sidenummer++;
-	console.log(sidenummer);
 	const url = `avganger.html?linjekode=${linjekode}&side=${sidenummer}`;
 	location.replace(url);
 }

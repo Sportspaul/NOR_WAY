@@ -37,6 +37,8 @@ function oppdaterBillettype() {
 		billettype.Id = id;
 		$.post("../Billettyper/OppdaterBillettype", billettype, () => {
 			location.replace("billettyper.html?nyBillettype");
+		}).fail(() => {
+			$("#feilBillett").html("");
 		});
 	}
 }
@@ -46,6 +48,8 @@ function nyBillettype() {
 		const billettype = lagBillettypeObjekt();
 		$.post("../Billettyper/NyBillettype", billettype, () => {
 			location.replace("billettyper.html?billettypeOppdatert");
+		}).fail(() => {
+			$("#feilBillett").html("");
 		});
 	}
 }

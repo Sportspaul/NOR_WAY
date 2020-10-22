@@ -30,7 +30,8 @@ namespace NOR_WAY.Controllers
             {
                 return Unauthorized("Ikke innlogget");
             }
-            if (ModelState.IsValid)
+            int rabattsats = innBillettype.Rabattsats;
+            if (ModelState.IsValid && rabattsats <= 100 && rabattsats >= 0)
             {
                 bool returOK = await _db.NyBillettype(innBillettype);
                 if (!returOK)
@@ -82,7 +83,8 @@ namespace NOR_WAY.Controllers
             {
                 return Unauthorized("Ikke innlogget");
             }
-            if (ModelState.IsValid && oppdatertBillettype.Rabattsats <= 100 && oppdatertBillettype.Rabattsats >= 0)
+            int rabattsats = oppdatertBillettype.Rabattsats;
+            if (ModelState.IsValid && rabattsats <= 100 && rabattsats >= 0)
             {
                 bool returOK = await _db.OppdaterBillettype(oppdatertBillettype);
                 if (!returOK)

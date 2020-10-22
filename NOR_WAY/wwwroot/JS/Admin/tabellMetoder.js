@@ -112,15 +112,6 @@ async function lagAvgangOversikt(res, CUD, link) {
 	lagTabell(data, CUD, link);
 }
 
-async function lagStoppoversikt(res) {
-	let data = await res;
-	data.forEach((rad) => {
-		//    url = `ruteStopp.html?linjekode=${rad.linjekode}&side=0`
-		//    rad.avganger ;
-	});
-	lagTabell(data, "U");
-}
-
 async function sokEtterOrdre() {
 	const epost = $("#ordreEpost").val();
 	let res = $.get(`../Ordre/HentOrdre?epost=${epost}`);

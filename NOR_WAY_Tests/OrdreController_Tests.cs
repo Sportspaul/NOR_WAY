@@ -133,6 +133,56 @@ namespace NOR_WAY_Tests
             Assert.Equal("Ingen ordre ble funnet", resultat.Value);
         }
 
+        [Fact]
+        public async Task SlettOrdre_IkkeTilgang()
+        {
+            // Arrange
+            int id = 1;
+            mockRepo.Setup(br => br.SlettOrdre(id)).ReturnsAsync(true);
+            MockSession(_ikkeInnlogget);
+
+            // Act
+            var resultat = await ordreController.SlettOrdre(id) as UnauthorizedObjectResult;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
+            Assert.Equal("Ikke innlogget", resultat.Value);
+        }
+
+        [Fact]
+        public async Task SlettOrdre_IkkeOK()
+        {
+            // Arrange
+            int id = 1;
+            mockRepo.Setup(br => br.SlettOrdre(id)).ReturnsAsync(() => false);
+            MockSession(_innlogget);
+
+            // Act
+            var resultat = await ordreController.SlettOrdre(id) as BadRequestObjectResult;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
+            Assert.Equal($"Ordren med id: {id}, kunne ikke slettes", resultat.Value);
+        }
+
+        [Fact]
+        public async Task SlettOrdre_OK()
+        {
+            // Arrange
+            int id = 1;
+            mockRepo.Setup(br => br.SlettOrdre(id)).ReturnsAsync(() => true);
+            MockSession(_innlogget);
+
+            // Act
+            var resultat = await ordreController.SlettOrdre(id) as ObjectResult;
+
+            // Assert
+            Assert.Equal($"Ordren med Id: {id}, ble slettet", resultat.Value);
+        }
+
+
+
+
         /* Private metoder som instansierer objekter til brukes i testmetodene */
 
         // Returnerer et KundeOrdre-objekt

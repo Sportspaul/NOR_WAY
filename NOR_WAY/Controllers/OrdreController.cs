@@ -68,8 +68,6 @@ namespace NOR_WAY.Controllers
             {
                 return Unauthorized("Ikke innlogget");
             }
-            if (ModelState.IsValid)
-            {
                 bool returOK = await _db.SlettOrdre(id);
                 if (!returOK)
                 {
@@ -80,9 +78,6 @@ namespace NOR_WAY.Controllers
                 melding = $"Ordren med Id: {id}, ble slettet";
                 _log.LogInformation(melding);
                 return Ok(melding);
-            }
-            _log.LogWarning(ugyldigValidering);
-            return BadRequest(ugyldigValidering);
         }
     }
 }

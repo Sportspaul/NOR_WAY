@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +38,6 @@ namespace NOR_WAY_Tests
             // Arrange
             var kundeOrdre = HentEnNyOrdre();
             mockRepo.Setup(br => br.FullforOrdre(kundeOrdre)).ReturnsAsync(true);
-            MockSession(_innlogget);
 
             // Act
             var resultat = await ordreController.FullforOrdre(kundeOrdre) as OkObjectResult;
@@ -52,7 +52,6 @@ namespace NOR_WAY_Tests
             // Arrange
             var kundeOrdre = HentEnNyOrdre();
             mockRepo.Setup(br => br.FullforOrdre(kundeOrdre)).ReturnsAsync(false);
-            MockSession(_innlogget);
 
             // Act
             var resultat = await ordreController.FullforOrdre(kundeOrdre) as BadRequestObjectResult;
@@ -68,7 +67,6 @@ namespace NOR_WAY_Tests
             // Arrange
             var kundeOrdre = HentEnNyOrdre();
             mockRepo.Setup(br => br.FullforOrdre(kundeOrdre)).ReturnsAsync(false);
-            MockSession(_innlogget);
             ordreController.ModelState.AddModelError("Epost", "Feil i inputvalideringen på server");
 
             // Act
@@ -76,6 +74,63 @@ namespace NOR_WAY_Tests
 
             // Assert
             Assert.Equal("Feil i inputvalideringen på server", resultat.Value);
+        }
+
+        // Adminmetoder som krever innlogging
+        [Fact]
+        public async Task HentOrdre_RiktigeVerdier()
+        {
+            // Arrange
+            string epost = "ola@nordmann.no";
+            List<OrdreModel> ordreliste = HentOrdreListe(epost);
+            mockRepo.Setup(br => br.HentOrdre(epost)).ReturnsAsync(ordreliste);
+            MockSession(_innlogget);
+
+            // Act
+            var resultat = await ordreController.HentOrdre(epost) as OkObjectResult;
+            List<OrdreModel> faktiskOrdreliste = (List<OrdreModel>) resultat.Value;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
+            for(int i = 0; i < ordreliste.Count; i++) {
+                Assert.Equal(ordreliste[i].StartStopp, faktiskOrdreliste[i].StartStopp);
+                Assert.Equal(ordreliste[i].Sum, faktiskOrdreliste[i].Sum);
+                Assert.Equal(ordreliste[i].Linjekode, faktiskOrdreliste[i].Linjekode);
+            }
+        }
+
+        [Fact]
+        public async Task HentOrdre_IkkeTilgang()
+        {
+            // Arrange
+            string epost = "ola@nordmann.no";
+            List<OrdreModel> ordreliste = HentOrdreListe(epost);
+            mockRepo.Setup(br => br.HentOrdre(epost)).ReturnsAsync(ordreliste);
+            MockSession(_ikkeInnlogget);
+
+            // Act
+            var resultat = await ordreController.HentOrdre(epost) as UnauthorizedObjectResult;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
+            Assert.Equal("Ikke innlogget", resultat.Value);
+        }
+
+
+        [Fact]
+        public async Task HentOrdre_IkkeOK()
+        {
+            // Arrange
+            string epost = "ola@nordmann.no";
+            mockRepo.Setup(br => br.HentOrdre(epost)).ReturnsAsync(() => null);
+            MockSession(_innlogget);
+
+            // Act
+            var resultat = await ordreController.HentOrdre(epost) as NotFoundObjectResult;
+
+            // Assert
+            Assert.Equal((int)HttpStatusCode.NotFound, resultat.StatusCode);
+            Assert.Equal("Ingen ordre ble funnet", resultat.Value);
         }
 
         /* Private metoder som instansierer objekter til brukes i testmetodene */
@@ -90,6 +145,34 @@ namespace NOR_WAY_Tests
         private List<string> HentBillettyperStringListe()
         {
             return new List<string> { "Student", "Barn" };
+        }
+
+        private List<OrdreModel> HentOrdreListe(string epost)
+        {
+            OrdreModel ordre1 = new OrdreModel
+            {
+                Id = 1,
+                AvgangId = 1,
+                Billettyper = HentBillettyperStringListe(),
+                Epost = epost,
+                StartStopp = "Bergen",
+                SluttStopp = "Vadheim",
+                Sum = "69",
+                Linjekode = "NW1"
+            };
+            OrdreModel ordre2 = new OrdreModel
+            {
+                Id = 2,
+                AvgangId = 5,
+                Billettyper = HentBillettyperStringListe(),
+                Epost = epost,
+                StartStopp = "Oslo",
+                SluttStopp = "Bergen",
+                Sum = "420",
+                Linjekode = "NW4"
+            };
+            List<OrdreModel> ordreliste = new List<OrdreModel> { ordre1, ordre2 };
+            return ordreliste;
         }
 
         private void MockSession(string innlogging)

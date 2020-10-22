@@ -44,8 +44,14 @@ namespace NOR_WAY.Controllers
             return BadRequest(ugyldigValidering);
         }
 
+
+
         public async Task<ActionResult> HentOrdre(string epost)
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_innlogget)))
+            {
+                return Unauthorized("Ikke innlogget");
+            }
             List<OrdreModel> ordreModelListe = await _db.HentOrdre(epost);
             if (ordreModelListe.IsNullOrEmpty())
             {
@@ -54,21 +60,6 @@ namespace NOR_WAY.Controllers
                 return NotFound(melding);
             }
             return Ok(ordreModelListe);
-
-            //var billetter = new List<string> { "Student", "Student", "Student", "Voksen", "Voksen", "Honnør", "Barn" };
-            //var ordre1 = new OrdreModel
-            //{
-            //    Id = 1,
-            //    Epost = "123@abc.no",
-            //    StartStopp = "Bergen",
-            //    SluttStopp = "Vadheim",
-            //    Sum = "999",
-            //    Linjekode = "NW431",
-            //    Billettyper = billetter
-            //};
-
-            //List<OrdreModel> utOrdre = new List<OrdreModel> { ordre1 };
-            //return Ok(utOrdre);
         }
 
         public async Task<ActionResult> SlettOrdre(int id)

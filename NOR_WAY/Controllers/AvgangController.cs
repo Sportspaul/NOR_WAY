@@ -92,14 +92,15 @@ namespace NOR_WAY.Controllers
             }
             if (ModelState.IsValid)
             {
-                NyAvgang avganger = await _db.HentEnAvgang(id);
-                if (avganger == null)
+                NyAvgang avgangen = await _db.HentEnAvgang(id);
+                if (avgangen == null)
                 {
                     melding = $"Avganen med id: {id}, kunne ikke hentes";
                     _log.LogWarning(melding);
                     return NotFound(melding);
                 }
-                return Ok(avganger);
+                _log.LogInformation($"Avgangen {avgangen} ble hentet");
+                return Ok($"Avgangen {avgangen} ble hentet");
             }
             _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);

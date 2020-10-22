@@ -154,6 +154,7 @@ namespace NOR_WAY.DAL.Repositories
                 // Går gjennom listen, og sletter hver enkelt ordelinje
                 foreach (Ordrelinjer ordrelinje in ordrelinjeListe)
                 {
+                    ordre.Avgang.SolgteBilletter--;
                     _db.Ordrelinjer.Remove(ordrelinje);
                 }
 

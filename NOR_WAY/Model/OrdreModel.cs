@@ -26,8 +26,7 @@ namespace NOR_WAY.Model
         [RegularExpression(@"(NW)[0-9]{1,4}")]
         public string Linjekode { get; set; }
 
-        [RegularExpression(@"[0-9]{1,}")]
-        public int AvgangId { get; set; }
+        public string Avreise { get; set; }
 
         public List<string> Billettyper { get; set; }
 
@@ -39,7 +38,7 @@ namespace NOR_WAY.Model
                 $"SluttStopp: {SluttStopp}, " +
                 $"Sum: {Sum}, " +
                 $"Linjekode: {Linjekode}, " +
-                $"AvgangId: {AvgangId}, " +
+                $"AvgangId: {Avreise}, " +
                 $"Billettyper: {Billettyper}";
             return utString;
         }

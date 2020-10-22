@@ -125,7 +125,7 @@ namespace NOR_WAY.DAL.Repositories
                         SluttStopp = ordre.SluttStopp.Navn,
                         Sum = ordre.Sum.ToString(),
                         Linjekode = ordre.Rute.Linjekode,
-                        AvgangId = ordre.Avgang.Id,
+                        Avreise = ordre.Avgang.Avreise.ToString("dd-MM-yyyy HH:mm"),
                         Billettyper = billettypeListe
                     };
                     ordreModelListe.Add(ordreModel);

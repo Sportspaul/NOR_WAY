@@ -16,7 +16,9 @@ https://github.com/Sportspaul/NOR_WAY.git
     - Ved sletting av en Rute blir alle tilhørende Avganger, Ordre og Ordrelinjer også slettet 
     - Ved sletting av en Avgang blir alle tilhørende Ordre og Ordrelinjer også slettet
     - Admin har ikke mulighet til å slette en billettype, da rader i Ordrelinjer-tabell avhenger av dem
+    - For å søke etter ordre, bruk epost: ola@nordmann.no
     
     
     Brukernavn: Admin
     Passord: Admin123
+

@@ -104,6 +104,11 @@ namespace NOR_WAY.DAL.Repositories
         {
             try
             {
+                // Returnerer false hvis nyttStoppNummer er mindre enn det minste eller større en det største som allerede eksisterer
+                int antallRuteStopp = await _db.RuteStopp.Where(rs => rs.Rute.Linjekode == innRuteStopp.Linjekode).CountAsync();
+                int nyttStoppNummer = innRuteStopp.StoppNummer;
+                if (nyttStoppNummer > antallRuteStopp + 1 || nyttStoppNummer <= 0) { return false; }
+
                 // Henter alle RuteStopp fra samme rute som har likt eller høyre stoppnummer enn det nye stoppet
                 List<RuteStopp> endreStoppNummer = await LiktEllerSenereStoppNummer(innRuteStopp.StoppNummer, innRuteStopp.Linjekode);
 

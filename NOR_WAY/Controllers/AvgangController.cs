@@ -101,7 +101,7 @@ namespace NOR_WAY.Controllers
                     return NotFound(melding);
                 }
                 _log.LogInformation($"Avgangen {avgangen} ble hentet");
-                return Ok($"Avgangen {avgangen} ble hentet");
+                return Ok(avgangen);
             }
             _log.LogWarning(ugyldigValidering);
             return BadRequest(ugyldigValidering);

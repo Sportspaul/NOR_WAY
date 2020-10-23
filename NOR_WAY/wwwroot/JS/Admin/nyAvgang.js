@@ -19,6 +19,8 @@ if (id.length == 2) {
 
 	const url = `../Avgang/HentEnAvgang?id=${id[1]}`;
 	$.get(url, (avgang) => {
+		console.log(avgang);
+		console.log(avgang.linjekode);
 		fyllInputfelter(avgang);
 	});
 	lagre.click(() => {
@@ -36,6 +38,7 @@ if (id.length == 2) {
 
 // Fyller inputfeltene med verdier fra eksisterende avgang
 function fyllInputfelter(avgang) {
+	console.log(avgang.linjekode);
 	$("#linjekode").val(avgang.linjekode);
 	$("#dato").val(avgang.dato), $("#tidspunkt").val(avgang.tidspunkt);
 }

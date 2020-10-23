@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -199,10 +200,12 @@ namespace NOR_WAY_Tests
 
         private List<OrdreModel> HentOrdreListe(string epost)
         {
+            string dato = new DateTime().ToString("dd-MM-yyyy HH:mm");
+
             OrdreModel ordre1 = new OrdreModel
             {
                 Id = 1,
-                AvgangId = 1,
+                Avreise = dato,
                 Billettyper = HentBillettyperStringListe(),
                 Epost = epost,
                 StartStopp = "Bergen",
@@ -213,7 +216,7 @@ namespace NOR_WAY_Tests
             OrdreModel ordre2 = new OrdreModel
             {
                 Id = 2,
-                AvgangId = 5,
+                Avreise = dato,
                 Billettyper = HentBillettyperStringListe(),
                 Epost = epost,
                 StartStopp = "Oslo",

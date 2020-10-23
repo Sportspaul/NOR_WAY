@@ -255,7 +255,7 @@ namespace NOR_WAY_Tests
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
-            Assert.Equal($"Avgangen {utAvgang} ble hentet", resultat.Value);
+            Assert.Equal(utAvgang, resultat.Value);
         }
 
         [Fact]

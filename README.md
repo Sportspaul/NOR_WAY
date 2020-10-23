@@ -18,7 +18,4 @@
       Passord: Admin123
     
     # E-postadresser brukt til seeding av ordre:
-      [ ola@nodmann.no, kari@nordmann.no, john@doe.no, jane@doe.no, peder@aas.no, lars@holm.no ]
-    
-    
-    
+      [ ola@nordmann.no, kari@nordmann.no, john@doe.no, jane@doe.no, peder@aas.no, lars@holm.no ]

@@ -21,4 +21,5 @@
       [ ola@nordmann.no, kari@nordmann.no, john@doe.no, jane@doe.no, peder@aas.no, lars@holm.no ]
     
     
-    
+    # Github:
+    https://github.com/Sportspaul/NOR_WAY
